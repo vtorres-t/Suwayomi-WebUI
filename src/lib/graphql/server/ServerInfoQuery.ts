@@ -15,7 +15,6 @@ export const GET_ABOUT = gql`
         aboutServer {
             buildTime
             buildType
-            discord
             github
             name
             version

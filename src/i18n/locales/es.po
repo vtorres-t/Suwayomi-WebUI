@@ -904,10 +904,6 @@ msgstr "Desconectado del servidor de sincronizacion KOReader"
 msgid "Disconnected"
 msgstr "Desconectado"
 
-#: src/features/settings/screens/About.tsx
-msgid "Discord"
-msgstr "Discord"
-
 #: src/base/components/GridLayouts.tsx
 #: src/features/chapter/components/ChapterOptions.tsx
 #: src/features/library/components/LibraryOptionsPanel.tsx

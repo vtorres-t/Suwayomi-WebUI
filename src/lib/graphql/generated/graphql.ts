@@ -22,7 +22,6 @@ export type AboutServerPayload = {
   __typename?: 'AboutServerPayload';
   buildTime: Scalars['LongString']['output'];
   buildType: Scalars['String']['output'];
-  discord: Scalars['String']['output'];
   github: Scalars['String']['output'];
   name: Scalars['String']['output'];
   /** @deprecated The version includes the revision as the patch number */
