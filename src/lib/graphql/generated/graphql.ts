@@ -3908,7 +3908,7 @@ export type ResetWebuiUpdateStatusMutation = { __typename?: 'Mutation', resetWeb
 export type GetAboutQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetAboutQuery = { __typename?: 'Query', aboutServer: { __typename?: 'AboutServerPayload', buildTime: string, buildType: string, discord: string, github: string, name: string, version: string }, aboutWebUI: { __typename?: 'AboutWebUI', channel: WebUiChannel, tag: string, updateTimestamp: string } };
+export type GetAboutQuery = { __typename?: 'Query', aboutServer: { __typename?: 'AboutServerPayload', buildTime: string, buildType: string, github: string, name: string, version: string }, aboutWebUI: { __typename?: 'AboutWebUI', channel: WebUiChannel, tag: string, updateTimestamp: string } };
 
 export type CheckForServerUpdatesQueryVariables = Exact<{ [key: string]: never; }>;
 
