@@ -56,10 +56,10 @@ jobs:
       - name: Checkout preview branch
         uses: actions/checkout@v4
         with:
-          repository: "Suwayomi/Suwayomi-WebUI-preview"
+          repository: "vtorres-t/Suwayomi-WebUI-preview"
           ref: main
           path: preview
-          token: ${{ secrets.BUILD_PREVIEW_TOKEN }}
+          token: ${{ github.token }}
 
       - name: Create Tag
         run: |
@@ -81,7 +81,7 @@ jobs:
         with:
           token: ${{ secrets.BUILD_PREVIEW_TOKEN }}
           artifacts: "master/buildZip/*"
-          owner: "Suwayomi"
+          owner: "vtorres-t"
           repo: "Suwayomi-WebUI-preview"
           tag: ${{ steps.GenTagName.outputs.value }}
 
@@ -91,7 +91,7 @@ jobs:
           repository: "Suwayomi-WebUI-preview/suwayomi-webui-preview.github.io"
           ref: main
           path: gh-pages
-          token: ${{ secrets.DEPLOY_PREVIEW_TOKEN }}
+          token: ${{ github.token }}
 
       - name: Deploy github pages
         run: |
