@@ -61,7 +61,7 @@ jobs:
           repository: "vtorres-t/Suwayomi-WebUI-preview"
           ref: main
           path: preview
-          token: ${{ github.token }}
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Create Tag
         run: |
@@ -81,7 +81,7 @@ jobs:
       - name: Upload CI Release
         uses: ncipollo/release-action@v1
         with:
-          token: ${{ secrets.BUILD_PREVIEW_TOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}
           artifacts: "master/buildZip/*"
           owner: "vtorres-t"
           repo: "Suwayomi-WebUI-preview"
@@ -93,7 +93,7 @@ jobs:
           repository: "Suwayomi-WebUI-preview/suwayomi-webui-preview.github.io"
           ref: main
           path: gh-pages
-          token: ${{ github.token }}
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Deploy github pages
         run: |
