@@ -10,6 +10,8 @@ jobs:
     name: Build artifacts and deploy preview
     if: "!startsWith(github.event.head_commit.message, '[SKIP CI]')"
     runs-on: ubuntu-latest
+    permissions:
+      contents: write  # Permite al bot hacer push al repositorio
 
     steps:
       - name: Cancel previous runs
