@@ -22,7 +22,6 @@ export type AboutServerPayload = {
   __typename?: 'AboutServerPayload';
   buildTime: Scalars['LongString']['output'];
   buildType: Scalars['String']['output'];
-  discord: Scalars['String']['output'];
   github: Scalars['String']['output'];
   name: Scalars['String']['output'];
   /** @deprecated The version includes the revision as the patch number */
@@ -3909,7 +3908,7 @@ export type ResetWebuiUpdateStatusMutation = { __typename?: 'Mutation', resetWeb
 export type GetAboutQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetAboutQuery = { __typename?: 'Query', aboutServer: { __typename?: 'AboutServerPayload', buildTime: string, buildType: string, discord: string, github: string, name: string, version: string }, aboutWebUI: { __typename?: 'AboutWebUI', channel: WebUiChannel, tag: string, updateTimestamp: string } };
+export type GetAboutQuery = { __typename?: 'Query', aboutServer: { __typename?: 'AboutServerPayload', buildTime: string, buildType: string, github: string, name: string, version: string }, aboutWebUI: { __typename?: 'AboutWebUI', channel: WebUiChannel, tag: string, updateTimestamp: string } };
 
 export type CheckForServerUpdatesQueryVariables = Exact<{ [key: string]: never; }>;
 
