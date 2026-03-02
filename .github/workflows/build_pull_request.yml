@@ -5,8 +5,6 @@ jobs:
   build:
     name: ci-pull-request
     runs-on: ubuntu-latest
-    permissions:
-      contents: write  # Permite al bot hacer push al repositorio
     steps:
       - uses: actions/checkout@v4
 
