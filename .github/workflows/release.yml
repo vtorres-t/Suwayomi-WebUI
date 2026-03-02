@@ -6,6 +6,8 @@ on:
       release_version:
         description: 'Release version'
         required: true
+permissions:
+  contents: write
 
 defaults:
   run:
