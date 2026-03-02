@@ -1,13 +1,13 @@
 # Contributing
 ## Where should I start?
-Everything from https://github.com/Suwayomi/Suwayomi-Server/blob/master/CONTRIBUTING.md#where-should-i-start applies here.
+Everything from https://github.com/vtorres-t/Suwayomi-Server/blob/master/CONTRIBUTING.md#where-should-i-start applies here.
 
 ## About this project
 
 ### Building the app
 See [BUILDING.md](./BUILDING.md) for more information
 
-## WebUI to [Server](https://github.com/Suwayomi/Suwayomi-Server) mapping
+## WebUI to [Server](https://github.com/vtorres-t/Suwayomi-Server) mapping
 ### Explanation
 For the server to be able to automatically download the latest compatible WebUI version, the [version to server version mapping file](versionToServerVersionMapping.json) has to be provided.<br/>
 
