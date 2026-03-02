@@ -346,7 +346,10 @@ export function SourceMangas() {
     const messageExtra = isLocalSource ? (
         <>
             <span>{t`Check out`} </span>
-            <Link href="https://github.com/vtorres-t/Suwayomi-Server/wiki/Local-Source" target="_blank" rel="noreferrer">
+            <Link
+            href="https://github.com/vtorres-t/Suwayomi-Server/wiki/Local-Source"
+            target="_blank"
+            rel="noreferrer">
                 {t`Local source guide`}
             </Link>
         </>
