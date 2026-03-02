@@ -4,16 +4,12 @@ on:
   push:
     branches:
       - master
-permissions:
-  contents: write
 
 jobs:
   build:
     name: Build artifacts and deploy preview
     if: "!startsWith(github.event.head_commit.message, '[SKIP CI]')"
     runs-on: ubuntu-latest
-    permissions:
-      contents: write  # Permite al bot hacer push al repositorio
 
     steps:
       - name: Cancel previous runs
@@ -63,7 +59,7 @@ jobs:
           repository: "vtorres-t/Suwayomi-WebUI-preview"
           ref: main
           path: preview
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.BUILD_PREVIEW_TOKEN }}
 
       - name: Create Tag
         run: |
@@ -83,7 +79,7 @@ jobs:
       - name: Upload CI Release
         uses: ncipollo/release-action@v1
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.BUILD_PREVIEW_TOKEN }}
           artifacts: "master/buildZip/*"
           owner: "vtorres-t"
           repo: "Suwayomi-WebUI-preview"
