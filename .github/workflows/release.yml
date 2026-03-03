@@ -2,12 +2,10 @@ name: Release
 
 on:
   workflow_dispatch:
-    inputs:
-      release_version:
-        description: 'Release version'
-        required: true
-permissions:
-  contents: write
+  push:
+    branches:
+      - master
+
 
 defaults:
   run:
@@ -17,8 +15,6 @@ jobs:
   release:
     name: Create changelog, build artifacts and publish release
     runs-on: ubuntu-latest
-    permissions:
-      contents: write  # Permite al bot hacer push al repositorio
 
     steps:
       - name: Cancel previous runs
@@ -48,7 +44,7 @@ jobs:
       - name: Generate Tag Name
         id: GenTagName
         run: |
-          genTag="v${{ github.event.inputs.release_version }}"
+          genTag="r$(git rev-list HEAD --count)"
           echo "::set-output name=value::$genTag"
 
       - name: Build webUI
@@ -81,4 +77,3 @@ jobs:
           owner: "vtorres-t"
           repo: "Suwayomi-WebUI"
           tag: ${{ steps.GenTagName.outputs.value }}
-          draft: true
