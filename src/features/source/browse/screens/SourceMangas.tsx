@@ -347,10 +347,10 @@ export function SourceMangas() {
         <>
             <span>{t`Check out`} </span>
             <Link
-            href="https://github.com/vtorres-t/Suwayomi-Server/wiki/Local-Source"
-            target="_blank"
-            rel="noreferrer">
-                {t`Local source guide`}
+                href="https://github.com/vtorres-t/Suwayomi-Server/wiki/Local-Source"
+                target="_blank"
+                rel="noreferrer">
+            {t`Local source guide`}
             </Link>
         </>
     ) : undefined;
