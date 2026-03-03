@@ -76,11 +76,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - (**Theme**) Fix loading of fonts defined in themes
 - (**Reader**) Fix broken scrolling in continuous horizontal reading mode
 
-### Translations
-Feel free to translate the project on [Weblate](https://hosted.weblate.org/projects/suwayomi/suwayomi-webui/)
-
-Thanks to everyone that contributed to the translation of this project.
-
 #### Added
 - Russian (by Micka149)
 
