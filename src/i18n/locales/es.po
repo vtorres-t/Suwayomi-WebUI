@@ -2906,7 +2906,7 @@ msgstr "Tipo"
 
 #: src/features/settings/Settings.constants.ts
 msgid "UI Login"
-msgstr "UI Iniciar sesión"
+msgstr "UI Iniciar sesion"
 
 #: src/features/backup/screens/Backup.tsx
 #: src/features/browse/extensions/Extensions.tsx
