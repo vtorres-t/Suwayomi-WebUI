@@ -351,7 +351,7 @@ export function SourceMangas() {
                 target="_blank"
                 rel="noreferrer"
             >
-               {t`Local source guide`}
+                {t`Local source guide`}
             </Link>
         </>
     ) : undefined;
