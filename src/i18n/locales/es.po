@@ -2444,10 +2444,6 @@ msgstr "Enlaces del servidor"
 msgid "Server settings"
 msgstr "Ajustes del servidor"
 
-#: src/features/settings/screens/About.tsx
-msgid "Server version"
-msgstr "Versión del servidor"
-
 #: src/features/theme/components/CreateThemeDialog.tsx
 msgid "Set as active theme"
 msgstr "Establecer como tema activo"
@@ -3092,8 +3088,9 @@ msgid "Veronica"
 msgstr "Verónica"
 
 #: src/features/extension/info/components/Meta.tsx
+#: src/features/settings/screens/About.tsx
 msgid "Version"
-msgstr "Versión"
+msgstr "Version"
 
 #: src/features/reader/settings/layout/components/ReaderSettingTapZoneInvertMode.tsx
 msgid "Vertical"
@@ -3122,14 +3119,6 @@ msgstr "Webtoon"
 #: src/features/settings/Settings.constants.ts
 msgid "WebUI"
 msgstr "WebUI"
-
-#: src/features/settings/screens/About.tsx
-msgid "WebUI channel"
-msgstr "WebUI canal"
-
-#: src/features/settings/screens/About.tsx
-msgid "WebUI version"
-msgstr "Versión WebUI"
 
 #: src/features/settings/Settings.constants.ts
 msgid "When you enable this, you may need to refresh this tab for the login page to appear."
