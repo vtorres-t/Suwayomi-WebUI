@@ -83,11 +83,8 @@ export function About() {
                 }
             >
                 <ListItem>
-                    <ListItemText primary={t`Server`} secondary={`${aboutServer.name} (${aboutServer.buildType})`} />
-                </ListItem>
-                <ListItem>
                     <ListItemText
-                        primary={t`Server version`}
+                        primary={t`Version`}
                         secondary={
                             <VersionInfo
                                 version={aboutServer.version}
@@ -118,11 +115,8 @@ export function About() {
                 }
             >
                 <ListItem>
-                    <ListItemText primary={t`WebUI channel`} secondary={aboutWebUI.channel.toLocaleUpperCase()} />
-                </ListItem>
-                <ListItem>
                     <ListItemText
-                        primary={t`WebUI version`}
+                        primary={t`Version`}
                         secondary={
                             <VersionInfo
                                 version={aboutWebUI.tag}

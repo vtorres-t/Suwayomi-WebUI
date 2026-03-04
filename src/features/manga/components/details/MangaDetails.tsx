@@ -163,19 +163,6 @@ const OpenSourceButton = ({ url }: { url?: string | null }) => {
                     <IconBrowser />
                 </CustomButtonIcon>
             </CustomTooltip>
-            <CustomTooltip title={t`Open in WebView`} disabled={!url}>
-                <CustomButtonIcon
-                    size="medium"
-                    disabled={!url}
-                    component={Link}
-                    href={url ? requestManager.getWebviewUrl(url) : undefined}
-                    target="_blank"
-                    rel="noreferrer"
-                    variant="outlined"
-                >
-                    <IconWebView />
-                </CustomButtonIcon>
-            </CustomTooltip>
         </ButtonGroup>
     );
 };

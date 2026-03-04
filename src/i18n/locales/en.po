@@ -2899,10 +2899,6 @@ msgstr "Server bindings"
 msgid "Server settings"
 msgstr "Server settings"
 
-#: src/features/settings/screens/About.tsx
-msgid "Server version"
-msgstr "Server version"
-
 #. placeholder {0}: selectedServerChannelInfo.tag
 #. placeholder {1}: selectedServerChannelInfo.channel
 #: src/features/app-updates/components/ServerUpdateChecker.tsx
@@ -3592,6 +3588,7 @@ msgid "Veronica"
 msgstr "Veronica"
 
 #: src/features/extension/info/components/Meta.tsx
+#: src/features/settings/screens/About.tsx
 msgid "Version"
 msgstr "Version"
 
@@ -3622,14 +3619,6 @@ msgstr "Webtoon"
 #: src/features/settings/Settings.constants.ts
 msgid "WebUI"
 msgstr "WebUI"
-
-#: src/features/settings/screens/About.tsx
-msgid "WebUI channel"
-msgstr "WebUI channel"
-
-#: src/features/settings/screens/About.tsx
-msgid "WebUI version"
-msgstr "WebUI version"
 
 #. placeholder {0}: webUIUpdateData?.checkForWebUIUpdate.tag
 #. placeholder {1}: webUIUpdateData?.checkForWebUIUpdate.channel
