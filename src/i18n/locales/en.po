@@ -676,6 +676,7 @@ msgstr "Channel"
 #: src/features/tracker/components/cards/TrackerActiveCard.tsx
 #: src/features/tracker/components/cards/TrackerActiveCard.tsx
 #: src/features/tracker/components/cards/TrackerMangaCard.tsx
+#: src/features/manga/components/details/MangaDetails.tsx
 msgid "Chapter"
 msgstr "Chapter"
 
