@@ -168,7 +168,7 @@ export const DEFAULT_READER_SETTINGS: IReaderSettings = {
     progressBarSize: PROGRESS_BAR_SIZE.default,
     progressBarPosition: ProgressBarPosition.AUTO,
     progressBarPositionAutoVertical: ProgressBarPosition.RIGHT,
-    pageScaleMode: ReaderPageScaleMode.ORIGINAL,
+    pageScaleMode: ReaderPageScaleMode.WIDTH,
     shouldStretchPage: false,
     shouldOffsetDoubleSpreads: false,
     shouldSkipDupChapters: true,
@@ -176,7 +176,7 @@ export const DEFAULT_READER_SETTINGS: IReaderSettings = {
     shouldShowPageNumber: true,
     isStaticNav: false,
     readingDirection: ReadingDirection.LTR,
-    readingMode: ReadingMode.SINGLE_PAGE,
+    readingMode: ReadingMode.CONTINUOUS_VERTICAL,
     exitMode: ReaderExitMode.PREVIOUS,
     backgroundColor: ReaderBackgroundColor.THEME,
     customFilter: {
