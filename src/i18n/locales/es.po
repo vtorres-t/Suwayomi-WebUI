@@ -1769,6 +1769,11 @@ msgstr "Menú"
 msgid "Migrate"
 msgstr "Migración"
 
+#. placeholder {0}: state?.mangaTitle
+#: src/features/global-search/screens/SearchAll.tsx
+msgid "Migrate \"{0}\""
+msgstr "Migración \"{0}\""
+
 #: src/features/migration/components/MigrateDialog.tsx
 msgid "Migrating manga…"
 msgstr "Migrando datos…"
@@ -1830,7 +1835,7 @@ msgstr "Siguiente"
 
 #: src/features/reader/hotkeys/settings/components/ReaderSettingHotkey.tsx
 #: src/features/reader/overlay/navigation/desktop/components/ReaderNavBarDesktopChapterNavigation.tsx
-#: src/features/reader/overlay/navigation/desktop/components/ReaderNavBarDesktopChapterNavigation.tsx
+#: src/features/chapter/components/actions/ChaptersDownloadActionMenuItems.tsx
 msgid "Next chapter"
 msgstr "Siguiente capítulo"
 
@@ -2906,7 +2911,7 @@ msgstr "Tipo"
 
 #: src/features/settings/Settings.constants.ts
 msgid "UI Login"
-msgstr "UI Iniciar sesión"
+msgstr "UI Iniciar sesion"
 
 #: src/features/backup/screens/Backup.tsx
 #: src/features/browse/extensions/Extensions.tsx
@@ -2969,7 +2974,7 @@ msgstr "Desfijar origen"
 #: src/features/chapter/components/ChapterOptions.tsx
 #: src/features/library/components/LibraryOptionsPanel.tsx
 msgid "Unread"
-msgstr "Los capítulos no leídos"
+msgstr "Todos los capítulos no leídos"
 
 #: src/features/library/components/LibraryOptionsPanel.tsx
 msgid "Unread badges"
@@ -3189,3 +3194,7 @@ msgstr "Tu biblioteca está vacía"
 #: src/features/settings/Settings.constants.ts
 msgid "Your library will be accessible. Use this only on private networks or when otherwise securing access."
 msgstr "Tu biblioteca será accesible. Usa esto solo en redes privadas o cuando asegures el acceso de otra manera."
+
+#: src/features/chapter/components/actions/ChaptersDownloadActionMenuItems.tsx
+msgid "{count, plural, one {Next chapter} other {Next # chapters}}"
+msgstr "{count, plural, one {Siguiente capítulo} other {Siguientes # capítulos}}"
