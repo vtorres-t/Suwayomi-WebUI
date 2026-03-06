@@ -36,9 +36,9 @@ export function ResumeFab({
     const { sourceOrder, name, chapterNumber, scanlator } = chapter;
     const isFirstChapter = sourceOrder === 1;
 
-    const getContinueReadingText = (isFirstChapter: boolean, chapterNumber: number): string => {
+    const getContinueReadingText = (): string => {
         const label = isFirstChapter ? t`Start` : t`Resume`;
-        return `${label} ( ${chapterNumber} )`;
+        return `${label} (${chapterNumber})`;
     };
 
     return (
@@ -56,7 +56,7 @@ export function ResumeFab({
                 state={Chapters.getReaderOpenChapterLocationState(chapter)}
             >
                 <PlayArrow sx={{ mr: 1 }} />
-                {getContinueReadingText(isFirstChapter, chapterNumber)}
+                {getContinueReadingText()}
             </StyledFab>
         </ContinueReadingTooltip>
     );

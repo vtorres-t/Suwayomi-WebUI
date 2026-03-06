@@ -1976,14 +1976,6 @@ msgstr "Abrir"
 msgid "Open in browser"
 msgstr "Abrir en el navegador"
 
-#: src/features/chapter/components/actions/ChapterActionMenuItems.tsx
-#: src/features/manga/components/details/MangaDetails.tsx
-#: src/features/reader/overlay/mobile/ReaderOverlayHeaderMobile.tsx
-#: src/features/reader/overlay/navigation/desktop/components/ReaderNavBarDesktopActions.tsx
-#: src/features/source/browse/screens/SourceMangas.tsx
-msgid "Open in WebView"
-msgstr "Abrir en WebView"
-
 #: src/features/reader/settings/behaviour/components/ReaderSettingExitMode.tsx
 msgid "Open page on exit"
 msgstr "Abrir página al salir"
