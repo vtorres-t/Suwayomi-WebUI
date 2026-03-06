@@ -682,7 +682,7 @@ export class Mangas {
         const downloaded = manga.downloadCount;
         const total = manga.chapters?.totalCount;
 
-        return (current !== undefined && downloaded !== undefined && total !== undefined)
+        return current !== undefined && downloaded !== undefined && total !== undefined
             ? `${current} 👁 / ${downloaded} ↓ / ${total} 🗒`
             : undefined;
     }
