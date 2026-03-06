@@ -677,6 +677,15 @@ export class Mangas {
         return manga.author?.split(ARTIST_AUTHOR_SEPARATOR_REGEX);
     }
 
+    static getChaptersReadAndTotal<Manga extends MangaAuthorInfo>(manga: Manga): string | undefined {
+        const current = manga.firstUnreadChapter?.chapterNumber;
+        const total = manga.chapters?.totalCount;
+
+        return (current !== undefined && total !== undefined)
+            ? `${current}/${total}`
+            : undefined;
+    }
+
     static createLocationState<Manga extends MangaTitleInfo>(
         manga: Manga,
         mode: MangaCardMode | undefined,
