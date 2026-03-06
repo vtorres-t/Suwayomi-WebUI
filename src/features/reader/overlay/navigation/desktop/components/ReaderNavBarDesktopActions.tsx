@@ -20,8 +20,6 @@ import { ReaderLibraryButton } from '@/features/reader/overlay/navigation/compon
 import { ReaderBookmarkButton } from '@/features/reader/overlay/navigation/components/ReaderBookmarkButton.tsx';
 import { CHAPTER_ACTION_TO_TRANSLATION, FALLBACK_CHAPTER } from '@/features/chapter/Chapter.constants.ts';
 import { IconBrowser } from '@/assets/icons/IconBrowser.tsx';
-import { IconWebView } from '@/assets/icons/IconWebView.tsx';
-import { requestManager } from '@/lib/requests/RequestManager.ts';
 import {
     getReaderPagesStore,
     useReaderChaptersStore,
@@ -107,17 +105,6 @@ export const ReaderNavBarDesktopActions = memo(() => {
             <CustomTooltip title={t`Open in browser`} disabled={!realUrl}>
                 <IconButton disabled={!realUrl} href={realUrl ?? ''} rel="noreferrer" target="_blank" color="inherit">
                     <IconBrowser />
-                </IconButton>
-            </CustomTooltip>
-            <CustomTooltip title={t`Open in WebView`} disabled={!realUrl}>
-                <IconButton
-                    disabled={!realUrl}
-                    href={realUrl ? requestManager.getWebviewUrl(realUrl) : ''}
-                    rel="noreferrer"
-                    target="_blank"
-                    color="inherit"
-                >
-                    <IconWebView />
                 </IconButton>
             </CustomTooltip>
         </Stack>

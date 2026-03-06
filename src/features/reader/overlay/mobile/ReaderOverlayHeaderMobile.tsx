@@ -105,15 +105,6 @@ const BaseReaderOverlayHeaderMobile = ({ isVisible, ref }: MobileHeaderProps & {
                         {t`Open in browser`}
                     </MenuItem>
                     <MenuItem
-                        component={Link}
-                        disabled={!realUrl}
-                        href={realUrl ? requestManager.getWebviewUrl(realUrl) : ''}
-                        rel="noreferrer"
-                        target="_blank"
-                    >
-                        {t`Open in WebView`}
-                    </MenuItem>
-                    <MenuItem
                         disabled={!realUrl}
                         onClick={async () => {
                             await navigator.clipboard.writeText(title);

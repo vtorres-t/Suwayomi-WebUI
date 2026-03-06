@@ -40,7 +40,6 @@ import {
     ChapterReadInfo,
     ChapterRealUrlInfo,
 } from '@/features/chapter/Chapter.types.ts';
-import { IconWebView } from '@/assets/icons/IconWebView.tsx';
 import { IconBrowser } from '@/assets/icons/IconBrowser.tsx';
 
 type BaseProps = { onClose: () => void; selectable?: boolean };
@@ -185,19 +184,6 @@ export const ChapterActionMenuItems = ({
                             onClose();
                         }}
                         title={t`Open in browser`}
-                    />
-                    <MenuItem
-                        Icon={IconWebView}
-                        disabled={!chapter!.realUrl}
-                        onClick={() => {
-                            window.open(
-                                requestManager.getWebviewUrl(chapter!.realUrl!),
-                                '_blank',
-                                'noopener,noreferrer',
-                            );
-                            onClose();
-                        }}
-                        title={t`Open in WebView`}
                     />
                 </>
             )}
