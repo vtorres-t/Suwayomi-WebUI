@@ -175,17 +175,15 @@ export const ChapterActionMenuItems = ({
                 <MenuItem onClick={handleSelect} Icon={CheckBoxOutlineBlank} title={t`Select`} />
             )}
             {isSingleMode && (
-                <>
-                    <MenuItem
-                        Icon={IconBrowser}
-                        disabled={!chapter!.realUrl}
-                        onClick={() => {
-                            window.open(chapter!.realUrl!, '_blank', 'noopener,noreferrer');
-                            onClose();
-                        }}
-                        title={t`Open in browser`}
-                    />
-                </>
+                <MenuItem
+                    Icon={IconBrowser}
+                    disabled={!chapter!.realUrl}
+                    onClick={() => {
+                        window.open(chapter!.realUrl!, '_blank', 'noopener,noreferrer');
+                        onClose();
+                    }}
+                    title={t`Open in browser`}
+                />
             )}
             {shouldShowMenuItem(canBeDownloaded) && (
                 <MenuItem
