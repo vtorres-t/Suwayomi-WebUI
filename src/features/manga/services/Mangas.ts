@@ -677,7 +677,7 @@ export class Mangas {
         return manga.author?.split(ARTIST_AUTHOR_SEPARATOR_REGEX);
     }
 
-    static getChaptersReadAndDownloadedAndTotal<Manga extends MangaAuthorInfo>(manga: Manga): string | undefined {
+    static getChaptersReadAndDownloadedAndTotal<Manga extends MangaDownloadInfo>(manga: Manga): string | undefined {
         const current = manga.firstUnreadChapter?.chapterNumber;
         const downloaded = manga.downloadCount;
         const total = manga.chapters?.totalCount;
