@@ -265,7 +265,7 @@ export const MangaDetails = ({
                         )}
                         <Metadata title={t`Status`} value={t(MANGA_STATUS_TO_TRANSLATION[manga.status])} />
                         <Metadata title={t`Source`} value={getSourceName(manga.source)} />
-                        <Metadata title={t`Chapter`} value={Mangas.getChaptersReadAndTotal(manga)} />
+                        <Metadata title={t`Chapter`} value={Mangas.getChaptersReadAndDownloadedAndTotal(manga)} />
                     </MetadataContainer>
                 </ThumbnailMetadataWrapper>
                 <MangaButtonsContainer>
