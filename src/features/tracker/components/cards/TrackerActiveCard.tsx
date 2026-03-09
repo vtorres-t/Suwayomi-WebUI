@@ -44,6 +44,7 @@ import { TrackRecordType } from '@/lib/graphql/generated/graphql.ts';
 import { getErrorMessage } from '@/lib/HelperFunctions.ts';
 import { TTrackerBind, TTrackRecordBind } from '@/features/tracker/Tracker.types.ts';
 import { AvatarSpinner } from '@/base/components/AvatarSpinner.tsx';
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 
 const TrackerActiveLink = ({ children, url }: { children: React.ReactNode; url: string }) => (
     <Link href={url} rel="noreferrer" target="_blank" underline="none" color="inherit">
