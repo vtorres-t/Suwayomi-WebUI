@@ -734,10 +734,15 @@ export class Mangas {
         const current = manga.firstUnreadChapter?.chapterNumber;
         const downloaded = manga.downloadCount;
         const total = manga.chapters?.totalCount;
+        const size = manga.downloadSize;
 
-        return current !== undefined && downloaded !== undefined && total !== undefined
-            ? `${current} 👁 / ${downloaded} ↓ / ${total} 🗒`
-            : undefined;
+        if (current === undefined || downloaded === undefined || total === undefined) {
+            return undefined;
+        }
+
+        const sizeLabel = downloaded > 0 && size ? `(${size})` : '';
+
+        return `${current} 👁 / ${downloaded}${sizeLabel}↓ / ${total} 🗒`;
     }
 
     static createLocationState<Manga extends MangaTitleInfo>(
