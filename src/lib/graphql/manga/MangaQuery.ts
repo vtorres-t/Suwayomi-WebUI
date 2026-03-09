@@ -25,6 +25,7 @@ export const GET_MANGA_SCREEN = gql`
 
     query GET_MANGA_SCREEN($id: Int!) {
         manga(id: $id) {
+            downloadSize(mangaId: $id)
             ...MANGA_SCREEN_FIELDS
         }
     }

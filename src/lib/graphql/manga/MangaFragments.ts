@@ -35,7 +35,6 @@ export const MANGA_CHAPTER_STAT_FIELDS = gql`
         id
         unreadCount
         downloadCount
-        downloadSize(mangaId: $id)
         bookmarkCount
         hasDuplicateChapters
 
