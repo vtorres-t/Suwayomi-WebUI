@@ -54,13 +54,6 @@ jobs:
           yarn build-zip
           yarn build-md5
 
-#      - name: Rename artifact
-#        run: |
-#          cd buildZip
-#          for file in *.zip; do
-#            mv "$file" "${file%-r$(git rev-list HEAD --count).zip}-${{ steps.GenTagName.outputs.value }}.zip"
-#          done
-
       - name: Create Tag
         run: |
           TAG="${{ steps.GenTagName.outputs.value }}"

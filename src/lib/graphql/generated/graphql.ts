@@ -1216,6 +1216,7 @@ export type MangaType = {
   chaptersLastFetchedAt?: Maybe<Scalars['LongString']['output']>;
   description?: Maybe<Scalars['String']['output']>;
   downloadCount: Scalars['Int']['output'];
+  downloadSize: Scalars['String']['output'];
   firstUnreadChapter?: Maybe<ChapterType>;
   genre: Array<Scalars['String']['output']>;
   hasDuplicateChapters: Scalars['Boolean']['output'];

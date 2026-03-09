@@ -185,7 +185,7 @@ const TrackerActiveHeader = ({
             await navigator.clipboard.writeText(trackRecord.title);
             makeToast(t`Copied to clipboard`, 'info');
         } catch (e) {
-            defaultPromiseErrorHandler('MangaDetails::copyTitleLongPress')(e);
+            defaultPromiseErrorHandler('TTrackRecordActive::copyTitleLongPress')(e);
         }
     };
 
