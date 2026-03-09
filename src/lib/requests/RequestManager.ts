@@ -47,22 +47,12 @@ import {
     CreateCategoryInput,
     CreateCategoryMutation,
     CreateCategoryMutationVariables,
-    DeleteCategoryMetadataMutation,
-    DeleteCategoryMetadataMutationVariables,
     DeleteCategoryMutation,
     DeleteCategoryMutationVariables,
-    DeleteChapterMetadataMutation,
-    DeleteChapterMetadataMutationVariables,
     DeleteDownloadedChapterMutation,
     DeleteDownloadedChapterMutationVariables,
     DeleteDownloadedChaptersMutation,
     DeleteDownloadedChaptersMutationVariables,
-    DeleteGlobalMetadataMutation,
-    DeleteGlobalMetadataMutationVariables,
-    DeleteMangaMetadataMutation,
-    DeleteMangaMetadataMutationVariables,
-    DeleteSourceMetadataMutation,
-    DeleteSourceMetadataMutationVariables,
     DequeueChapterDownloadMutation,
     DequeueChapterDownloadMutationVariables,
     DequeueChapterDownloadsMutation,
@@ -137,16 +127,8 @@ import {
     ResetWebuiUpdateStatusMutationVariables,
     RestoreBackupMutation,
     RestoreBackupMutationVariables,
-    SetCategoryMetadataMutation,
-    SetCategoryMetadataMutationVariables,
-    SetChapterMetadataMutation,
-    SetChapterMetadataMutationVariables,
-    SetGlobalMetadataMutation,
-    SetGlobalMetadataMutationVariables,
-    SetMangaMetadataMutation,
-    SetMangaMetadataMutationVariables,
-    SetSourceMetadataMutation,
-    SetSourceMetadataMutationVariables,
+    SetGlobalMetasInput,
+    DeleteGlobalMetasInput,
     SettingsType,
     SortOrder,
     SourcePreferenceChangeInput,
@@ -228,9 +210,27 @@ import {
     KoSyncLogoutMutationVariables,
     GetKoSyncStatusQuery,
     GetKoSyncStatusQueryVariables,
+    UpdateGlobalMetadataMutation,
+    UpdateGlobalMetadataMutationVariables,
+    UpdateMangaMetadataMutation,
+    UpdateMangaMetadataMutationVariables,
+    UpdateChapterMetadataMutation,
+    UpdateChapterMetadataMutationVariables,
+    UpdateCategoryMetadataMutation,
+    UpdateCategoryMetadataMutationVariables,
+    UpdateSourceMetadataMutation,
+    UpdateSourceMetadataMutationVariables,
+    SetSourceMetasInput,
+    DeleteSourceMetasInput,
+    SetMangaMetasInput,
+    DeleteMangaMetasInput,
+    SetChapterMetasInput,
+    DeleteChapterMetasInput,
+    SetCategoryMetasInput,
+    DeleteCategoryMetasInput,
 } from '@/lib/graphql/generated/graphql.ts';
 import { GET_GLOBAL_METADATAS } from '@/lib/graphql/metadata/GlobalMetadataQuery.ts';
-import { DELETE_GLOBAL_METADATA, SET_GLOBAL_METADATA } from '@/lib/graphql/metadata/GlobalMetadataMutation.ts';
+import { UPDATE_GLOBAL_METADATA } from '@/lib/graphql/metadata/GlobalMetadataMutation.ts';
 import {
     CHECK_FOR_SERVER_UPDATES,
     CHECK_FOR_WEBUI_UPDATE,
@@ -246,12 +246,11 @@ import {
 } from '@/lib/graphql/extension/ExtensionMutation.ts';
 import { GET_MIGRATABLE_SOURCES, GET_SOURCES_LIST } from '@/lib/graphql/source/SourceQuery.ts';
 import {
-    DELETE_MANGA_METADATA,
     GET_MANGA_FETCH,
     GET_MANGA_TO_MIGRATE_TO_FETCH,
-    SET_MANGA_METADATA,
     UPDATE_MANGA,
     UPDATE_MANGA_CATEGORIES,
+    UPDATE_MANGA_METADATA,
     UPDATE_MANGAS,
     UPDATE_MANGAS_CATEGORIES,
 } from '@/lib/graphql/manga/MangaMutation.ts';
@@ -268,9 +267,8 @@ import {
     GET_CATEGORY_MANGAS,
 } from '@/lib/graphql/category/CategoryQuery.ts';
 import {
-    DELETE_SOURCE_METADATA,
     GET_SOURCE_MANGAS_FETCH,
-    SET_SOURCE_METADATA,
+    UPDATE_SOURCE_METADATA,
     UPDATE_SOURCE_PREFERENCES,
 } from '@/lib/graphql/source/SourceMutation.ts';
 import {
@@ -292,19 +290,17 @@ import {
     GET_MANGAS_CHAPTER_IDS_WITH_STATE,
 } from '@/lib/graphql/chapter/ChapterQuery.ts';
 import {
-    DELETE_CHAPTER_METADATA,
     GET_CHAPTER_PAGES_FETCH,
     GET_MANGA_CHAPTERS_FETCH,
-    SET_CHAPTER_METADATA,
     UPDATE_CHAPTER,
+    UPDATE_CHAPTER_METADATA,
     UPDATE_CHAPTERS,
 } from '@/lib/graphql/chapter/ChapterMutation.ts';
 import {
     CREATE_CATEGORY,
     DELETE_CATEGORY,
-    DELETE_CATEGORY_METADATA,
-    SET_CATEGORY_METADATA,
     UPDATE_CATEGORY,
+    UPDATE_CATEGORY_METADATA,
     UPDATE_CATEGORY_ORDER,
 } from '@/lib/graphql/category/CategoryMutation.ts';
 import { STOP_UPDATER, UPDATE_LIBRARY } from '@/lib/graphql/updater/UpdaterMutation.ts';
@@ -1285,28 +1281,79 @@ export class RequestManager {
         return this.doRequest(GQLMethod.USE_QUERY, GET_GLOBAL_METADATAS, {}, options);
     }
 
-    public setGlobalMetadata(
-        key: string,
-        value: any,
-        options?: MutationOptions<SetGlobalMetadataMutation, SetGlobalMetadataMutationVariables>,
-    ): AbortableApolloMutationResponse<SetGlobalMetadataMutation> {
-        return this.doRequest<SetGlobalMetadataMutation, SetGlobalMetadataMutationVariables>(
+    public updateGlobalMeta(
+        {
+            preUpdateDeleteInput = { keys: [] },
+            updateInput = { metas: [] },
+            postUpdateDeleteInput = { keys: [] },
+            migrateInput = { metas: [] },
+        }: {
+            preUpdateDeleteInput?: DeleteGlobalMetasInput;
+            updateInput?: SetGlobalMetasInput;
+            postUpdateDeleteInput?: DeleteGlobalMetasInput;
+            migrateInput?: SetGlobalMetasInput;
+        },
+        options?: MutationOptions<UpdateGlobalMetadataMutation, UpdateGlobalMetadataMutationVariables>,
+    ): AbortableApolloMutationResponse<UpdateGlobalMetadataMutation> {
+        return this.doRequest<UpdateGlobalMetadataMutation, UpdateGlobalMetadataMutationVariables>(
             GQLMethod.MUTATION,
-            SET_GLOBAL_METADATA,
-            { input: { meta: { key, value: `${value}` } } },
+            UPDATE_GLOBAL_METADATA,
+            {
+                preUpdateDeleteInput,
+                hasPreUpdateDeletions: !!preUpdateDeleteInput.keys?.length || !!preUpdateDeleteInput.prefixes?.length,
+                updateInput,
+                hasUpdates: !!updateInput.metas.length,
+                postUpdateDeleteInput,
+                hasPostUpdateDeletions:
+                    !!postUpdateDeleteInput.keys?.length || !!postUpdateDeleteInput.prefixes?.length,
+                migrateInput,
+                isMigration: !!updateInput.metas.length,
+            },
             {
                 optimisticResponse: {
                     __typename: 'Mutation',
-                    setGlobalMeta: {
-                        __typename: 'SetGlobalMetaPayload',
-                        meta: {
-                            __typename: 'GlobalMetaType',
+                    preUpdateDeletedMeta: {
+                        __typename: 'DeleteGlobalMetasPayload',
+                        metas: (preUpdateDeleteInput?.keys ?? []).map((key) => ({
+                            __typename: 'GlobalMetaType' as const,
                             key,
-                            value: `${value}`,
-                        },
+                            value: '',
+                        })),
+                    },
+                    updatedMeta: {
+                        __typename: 'SetGlobalMetasPayload',
+                        metas: (updateInput?.metas ?? []).map((meta) => ({
+                            __typename: 'GlobalMetaType',
+                            key: meta.key,
+                            value: meta.value,
+                        })),
+                    },
+                    postUpdateDeletedMeta: {
+                        __typename: 'DeleteGlobalMetasPayload',
+                        metas: (postUpdateDeleteInput?.keys ?? []).map((key) => ({
+                            __typename: 'GlobalMetaType' as const,
+                            key,
+                            value: '',
+                        })),
+                    },
+                    migrationMeta: {
+                        __typename: 'SetGlobalMetasPayload',
+                        metas: (migrateInput?.metas ?? []).map((meta) => ({
+                            __typename: 'GlobalMetaType',
+                            key: meta.key,
+                            value: meta.value,
+                        })),
                     },
                 },
                 update(cache, { data }) {
+                    preUpdateDeleteInput?.keys?.forEach((key) => {
+                        cache.evict({ id: cache.identify({ __typename: 'GlobalMetaType', key }) });
+                    });
+
+                    postUpdateDeleteInput?.keys?.forEach((key) => {
+                        cache.evict({ id: cache.identify({ __typename: 'GlobalMetaType', key }) });
+                    });
+
                     cache.modify({
                         fields: {
                             metas(existingMetas, { readField }) {
@@ -1314,57 +1361,34 @@ export class RequestManager {
                                     return existingMetas;
                                 }
 
-                                if (!data?.setGlobalMeta) {
+                                if (!data?.updatedMeta && !data?.migrationMeta) {
                                     return existingMetas;
                                 }
 
-                                const exists = existingMetas.nodes.some(
-                                    (meta: Reference) => readField('key', meta) === key,
+                                const updatedMeta = [
+                                    ...(data?.updatedMeta?.metas ?? []),
+                                    ...(data?.migrationMeta?.metas ?? []),
+                                ];
+
+                                const newMetas = updatedMeta.filter((meta) =>
+                                    existingMetas.nodes.every(
+                                        (existingMeta: Reference) => readField('key', existingMeta) !== meta.key,
+                                    ),
                                 );
-                                if (exists) {
-                                    return existingMetas;
-                                }
-
-                                const newMetaRef = cache.writeFragment({
-                                    data: data!.setGlobalMeta.meta,
-                                    fragment: GLOBAL_METADATA,
-                                });
+                                const newMetaRefs = newMetas.map((meta) =>
+                                    cache.writeFragment({
+                                        data: meta,
+                                        fragment: GLOBAL_METADATA,
+                                    }),
+                                );
 
                                 return {
                                     ...existingMetas,
-                                    nodes: [...existingMetas.nodes, newMetaRef],
+                                    nodes: [...existingMetas.nodes, ...newMetaRefs],
                                 };
                             },
                         },
                     });
-                },
-                ...options,
-            },
-        );
-    }
-
-    public deleteGlobalMeta(
-        key: string,
-        options?: MutationOptions<DeleteGlobalMetadataMutation, DeleteGlobalMetadataMutationVariables>,
-    ): AbortableApolloMutationResponse<DeleteGlobalMetadataMutation> {
-        return this.doRequest(
-            GQLMethod.MUTATION,
-            DELETE_GLOBAL_METADATA,
-            { input: { key } },
-            {
-                optimisticResponse: {
-                    __typename: 'Mutation',
-                    deleteGlobalMeta: {
-                        __typename: 'DeleteGlobalMetaPayload',
-                        meta: {
-                            __typename: 'GlobalMetaType',
-                            key,
-                            value: '',
-                        },
-                    },
-                },
-                update(cache) {
-                    cache.evict({ id: cache.identify({ __typename: 'GlobalMetaType', key }) });
                 },
                 ...options,
             },
@@ -1699,75 +1723,145 @@ export class RequestManager {
         return this.doRequest(GQLMethod.USE_QUERY, document, { id } as unknown as Variables, options);
     }
 
-    public setSourceMeta(
-        sourceId: string,
-        key: string,
-        value: any,
-        options?: MutationOptions<SetSourceMetadataMutation, SetSourceMetadataMutationVariables>,
-    ): AbortableApolloMutationResponse<SetSourceMetadataMutation> {
-        return this.doRequest(
+    public updateSourceMeta(
+        {
+            preUpdateDeleteInput = { items: [] },
+            updateInput = { items: [] },
+            postUpdateDeleteInput = { items: [] },
+            migrateInput = { items: [] },
+        }: {
+            preUpdateDeleteInput?: DeleteSourceMetasInput;
+            updateInput?: SetSourceMetasInput;
+            postUpdateDeleteInput?: DeleteSourceMetasInput;
+            migrateInput?: SetSourceMetasInput;
+        },
+        options?: MutationOptions<UpdateSourceMetadataMutation, UpdateSourceMetadataMutationVariables>,
+    ): AbortableApolloMutationResponse<UpdateSourceMetadataMutation> {
+        return this.doRequest<UpdateSourceMetadataMutation, UpdateSourceMetadataMutationVariables>(
             GQLMethod.MUTATION,
-            SET_SOURCE_METADATA,
+            UPDATE_SOURCE_METADATA,
             {
-                input: { meta: { sourceId, key, value: `${value}` } },
+                preUpdateDeleteInput,
+                hasPreUpdateDeletions: preUpdateDeleteInput.items.some(
+                    (item) => !!item.keys?.length || !!item.prefixes?.length,
+                ),
+                updateInput,
+                hasUpdates: updateInput.items.some((item) => !!item.metas?.length),
+                postUpdateDeleteInput,
+                hasPostUpdateDeletions: postUpdateDeleteInput.items.some(
+                    (item) => !!item.keys?.length || !!item.prefixes?.length,
+                ),
+                migrateInput,
+                isMigration: migrateInput.items.some((item) => !!item.metas?.length),
             },
             {
                 optimisticResponse: {
                     __typename: 'Mutation',
-                    setSourceMeta: {
-                        __typename: 'SetSourceMetaPayload',
-                        meta: {
-                            __typename: 'SourceMetaType',
-                            sourceId,
-                            key,
-                            value: `${value}`,
-                        },
+                    preUpdateDeletedMeta: {
+                        __typename: 'DeleteSourceMetasPayload',
+                        metas: (preUpdateDeleteInput?.items ?? []).flatMap((item) =>
+                            item.sourceIds.flatMap((sourceId) =>
+                                (item.keys ?? []).map((key) => ({
+                                    __typename: 'SourceMetaType' as const,
+                                    sourceId,
+                                    key,
+                                    value: '',
+                                })),
+                            ),
+                        ),
+                    },
+                    updatedMeta: {
+                        __typename: 'SetSourceMetasPayload',
+                        metas: (updateInput?.items ?? []).flatMap((item) =>
+                            item.sourceIds.flatMap((sourceId) =>
+                                item.metas.map((meta) => ({
+                                    __typename: 'SourceMetaType' as const,
+                                    sourceId,
+                                    key: meta.key,
+                                    value: meta.value,
+                                })),
+                            ),
+                        ),
+                    },
+                    postUpdateDeletedMeta: {
+                        __typename: 'DeleteSourceMetasPayload',
+                        metas: (postUpdateDeleteInput?.items ?? []).flatMap((item) =>
+                            item.sourceIds.flatMap((sourceId) =>
+                                (item.keys ?? []).map((key) => ({
+                                    __typename: 'SourceMetaType' as const,
+                                    sourceId,
+                                    key,
+                                    value: '',
+                                })),
+                            ),
+                        ),
+                    },
+                    migrationMeta: {
+                        __typename: 'SetSourceMetasPayload',
+                        metas: (migrateInput?.items ?? []).flatMap((item) =>
+                            item.sourceIds.flatMap((sourceId) =>
+                                item.metas.map((meta) => ({
+                                    __typename: 'SourceMetaType' as const,
+                                    sourceId,
+                                    key: meta.key,
+                                    value: meta.value,
+                                })),
+                            ),
+                        ),
                     },
                 },
                 update(cache, { data }) {
-                    cache.modify({
-                        id: cache.identify({ __typename: 'SourceType', id: sourceId }),
-                        fields: {
-                            meta(existingMetas, { readField }) {
-                                return updateMetadataList(key, existingMetas, readField, () =>
-                                    cache.writeFragment({
-                                        data: data!.setSourceMeta!.meta,
-                                        fragment: SOURCE_META_FIELDS,
-                                    }),
-                                );
-                            },
-                        },
-                    });
-                },
-                ...options,
-            },
-        );
-    }
+                    preUpdateDeleteInput?.items.forEach((item) =>
+                        item.sourceIds.forEach((sourceId) =>
+                            item.keys?.forEach((key) => {
+                                cache.evict({
+                                    id: cache.identify({ __typename: 'SourceMetaType', sourceId, key }),
+                                });
+                            }),
+                        ),
+                    );
 
-    public deleteSourceMeta(
-        sourceId: string,
-        key: string,
-        options?: MutationOptions<DeleteSourceMetadataMutation, DeleteSourceMetadataMutationVariables>,
-    ): AbortableApolloMutationResponse<DeleteSourceMetadataMutation> {
-        return this.doRequest(
-            GQLMethod.MUTATION,
-            DELETE_SOURCE_METADATA,
-            { input: { sourceId, key } },
-            {
-                optimisticResponse: {
-                    __typename: 'Mutation',
-                    deleteSourceMeta: {
-                        __typename: 'DeleteSourceMetaPayload',
-                        meta: {
-                            __typename: 'SourceMetaType',
-                            sourceId,
-                            key,
-                            value: '',
-                        },
-                    },
-                },
-                update(cache) {
-                    cache.evict({ id: cache.identify({ __typename: 'SourceMetaType', sourceId, key }) });
+                    postUpdateDeleteInput?.items.forEach((item) =>
+                        item.sourceIds.forEach((sourceId) =>
+                            item.keys?.forEach((key) => {
+                                cache.evict({
+                                    id: cache.identify({ __typename: 'SourceMetaType', sourceId, key }),
+                                });
+                            }),
+                        ),
+                    );
+
+                    if (!data?.updatedMeta && !data?.migrationMeta) {
+                        return;
+                    }
+
+                    const sourceIds = [
+                        ...updateInput.items.flatMap((item) => item.sourceIds),
+                        ...migrateInput.items.flatMap((item) => item.sourceIds),
+                    ];
+
+                    sourceIds.forEach((sourceId) => {
+                        cache.modify({
+                            id: cache.identify({ __typename: 'SourceType', id: sourceId }),
+                            fields: {
+                                meta(existingMetas, { readField }) {
+                                    const updatedMeta = [
+                                        ...(data?.updatedMeta?.metas.filter((meta) => meta.sourceId === sourceId) ??
+                                            []),
+                                        ...(data?.migrationMeta?.metas.filter((meta) => meta.sourceId === sourceId) ??
+                                            []),
+                                    ];
+
+                                    return updateMetadataList(updatedMeta, existingMetas, readField, (meta) =>
+                                        cache.writeFragment({
+                                            data: meta,
+                                            fragment: SOURCE_META_FIELDS,
+                                        }),
+                                    );
+                                },
+                            },
+                        });
+                    });
                 },
                 ...options,
             },
@@ -2053,6 +2147,7 @@ export class RequestManager {
             migrateCategories = false,
             migrateTracking = false,
             deleteChapters = false,
+            migrateMetadata = false,
             apolloOptions: options,
         }: Partial<MetadataMigrationSettings> & {
             apolloOptions?: QueryOptions<GetMangaToMigrateQueryVariables, GetMangaToMigrateQuery>;
@@ -2066,6 +2161,7 @@ export class RequestManager {
                 getChapterData: migrateChapters || deleteChapters,
                 migrateCategories,
                 migrateTracking,
+                migrateMetadata,
             },
             options,
         );
@@ -2223,75 +2319,144 @@ export class RequestManager {
         return result;
     }
 
-    public setMangaMeta(
-        mangaId: number,
-        key: string,
-        value: any,
-        options?: MutationOptions<SetMangaMetadataMutation, SetMangaMetadataMutationVariables>,
-    ): AbortableApolloMutationResponse<SetMangaMetadataMutation> {
-        return this.doRequest(
+    public updateMangaMeta(
+        {
+            preUpdateDeleteInput = { items: [] },
+            updateInput = { items: [] },
+            postUpdateDeleteInput = { items: [] },
+            migrateInput = { items: [] },
+        }: {
+            preUpdateDeleteInput?: DeleteMangaMetasInput;
+            updateInput?: SetMangaMetasInput;
+            postUpdateDeleteInput?: DeleteMangaMetasInput;
+            migrateInput?: SetMangaMetasInput;
+        },
+        options?: MutationOptions<UpdateMangaMetadataMutation, UpdateMangaMetadataMutationVariables>,
+    ): AbortableApolloMutationResponse<UpdateMangaMetadataMutation> {
+        return this.doRequest<UpdateMangaMetadataMutation, UpdateMangaMetadataMutationVariables>(
             GQLMethod.MUTATION,
-            SET_MANGA_METADATA,
+            UPDATE_MANGA_METADATA,
             {
-                input: { meta: { mangaId, key, value: `${value}` } },
+                preUpdateDeleteInput,
+                hasPreUpdateDeletions: preUpdateDeleteInput.items.some(
+                    (item) => !!item.keys?.length || !!item.prefixes?.length,
+                ),
+                updateInput,
+                hasUpdates: updateInput.items.some((item) => !!item.metas?.length),
+                postUpdateDeleteInput,
+                hasPostUpdateDeletions: postUpdateDeleteInput.items.some(
+                    (item) => !!item.keys?.length || !!item.prefixes?.length,
+                ),
+                migrateInput,
+                isMigration: migrateInput.items.some((item) => !!item.metas?.length),
             },
             {
                 optimisticResponse: {
                     __typename: 'Mutation',
-                    setMangaMeta: {
-                        __typename: 'SetMangaMetaPayload',
-                        meta: {
-                            __typename: 'MangaMetaType',
-                            mangaId,
-                            key,
-                            value: `${value}`,
-                        },
+                    preUpdateDeletedMeta: {
+                        __typename: 'DeleteMangaMetasPayload',
+                        metas: (preUpdateDeleteInput?.items ?? []).flatMap((item) =>
+                            item.mangaIds.flatMap((mangaId) =>
+                                (item.keys ?? []).map((key) => ({
+                                    __typename: 'MangaMetaType' as const,
+                                    mangaId,
+                                    key,
+                                    value: '',
+                                })),
+                            ),
+                        ),
+                    },
+                    updatedMeta: {
+                        __typename: 'SetMangaMetasPayload',
+                        metas: (updateInput?.items ?? []).flatMap((item) =>
+                            item.mangaIds.flatMap((mangaId) =>
+                                item.metas.map((meta) => ({
+                                    __typename: 'MangaMetaType' as const,
+                                    mangaId,
+                                    key: meta.key,
+                                    value: meta.value,
+                                })),
+                            ),
+                        ),
+                    },
+                    postUpdateDeletedMeta: {
+                        __typename: 'DeleteMangaMetasPayload',
+                        metas: (postUpdateDeleteInput?.items ?? []).flatMap((item) =>
+                            item.mangaIds.flatMap((mangaId) =>
+                                (item.keys ?? []).map((key) => ({
+                                    __typename: 'MangaMetaType' as const,
+                                    mangaId,
+                                    key,
+                                    value: '',
+                                })),
+                            ),
+                        ),
+                    },
+                    migrationMeta: {
+                        __typename: 'SetMangaMetasPayload',
+                        metas: (migrateInput?.items ?? []).flatMap((item) =>
+                            item.mangaIds.flatMap((mangaId) =>
+                                item.metas.map((meta) => ({
+                                    __typename: 'MangaMetaType' as const,
+                                    mangaId,
+                                    key: meta.key,
+                                    value: meta.value,
+                                })),
+                            ),
+                        ),
                     },
                 },
                 update(cache, { data }) {
-                    cache.modify({
-                        id: cache.identify({ __typename: 'MangaType', id: mangaId }),
-                        fields: {
-                            meta(existingMetas, { readField }) {
-                                return updateMetadataList(key, existingMetas, readField, () =>
-                                    cache.writeFragment({
-                                        data: data!.setMangaMeta!.meta,
-                                        fragment: MANGA_META_FIELDS,
-                                    }),
-                                );
-                            },
-                        },
-                    });
-                },
-                ...options,
-            },
-        );
-    }
+                    preUpdateDeleteInput?.items.forEach((item) =>
+                        item.mangaIds.forEach((mangaId) =>
+                            item.keys?.forEach((key) => {
+                                cache.evict({
+                                    id: cache.identify({ __typename: 'MangaMetaType', mangaId, key }),
+                                });
+                            }),
+                        ),
+                    );
 
-    public deleteMangaMeta(
-        mangaId: number,
-        key: string,
-        options?: MutationOptions<DeleteMangaMetadataMutation, DeleteMangaMetadataMutationVariables>,
-    ): AbortableApolloMutationResponse<DeleteMangaMetadataMutation> {
-        return this.doRequest(
-            GQLMethod.MUTATION,
-            DELETE_MANGA_METADATA,
-            { input: { mangaId, key } },
-            {
-                optimisticResponse: {
-                    __typename: 'Mutation',
-                    deleteMangaMeta: {
-                        __typename: 'DeleteMangaMetaPayload',
-                        meta: {
-                            __typename: 'MangaMetaType',
-                            mangaId,
-                            key,
-                            value: '',
-                        },
-                    },
-                },
-                update(cache) {
-                    cache.evict({ id: cache.identify({ __typename: 'MangaMetaType', mangaId, key }) });
+                    postUpdateDeleteInput?.items.forEach((item) =>
+                        item.mangaIds.forEach((mangaId) =>
+                            item.keys?.forEach((key) => {
+                                cache.evict({
+                                    id: cache.identify({ __typename: 'MangaMetaType', mangaId, key }),
+                                });
+                            }),
+                        ),
+                    );
+
+                    if (!data?.updatedMeta && !data?.migrationMeta) {
+                        return;
+                    }
+
+                    const mangaIds = [
+                        ...updateInput.items.flatMap((item) => item.mangaIds),
+                        ...migrateInput.items.flatMap((item) => item.mangaIds),
+                    ];
+
+                    mangaIds.forEach((mangaId) => {
+                        cache.modify({
+                            id: cache.identify({ __typename: 'MangaType', id: mangaId }),
+                            fields: {
+                                meta(existingMetas, { readField }) {
+                                    const updatedMeta = [
+                                        ...(data?.updatedMeta?.metas.filter((meta) => meta.mangaId === mangaId) ?? []),
+                                        ...(data?.migrationMeta?.metas.filter((meta) => meta.mangaId === mangaId) ??
+                                            []),
+                                    ];
+
+                                    return updateMetadataList(updatedMeta, existingMetas, readField, (meta) =>
+                                        cache.writeFragment({
+                                            data: meta,
+                                            fragment: MANGA_META_FIELDS,
+                                        }),
+                                    );
+                                },
+                            },
+                        });
+                    });
                 },
                 ...options,
             },
@@ -2453,73 +2618,145 @@ export class RequestManager {
         );
     }
 
-    public setChapterMeta(
-        chapterId: number,
-        key: string,
-        value: any,
-        options?: MutationOptions<SetChapterMetadataMutation, SetChapterMetadataMutationVariables>,
-    ): AbortableApolloMutationResponse<SetChapterMetadataMutation> {
-        return this.doRequest<SetChapterMetadataMutation, SetChapterMetadataMutationVariables>(
+    public updateChapterMeta(
+        {
+            preUpdateDeleteInput = { items: [] },
+            updateInput = { items: [] },
+            postUpdateDeleteInput = { items: [] },
+            migrateInput = { items: [] },
+        }: {
+            preUpdateDeleteInput?: DeleteChapterMetasInput;
+            updateInput?: SetChapterMetasInput;
+            postUpdateDeleteInput?: DeleteChapterMetasInput;
+            migrateInput?: SetChapterMetasInput;
+        },
+        options?: MutationOptions<UpdateChapterMetadataMutation, UpdateChapterMetadataMutationVariables>,
+    ): AbortableApolloMutationResponse<UpdateChapterMetadataMutation> {
+        return this.doRequest<UpdateChapterMetadataMutation, UpdateChapterMetadataMutationVariables>(
             GQLMethod.MUTATION,
-            SET_CHAPTER_METADATA,
-            { input: { meta: { chapterId, key, value: `${value}` } } },
+            UPDATE_CHAPTER_METADATA,
+            {
+                preUpdateDeleteInput,
+                hasPreUpdateDeletions: preUpdateDeleteInput.items.some(
+                    (item) => !!item.keys?.length || !!item.prefixes?.length,
+                ),
+                updateInput,
+                hasUpdates: updateInput.items.some((item) => !!item.metas?.length),
+                postUpdateDeleteInput,
+                hasPostUpdateDeletions: postUpdateDeleteInput.items.some(
+                    (item) => !!item.keys?.length || !!item.prefixes?.length,
+                ),
+                migrateInput,
+                isMigration: migrateInput.items.some((item) => !!item.metas?.length),
+            },
             {
                 optimisticResponse: {
                     __typename: 'Mutation',
-                    setChapterMeta: {
-                        __typename: 'SetChapterMetaPayload',
-                        meta: {
-                            __typename: 'ChapterMetaType',
-                            chapterId,
-                            key,
-                            value: `${value}`,
-                        },
+                    preUpdateDeletedMeta: {
+                        __typename: 'DeleteChapterMetasPayload',
+                        metas: (preUpdateDeleteInput?.items ?? []).flatMap((item) =>
+                            item.chapterIds.flatMap((chapterId) =>
+                                (item.keys ?? []).map((key) => ({
+                                    __typename: 'ChapterMetaType' as const,
+                                    chapterId,
+                                    key,
+                                    value: '',
+                                })),
+                            ),
+                        ),
+                    },
+                    updatedMeta: {
+                        __typename: 'SetChapterMetasPayload',
+                        metas: (updateInput?.items ?? []).flatMap((item) =>
+                            item.chapterIds.flatMap((chapterId) =>
+                                item.metas.map((meta) => ({
+                                    __typename: 'ChapterMetaType' as const,
+                                    chapterId,
+                                    key: meta.key,
+                                    value: meta.value,
+                                })),
+                            ),
+                        ),
+                    },
+                    postUpdateDeletedMeta: {
+                        __typename: 'DeleteChapterMetasPayload',
+                        metas: (postUpdateDeleteInput?.items ?? []).flatMap((item) =>
+                            item.chapterIds.flatMap((chapterId) =>
+                                (item.keys ?? []).map((key) => ({
+                                    __typename: 'ChapterMetaType' as const,
+                                    chapterId,
+                                    key,
+                                    value: '',
+                                })),
+                            ),
+                        ),
+                    },
+                    migrationMeta: {
+                        __typename: 'SetChapterMetasPayload',
+                        metas: (migrateInput?.items ?? []).flatMap((item) =>
+                            item.chapterIds.flatMap((chapterId) =>
+                                item.metas.map((meta) => ({
+                                    __typename: 'ChapterMetaType' as const,
+                                    chapterId,
+                                    key: meta.key,
+                                    value: meta.value,
+                                })),
+                            ),
+                        ),
                     },
                 },
                 update(cache, { data }) {
-                    cache.modify({
-                        id: cache.identify({ __typename: 'ChapterType', id: chapterId }),
-                        fields: {
-                            meta(existingMetas, { readField }) {
-                                return updateMetadataList(key, existingMetas, readField, () =>
-                                    cache.writeFragment({
-                                        data: data!.setChapterMeta!.meta,
-                                        fragment: CHAPTER_META_FIELDS,
-                                    }),
-                                );
-                            },
-                        },
-                    });
-                },
-                ...options,
-            },
-        );
-    }
+                    preUpdateDeleteInput?.items.forEach((item) =>
+                        item.chapterIds.forEach((chapterId) =>
+                            item.keys?.forEach((key) => {
+                                cache.evict({
+                                    id: cache.identify({ __typename: 'ChapterMetaType', chapterId, key }),
+                                });
+                            }),
+                        ),
+                    );
 
-    public deleteChapterMeta(
-        chapterId: number,
-        key: string,
-        options?: MutationOptions<DeleteChapterMetadataMutation, DeleteChapterMetadataMutationVariables>,
-    ): AbortableApolloMutationResponse<DeleteChapterMetadataMutation> {
-        return this.doRequest(
-            GQLMethod.MUTATION,
-            DELETE_CHAPTER_METADATA,
-            { input: { chapterId, key } },
-            {
-                optimisticResponse: {
-                    __typename: 'Mutation',
-                    deleteChapterMeta: {
-                        __typename: 'DeleteChapterMetaPayload',
-                        meta: {
-                            __typename: 'ChapterMetaType',
-                            chapterId,
-                            key,
-                            value: '',
-                        },
-                    },
-                },
-                update(cache) {
-                    cache.evict({ id: cache.identify({ __typename: 'ChapterMetaType', chapterId, key }) });
+                    postUpdateDeleteInput?.items.forEach((item) =>
+                        item.chapterIds.forEach((chapterId) =>
+                            item.keys?.forEach((key) => {
+                                cache.evict({
+                                    id: cache.identify({ __typename: 'ChapterMetaType', chapterId, key }),
+                                });
+                            }),
+                        ),
+                    );
+
+                    if (!data?.updatedMeta && !data?.migrationMeta) {
+                        return;
+                    }
+
+                    const chapterIds = [
+                        ...updateInput.items.flatMap((item) => item.chapterIds),
+                        ...migrateInput.items.flatMap((item) => item.chapterIds),
+                    ];
+
+                    chapterIds.forEach((chapterId) => {
+                        cache.modify({
+                            id: cache.identify({ __typename: 'ChapterType', id: chapterId }),
+                            fields: {
+                                meta(existingMetas, { readField }) {
+                                    const updatedMeta = [
+                                        ...(data?.updatedMeta?.metas.filter((meta) => meta.chapterId === chapterId) ??
+                                            []),
+                                        ...(data?.migrationMeta?.metas.filter((meta) => meta.chapterId === chapterId) ??
+                                            []),
+                                    ];
+
+                                    return updateMetadataList(updatedMeta, existingMetas, readField, (meta) =>
+                                        cache.writeFragment({
+                                            data: meta,
+                                            fragment: CHAPTER_META_FIELDS,
+                                        }),
+                                    );
+                                },
+                            },
+                        });
+                    });
                 },
                 ...options,
             },
@@ -2732,73 +2969,146 @@ export class RequestManager {
         );
     }
 
-    public setCategoryMeta(
-        categoryId: number,
-        key: string,
-        value: any,
-        options?: MutationOptions<SetCategoryMetadataMutation, SetCategoryMetadataMutationVariables>,
-    ): AbortableApolloMutationResponse<SetCategoryMetadataMutation> {
-        return this.doRequest<SetCategoryMetadataMutation, SetCategoryMetadataMutationVariables>(
+    public updateCategoryMeta(
+        {
+            preUpdateDeleteInput = { items: [] },
+            updateInput = { items: [] },
+            postUpdateDeleteInput = { items: [] },
+            migrateInput = { items: [] },
+        }: {
+            preUpdateDeleteInput?: DeleteCategoryMetasInput;
+            updateInput?: SetCategoryMetasInput;
+            postUpdateDeleteInput?: DeleteCategoryMetasInput;
+            migrateInput?: SetCategoryMetasInput;
+        },
+        options?: MutationOptions<UpdateCategoryMetadataMutation, UpdateCategoryMetadataMutationVariables>,
+    ): AbortableApolloMutationResponse<UpdateCategoryMetadataMutation> {
+        return this.doRequest<UpdateCategoryMetadataMutation, UpdateCategoryMetadataMutationVariables>(
             GQLMethod.MUTATION,
-            SET_CATEGORY_METADATA,
-            { input: { meta: { categoryId, key, value: `${value}` } } },
+            UPDATE_CATEGORY_METADATA,
+            {
+                preUpdateDeleteInput,
+                hasPreUpdateDeletions: preUpdateDeleteInput.items.some(
+                    (item) => !!item.keys?.length || !!item.prefixes?.length,
+                ),
+                updateInput,
+                hasUpdates: updateInput.items.some((item) => !!item.metas?.length),
+                postUpdateDeleteInput,
+                hasPostUpdateDeletions: postUpdateDeleteInput.items.some(
+                    (item) => !!item.keys?.length || !!item.prefixes?.length,
+                ),
+                migrateInput,
+                isMigration: migrateInput.items.some((item) => !!item.metas?.length),
+            },
             {
                 optimisticResponse: {
                     __typename: 'Mutation',
-                    setCategoryMeta: {
-                        __typename: 'SetCategoryMetaPayload',
-                        meta: {
-                            __typename: 'CategoryMetaType',
-                            categoryId,
-                            key,
-                            value: `${value}`,
-                        },
+                    preUpdateDeletedMeta: {
+                        __typename: 'DeleteCategoryMetasPayload',
+                        metas: (preUpdateDeleteInput?.items ?? []).flatMap((item) =>
+                            item.categoryIds.flatMap((categoryId) =>
+                                (item.keys ?? []).map((key) => ({
+                                    __typename: 'CategoryMetaType' as const,
+                                    categoryId,
+                                    key,
+                                    value: '',
+                                })),
+                            ),
+                        ),
+                    },
+                    updatedMeta: {
+                        __typename: 'SetCategoryMetasPayload',
+                        metas: (updateInput?.items ?? []).flatMap((item) =>
+                            item.categoryIds.flatMap((categoryId) =>
+                                item.metas.map((meta) => ({
+                                    __typename: 'CategoryMetaType' as const,
+                                    categoryId,
+                                    key: meta.key,
+                                    value: meta.value,
+                                })),
+                            ),
+                        ),
+                    },
+                    postUpdateDeletedMeta: {
+                        __typename: 'DeleteCategoryMetasPayload',
+                        metas: (postUpdateDeleteInput?.items ?? []).flatMap((item) =>
+                            item.categoryIds.flatMap((categoryId) =>
+                                (item.keys ?? []).map((key) => ({
+                                    __typename: 'CategoryMetaType' as const,
+                                    categoryId,
+                                    key,
+                                    value: '',
+                                })),
+                            ),
+                        ),
+                    },
+                    migrationMeta: {
+                        __typename: 'SetCategoryMetasPayload',
+                        metas: (migrateInput?.items ?? []).flatMap((item) =>
+                            item.categoryIds.flatMap((categoryId) =>
+                                item.metas.map((meta) => ({
+                                    __typename: 'CategoryMetaType' as const,
+                                    categoryId,
+                                    key: meta.key,
+                                    value: meta.value,
+                                })),
+                            ),
+                        ),
                     },
                 },
                 update(cache, { data }) {
-                    cache.modify({
-                        id: cache.identify({ __typename: 'CategoryType', id: categoryId }),
-                        fields: {
-                            meta(existingMetas, { readField }) {
-                                return updateMetadataList(key, existingMetas, readField, () =>
-                                    cache.writeFragment({
-                                        data: data!.setCategoryMeta!.meta,
-                                        fragment: CATEGORY_META_FIELDS,
-                                    }),
-                                );
-                            },
-                        },
-                    });
-                },
-                ...options,
-            },
-        );
-    }
+                    preUpdateDeleteInput?.items.forEach((item) =>
+                        item.categoryIds.forEach((categoryId) =>
+                            item.keys?.forEach((key) => {
+                                cache.evict({
+                                    id: cache.identify({ __typename: 'CategoryMetaType', categoryId, key }),
+                                });
+                            }),
+                        ),
+                    );
 
-    public deleteCategoryMeta(
-        categoryId: number,
-        key: string,
-        options?: MutationOptions<DeleteCategoryMetadataMutation, DeleteCategoryMetadataMutationVariables>,
-    ): AbortableApolloMutationResponse<DeleteCategoryMetadataMutation> {
-        return this.doRequest(
-            GQLMethod.MUTATION,
-            DELETE_CATEGORY_METADATA,
-            { input: { categoryId, key } },
-            {
-                optimisticResponse: {
-                    __typename: 'Mutation',
-                    deleteCategoryMeta: {
-                        __typename: 'DeleteCategoryMetaPayload',
-                        meta: {
-                            __typename: 'CategoryMetaType',
-                            categoryId,
-                            key,
-                            value: '',
-                        },
-                    },
-                },
-                update(cache) {
-                    cache.evict({ id: cache.identify({ __typename: 'CategoryMetaType', categoryId, key }) });
+                    postUpdateDeleteInput?.items.forEach((item) =>
+                        item.categoryIds.forEach((categoryId) =>
+                            item.keys?.forEach((key) => {
+                                cache.evict({
+                                    id: cache.identify({ __typename: 'CategoryMetaType', categoryId, key }),
+                                });
+                            }),
+                        ),
+                    );
+
+                    if (!data?.updatedMeta && !data?.migrationMeta) {
+                        return;
+                    }
+
+                    const categoryIds = [
+                        ...updateInput.items.flatMap((item) => item.categoryIds),
+                        ...migrateInput.items.flatMap((item) => item.categoryIds),
+                    ];
+
+                    categoryIds.forEach((categoryId) => {
+                        cache.modify({
+                            id: cache.identify({ __typename: 'CategoryType', id: categoryId }),
+                            fields: {
+                                meta(existingMetas, { readField }) {
+                                    const updatedMeta = [
+                                        ...(data?.updatedMeta?.metas.filter((meta) => meta.categoryId === categoryId) ??
+                                            []),
+                                        ...(data?.migrationMeta?.metas.filter(
+                                            (meta) => meta.categoryId === categoryId,
+                                        ) ?? []),
+                                    ];
+
+                                    return updateMetadataList(updatedMeta, existingMetas, readField, (meta) =>
+                                        cache.writeFragment({
+                                            data: meta,
+                                            fragment: CATEGORY_META_FIELDS,
+                                        }),
+                                    );
+                                },
+                            },
+                        });
+                    });
                 },
                 ...options,
             },
