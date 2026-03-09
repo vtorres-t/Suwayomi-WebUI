@@ -740,7 +740,7 @@ export class Mangas {
             return undefined;
         }
 
-        const sizeLabel = downloaded > 0 && size ? `(${size})` : '';
+        const sizeLabel = downloaded > 0 && size ? ` (${size}) ` : '';
 
         return `${current} 👁 / ${downloaded}${sizeLabel}↓ / ${total} 🗒`;
     }
