@@ -18,7 +18,7 @@ import { GqlMetaHolder } from '@/features/metadata/Metadata.types.ts';
 
 export const FALLBACK_MANGA: MangaIdInfo & GqlMetaHolder = { id: -1 };
 
-export const GLOBAL_READER_SETTINGS_MANGA: MangaIdInfo = { id: -2 };
+export const GLOBAL_READER_SETTINGS_MANGA: MangaIdInfo & GqlMetaHolder = { id: -2 };
 
 export const MANGA_COVER_ASPECT_RATIO = '1 / 1.5';
 
@@ -180,6 +180,8 @@ export const MANGA_TAGS_BY_MANGA_TYPE: Record<MangaType, string[]> = {
     [MangaType.COMIC]: [
         'Comic',
         'کمیک',
+        'קומיקס',
+        'Képregény',
         'Komik',
         'Fumetti',
         'アメコミ',
@@ -202,6 +204,7 @@ export const MANGA_TAGS_BY_MANGA_TYPE: Record<MangaType, string[]> = {
         'Веб-комикс',
         'வெப்டூன்-',
         'Вебтун',
+        'Cuộn dọc',
         '条漫',
         '條漫',
         'Tira larga',
@@ -235,6 +238,7 @@ export const MANGA_TAGS_BY_MANGA_TYPE: Record<MangaType, string[]> = {
         'Függőleges folyamatos',
         'Strip panjang',
         'Striscia lunga',
+        '縦読み漫画',
         '긴 스트립',
         'Długi pasek',
         'Tira longa',
