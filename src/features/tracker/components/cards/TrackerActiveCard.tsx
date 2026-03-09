@@ -179,6 +179,15 @@ const TrackerActiveHeader = ({
 }) => {
     const { t } = useLingui();
 
+    const copyTitle = async () => {
+        try {
+            await navigator.clipboard.writeText(trackRecord.title);
+            makeToast(t`Copied to clipboard`, 'info');
+        } catch (e) {
+            defaultPromiseErrorHandler('MangaDetails::copyTitleLongPress')(e);
+        }
+    };
+
     return (
         <Stack
             direction="row"
@@ -227,6 +236,11 @@ const TrackerActiveHeader = ({
                 <PopupState variant="popover" popupId={`tracker-active-menu-popup-${tracker.id}`}>
                     {(popupState) => (
                         <>
+                            <CustomTooltip title={t`Copy`}>
+                                <IconButton onClick={copyTitle} color="inherit">
+                                    <ContentCopyIcon fontSize="small" />
+                                </IconButton>
+                            </CustomTooltip>
                             <IconButton {...bindTrigger(popupState)}>
                                 <MoreVertIcon />
                             </IconButton>
