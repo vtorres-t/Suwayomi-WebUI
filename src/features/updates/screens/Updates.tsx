@@ -75,10 +75,12 @@ export const Updates: React.FC = () => {
 
     useAppTitleAndAction(
         t`Updates`,
-        [
-            {date, && t`Last update: ${date}`},
-            <UpdateChecker />,
-        ]
+        <>
+            <CustomTooltip title={t`Last update`}>
+                ${date}`
+            </CustomTooltip>
+            <UpdateChecker />
+        </>
     );
 
     const loadMore = useCallback(() => {
