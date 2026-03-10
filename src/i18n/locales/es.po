@@ -3203,3 +3203,7 @@ msgstr "{count, plural, one {Siguiente capítulo} other {Siguientes # capítulos
 #: src/features/manga/components/details/MangaDetails.tsx
 msgid "Chapter"
 msgstr "Capítulo"
+
+#: src/features/downloads/screens/DownloadQueue.tsx
+msgid "Storage"
+msgstr "Almacenamiento"
