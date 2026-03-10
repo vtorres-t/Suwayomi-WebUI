@@ -102,11 +102,13 @@ export const DownloadQueue: React.FC = () => {
 
     useAppAction(
         <>
-            <CustomTooltip title={t`Storage`}>
-                <IconButton color="inherit">
-                    {downloaderData.directoryStats.folderSizePretty} / {downloaderData.directoryStats.availableSpacePretty}
-                </IconButton>
-            </CustomTooltip>
+            {downloaderData.directoryStats && (
+                <CustomTooltip title={t`Storage`}>
+                    <IconButton color="inherit">
+                        {downloaderData.directoryStats.folderSizePretty} / {downloaderData.directoryStats.availableSpacePretty}
+                    </IconButton>
+                </CustomTooltip>
+            )}
 
             <CustomTooltip title={t`Delete all`}>
                 <IconButton onClick={clearQueue} color="inherit">
