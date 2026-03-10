@@ -96,13 +96,13 @@ export const DownloadQueue: React.FC = () => {
     };
 
     const titleTranslate = t`Download queue`;
-    const title = `${titleTranslate}  (${queue.length})`;
+    const title = `${titleTranslate}  (${queue?.length})`;
 
     useAppTitle(title);
 
     useAppAction(
         <>
-            {downloaderData.directoryStats && (
+            {downloaderData?.directoryStats && (
                 <CustomTooltip title={t`Storage`}>
                     <IconButton color="inherit">
                         {downloaderData.directoryStats.folderSizePretty} / {downloaderData.directoryStats.availableSpacePretty}
