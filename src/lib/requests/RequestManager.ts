@@ -3424,7 +3424,7 @@ export class RequestManager {
                         query: GET_DOWNLOAD_STATUS,
                     });
 
-                    const downloadsToAdd = downloadChanged?.updates.filter((update) => {
+                    const downloadsToAdd = downloadChanged?.updates.filter((update: DownloadUpdateType) => {
                         const removeDownload = [DownloadUpdateType.Dequeued, DownloadUpdateType.Finished].includes(
                             update.type,
                         );
@@ -3452,14 +3452,19 @@ export class RequestManager {
                                         DownloaderState.Stopped,
                                     queue: [
                                         ...(downloadStatusQueryCache?.downloadStatus?.queue ?? []),
-                                        ...(downloadsToAdd?.map((update) => update.download) ?? []),
+                                        ...(downloadsToAdd?.map((update: any) => update.download) ?? []),
                                     ],
+                                    directoryStats: downloadStatusQueryCache?.downloadStatus?.directoryStats ?? {
+                                        __typename: 'DirectoryStats',
+                                        totalSize: 0,
+                                        freeSpace: 0,
+                                    },
                                 },
                             },
                         });
                     }
 
-                    downloadChanged?.updates.forEach((update) => {
+                    downloadChanged?.updates.forEach((update: DownloadUpdateType) => {
                         const removeDownload = [DownloadUpdateType.Dequeued, DownloadUpdateType.Finished].includes(
                             update.type,
                         );
