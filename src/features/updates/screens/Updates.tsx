@@ -76,7 +76,7 @@ export const Updates: React.FC = () => {
     useAppTitleAndAction(
         t`Updates`,
         [
-            {date && t`Last update: ${date}`},
+            {date, && t`Last update: ${date}`},
             <UpdateChecker />,
         ]
     );
