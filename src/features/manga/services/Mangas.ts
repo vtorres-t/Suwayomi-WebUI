@@ -731,7 +731,7 @@ export class Mangas {
     }
 
     static getChaptersReadAndDownloadedAndTotal<Manga extends MangaDownloadInfo>(manga: Manga): string | undefined {
-        const current = manga.firstUnreadChapter?.chapterNumber;
+        const current = manga.firstUnreadChapter?.chapterNumber ? 0;
         const downloaded = manga.downloadCount;
         const total = manga.chapters?.totalCount;
         const size = manga.downloadSize;
