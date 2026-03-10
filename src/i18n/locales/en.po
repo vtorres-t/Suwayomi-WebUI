@@ -670,13 +670,13 @@ msgstr "Channel"
 #: src/features/chapter/components/cards/ChapterCard.tsx
 #: src/features/downloads/components/DownloadAheadSetting.tsx
 #: src/features/downloads/screens/DownloadSettings.tsx
+#: src/features/manga/components/details/MangaDetails.tsx
 #: src/features/migration/components/MigrateDialog.tsx
 #: src/features/reader/overlay/navigation/desktop/components/ReaderNavBarDesktopChapterNavigation.tsx
 #: src/features/reader/overlay/navigation/desktop/components/ReaderNavBarDesktopChapterNavigation.tsx
 #: src/features/tracker/components/cards/TrackerActiveCard.tsx
 #: src/features/tracker/components/cards/TrackerActiveCard.tsx
 #: src/features/tracker/components/cards/TrackerMangaCard.tsx
-#: src/features/manga/components/details/MangaDetails.tsx
 msgid "Chapter"
 msgstr "Chapter"
 
@@ -849,11 +849,13 @@ msgstr "Convert images to different formats"
 
 #: src/features/manga/components/details/MangaDetails.tsx
 #: src/features/reader/overlay/mobile/ReaderOverlayHeaderMobile.tsx
+#: src/features/tracker/components/cards/TrackerActiveCard.tsx
 msgid "Copied to clipboard"
 msgstr "Copied to clipboard"
 
 #: src/features/manga/components/details/MangaDetails.tsx
 #: src/features/migration/components/MigrateDialog.tsx
+#: src/features/tracker/components/cards/TrackerActiveCard.tsx
 msgid "Copy"
 msgstr "Copy"
 
@@ -1951,8 +1953,8 @@ msgid "Last read chapter"
 msgstr "Last read chapter"
 
 #: src/features/updates/screens/Updates.tsx
-msgid "Last update: {date}"
-msgstr "Last update: {date}"
+msgid "Last update"
+msgstr "Last update"
 
 #: src/base/utils/Languages.ts
 #: src/features/extension/Extensions.constants.ts
@@ -2874,7 +2876,6 @@ msgid "Series settings"
 msgstr "Series settings"
 
 #: src/features/settings/screens/About.tsx
-#: src/features/settings/screens/About.tsx
 #: src/features/settings/screens/ServerSettings.tsx
 #: src/features/settings/screens/Settings.tsx
 msgid "Server"
@@ -3152,6 +3153,10 @@ msgstr "Stop"
 #: src/features/updates/components/UpdateChecker.tsx
 msgid "Stop global update"
 msgstr "Stop global update"
+
+#: src/features/downloads/screens/DownloadQueue.tsx
+msgid "Storage"
+msgstr "Almacenamiento"
 
 #: src/features/reader/overlay/navigation/desktop/quick-settings/components/ReaderNavBarDesktopPageScale.tsx
 #: src/features/reader/settings/layout/components/ReaderSettingStretchPage.tsx
@@ -3583,6 +3588,7 @@ msgstr "Veronica"
 
 #: src/features/extension/info/components/Meta.tsx
 #: src/features/settings/screens/About.tsx
+#: src/features/settings/screens/About.tsx
 msgid "Version"
 msgstr "Version"
 
@@ -3699,7 +3705,3 @@ msgstr "Your library is empty"
 #: src/features/settings/Settings.constants.ts
 msgid "Your library will be accessible. Use this only on private networks or when otherwise securing access."
 msgstr "Your library will be accessible. Use this only on private networks or when otherwise securing access."
-
-#: src/features/downloads/screens/DownloadQueue.tsx
-msgid "Storage"
-msgstr "Almacenamiento"

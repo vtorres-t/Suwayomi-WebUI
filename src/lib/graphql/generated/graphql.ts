@@ -575,6 +575,14 @@ export type DequeueChapterDownloadsPayload = {
   downloadStatus: DownloadStatus;
 };
 
+export type DirectoryStats = {
+  __typename?: 'DirectoryStats';
+  availableSpace: Scalars['LongString']['output'];
+  availableSpacePretty: Scalars['String']['output'];
+  folderSize: Scalars['LongString']['output'];
+  folderSizePretty: Scalars['String']['output'];
+};
+
 export type DoubleFilterInput = {
   distinctFrom?: InputMaybe<Scalars['Float']['input']>;
   distinctFromAll?: InputMaybe<Array<Scalars['Float']['input']>>;
@@ -621,6 +629,7 @@ export enum DownloadState {
 
 export type DownloadStatus = {
   __typename?: 'DownloadStatus';
+  directoryStats: DirectoryStats;
   queue: Array<DownloadType>;
   state: DownloaderState;
 };
@@ -1242,6 +1251,11 @@ export type MangaType = {
   unreadCount: Scalars['Int']['output'];
   updateStrategy: UpdateStrategy;
   url: Scalars['String']['output'];
+};
+
+
+export type MangaTypeDownloadSizeArgs = {
+  mangaId: Scalars['Int']['input'];
 };
 
 export type MangaUpdateType = {
@@ -3743,7 +3757,7 @@ export type GlobalMetadataFragment = { __typename?: 'GlobalMetaType', key: strin
 
 export type DownloadTypeFieldsFragment = { __typename?: 'DownloadType', progress: number, state: DownloadState, tries: number, chapter: { __typename?: 'ChapterType', id: number, name: string, sourceOrder: number, isDownloaded: boolean }, manga: { __typename?: 'MangaType', id: number, title: string, downloadCount: number } };
 
-export type DownloadStatusFieldsFragment = { __typename?: 'DownloadStatus', state: DownloaderState, queue: Array<{ __typename?: 'DownloadType', progress: number, state: DownloadState, tries: number, chapter: { __typename?: 'ChapterType', id: number, name: string, sourceOrder: number, isDownloaded: boolean }, manga: { __typename?: 'MangaType', id: number, title: string, downloadCount: number } }> };
+export type DownloadStatusFieldsFragment = { __typename?: 'DownloadStatus', state: DownloaderState, queue: Array<{ __typename?: 'DownloadType', progress: number, state: DownloadState, tries: number, chapter: { __typename?: 'ChapterType', id: number, name: string, sourceOrder: number, isDownloaded: boolean }, manga: { __typename?: 'MangaType', id: number, title: string, downloadCount: number } }>, directoryStats: { __typename?: 'DirectoryStats', availableSpacePretty: string, folderSizePretty: string } };
 
 export type DownloadUpdatesFieldsFragment = { __typename?: 'DownloadUpdates', state: DownloaderState, omittedUpdates: boolean, updates: Array<{ __typename?: 'DownloadUpdate', type: DownloadUpdateType, download: { __typename?: 'DownloadType', position: number, progress: number, state: DownloadState, tries: number, chapter: { __typename?: 'ChapterType', id: number, name: string, sourceOrder: number, isDownloaded: boolean }, manga: { __typename?: 'MangaType', id: number, title: string, downloadCount: number } } }> };
 
@@ -3752,7 +3766,7 @@ export type ClearDownloaderMutationVariables = Exact<{
 }>;
 
 
-export type ClearDownloaderMutation = { __typename?: 'Mutation', clearDownloader?: { __typename?: 'ClearDownloaderPayload', downloadStatus: { __typename?: 'DownloadStatus', state: DownloaderState, queue: Array<{ __typename?: 'DownloadType', progress: number, state: DownloadState, tries: number, chapter: { __typename?: 'ChapterType', id: number, name: string, sourceOrder: number, isDownloaded: boolean }, manga: { __typename?: 'MangaType', id: number, title: string, downloadCount: number } }> } } | null };
+export type ClearDownloaderMutation = { __typename?: 'Mutation', clearDownloader?: { __typename?: 'ClearDownloaderPayload', downloadStatus: { __typename?: 'DownloadStatus', state: DownloaderState, queue: Array<{ __typename?: 'DownloadType', progress: number, state: DownloadState, tries: number, chapter: { __typename?: 'ChapterType', id: number, name: string, sourceOrder: number, isDownloaded: boolean }, manga: { __typename?: 'MangaType', id: number, title: string, downloadCount: number } }>, directoryStats: { __typename?: 'DirectoryStats', availableSpacePretty: string, folderSizePretty: string } } } | null };
 
 export type DeleteDownloadedChapterMutationVariables = Exact<{
   input: DeleteDownloadedChapterInput;
@@ -3773,35 +3787,35 @@ export type DequeueChapterDownloadMutationVariables = Exact<{
 }>;
 
 
-export type DequeueChapterDownloadMutation = { __typename?: 'Mutation', dequeueChapterDownload?: { __typename?: 'DequeueChapterDownloadPayload', downloadStatus: { __typename?: 'DownloadStatus', state: DownloaderState, queue: Array<{ __typename?: 'DownloadType', progress: number, state: DownloadState, tries: number, chapter: { __typename?: 'ChapterType', id: number, name: string, sourceOrder: number, isDownloaded: boolean }, manga: { __typename?: 'MangaType', id: number, title: string, downloadCount: number } }> } } | null };
+export type DequeueChapterDownloadMutation = { __typename?: 'Mutation', dequeueChapterDownload?: { __typename?: 'DequeueChapterDownloadPayload', downloadStatus: { __typename?: 'DownloadStatus', state: DownloaderState, queue: Array<{ __typename?: 'DownloadType', progress: number, state: DownloadState, tries: number, chapter: { __typename?: 'ChapterType', id: number, name: string, sourceOrder: number, isDownloaded: boolean }, manga: { __typename?: 'MangaType', id: number, title: string, downloadCount: number } }>, directoryStats: { __typename?: 'DirectoryStats', availableSpacePretty: string, folderSizePretty: string } } } | null };
 
 export type DequeueChapterDownloadsMutationVariables = Exact<{
   input: DequeueChapterDownloadsInput;
 }>;
 
 
-export type DequeueChapterDownloadsMutation = { __typename?: 'Mutation', dequeueChapterDownloads?: { __typename?: 'DequeueChapterDownloadsPayload', downloadStatus: { __typename?: 'DownloadStatus', state: DownloaderState, queue: Array<{ __typename?: 'DownloadType', progress: number, state: DownloadState, tries: number, chapter: { __typename?: 'ChapterType', id: number, name: string, sourceOrder: number, isDownloaded: boolean }, manga: { __typename?: 'MangaType', id: number, title: string, downloadCount: number } }> } } | null };
+export type DequeueChapterDownloadsMutation = { __typename?: 'Mutation', dequeueChapterDownloads?: { __typename?: 'DequeueChapterDownloadsPayload', downloadStatus: { __typename?: 'DownloadStatus', state: DownloaderState, queue: Array<{ __typename?: 'DownloadType', progress: number, state: DownloadState, tries: number, chapter: { __typename?: 'ChapterType', id: number, name: string, sourceOrder: number, isDownloaded: boolean }, manga: { __typename?: 'MangaType', id: number, title: string, downloadCount: number } }>, directoryStats: { __typename?: 'DirectoryStats', availableSpacePretty: string, folderSizePretty: string } } } | null };
 
 export type EnqueueChapterDownloadMutationVariables = Exact<{
   input: EnqueueChapterDownloadInput;
 }>;
 
 
-export type EnqueueChapterDownloadMutation = { __typename?: 'Mutation', enqueueChapterDownload?: { __typename?: 'EnqueueChapterDownloadPayload', downloadStatus: { __typename?: 'DownloadStatus', state: DownloaderState, queue: Array<{ __typename?: 'DownloadType', progress: number, state: DownloadState, tries: number, chapter: { __typename?: 'ChapterType', id: number, name: string, sourceOrder: number, isDownloaded: boolean }, manga: { __typename?: 'MangaType', id: number, title: string, downloadCount: number } }> } } | null };
+export type EnqueueChapterDownloadMutation = { __typename?: 'Mutation', enqueueChapterDownload?: { __typename?: 'EnqueueChapterDownloadPayload', downloadStatus: { __typename?: 'DownloadStatus', state: DownloaderState, queue: Array<{ __typename?: 'DownloadType', progress: number, state: DownloadState, tries: number, chapter: { __typename?: 'ChapterType', id: number, name: string, sourceOrder: number, isDownloaded: boolean }, manga: { __typename?: 'MangaType', id: number, title: string, downloadCount: number } }>, directoryStats: { __typename?: 'DirectoryStats', availableSpacePretty: string, folderSizePretty: string } } } | null };
 
 export type EnqueueChapterDownloadsMutationVariables = Exact<{
   input: EnqueueChapterDownloadsInput;
 }>;
 
 
-export type EnqueueChapterDownloadsMutation = { __typename?: 'Mutation', enqueueChapterDownloads?: { __typename?: 'EnqueueChapterDownloadsPayload', downloadStatus: { __typename?: 'DownloadStatus', state: DownloaderState, queue: Array<{ __typename?: 'DownloadType', progress: number, state: DownloadState, tries: number, chapter: { __typename?: 'ChapterType', id: number, name: string, sourceOrder: number, isDownloaded: boolean }, manga: { __typename?: 'MangaType', id: number, title: string, downloadCount: number } }> } } | null };
+export type EnqueueChapterDownloadsMutation = { __typename?: 'Mutation', enqueueChapterDownloads?: { __typename?: 'EnqueueChapterDownloadsPayload', downloadStatus: { __typename?: 'DownloadStatus', state: DownloaderState, queue: Array<{ __typename?: 'DownloadType', progress: number, state: DownloadState, tries: number, chapter: { __typename?: 'ChapterType', id: number, name: string, sourceOrder: number, isDownloaded: boolean }, manga: { __typename?: 'MangaType', id: number, title: string, downloadCount: number } }>, directoryStats: { __typename?: 'DirectoryStats', availableSpacePretty: string, folderSizePretty: string } } } | null };
 
 export type ReorderChapterDownloadMutationVariables = Exact<{
   input: ReorderChapterDownloadInput;
 }>;
 
 
-export type ReorderChapterDownloadMutation = { __typename?: 'Mutation', reorderChapterDownload?: { __typename?: 'ReorderChapterDownloadPayload', downloadStatus: { __typename?: 'DownloadStatus', state: DownloaderState, queue: Array<{ __typename?: 'DownloadType', progress: number, state: DownloadState, tries: number, chapter: { __typename?: 'ChapterType', id: number, name: string, sourceOrder: number, isDownloaded: boolean }, manga: { __typename?: 'MangaType', id: number, title: string, downloadCount: number } }> } } | null };
+export type ReorderChapterDownloadMutation = { __typename?: 'Mutation', reorderChapterDownload?: { __typename?: 'ReorderChapterDownloadPayload', downloadStatus: { __typename?: 'DownloadStatus', state: DownloaderState, queue: Array<{ __typename?: 'DownloadType', progress: number, state: DownloadState, tries: number, chapter: { __typename?: 'ChapterType', id: number, name: string, sourceOrder: number, isDownloaded: boolean }, manga: { __typename?: 'MangaType', id: number, title: string, downloadCount: number } }>, directoryStats: { __typename?: 'DirectoryStats', availableSpacePretty: string, folderSizePretty: string } } } | null };
 
 export type StartDownloaderMutationVariables = Exact<{
   input?: InputMaybe<StartDownloaderInput>;
@@ -3820,14 +3834,14 @@ export type StopDownloaderMutation = { __typename?: 'Mutation', stopDownloader?:
 export type GetDownloadStatusQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetDownloadStatusQuery = { __typename?: 'Query', downloadStatus: { __typename?: 'DownloadStatus', state: DownloaderState, queue: Array<{ __typename?: 'DownloadType', progress: number, state: DownloadState, tries: number, chapter: { __typename?: 'ChapterType', id: number, name: string, sourceOrder: number, isDownloaded: boolean }, manga: { __typename?: 'MangaType', id: number, title: string, downloadCount: number } }> } };
+export type GetDownloadStatusQuery = { __typename?: 'Query', downloadStatus: { __typename?: 'DownloadStatus', state: DownloaderState, queue: Array<{ __typename?: 'DownloadType', progress: number, state: DownloadState, tries: number, chapter: { __typename?: 'ChapterType', id: number, name: string, sourceOrder: number, isDownloaded: boolean }, manga: { __typename?: 'MangaType', id: number, title: string, downloadCount: number } }>, directoryStats: { __typename?: 'DirectoryStats', availableSpacePretty: string, folderSizePretty: string } } };
 
-export type DownloadStatusSubscriptionVariables = Exact<{
+export type DownloadStatusSubscriptionSubscriptionVariables = Exact<{
   input: DownloadChangedInput;
 }>;
 
 
-export type DownloadStatusSubscription = { __typename?: 'Subscription', downloadStatusChanged: { __typename?: 'DownloadUpdates', state: DownloaderState, omittedUpdates: boolean, updates: Array<{ __typename?: 'DownloadUpdate', type: DownloadUpdateType, download: { __typename?: 'DownloadType', position: number, progress: number, state: DownloadState, tries: number, chapter: { __typename?: 'ChapterType', id: number, name: string, sourceOrder: number, isDownloaded: boolean }, manga: { __typename?: 'MangaType', id: number, title: string, downloadCount: number } } }> } };
+export type DownloadStatusSubscriptionSubscription = { __typename?: 'Subscription', downloadStatusChanged: { __typename?: 'DownloadUpdates', state: DownloaderState, omittedUpdates: boolean, updates: Array<{ __typename?: 'DownloadUpdate', type: DownloadUpdateType, download: { __typename?: 'DownloadType', position: number, progress: number, state: DownloadState, tries: number, chapter: { __typename?: 'ChapterType', id: number, name: string, sourceOrder: number, isDownloaded: boolean }, manga: { __typename?: 'MangaType', id: number, title: string, downloadCount: number } } }> } };
 
 export type ExtensionListFieldsFragment = { __typename?: 'ExtensionType', pkgName: string, name: string, lang: string, versionCode: number, versionName: string, iconUrl: string, repo?: string | null, isNsfw: boolean, isInstalled: boolean, isObsolete: boolean, hasUpdate: boolean };
 
@@ -3992,7 +4006,7 @@ export type GetMangaScreenQueryVariables = Exact<{
 }>;
 
 
-export type GetMangaScreenQuery = { __typename?: 'Query', manga: { __typename?: 'MangaType', artist?: string | null, author?: string | null, description?: string | null, status: MangaStatus, realUrl?: string | null, sourceId: string, genre: Array<string>, lastFetchedAt?: string | null, inLibraryAt: string, id: number, title: string, thumbnailUrl?: string | null, thumbnailUrlLastFetched?: string | null, inLibrary: boolean, initialized: boolean, unreadCount: number, downloadCount: number, bookmarkCount: number, hasDuplicateChapters: boolean, meta: Array<{ __typename?: 'MangaMetaType', mangaId: number, key: string, value: string }>, source?: { __typename?: 'SourceType', id: string, displayName: string } | null, trackRecords: { __typename?: 'TrackRecordNodeList', totalCount: number, nodes: Array<{ __typename?: 'TrackRecordType', id: number, trackerId: number }> }, chapters: { __typename?: 'ChapterNodeList', totalCount: number }, firstUnreadChapter?: { __typename?: 'ChapterType', id: number, sourceOrder: number, isRead: boolean, mangaId: number, chapterNumber: number, name: string, scanlator?: string | null } | null, lastReadChapter?: { __typename?: 'ChapterType', id: number, sourceOrder: number, lastReadAt: string } | null, latestReadChapter?: { __typename?: 'ChapterType', id: number, sourceOrder: number, lastReadAt: string } | null, latestFetchedChapter?: { __typename?: 'ChapterType', id: number, fetchedAt: string } | null, latestUploadedChapter?: { __typename?: 'ChapterType', id: number, uploadDate: string } | null } };
+export type GetMangaScreenQuery = { __typename?: 'Query', manga: { __typename?: 'MangaType', downloadSize: string, artist?: string | null, author?: string | null, description?: string | null, status: MangaStatus, realUrl?: string | null, sourceId: string, genre: Array<string>, lastFetchedAt?: string | null, inLibraryAt: string, id: number, title: string, thumbnailUrl?: string | null, thumbnailUrlLastFetched?: string | null, inLibrary: boolean, initialized: boolean, unreadCount: number, downloadCount: number, bookmarkCount: number, hasDuplicateChapters: boolean, meta: Array<{ __typename?: 'MangaMetaType', mangaId: number, key: string, value: string }>, source?: { __typename?: 'SourceType', id: string, displayName: string } | null, trackRecords: { __typename?: 'TrackRecordNodeList', totalCount: number, nodes: Array<{ __typename?: 'TrackRecordType', id: number, trackerId: number }> }, chapters: { __typename?: 'ChapterNodeList', totalCount: number }, firstUnreadChapter?: { __typename?: 'ChapterType', id: number, sourceOrder: number, isRead: boolean, mangaId: number, chapterNumber: number, name: string, scanlator?: string | null } | null, lastReadChapter?: { __typename?: 'ChapterType', id: number, sourceOrder: number, lastReadAt: string } | null, latestReadChapter?: { __typename?: 'ChapterType', id: number, sourceOrder: number, lastReadAt: string } | null, latestFetchedChapter?: { __typename?: 'ChapterType', id: number, fetchedAt: string } | null, latestUploadedChapter?: { __typename?: 'ChapterType', id: number, uploadDate: string } | null } };
 
 export type GetMangaReaderQueryVariables = Exact<{
   id: Scalars['Int']['input'];
@@ -4155,10 +4169,10 @@ export type GetWebuiUpdateStatusQueryVariables = Exact<{ [key: string]: never; }
 
 export type GetWebuiUpdateStatusQuery = { __typename?: 'Query', getWebUIUpdateStatus: { __typename?: 'WebUIUpdateStatus', progress: number, state: UpdateState, info: { __typename?: 'WebUIUpdateInfo', channel: WebUiChannel, tag: string } } };
 
-export type WebuiUpdateSubscriptionVariables = Exact<{ [key: string]: never; }>;
+export type WebuiUpdateSubscriptionSubscriptionVariables = Exact<{ [key: string]: never; }>;
 
 
-export type WebuiUpdateSubscription = { __typename?: 'Subscription', webUIUpdateStatusChange: { __typename?: 'WebUIUpdateStatus', progress: number, state: UpdateState, info: { __typename?: 'WebUIUpdateInfo', channel: WebUiChannel, tag: string } } };
+export type WebuiUpdateSubscriptionSubscription = { __typename?: 'Subscription', webUIUpdateStatusChange: { __typename?: 'WebUIUpdateStatus', progress: number, state: UpdateState, info: { __typename?: 'WebUIUpdateInfo', channel: WebUiChannel, tag: string } } };
 
 export type ServerSettingsFragment = { __typename?: 'SettingsType', ip: string, port: number, socksProxyEnabled: boolean, socksProxyVersion: number, socksProxyHost: string, socksProxyPort: string, socksProxyUsername: string, socksProxyPassword: string, webUIFlavor: WebUiFlavor, initialOpenInBrowserEnabled: boolean, webUIInterface: WebUiInterface, electronPath: string, webUIChannel: WebUiChannel, webUIUpdateCheckInterval: number, downloadAsCbz: boolean, downloadsPath: string, autoDownloadNewChapters: boolean, excludeEntryWithUnreadChapters: boolean, autoDownloadNewChaptersLimit: number, autoDownloadIgnoreReUploads: boolean, extensionRepos: Array<string>, maxSourcesInParallel: number, excludeUnreadChapters: boolean, excludeNotStarted: boolean, excludeCompleted: boolean, globalUpdateInterval: number, updateMangas: boolean, authMode: AuthMode, authPassword: string, authUsername: string, jwtAudience: string, jwtTokenExpiry: string, jwtRefreshExpiry: string, debugLogsEnabled: boolean, systemTrayEnabled: boolean, maxLogFileSize: string, maxLogFiles: number, maxLogFolderSize: string, backupPath: string, backupTime: string, backupInterval: number, backupTTL: number, autoBackupIncludeCategories: boolean, autoBackupIncludeChapters: boolean, autoBackupIncludeClientData: boolean, autoBackupIncludeHistory: boolean, autoBackupIncludeManga: boolean, autoBackupIncludeServerSettings: boolean, autoBackupIncludeTracking: boolean, localSourcePath: string, flareSolverrEnabled: boolean, flareSolverrUrl: string, flareSolverrTimeout: number, flareSolverrSessionName: string, flareSolverrSessionTtl: number, flareSolverrAsResponseFallback: boolean, opdsUseBinaryFileSizes: boolean, opdsItemsPerPage: number, opdsEnablePageReadProgress: boolean, opdsMarkAsReadOnDownload: boolean, opdsShowOnlyUnreadChapters: boolean, opdsShowOnlyDownloadedChapters: boolean, opdsChapterSortOrder: SortOrder, opdsCbzMimetype: CbzMediaType, koreaderSyncChecksumMethod: KoreaderSyncChecksumMethod, koreaderSyncStrategyBackward: KoreaderSyncConflictStrategy, koreaderSyncStrategyForward: KoreaderSyncConflictStrategy, koreaderSyncPercentageTolerance: number, databaseType: DatabaseType, databaseUrl: string, databaseUsername: string, databasePassword: string, useHikariConnectionPool: boolean, downloadConversions: Array<{ __typename?: 'SettingsDownloadConversionType', mimeType: string, target: string, compressionLevel?: number | null, callTimeout?: string | null, connectTimeout?: string | null, headers?: Array<{ __typename?: 'SettingsDownloadConversionHeaderType', name: string, value: string }> | null }>, serveConversions: Array<{ __typename?: 'SettingsDownloadConversionType', mimeType: string, target: string, compressionLevel?: number | null, callTimeout?: string | null, connectTimeout?: string | null, headers?: Array<{ __typename?: 'SettingsDownloadConversionHeaderType', name: string, value: string }> | null }> };
 
@@ -4365,12 +4379,12 @@ export type GetLastUpdateTimestampQueryVariables = Exact<{ [key: string]: never;
 
 export type GetLastUpdateTimestampQuery = { __typename?: 'Query', lastUpdateTimestamp: { __typename?: 'LastUpdateTimestampPayload', timestamp: string } };
 
-export type UpdaterSubscriptionVariables = Exact<{
+export type UpdaterSubscriptionSubscriptionVariables = Exact<{
   input: LibraryUpdateStatusChangedInput;
 }>;
 
 
-export type UpdaterSubscription = { __typename?: 'Subscription', libraryUpdateStatusChanged: { __typename?: 'UpdaterUpdates', omittedUpdates: boolean, jobsInfo: { __typename?: 'UpdaterJobsInfoType', isRunning: boolean, totalJobs: number, finishedJobs: number, skippedCategoriesCount: number, skippedMangasCount: number }, categoryUpdates: Array<{ __typename?: 'CategoryUpdateType', status: CategoryJobStatus, category: { __typename?: 'CategoryType', id: number, name: string } }>, mangaUpdates: Array<{ __typename?: 'MangaUpdateType', status: MangaJobStatus, manga: { __typename?: 'MangaType', id: number, title: string, thumbnailUrl?: string | null, unreadCount: number, downloadCount: number, bookmarkCount: number, hasDuplicateChapters: boolean, chapters: { __typename?: 'ChapterNodeList', totalCount: number }, firstUnreadChapter?: { __typename?: 'ChapterType', id: number, sourceOrder: number, isRead: boolean, mangaId: number, chapterNumber: number, name: string, scanlator?: string | null } | null, lastReadChapter?: { __typename?: 'ChapterType', id: number, sourceOrder: number, lastReadAt: string } | null, latestReadChapter?: { __typename?: 'ChapterType', id: number, sourceOrder: number, lastReadAt: string } | null, latestFetchedChapter?: { __typename?: 'ChapterType', id: number, fetchedAt: string } | null, latestUploadedChapter?: { __typename?: 'ChapterType', id: number, uploadDate: string } | null } }> } };
+export type UpdaterSubscriptionSubscription = { __typename?: 'Subscription', libraryUpdateStatusChanged: { __typename?: 'UpdaterUpdates', omittedUpdates: boolean, jobsInfo: { __typename?: 'UpdaterJobsInfoType', isRunning: boolean, totalJobs: number, finishedJobs: number, skippedCategoriesCount: number, skippedMangasCount: number }, categoryUpdates: Array<{ __typename?: 'CategoryUpdateType', status: CategoryJobStatus, category: { __typename?: 'CategoryType', id: number, name: string } }>, mangaUpdates: Array<{ __typename?: 'MangaUpdateType', status: MangaJobStatus, manga: { __typename?: 'MangaType', id: number, title: string, thumbnailUrl?: string | null, unreadCount: number, downloadCount: number, bookmarkCount: number, hasDuplicateChapters: boolean, chapters: { __typename?: 'ChapterNodeList', totalCount: number }, firstUnreadChapter?: { __typename?: 'ChapterType', id: number, sourceOrder: number, isRead: boolean, mangaId: number, chapterNumber: number, name: string, scanlator?: string | null } | null, lastReadChapter?: { __typename?: 'ChapterType', id: number, sourceOrder: number, lastReadAt: string } | null, latestReadChapter?: { __typename?: 'ChapterType', id: number, sourceOrder: number, lastReadAt: string } | null, latestFetchedChapter?: { __typename?: 'ChapterType', id: number, fetchedAt: string } | null, latestUploadedChapter?: { __typename?: 'ChapterType', id: number, uploadDate: string } | null } }> } };
 
 export type UserLoginMutationVariables = Exact<{
   password: Scalars['String']['input'];
