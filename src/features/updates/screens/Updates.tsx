@@ -73,7 +73,25 @@ export const Updates: React.FC = () => {
     const lastUpdateTimestamp = lastUpdateTimestampData?.lastUpdateTimestamp.timestamp;
     const date = lastUpdateTimestamp ? dateTimeFormatter.format(+lastUpdateTimestamp) : '-';
 
-    useAppTitleAndAction(t`Updates`, <UpdateChecker />);
+    useAppTitleAndAction(
+      t`Updates`,
+      <Typography
+        ref={lastUpdateTimestampCompRef}
+        sx={{
+          position: 'sticky',
+          top: appBarHeight,
+          zIndex: GROUPED_VIRTUOSO_Z_INDEX,
+          backgroundColor: 'background.default',
+          marginLeft: '10px',
+          paddingTop: (theme) => ({
+            [theme.breakpoints.up('sm')]: { paddingTop: '6px' },
+          }),
+        }}
+      >
+        {t`Last update: ${date}`}
+      </Typography>,
+      <UpdateChecker />
+    );
 
     const loadMore = useCallback(() => {
         if (!hasNextPage) {
@@ -99,19 +117,6 @@ export const Updates: React.FC = () => {
 
     return (
         <>
-            <Typography
-                ref={lastUpdateTimestampCompRef}
-                sx={{
-                    position: 'sticky',
-                    top: appBarHeight,
-                    zIndex: GROUPED_VIRTUOSO_Z_INDEX,
-                    backgroundColor: 'background.default',
-                    marginLeft: '10px',
-                    paddingTop: (theme) => ({ [theme.breakpoints.up('sm')]: { paddingTop: '6px' } }),
-                }}
-            >
-                {t`Last update: ${date}`}
-            </Typography>
             <StyledGroupedVirtuoso
                 persistKey="updates"
                 heightToSubtract={lastUpdateTimestampCompHeight}
