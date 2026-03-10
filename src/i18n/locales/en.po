@@ -3699,3 +3699,7 @@ msgstr "Your library is empty"
 #: src/features/settings/Settings.constants.ts
 msgid "Your library will be accessible. Use this only on private networks or when otherwise securing access."
 msgstr "Your library will be accessible. Use this only on private networks or when otherwise securing access."
+
+#: src/features/downloads/screens/DownloadQueue.tsx
+msgid "Storage"
+msgstr "Almacenamiento"
