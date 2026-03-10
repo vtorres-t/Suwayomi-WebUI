@@ -76,7 +76,7 @@ export const Updates: React.FC = () => {
         <>
             <CustomTooltip title={t`Last update`}>${date}</CustomTooltip>
             <UpdateChecker />
-        </>
+        </>,
     );
 
     const loadMore = useCallback(() => {
@@ -102,30 +102,28 @@ export const Updates: React.FC = () => {
     }
 
     return (
-        <>
-            <StyledGroupedVirtuoso
-                persistKey="updates"
-                heightToSubtract={lastUpdateTimestampCompHeight}
-                components={{
-                    Footer: () => (isLoading ? <LoadingPlaceholder usePadding /> : null),
-                }}
-                overscan={window.innerHeight * 0.5}
-                endReached={loadMore}
-                groupCounts={groupCounts}
-                groupContent={(index) => (
-                    <StyledGroupHeader isFirstItem={index === 0}>
-                        <Typography variant="h5" component="h2">
-                            {groupedUpdates[index][VirtuosoUtil.GROUP]}
-                        </Typography>
-                    </StyledGroupHeader>
-                )}
-                computeItemKey={computeItemKey}
-                itemContent={(index) => (
-                    <StyledGroupItemWrapper>
-                        <ChapterUpdateCard chapter={updateEntries[index]} />
-                    </StyledGroupItemWrapper>
-                )}
-            />
-        </>
+        <StyledGroupedVirtuoso
+            persistKey="updates"
+            heightToSubtract={lastUpdateTimestampCompHeight}
+            components={{
+                Footer: () => (isLoading ? <LoadingPlaceholder usePadding /> : null),
+            }}
+            overscan={window.innerHeight * 0.5}
+            endReached={loadMore}
+            groupCounts={groupCounts}
+            groupContent={(index) => (
+                <StyledGroupHeader isFirstItem={index === 0}>
+                    <Typography variant="h5" component="h2">
+                        {groupedUpdates[index][VirtuosoUtil.GROUP]}
+                    </Typography>
+                </StyledGroupHeader>
+            )}
+            computeItemKey={computeItemKey}
+            itemContent={(index) => (
+                <StyledGroupItemWrapper>
+                    <ChapterUpdateCard chapter={updateEntries[index]} />
+                </StyledGroupItemWrapper>
+            )}
+        />
     );
 };
