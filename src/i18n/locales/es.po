@@ -1545,8 +1545,8 @@ msgid "Last read chapter"
 msgstr "Último capítulo leído"
 
 #: src/features/updates/screens/Updates.tsx
-msgid "Last update: {date}"
-msgstr "Última actualización: {date}"
+msgid "Last update"
+msgstr "Última actualización"
 
 #: src/base/utils/Languages.ts
 #: src/features/extension/Extensions.constants.ts

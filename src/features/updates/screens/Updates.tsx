@@ -74,7 +74,7 @@ export const Updates: React.FC = () => {
     useAppTitleAndAction(
         t`Updates`,
         <>
-            <CustomTooltip title={t`Last update`}>${date}</CustomTooltip>
+            <CustomTooltip title={t`Last update`}>{date}</CustomTooltip>
             <UpdateChecker />
         </>,
     );
