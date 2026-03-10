@@ -75,22 +75,23 @@ export const Updates: React.FC = () => {
 
     useAppTitleAndAction(
       t`Updates`,
-      <Typography
-        ref={lastUpdateTimestampCompRef}
-        sx={{
-          position: 'sticky',
-          top: appBarHeight,
-          zIndex: GROUPED_VIRTUOSO_Z_INDEX,
-          backgroundColor: 'background.default',
-          marginLeft: '10px',
-          paddingTop: (theme) => ({
-            [theme.breakpoints.up('sm')]: { paddingTop: '6px' },
-          }),
-        }}
-      >
-        {t`Last update: ${date}`}
-      </Typography>,
-      <UpdateChecker />
+      <>
+        <Typography
+          ref={lastUpdateTimestampCompRef}
+          sx={{
+            position: 'sticky',
+            top: appBarHeight,
+            zIndex: GROUPED_VIRTUOSO_Z_INDEX,
+            marginLeft: '10px',
+            paddingTop: (theme) => ({
+              [theme.breakpoints.up('sm')]: { paddingTop: '6px' },
+            }),
+          }}
+        >
+          {t`Last update: ${date}`}
+        </Typography>
+        <UpdateChecker />
+      </>
     );
 
     const loadMore = useCallback(() => {
