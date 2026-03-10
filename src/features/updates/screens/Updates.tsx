@@ -21,14 +21,12 @@ import { defaultPromiseErrorHandler } from '@/lib/DefaultPromiseErrorHandler.ts'
 import { VirtuosoUtil } from '@/lib/virtuoso/Virtuoso.util.tsx';
 import { getErrorMessage } from '@/lib/HelperFunctions.ts';
 import { ChapterUpdateCard } from '@/features/updates/components/ChapterUpdateCard.tsx';
-import { useNavBarContext } from '@/features/navigation-bar/NavbarContext.tsx';
 import { Chapters } from '@/features/chapter/services/Chapters.ts';
 import { useAppTitleAndAction } from '@/features/navigation-bar/hooks/useAppTitleAndAction.ts';
-import { GROUPED_VIRTUOSO_Z_INDEX } from '@/lib/virtuoso/Virtuoso.constants.ts';
+import { CustomTooltip } from '@/base/components/CustomTooltip.tsx';
 
 export const Updates: React.FC = () => {
     const { t } = useLingui();
-    const { appBarHeight } = useNavBarContext();
 
     const {
         data: chapterUpdateData,
@@ -76,9 +74,7 @@ export const Updates: React.FC = () => {
     useAppTitleAndAction(
         t`Updates`,
         <>
-            <CustomTooltip title={t`Last update`}>
-                ${date}`
-            </CustomTooltip>
+            <CustomTooltip title={t`Last update`}>${date}</CustomTooltip>
             <UpdateChecker />
         </>
     );

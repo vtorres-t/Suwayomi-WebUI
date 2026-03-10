@@ -105,7 +105,7 @@ export const DownloadQueue: React.FC = () => {
             {downloaderData?.directoryStats && (
                 <CustomTooltip title={t`Storage`}>
                     <IconButton color="inherit">
-                        {downloaderData.directoryStats.folderSizePretty}/{ }
+                        {downloaderData.directoryStats.folderSizePretty} / {}
                         {downloaderData.directoryStats.availableSpacePretty}
                     </IconButton>
                 </CustomTooltip>
