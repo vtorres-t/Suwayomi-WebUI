@@ -21,14 +21,12 @@ import { defaultPromiseErrorHandler } from '@/lib/DefaultPromiseErrorHandler.ts'
 import { VirtuosoUtil } from '@/lib/virtuoso/Virtuoso.util.tsx';
 import { getErrorMessage } from '@/lib/HelperFunctions.ts';
 import { ChapterUpdateCard } from '@/features/updates/components/ChapterUpdateCard.tsx';
-import { useNavBarContext } from '@/features/navigation-bar/NavbarContext.tsx';
 import { Chapters } from '@/features/chapter/services/Chapters.ts';
 import { useAppTitleAndAction } from '@/features/navigation-bar/hooks/useAppTitleAndAction.ts';
-import { GROUPED_VIRTUOSO_Z_INDEX } from '@/lib/virtuoso/Virtuoso.constants.ts';
+import { CustomTooltip } from '@/base/components/CustomTooltip.tsx';
 
 export const Updates: React.FC = () => {
     const { t } = useLingui();
-    const { appBarHeight } = useNavBarContext();
 
     const {
         data: chapterUpdateData,
@@ -74,24 +72,11 @@ export const Updates: React.FC = () => {
     const date = lastUpdateTimestamp ? dateTimeFormatter.format(+lastUpdateTimestamp) : '-';
 
     useAppTitleAndAction(
-      t`Updates`,
-      <>
-        <Typography
-          ref={lastUpdateTimestampCompRef}
-          sx={{
-            position: 'sticky',
-            top: appBarHeight,
-            zIndex: GROUPED_VIRTUOSO_Z_INDEX,
-            marginLeft: '10px',
-            paddingTop: (theme) => ({
-              [theme.breakpoints.up('sm')]: { paddingTop: '6px' },
-            }),
-          }}
-        >
-          {t`Last update: ${date}`}
-        </Typography>
-        <UpdateChecker />
-      </>
+        t`Updates`,
+        <>
+            <CustomTooltip title={t`Last update`}>${date}</CustomTooltip>
+            <UpdateChecker />
+        </>,
     );
 
     const loadMore = useCallback(() => {
@@ -117,30 +102,28 @@ export const Updates: React.FC = () => {
     }
 
     return (
-        <>
-            <StyledGroupedVirtuoso
-                persistKey="updates"
-                heightToSubtract={lastUpdateTimestampCompHeight}
-                components={{
-                    Footer: () => (isLoading ? <LoadingPlaceholder usePadding /> : null),
-                }}
-                overscan={window.innerHeight * 0.5}
-                endReached={loadMore}
-                groupCounts={groupCounts}
-                groupContent={(index) => (
-                    <StyledGroupHeader isFirstItem={index === 0}>
-                        <Typography variant="h5" component="h2">
-                            {groupedUpdates[index][VirtuosoUtil.GROUP]}
-                        </Typography>
-                    </StyledGroupHeader>
-                )}
-                computeItemKey={computeItemKey}
-                itemContent={(index) => (
-                    <StyledGroupItemWrapper>
-                        <ChapterUpdateCard chapter={updateEntries[index]} />
-                    </StyledGroupItemWrapper>
-                )}
-            />
-        </>
+        <StyledGroupedVirtuoso
+            persistKey="updates"
+            heightToSubtract={lastUpdateTimestampCompHeight}
+            components={{
+                Footer: () => (isLoading ? <LoadingPlaceholder usePadding /> : null),
+            }}
+            overscan={window.innerHeight * 0.5}
+            endReached={loadMore}
+            groupCounts={groupCounts}
+            groupContent={(index) => (
+                <StyledGroupHeader isFirstItem={index === 0}>
+                    <Typography variant="h5" component="h2">
+                        {groupedUpdates[index][VirtuosoUtil.GROUP]}
+                    </Typography>
+                </StyledGroupHeader>
+            )}
+            computeItemKey={computeItemKey}
+            itemContent={(index) => (
+                <StyledGroupItemWrapper>
+                    <ChapterUpdateCard chapter={updateEntries[index]} />
+                </StyledGroupItemWrapper>
+            )}
+        />
     );
 };
