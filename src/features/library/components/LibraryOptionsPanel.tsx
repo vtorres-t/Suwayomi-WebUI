@@ -69,7 +69,14 @@ export const LibraryOptionsPanel = ({
     );
 
     const {
-        settings: { showTabSize, showContinueReadingButton, showDownloadBadge, showUnreadBadge, gridLayout },
+        settings: {
+            showTabSize,
+            showContinueReadingButton,
+            showDownloadBadge,
+            showTotalChapterBadge,
+            showUnreadBadge,
+            gridLayout,
+        },
     } = useMetadataServerSettings();
     const setSettingValue = createUpdateMetadataServerSettings((e) =>
         makeToast(t`Could not save the default search settings to the server`, 'error', getErrorMessage(e)),
@@ -190,6 +197,13 @@ export const LibraryOptionsPanel = ({
                                 label={t`Download badges`}
                                 checked={showDownloadBadge}
                                 onChange={() => updateMetadataServerSettings('showDownloadBadge', !showDownloadBadge)}
+                            />
+                            <CheckboxInput
+                                label={t`Total badges`}
+                                checked={showTotalChapterBadge}
+                                onChange={() =>
+                                    updateMetadataServerSettings('showTotalChapterBadge', !showTotalChapterBadge)
+                                }
                             />
                             <FormLabel sx={{ mt: 2 }}>{t`Tabs`}</FormLabel>
                             <CheckboxInput

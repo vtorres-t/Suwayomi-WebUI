@@ -162,6 +162,9 @@ export const APP_METADATA: Record<
     showUnreadBadge: {
         convert: convertToBoolean,
     },
+    showTotalChapterBadge: {
+        convert: convertToBoolean,
+    },
     gridLayout: {
         convert: convertToNumber, // GridLayout (enum)
     },
@@ -428,6 +431,7 @@ export const GLOBAL_METADATA_KEYS: AppMetadataKeys[] = [
     'sortDesc',
     // display
     'showDownloadBadge',
+    'showTotalChapterBadge',
     'showUnreadBadge',
     'showTabSize',
     'showContinueReadingButton',

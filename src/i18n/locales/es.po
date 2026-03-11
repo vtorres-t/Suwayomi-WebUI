@@ -958,6 +958,10 @@ msgstr "Descargar {count} capítulos no leídos"
 msgid "Download badges"
 msgstr "Insignias descargadas"
 
+#: src/features/library/components/LibraryOptionsPanel.tsx
+msgid "Total badges"
+msgstr "Insignias totales"
+
 #: src/features/downloads/screens/DownloadSettings.tsx
 msgid "Download location"
 msgstr "Ubicación para las descargas"
@@ -978,6 +982,7 @@ msgstr "Descargar seleccionados"
 #: src/features/chapter/components/cards/ChapterCard.tsx
 #: src/features/chapter/components/ChapterOptions.tsx
 #: src/features/library/components/LibraryOptionsPanel.tsx
+#: src/features/manga/components/MangaBadges.tsx
 msgid "Downloaded"
 msgstr "Descargado"
 
@@ -2849,6 +2854,7 @@ msgid "Toggle stretch image"
 msgstr "Alternar estirar imagen"
 
 #: src/features/library/components/LibraryOptionsPanel.tsx
+#: src/features/manga/components/MangaBadges.tsx
 msgid "Total chapters"
 msgstr "Capítulos totales"
 
@@ -2973,6 +2979,7 @@ msgid "Unread badges"
 msgstr "Insignias de no leído"
 
 #: src/features/library/components/LibraryOptionsPanel.tsx
+#: src/features/manga/components/MangaBadges.tsx
 msgid "Unread chapters"
 msgstr "Capítulos sin leer"
 
