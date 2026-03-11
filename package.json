@@ -4,6 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "setup:models": "tsx tools/scripts/downloadModels.ts",
     "ci": "yarn install --frozen-lockfile",
     "setup-env-files": "tsx tools/scripts/setupEnvFiles.ts",
     "setup": "yarn ci && yarn setup-env-files",
