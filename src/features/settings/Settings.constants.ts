@@ -52,8 +52,8 @@ export const SERVER_SETTINGS_METADATA_DEFAULT: MetadataServerSettings = {
     removeMangaFromCategories: false,
     showTabSize: false,
     showContinueReadingButton: false,
-    showDownloadBadge: false,
-    showUnreadBadge: false,
+    showDownloadBadge: true,
+    showUnreadBadge: true,
     gridLayout: GridLayout.Compact,
 
     // client
