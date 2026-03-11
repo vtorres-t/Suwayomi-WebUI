@@ -85,30 +85,20 @@ export const MangaBadges = ({
             )}
             {((showUnreadBadge && mode === 'default') || mode === 'duplicate') && (unread ?? 0) > 0 && (
                 <CustomTooltip title={t`Unread chapters`}>
-                    <Badge sx={{ backgroundColor: 'primary.main', color: 'primary.contrastText' }}>{unread}</Badge>
+                    <Badge sx={{ backgroundColor: 'primary.main', color: 'primary.contrastText' }}>{unread} 👁</Badge>
                 </CustomTooltip>
             )}
             {((showDownloadBadge && mode === 'default') || mode === 'duplicate') && (downloadCount ?? 0) > 0 && (
                 <CustomTooltip title={t`Downloaded`}>
-                    <Badge
-                        sx={{
-                            backgroundColor: 'secondary.main',
-                            color: 'secondary.contrastText',
-                        }}
-                    >
-                        {downloadCount}
+                    <Badge sx={{ backgroundColor: 'primary.main', color: 'primary.contrastText' }}>
+                        {downloadCount} ↓
                     </Badge>
                 </CustomTooltip>
             )}
             {((showTotalChapterBadge && mode === 'default') || mode === 'duplicate') && (totalCount ?? 0) > 0 && (
                 <CustomTooltip title={t`Total chapters`}>
-                    <Badge
-                        sx={{
-                            backgroundColor: 'primary.main',
-                            color: 'primary.contrastText',
-                        }}
-                    >
-                        {totalCount}
+                    <Badge sx={{ backgroundColor: 'primary.main', color: 'primary.contrastText' }}>
+                        {totalCount} 🗒
                     </Badge>
                 </CustomTooltip>
             )}

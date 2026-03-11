@@ -44,7 +44,7 @@ const getMangaLinkTo = (
 
 export const MangaCard = memo((props: MangaCardProps) => {
     const { manga, gridLayout, inLibraryIndicator, selected, handleSelection, mode = 'default' } = props;
-    const { id, firstUnreadChapter, downloadCount, unreadCount, totalCount } = manga;
+    const { id, firstUnreadChapter, downloadCount, unreadCount } = manga;
     const {
         settings: { showContinueReadingButton },
     } = useMetadataServerSettings();
@@ -138,7 +138,7 @@ export const MangaCard = memo((props: MangaCardProps) => {
                                     isInLibrary={isInLibrary}
                                     unread={unreadCount}
                                     downloadCount={downloadCount}
-                                    totalCount={totalCount}
+                                    totalCount={(firstUnreadChapter?.sourceOrder ?? 0) + (unreadCount ?? 0)}
                                     updateLibraryState={updateLibraryState}
                                     mode={mode}
                                 />
