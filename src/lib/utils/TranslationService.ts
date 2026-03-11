@@ -34,6 +34,7 @@ export class TranslationService {
 
             return (output as any).translation_text || String(output);
         } catch (error) {
+            console.log(error);
             return text;
         }
     }
