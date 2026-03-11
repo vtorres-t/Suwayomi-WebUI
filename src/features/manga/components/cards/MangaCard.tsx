@@ -109,6 +109,9 @@ export const MangaCard = memo((props: MangaCardProps) => {
         [gridLayout],
     );
 
+    const order = firstUnreadChapter?.sourceOrder ?? 0;
+    const readChaptersCount = order > 0 ? order - 1 : 0;
+
     return (
         <>
             {isMigrateDialogOpen && (
@@ -136,9 +139,9 @@ export const MangaCard = memo((props: MangaCardProps) => {
                                 <MangaBadges
                                     inLibraryIndicator={inLibraryIndicator}
                                     isInLibrary={isInLibrary}
-                                    readChaptersCount={firstUnreadChapter?.sourceOrder ?? 0}
+                                    readChaptersCount={readChaptersCount}
                                     downloadChaptersCount={downloadCount}
-                                    totalChaptersCount={(firstUnreadChapter?.sourceOrder ?? 0) + (unreadCount ?? 0)}
+                                    totalChaptersCount={readChaptersCount + (unreadCount ?? 0)}
                                     updateLibraryState={updateLibraryState}
                                     mode={mode}
                                 />
