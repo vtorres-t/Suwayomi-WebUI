@@ -49,3 +49,5 @@ export class TranslationService {
         }
     }
 }
+
+export const translateOffline = (text: string) => TranslationService.translate(text);
