@@ -22,6 +22,7 @@ import Popover from '@mui/material/Popover';
 import Typography from '@mui/material/Typography';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { useLingui } from '@lingui/react/macro';
+import ContentPasteIcon from '@mui/icons-material/ContentPaste';
 import { requestManager } from '@/lib/requests/RequestManager.ts';
 import { EmptyViewAbsoluteCentered } from '@/base/components/feedback/EmptyViewAbsoluteCentered.tsx';
 import { LoadingPlaceholder } from '@/base/components/feedback/LoadingPlaceholder.tsx';
@@ -153,6 +154,15 @@ export const TrackerSearch = ({
             [selectedTrackerRemoteId, searchResults],
         ) && !hasError;
 
+    const readFromClipboard = async () => {
+        try {
+            const text = await navigator.clipboard.readText();
+            setTmpSearchString(text);
+        } catch (e) {
+            defaultPromiseErrorHandler('TTrackRecordActive::readFromClipboard')(e);
+        }
+    };
+
     return (
         <>
             <DialogTitle sx={{ padding: DIALOG_PADDING }}>
@@ -180,6 +190,9 @@ export const TrackerSearch = ({
                         InputProps={{
                             startAdornment: tracker.id === Tracker.MYANIMELIST && (
                                 <InputAdornment position="start">
+                                    <IconButton onClick={readFromClipboard} color="inherit">
+                                        <ContentPasteIcon />
+                                    </IconButton>
                                     <PopupState variant="popover" popupId="tracker-search-info">
                                         {(popupState) => (
                                             <>
