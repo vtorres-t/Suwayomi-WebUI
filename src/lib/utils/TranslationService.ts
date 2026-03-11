@@ -12,8 +12,9 @@ import { pipeline, env } from '@xenova/transformers';
 env.allowLocalModels = false;
 env.allowRemoteModels = true;
 // Forzamos a que use el CDN oficial de Hugging Face
-env.remoteHost = 'https://cdn.jsdelivr.net';
-env.remotePathTemplate = '{model}/';
+env.remoteHost = 'https://huggingface.co';
+env.remotePathTemplate = '{model}/resolve/{revision}/';
+env.useBrowserCache = false;
 
 export class TranslationService {
     private static instance: any = null;
