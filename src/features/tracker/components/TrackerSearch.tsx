@@ -158,6 +158,7 @@ export const TrackerSearch = ({
         try {
             const text = await navigator.clipboard.readText();
             setTmpSearchString(text);
+            setSearchString(text);
         } catch (e) {
             defaultPromiseErrorHandler('TTrackRecordActive::readFromClipboard')(e);
         }
@@ -176,6 +177,9 @@ export const TrackerSearch = ({
                     <IconButton onClick={closeSearchMode}>
                         {getOptionForDirection(<ArrowBack />, <ArrowForwardIcon />)}
                     </IconButton>
+                    <IconButton onClick={readFromClipboard} color="inherit">
+                        <ContentPasteIcon />
+                    </IconButton>
                     <SearchTextField
                         sx={{ width: '100%' }}
                         variant="standard"
@@ -190,9 +194,6 @@ export const TrackerSearch = ({
                         InputProps={{
                             startAdornment: tracker.id === Tracker.MYANIMELIST && (
                                 <InputAdornment position="start">
-                                    <IconButton onClick={readFromClipboard} color="inherit">
-                                        <ContentPasteIcon />
-                                    </IconButton>
                                     <PopupState variant="popover" popupId="tracker-search-info">
                                         {(popupState) => (
                                             <>
