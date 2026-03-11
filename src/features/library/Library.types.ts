@@ -16,6 +16,7 @@ export type MetadataLibrarySettings = {
     showTabSize: boolean;
     showContinueReadingButton: boolean;
     showDownloadBadge: boolean;
+    showTotalChapterBadge: boolean;
     showUnreadBadge: boolean;
     gridLayout: GridLayout;
 };
