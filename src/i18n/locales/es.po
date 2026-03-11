@@ -955,12 +955,12 @@ msgid "Download ahead ({count})"
 msgstr "Descargar {count} capítulos no leídos"
 
 #: src/features/library/components/LibraryOptionsPanel.tsx
-msgid "Download badges"
-msgstr "Insignias descargadas"
+msgid "Download chapters"
+msgstr "Capítulos descargados"
 
 #: src/features/library/components/LibraryOptionsPanel.tsx
-msgid "Total badges"
-msgstr "Insignias totales"
+msgid "Total chapters"
+msgstr "Capítulos totales"
 
 #: src/features/downloads/screens/DownloadSettings.tsx
 msgid "Download location"
@@ -2979,9 +2979,13 @@ msgid "Unread badges"
 msgstr "Insignias de no leído"
 
 #: src/features/library/components/LibraryOptionsPanel.tsx
-#: src/features/manga/components/MangaBadges.tsx
 msgid "Unread chapters"
 msgstr "Capítulos sin leer"
+
+#: src/features/library/components/LibraryOptionsPanel.tsx
+#: src/features/manga/components/MangaBadges.tsx
+msgid "Read chapters"
+msgstr "Capítulos leidos"
 
 #: src/features/tracker/components/cards/TrackerActiveCard.tsx
 msgid "Untracked manga"

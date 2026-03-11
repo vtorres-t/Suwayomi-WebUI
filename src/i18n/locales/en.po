@@ -1314,8 +1314,8 @@ msgid "Download ahead ({count})"
 msgstr "Download ahead ({count})"
 
 #: src/features/library/components/LibraryOptionsPanel.tsx
-msgid "Download badges"
-msgstr "Download badges"
+msgid "Download chapters"
+msgstr "Download chapters"
 
 #: src/features/downloads/screens/DownloadSettings.tsx
 msgid "Download location"
@@ -1337,9 +1337,12 @@ msgstr "Download selected"
 #: src/features/chapter/components/cards/ChapterCard.tsx
 #: src/features/chapter/components/ChapterOptions.tsx
 #: src/features/library/components/LibraryOptionsPanel.tsx
-#: src/features/manga/components/MangaBadges.tsx
 msgid "Downloaded"
 msgstr "Downloaded"
+
+#: src/features/manga/components/MangaBadges.tsx
+msgid "Downloaded chapters"
+msgstr "Downloaded chapters"
 
 #: src/base/components/downloads/DownloadStateIndicator.tsx
 msgid "Downloading"
@@ -2573,6 +2576,11 @@ msgstr "Queued"
 msgid "Quick settings"
 msgstr "Quick settings"
 
+#: src/features/library/components/LibraryOptionsPanel.tsx
+#: src/features/manga/components/MangaBadges.tsx
+msgid "Read chapters"
+msgstr "Read chapters"
+
 #: src/features/reader/settings/screens/GlobalReaderSettings.tsx
 #: src/features/settings/screens/Settings.tsx
 msgid "Reader"
@@ -3349,9 +3357,6 @@ msgid "Toggle stretch image"
 msgstr "Toggle stretch image"
 
 #: src/features/library/components/LibraryOptionsPanel.tsx
-msgid "Total badges"
-msgstr "Total badges"
-
 #: src/features/library/components/LibraryOptionsPanel.tsx
 #: src/features/manga/components/MangaBadges.tsx
 msgid "Total chapters"
@@ -3474,11 +3479,6 @@ msgid "Unread"
 msgstr "Unread"
 
 #: src/features/library/components/LibraryOptionsPanel.tsx
-msgid "Unread badges"
-msgstr "Unread badges"
-
-#: src/features/library/components/LibraryOptionsPanel.tsx
-#: src/features/manga/components/MangaBadges.tsx
 msgid "Unread chapters"
 msgstr "Unread chapters"
 

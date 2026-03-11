@@ -72,9 +72,9 @@ export const LibraryOptionsPanel = ({
         settings: {
             showTabSize,
             showContinueReadingButton,
-            showDownloadBadge,
-            showTotalChapterBadge,
-            showUnreadBadge,
+            showDownloadChaptersBadge,
+            showTotalChaptersBadge,
+            showReadChaptersBadge,
             gridLayout,
         },
     } = useMetadataServerSettings();
@@ -189,20 +189,27 @@ export const LibraryOptionsPanel = ({
                             </RadioGroup>
                             <FormLabel sx={{ mt: 2 }}>{t`Badges`}</FormLabel>
                             <CheckboxInput
-                                label={t`Unread badges`}
-                                checked={showUnreadBadge}
-                                onChange={() => updateMetadataServerSettings('showUnreadBadge', !showUnreadBadge)}
-                            />
-                            <CheckboxInput
-                                label={t`Download badges`}
-                                checked={showDownloadBadge}
-                                onChange={() => updateMetadataServerSettings('showDownloadBadge', !showDownloadBadge)}
-                            />
-                            <CheckboxInput
-                                label={t`Total badges`}
-                                checked={showTotalChapterBadge}
+                                label={t`Read chapters`}
+                                checked={showReadChaptersBadge}
                                 onChange={() =>
-                                    updateMetadataServerSettings('showTotalChapterBadge', !showTotalChapterBadge)
+                                    updateMetadataServerSettings('showReadChaptersBadge', !showReadChaptersBadge)
+                                }
+                            />
+                            <CheckboxInput
+                                label={t`Download chapters`}
+                                checked={showDownloadChaptersBadge}
+                                onChange={() =>
+                                    updateMetadataServerSettings(
+                                        'showDownloadChaptersBadge',
+                                        !showDownloadChaptersBadge,
+                                    )
+                                }
+                            />
+                            <CheckboxInput
+                                label={t`Total chapters`}
+                                checked={showTotalChaptersBadge}
+                                onChange={() =>
+                                    updateMetadataServerSettings('showTotalChaptersBadge', !showTotalChaptersBadge)
                                 }
                             />
                             <FormLabel sx={{ mt: 2 }}>{t`Tabs`}</FormLabel>

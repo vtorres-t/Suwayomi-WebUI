@@ -136,9 +136,9 @@ export const MangaCard = memo((props: MangaCardProps) => {
                                 <MangaBadges
                                     inLibraryIndicator={inLibraryIndicator}
                                     isInLibrary={isInLibrary}
-                                    unread={unreadCount}
-                                    downloadCount={downloadCount}
-                                    totalCount={(firstUnreadChapter?.sourceOrder ?? 0) + (unreadCount ?? 0)}
+                                    readChaptersCount={firstUnreadChapter?.sourceOrder ?? 0}
+                                    downloadChaptersCount={downloadCount}
+                                    totalChaptersCount={(firstUnreadChapter?.sourceOrder ?? 0) + (unreadCount ?? 0)}
                                     updateLibraryState={updateLibraryState}
                                     mode={mode}
                                 />
