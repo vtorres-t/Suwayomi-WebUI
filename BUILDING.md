@@ -22,3 +22,13 @@ This command runs the app in a local preview production build.
 
 This command creates an optimized production build of the app and places it in the `build` folder.
 See this section about [Building for Production](https://vitejs.dev/guide/build.html) for more information.
+
+### 'Regen graphql'
+
+Edit .env.template and remove .template
+
+npx -p @graphql-codegen/cli graphql-codegen --config gql_codegen.ts
+
+### `yarn tsc`
+
+Compile typescript
