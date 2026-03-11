@@ -50,7 +50,7 @@ export const MangaBadges = ({
     const isTouchDevice = MediaQuery.useIsTouchDevice();
 
     const {
-        settings: { showUnreadBadge, showDownloadBadge, showTotalChapterBadge },
+        settings: { showReadChaptersBadge, showDownloadChaptersBadge, showTotalChaptersBadge },
     } = useMetadataServerSettings();
 
     return (
@@ -83,19 +83,20 @@ export const MangaBadges = ({
                     {t`In Library`}
                 </Typography>
             )}
-            {((showUnreadBadge && mode === 'default') || mode === 'duplicate') && (unread ?? 0) > 0 && (
+            {((showReadChaptersBadge && mode === 'default') || mode === 'duplicate') && (unread ?? 0) > 0 && (
                 <CustomTooltip title={t`Unread chapters`}>
                     <Badge sx={{ backgroundColor: 'primary.main', color: 'primary.contrastText' }}>{unread} 👁</Badge>
                 </CustomTooltip>
             )}
-            {((showDownloadBadge && mode === 'default') || mode === 'duplicate') && (downloadCount ?? 0) > 0 && (
-                <CustomTooltip title={t`Downloaded`}>
-                    <Badge sx={{ backgroundColor: 'primary.main', color: 'primary.contrastText' }}>
-                        {downloadCount} ↓
-                    </Badge>
-                </CustomTooltip>
-            )}
-            {((showTotalChapterBadge && mode === 'default') || mode === 'duplicate') && (totalCount ?? 0) > 0 && (
+            {((showDownloadChaptersBadge && mode === 'default') || mode === 'duplicate') &&
+                (downloadCount ?? 0) > 0 && (
+                    <CustomTooltip title={t`Downloaded`}>
+                        <Badge sx={{ backgroundColor: 'primary.main', color: 'primary.contrastText' }}>
+                            {downloadCount} ↓
+                        </Badge>
+                    </CustomTooltip>
+                )}
+            {((showTotalChaptersBadge && mode === 'default') || mode === 'duplicate') && (totalCount ?? 0) > 0 && (
                 <CustomTooltip title={t`Total chapters`}>
                     <Badge sx={{ backgroundColor: 'primary.main', color: 'primary.contrastText' }}>
                         {totalCount} 🗒

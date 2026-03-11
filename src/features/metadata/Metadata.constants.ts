@@ -156,13 +156,13 @@ export const APP_METADATA: Record<
     showContinueReadingButton: {
         convert: convertToBoolean,
     },
-    showDownloadBadge: {
+    showDownloadChaptersBadge: {
         convert: convertToBoolean,
     },
-    showUnreadBadge: {
+    showReadChaptersBadge: {
         convert: convertToBoolean,
     },
-    showTotalChapterBadge: {
+    showTotalChaptersBadge: {
         convert: convertToBoolean,
     },
     gridLayout: {
@@ -430,9 +430,9 @@ export const GLOBAL_METADATA_KEYS: AppMetadataKeys[] = [
     'sortBy',
     'sortDesc',
     // display
-    'showDownloadBadge',
-    'showTotalChapterBadge',
-    'showUnreadBadge',
+    'showDownloadChaptersBadge',
+    'showTotalChaptersBadge',
+    'showReadChaptersBadge',
     'showTabSize',
     'showContinueReadingButton',
 

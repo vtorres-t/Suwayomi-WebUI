@@ -15,9 +15,9 @@ export type MetadataLibrarySettings = {
     removeMangaFromCategories: boolean;
     showTabSize: boolean;
     showContinueReadingButton: boolean;
-    showDownloadBadge: boolean;
-    showTotalChapterBadge: boolean;
-    showUnreadBadge: boolean;
+    showDownloadChaptersBadge: boolean;
+    showTotalChaptersBadge: boolean;
+    showReadChaptersBadge: boolean;
     gridLayout: GridLayout;
 };
 export type LibrarySortMode =
