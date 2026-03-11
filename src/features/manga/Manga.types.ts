@@ -40,6 +40,7 @@ export type MangaThumbnailInfo = Pick<MangaTypeGql, 'thumbnailUrl' | 'thumbnailU
 export type MangaTrackRecordInfo = MangaIdInfo & {
     trackRecords: { nodes: Pick<TrackRecordType, 'id' | 'trackerId'>[] };
 };
+export type MangaUnreadInfoAndDownloadInfo = Pick<MangaTypeGql, 'unreadCount'> & MangaDownloadInfo;
 export type MangaGenreInfo = Pick<MangaTypeGql, 'genre'>;
 export type MangaSourceIdInfo = Pick<MangaTypeGql, 'sourceId'>;
 export type MangaSourceNameInfo = { source?: Maybe<Pick<SourceType, 'name'>> };

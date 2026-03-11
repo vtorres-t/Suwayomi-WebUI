@@ -33,6 +33,7 @@ import {
     MangaAuthorInfo,
     MangaCardMode,
     MangaDownloadInfo,
+    MangaUnreadInfoAndDownloadInfo,
     MangaGenreInfo,
     MangaIdInfo,
     MangaLocationState,
@@ -730,7 +731,9 @@ export class Mangas {
         return manga.author?.split(ARTIST_AUTHOR_SEPARATOR_REGEX);
     }
 
-    static getChaptersReadAndDownloadedAndTotal<Manga extends MangaDownloadInfo>(manga: Manga): string | undefined {
+    static getChaptersReadAndDownloadedAndTotal<Manga extends MangaUnreadInfoAndDownloadInfo>(
+        manga: Manga,
+    ): string | undefined {
         const downloaded = manga.downloadCount;
         const total = manga.chapters?.totalCount;
         const current = total - manga.unreadCount;

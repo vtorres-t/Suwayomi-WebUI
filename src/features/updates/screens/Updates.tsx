@@ -9,6 +9,7 @@
 import Typography from '@mui/material/Typography';
 import React, { useCallback, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { useLingui } from '@lingui/react/macro';
+import IconButton from '@mui/material/IconButton';
 import { requestManager } from '@/lib/requests/RequestManager.ts';
 import { LoadingPlaceholder } from '@/base/components/feedback/LoadingPlaceholder.tsx';
 import { EmptyViewAbsoluteCentered } from '@/base/components/feedback/EmptyViewAbsoluteCentered.tsx';
@@ -74,7 +75,9 @@ export const Updates: React.FC = () => {
     useAppTitleAndAction(
         t`Updates`,
         <div>
-            <CustomTooltip title={t`Last update`}>{date}</CustomTooltip>
+            <CustomTooltip title={t`Last update`}>
+                <IconButton color="inherit">{date}</IconButton>
+            </CustomTooltip>
             <UpdateChecker />
         </div>,
     );

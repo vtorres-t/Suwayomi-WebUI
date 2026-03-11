@@ -106,7 +106,7 @@ export function Library() {
         visibleMangas: mangas,
         showFilteredOutMessage,
         filterKey,
-    } = useGetVisibleLibraryMangas(categoryMangas, activeTab);
+    } = useGetVisibleLibraryMangas(categoryMangas as any, activeTab);
 
     const retryFetchCategoryMangas = useCallback(
         () => refetchCategoryMangas().catch(defaultPromiseErrorHandler('Library::refetchCategoryMangas')),

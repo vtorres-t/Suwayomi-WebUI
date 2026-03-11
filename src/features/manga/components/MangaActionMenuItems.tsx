@@ -92,12 +92,12 @@ export const MangaActionMenuItems = ({
     const { downloadableMangas, downloadedMangas, unreadMangas, readMangas } = useMemo(
         () => ({
             downloadableMangas: [
-                ...Mangas.getNotDownloaded(selectedMangas),
-                ...Mangas.getPartiallyDownloaded(selectedMangas),
+                ...Mangas.getNotDownloaded(selectedMangas as any),
+                ...Mangas.getPartiallyDownloaded(selectedMangas as any),
             ],
             downloadedMangas: [
-                ...Mangas.getPartiallyDownloaded(selectedMangas),
-                ...Mangas.getFullyDownloaded(selectedMangas),
+                ...Mangas.getPartiallyDownloaded(selectedMangas as any),
+                ...Mangas.getFullyDownloaded(selectedMangas as any),
             ],
             unreadMangas: [...Mangas.getUnread(selectedMangas), ...Mangas.getPartiallyRead(selectedMangas)],
             readMangas: [...Mangas.getPartiallyRead(selectedMangas), ...Mangas.getFullyRead(selectedMangas)],
@@ -127,7 +127,7 @@ export const MangaActionMenuItems = ({
                 <MenuItem
                     Icon={Delete}
                     disabled={isMenuItemDisabled(!downloadedMangas.length)}
-                    onClick={() => performAction('delete', downloadedMangas)}
+                    onClick={() => performAction('delete', downloadedMangas as any)}
                     title={getMenuItemTitle('delete', downloadedMangas.length)}
                 />
             )}
