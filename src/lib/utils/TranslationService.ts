@@ -9,8 +9,8 @@
 /* eslint-disable no-console */
 import { pipeline, env } from '@xenova/transformers';
 
-env.allowLocalModels = true;
-env.allowRemoteModels = false; // Forza el uso de la carpeta public/models
+env.allowLocalModels = false;
+env.allowRemoteModels = true; // Forza el uso de la carpeta public/models
 env.localModelPath = '/models/';
 
 export class TranslationService {
