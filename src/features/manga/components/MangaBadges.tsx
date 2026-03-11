@@ -32,17 +32,17 @@ export const MangaBadges = ({
     inLibraryIndicator,
     updateLibraryState,
     isInLibrary,
-    unread,
-    downloadCount,
-    totalCount,
+    readChaptersCount,
+    downloadChaptersCount,
+    totalChaptersCount,
     mode,
 }: {
     inLibraryIndicator?: boolean;
     updateLibraryState: () => void;
     isInLibrary: boolean;
-    unread?: number;
-    downloadCount?: number;
-    totalCount?: number;
+    readChaptersCount?: number;
+    downloadChaptersCount?: number;
+    totalChaptersCount?: number;
     mode: MangaCardMode;
 }) => {
     const { t } = useLingui();
@@ -83,26 +83,30 @@ export const MangaBadges = ({
                     {t`In Library`}
                 </Typography>
             )}
-            {((showReadChaptersBadge && mode === 'default') || mode === 'duplicate') && (unread ?? 0) > 0 && (
-                <CustomTooltip title={t`Unread chapters`}>
-                    <Badge sx={{ backgroundColor: 'primary.main', color: 'primary.contrastText' }}>{unread} 👁</Badge>
-                </CustomTooltip>
-            )}
-            {((showDownloadChaptersBadge && mode === 'default') || mode === 'duplicate') &&
-                (downloadCount ?? 0) > 0 && (
-                    <CustomTooltip title={t`Downloaded`}>
+            {((showReadChaptersBadge && mode === 'default') || mode === 'duplicate') &&
+                (readChaptersCount ?? 0) > 0 && (
+                    <CustomTooltip title={t`Read chapters`}>
                         <Badge sx={{ backgroundColor: 'primary.main', color: 'primary.contrastText' }}>
-                            {downloadCount} ↓
+                            {readChaptersCount} 👁
                         </Badge>
                     </CustomTooltip>
                 )}
-            {((showTotalChaptersBadge && mode === 'default') || mode === 'duplicate') && (totalCount ?? 0) > 0 && (
-                <CustomTooltip title={t`Total chapters`}>
-                    <Badge sx={{ backgroundColor: 'primary.main', color: 'primary.contrastText' }}>
-                        {totalCount} 🗒
-                    </Badge>
-                </CustomTooltip>
-            )}
+            {((showDownloadChaptersBadge && mode === 'default') || mode === 'duplicate') &&
+                (downloadChaptersCount ?? 0) > 0 && (
+                    <CustomTooltip title={t`Downloaded chapters`}>
+                        <Badge sx={{ backgroundColor: 'primary.main', color: 'primary.contrastText' }}>
+                            {downloadChaptersCount} ↓
+                        </Badge>
+                    </CustomTooltip>
+                )}
+            {((showTotalChaptersBadge && mode === 'default') || mode === 'duplicate') &&
+                (totalChaptersCount ?? 0) > 0 && (
+                    <CustomTooltip title={t`Total chapters`}>
+                        <Badge sx={{ backgroundColor: 'primary.main', color: 'primary.contrastText' }}>
+                            {totalChaptersCount} 🗒
+                        </Badge>
+                    </CustomTooltip>
+                )}
         </BadgeContainer>
     );
 };
