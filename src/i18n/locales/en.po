@@ -1337,6 +1337,7 @@ msgstr "Download selected"
 #: src/features/chapter/components/cards/ChapterCard.tsx
 #: src/features/chapter/components/ChapterOptions.tsx
 #: src/features/library/components/LibraryOptionsPanel.tsx
+#: src/features/manga/components/MangaBadges.tsx
 msgid "Downloaded"
 msgstr "Downloaded"
 
@@ -3348,6 +3349,11 @@ msgid "Toggle stretch image"
 msgstr "Toggle stretch image"
 
 #: src/features/library/components/LibraryOptionsPanel.tsx
+msgid "Total badges"
+msgstr "Total badges"
+
+#: src/features/library/components/LibraryOptionsPanel.tsx
+#: src/features/manga/components/MangaBadges.tsx
 msgid "Total chapters"
 msgstr "Total chapters"
 
@@ -3472,6 +3478,7 @@ msgid "Unread badges"
 msgstr "Unread badges"
 
 #: src/features/library/components/LibraryOptionsPanel.tsx
+#: src/features/manga/components/MangaBadges.tsx
 msgid "Unread chapters"
 msgstr "Unread chapters"
 
