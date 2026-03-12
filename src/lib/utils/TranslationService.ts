@@ -36,7 +36,6 @@ export class TranslationService {
         }
 
         try {
-            console.log(`translate Spanish to English: ${cleanText}`);
             if (!this.instance) {
                 if (this.isDownloading) {
                     await new Promise<void>((resolve) => {
@@ -61,6 +60,8 @@ export class TranslationService {
 
                 this.isDownloading = false;
             }
+
+            console.log(`translate Spanish to English: ${cleanText}`);
             const result = await this.instance(cleanText, {
                 chunk_length: 64,
                 stride: 0,
