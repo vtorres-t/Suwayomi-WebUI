@@ -11,36 +11,53 @@ import { pipeline, env } from '@xenova/transformers';
 
 env.allowLocalModels = false;
 env.allowRemoteModels = true;
-// Forzamos a que use el CDN oficial de Hugging Face
+env.useBrowserCache = true;
 env.remoteHost = 'https://huggingface.co';
 env.remotePathTemplate = '{model}/resolve/{revision}/';
-env.useBrowserCache = false;
 
 export class TranslationService {
     private static instance: any = null;
+
+    private static isDownloading: boolean = false;
 
     public static async translate(text: string): Promise<string> {
         if (!text?.trim()) return text;
 
         try {
+            console.log(`translate Spanish to English: ${text}`);
             if (!this.instance) {
+                if (this.isDownloading) {
+                    await new Promise<void>((resolve) => {
+                        setTimeout(() => {
+                            resolve();
+                        }, 500);
+                    });
+                    return await this.translate(text);
+                }
+
+                this.isDownloading = true;
+
                 this.instance = await pipeline('translation', 'Xenova/opus-mt-es-en', {
                     quantized: true,
+                    revision: 'main',
                     progress_callback: (p: any) => {
                         if (p.status === 'progress') {
-                            console.log(`Cargando modelo: ${p.file} ${p.progress.toFixed(2)}%`);
+                            console.log(`Cargando traductor: ${p.progress.toFixed(0)}%`);
                         }
                     },
                 });
-            }
 
-            console.log(`translate Spanish to English: ${text}`);
-            const result = await this.instance(text);
+                this.isDownloading = false;
+            }
+            const result = await this.instance(text, {
+                chunk_length: 128,
+                stride: 0,
+            });
             console.log(`result translate: ${result[0]?.translation_text}`);
-            // T5 devuelve un array [{ translation_text: "..." }]
             return result[0]?.translation_text || text;
         } catch (error) {
-            console.error('Fallo total en el traductor:', error);
+            this.isDownloading = false;
+            console.error('Error en TranslationService:', error);
             return text;
         }
     }
