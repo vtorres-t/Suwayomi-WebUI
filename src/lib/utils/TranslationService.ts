@@ -20,7 +20,7 @@ export class TranslationService {
 
     private static isDownloading: boolean = false;
 
-    private static readonly MAX_CACHE_SIZE = 500;
+    private static readonly MAX_CACHE_SIZE = 100;
 
     private static readonly responseCache = new Map<string, string>();
 
