@@ -24,9 +24,7 @@ export class TranslationService {
 
         try {
             if (!this.instance) {
-                // Especificamos la tarea 'translation_en_to_es' (o similar según el modelo)
-                this.instance = await pipeline('translation', 'Xenova/t5-small', {
-                    // Importante: intentamos cargar sin cuantizar si lo otro falla
+                this.instance = await pipeline('translation', 'Xenova/opus-mt-es-en', {
                     quantized: true,
                     progress_callback: (p: any) => {
                         if (p.status === 'progress') {
@@ -37,8 +35,7 @@ export class TranslationService {
             }
 
             console.log(`translate Spanish to English: ${text}`);
-            // T5-small requiere el prefijo exacto
-            const result = await this.instance(`translate Spanish to English: ${text}`);
+            const result = await this.instance(text);
             console.log(`result translate: ${result[0]?.translation_text}`);
             // T5 devuelve un array [{ translation_text: "..." }]
             return result[0]?.translation_text || text;
