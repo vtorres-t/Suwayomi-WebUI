@@ -62,7 +62,7 @@ export class TranslationService {
                 this.isDownloading = false;
             }
             const result = await this.instance(cleanText, {
-                chunk_length: 128,
+                chunk_length: 64,
                 stride: 0,
             });
 
@@ -82,6 +82,7 @@ export class TranslationService {
             return finalResult;
         } catch (error) {
             this.isDownloading = false;
+            this.instance = null;
             console.error('Error en TranslationService:', error);
             return cleanText;
         }
