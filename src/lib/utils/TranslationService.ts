@@ -20,11 +20,23 @@ export class TranslationService {
 
     private static isDownloading: boolean = false;
 
+    private static readonly MAX_CACHE_SIZE = 500;
+
+    private static readonly responseCache = new Map<string, string>();
+
     public static async translate(text: string): Promise<string> {
-        if (!text?.trim()) return text;
+        const cleanText = text?.trim();
+        if (!cleanText) return text;
+
+        if (this.responseCache.has(cleanText)) {
+            const cached = this.responseCache.get(cleanText) ?? cleanText;
+            this.responseCache.delete(cleanText);
+            this.responseCache.set(cleanText, cached);
+            return cached;
+        }
 
         try {
-            console.log(`translate Spanish to English: ${text}`);
+            console.log(`translate Spanish to English: ${cleanText}`);
             if (!this.instance) {
                 if (this.isDownloading) {
                     await new Promise<void>((resolve) => {
@@ -32,7 +44,7 @@ export class TranslationService {
                             resolve();
                         }, 500);
                     });
-                    return await this.translate(text);
+                    return await this.translate(cleanText);
                 }
 
                 this.isDownloading = true;
@@ -49,16 +61,29 @@ export class TranslationService {
 
                 this.isDownloading = false;
             }
-            const result = await this.instance(text, {
+            const result = await this.instance(cleanText, {
                 chunk_length: 128,
                 stride: 0,
             });
-            console.log(`result translate: ${result[0]?.translation_text}`);
-            return result[0]?.translation_text || text;
+
+            const translatedText = Array.isArray(result) ? result[0]?.translation_text : result?.translation_text;
+            console.log(`result translate: ${translatedText}`);
+            const finalResult = translatedText || cleanText;
+
+            if (finalResult !== cleanText) {
+                if (this.responseCache.size >= this.MAX_CACHE_SIZE) {
+                    const firstKey = this.responseCache.keys().next().value;
+                    if (firstKey !== undefined) {
+                        this.responseCache.delete(firstKey);
+                    }
+                }
+                this.responseCache.set(cleanText, finalResult);
+            }
+            return finalResult;
         } catch (error) {
             this.isDownloading = false;
             console.error('Error en TranslationService:', error);
-            return text;
+            return cleanText;
         }
     }
 }
