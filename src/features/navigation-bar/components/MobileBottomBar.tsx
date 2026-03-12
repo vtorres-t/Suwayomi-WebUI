@@ -9,15 +9,16 @@
 import BottomNavigation from '@mui/material/BottomNavigation';
 import BottomNavigationAction from '@mui/material/BottomNavigationAction';
 import Paper from '@mui/material/Paper';
-import { CSSProperties, useCallback, useLayoutEffect, useRef, useState } from 'react';
+import type { CSSProperties } from 'react';
+import { useCallback, useLayoutEffect, useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useTheme } from '@mui/material/styles';
 import Badge from '@mui/material/Badge';
 import { useLingui } from '@lingui/react/macro';
 import { useResizeObserver } from '@/base/hooks/useResizeObserver.tsx';
 import { useNavBarContext } from '@/features/navigation-bar/NavbarContext.tsx';
-import { NavbarItem } from '@/features/navigation-bar/NavigationBar.types.ts';
-import { StaticAppRoute } from '@/base/AppRoute.constants.ts';
+import type { NavbarItem } from '@/features/navigation-bar/NavigationBar.types.ts';
+import type { StaticAppRoute } from '@/base/AppRoute.constants.ts';
 
 export const MobileBottomBar = ({ navBarItems }: { navBarItems: NavbarItem[] }) => {
     const { t } = useLingui();
@@ -67,6 +68,7 @@ export const MobileBottomBar = ({ navBarItems }: { navBarItems: NavbarItem[] }) 
             >
                 {navBarItems.map(({ path, title, IconComponent, SelectedIconComponent, useBadge }) => (
                     <BottomNavigationAction
+                        key={path}
                         value={path}
                         label={t(title)}
                         icon={

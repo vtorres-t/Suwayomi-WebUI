@@ -10,3 +10,4 @@ dev-dist/*
 src/lib/graphql/schema.json
 
 public/models/
+.oxlintrc.jsonc

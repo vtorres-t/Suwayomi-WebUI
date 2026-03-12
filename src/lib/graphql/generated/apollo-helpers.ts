@@ -1,4 +1,9 @@
-import { FieldPolicy, FieldReadFunction, TypePolicies, TypePolicy } from '@apollo/client/cache';
+import {FieldPolicy, FieldReadFunction, Reference, TypePolicies, TypePolicy} from '@apollo/client/cache';
+import {
+	GetChaptersMangaQuery, GetDownloadStatusQueryVariables, GetGlobalMetadataQueryVariables,
+	GetMangaScreenQueryVariables, GetSourceBrowseQueryVariables, GetUpdateStatusQueryVariables, GetWebuiUpdateStatusQueryVariables,
+} from "@/lib/graphql/generated/graphql.ts";
+import {FieldFunctionOptions} from "@apollo/client/cache";
 export type AboutServerPayloadKeySpecifier = ('buildTime' | 'buildType' | 'github' | 'name' | 'revision' | 'version' | AboutServerPayloadKeySpecifier)[];
 export type AboutServerPayloadFieldPolicy = {
 	buildTime?: FieldPolicy<any> | FieldReadFunction<any>,
@@ -737,24 +742,24 @@ export type QueryFieldPolicy = {
 	categories?: FieldPolicy<any> | FieldReadFunction<any>,
 	category?: FieldPolicy<any> | FieldReadFunction<any>,
 	chapter?: FieldPolicy<any> | FieldReadFunction<any>,
-	chapters?: FieldPolicy<any> | FieldReadFunction<any>,
+	chapters?: FieldPolicy<GetChaptersMangaQuery['chapters']> | FieldReadFunction<GetChaptersMangaQuery['chapters']>,
 	checkForServerUpdates?: FieldPolicy<any> | FieldReadFunction<any>,
 	checkForWebUIUpdate?: FieldPolicy<any> | FieldReadFunction<any>,
-	downloadStatus?: FieldPolicy<any> | FieldReadFunction<any>,
+	downloadStatus?: FieldPolicy<Reference, Reference, Reference, FieldFunctionOptions<GetDownloadStatusQueryVariables>> | FieldReadFunction<Reference, Reference, FieldFunctionOptions<GetDownloadStatusQueryVariables>>,
 	extension?: FieldPolicy<any> | FieldReadFunction<any>,
 	extensions?: FieldPolicy<any> | FieldReadFunction<any>,
-	getWebUIUpdateStatus?: FieldPolicy<any> | FieldReadFunction<any>,
+	getWebUIUpdateStatus?: FieldPolicy<Reference, Reference, Reference, FieldFunctionOptions<GetWebuiUpdateStatusQueryVariables>> | FieldReadFunction<Reference, Reference, FieldFunctionOptions<GetWebuiUpdateStatusQueryVariables>>,
 	koSyncStatus?: FieldPolicy<any> | FieldReadFunction<any>,
 	lastUpdateTimestamp?: FieldPolicy<any> | FieldReadFunction<any>,
-	libraryUpdateStatus?: FieldPolicy<any> | FieldReadFunction<any>,
-	manga?: FieldPolicy<any> | FieldReadFunction<any>,
+	libraryUpdateStatus?: FieldPolicy<Reference, Reference, Reference, FieldFunctionOptions<GetUpdateStatusQueryVariables>> | FieldReadFunction<Reference, Reference, FieldFunctionOptions<GetUpdateStatusQueryVariables>>,
+	manga?: FieldPolicy<Reference, Reference, Reference, FieldFunctionOptions<GetMangaScreenQueryVariables>> | FieldReadFunction<Reference, Reference, FieldFunctionOptions<GetMangaScreenQueryVariables>>,
 	mangas?: FieldPolicy<any> | FieldReadFunction<any>,
-	meta?: FieldPolicy<any> | FieldReadFunction<any>,
+	meta?: FieldPolicy<Reference, Reference, Reference, FieldFunctionOptions<GetGlobalMetadataQueryVariables>> | FieldReadFunction<Reference, Reference, FieldFunctionOptions<GetGlobalMetadataQueryVariables>>,
 	metas?: FieldPolicy<any> | FieldReadFunction<any>,
 	restoreStatus?: FieldPolicy<any> | FieldReadFunction<any>,
 	searchTracker?: FieldPolicy<any> | FieldReadFunction<any>,
 	settings?: FieldPolicy<any> | FieldReadFunction<any>,
-	source?: FieldPolicy<any> | FieldReadFunction<any>,
+	source?: FieldPolicy<Reference, Reference, Reference, FieldFunctionOptions<GetSourceBrowseQueryVariables>> | FieldReadFunction<Reference, Reference, FieldFunctionOptions<GetSourceBrowseQueryVariables>>,
 	sources?: FieldPolicy<any> | FieldReadFunction<any>,
 	trackRecord?: FieldPolicy<any> | FieldReadFunction<any>,
 	trackRecords?: FieldPolicy<any> | FieldReadFunction<any>,
