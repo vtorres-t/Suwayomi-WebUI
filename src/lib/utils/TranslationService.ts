@@ -36,9 +36,10 @@ export class TranslationService {
                 });
             }
 
+            console.log(`translate Spanish to English: ${text}`);
             // T5-small requiere el prefijo exacto
             const result = await this.instance(`translate Spanish to English: ${text}`);
-
+            console.log(`result translate: ${result[0]?.translation_text}`);
             // T5 devuelve un array [{ translation_text: "..." }]
             return result[0]?.translation_text || text;
         } catch (error) {
