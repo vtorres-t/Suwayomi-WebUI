@@ -16,7 +16,7 @@ jobs:
       - name: Install modules
         run: yarn ci
 
-      - name: Run ESLint
+      - name: Run Lint
         run: yarn lint
 
       - name: Run TSC
