@@ -26,7 +26,9 @@ export class TranslationService {
 
     public static async translate(text: string): Promise<string> {
         const cleanText = text?.trim();
-        if (!cleanText) return text;
+        if (!cleanText) {
+            return text;
+        }
 
         if (this.responseCache.has(cleanText)) {
             const cached = this.responseCache.get(cleanText) ?? cleanText;

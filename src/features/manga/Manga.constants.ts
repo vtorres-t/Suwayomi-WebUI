@@ -6,15 +6,16 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-import { MessageDescriptor } from '@lingui/core';
+import type { MessageDescriptor } from '@lingui/core';
 import { msg } from '@lingui/core/macro';
 import { MangaStatus } from '@/lib/graphql/generated/graphql.ts';
-import { MangaAction, MangaIdInfo, MangaType } from '@/features/manga/Manga.types.ts';
+import type { MangaAction, MangaIdInfo } from '@/features/manga/Manga.types.ts';
+import { MangaType } from '@/features/manga/Manga.types.ts';
 import {
     CHAPTER_ACTION_TO_CONFIRMATION_REQUIRED,
     CHAPTER_ACTION_TO_TRANSLATION,
 } from '@/features/chapter/Chapter.constants.ts';
-import { GqlMetaHolder } from '@/features/metadata/Metadata.types.ts';
+import type { GqlMetaHolder } from '@/features/metadata/Metadata.types.ts';
 
 export const FALLBACK_MANGA: MangaIdInfo & GqlMetaHolder = { id: -1 };
 
@@ -158,7 +159,7 @@ export const SOURCES_BY_MANGA_TYPE: Record<MangaType, string[]> = {
  * The actual matching data is in {@link MANGA_TAGS_BY_MANGA_TYPE} below.
  */
 // @ts-ignore - see comment
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+// oxlint-disable-next-line no-unused-vars
 const MANGA_TAG_DESCRIPTORS_BY_MANGA_TYPE: Record<MangaType, MessageDescriptor[]> = {
     [MangaType.MANGA]: [msg`Manga`],
     [MangaType.COMIC]: [msg`Comic`],

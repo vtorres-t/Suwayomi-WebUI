@@ -32,17 +32,17 @@ import { SortFilter } from '@/features/source/browse/components/filters/SortFilt
 import { TextFilter } from '@/features/source/browse/components/filters/TextFilter.tsx';
 import { TriStateFilter } from '@/features/source/browse/components/filters/TriStateFilter.tsx';
 // this can only cycle once, so should be fine
-// eslint-disable-next-line import/no-cycle
+
 import { GroupFilter } from '@/features/source/browse/components/filters/GroupFilter.tsx';
 import { SeparatorFilter } from '@/features/source/browse/components/filters/SeparatorFilter.tsx';
 import { StyledFab } from '@/base/components/buttons/StyledFab.tsx';
 import { defaultPromiseErrorHandler } from '@/lib/DefaultPromiseErrorHandler.ts';
-import { ISourceMetadata, SourceFilters } from '@/features/source/Source.types.ts';
+import type { IPos, ISourceMetadata, SourceFilters } from '@/features/source/Source.types.ts';
 import { Confirmation } from '@/base/AppAwaitableComponent.ts';
 
 interface IFilters {
     sourceFilter: SourceFilters[];
-    updateFilterValue: Function;
+    updateFilterValue: (value: IPos[]) => void;
     group: number | undefined;
     update: any;
 }
@@ -52,9 +52,9 @@ interface IFilters1 {
     selectSavedSearch: (savedSearch: string) => void;
     updateSavedSearches: (savedSearch: string, updateType: 'create' | 'delete') => void;
     sourceFilter: SourceFilters[];
-    updateFilterValue: Function;
-    resetFilterValue: Function;
-    setTriggerUpdate: Function;
+    updateFilterValue: (value: IPos[]) => void;
+    resetFilterValue: (value: number) => void;
+    setTriggerUpdate: (value: number) => void;
     update: any;
 }
 
@@ -249,6 +249,7 @@ export function SourceOptions({
                             <Stack sx={{ flexDirection: 'row' }}>
                                 {savedSearchNames.map((savedSearch) => (
                                     <Chip
+                                        key={savedSearch}
                                         label={savedSearch}
                                         onClick={() => {
                                             setFilterOptions(false);
