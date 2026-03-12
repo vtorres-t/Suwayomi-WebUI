@@ -167,7 +167,8 @@ export const TrackerSearch = ({
     };
 
     const translateFromSearch = async () => {
-        setSearchString(await translateOffline(tmpSearchString));
+        setTmpSearchString(await translateOffline(tmpSearchString));
+        setSearchString(tmpSearchString);
     };
 
     return (

@@ -4,7 +4,6 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "setup:models": "tsx tools/scripts/downloadModels.ts",
     "ci": "yarn install --frozen-lockfile",
     "setup-env-files": "tsx tools/scripts/setupEnvFiles.ts",
     "setup": "yarn ci && yarn setup-env-files",
@@ -62,7 +61,6 @@
     "@xenova/transformers": "^2.17.2",
     "apollo-upload-client": "18.0.1",
     "awaitable-component": "1.0.0",
-    "axios": "^1.13.6",
     "csstype": "3.2.3",
     "dayjs": "1.11.19",
     "fast-average-color": "9.5.0",
