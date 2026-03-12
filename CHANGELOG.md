@@ -7,12 +7,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 ## [Unreleased] (Preview)
 
 ### Added
+
 - (**Theme**) Add an option to save the dynamic color theme on the manga page as a custom theme
 - (**WebUI Update**) Add an option to (partially) disable showing information when the webUI got updated
 - (**Server Update**) Add an option to disable showing information when the server got updated
 - (**Manga**) Add an option to include client data during migration
 
 ### Changed
+
 - (**General**) Preserve refresh token (UI Login) over sessions
 - (**General**) Reduce base font size
 - (**General**) Save selected app language on the server
@@ -77,6 +79,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - (**Extension**) Fix being unable to uninstall an extension that can be updated
 - (**Theme**) Fix loading of fonts defined in themes
 - (**Reader**) Fix broken scrolling in continuous horizontal reading mode
+
+### Translations
+Feel free to translate the project on [Weblate](https://hosted.weblate.org/projects/suwayomi/suwayomi-webui/)
+
+Thanks to everyone that contributed to the translation of this project.
 
 #### Added
 - Russian (by Micka149)
