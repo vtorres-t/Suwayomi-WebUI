@@ -43,6 +43,7 @@ import { Tracker } from '@/features/tracker/Tracker.types.ts';
 import { CustomButtonIcon } from '@/base/components/buttons/CustomButtonIcon.tsx';
 import { CustomTooltip } from '@/base/components/CustomTooltip.tsx';
 import { translateOffline } from '@/lib/utils/TranslationService.ts';
+import { STABLE_EMPTY_ARRAY } from '@/base/Base.constants.ts';
 
 const TrackButton = ({
     mangaId,
@@ -136,7 +137,7 @@ export const TrackerSearch = ({
     const trackerSearch = requestManager.useTrackerSearch(tracker.id, searchString, {
         notifyOnNetworkStatusChange: true,
     });
-    const searchResults = trackerSearch.data?.searchTracker.trackSearches ?? [];
+    const searchResults = trackerSearch.data?.searchTracker.trackSearches ?? STABLE_EMPTY_ARRAY;
 
     const hasResults = !!searchResults.length;
     const hasNoResults = !trackerSearch.loading && !trackerSearch.error && !hasResults;

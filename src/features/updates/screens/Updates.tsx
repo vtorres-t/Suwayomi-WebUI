@@ -25,6 +25,7 @@ import { ChapterUpdateCard } from '@/features/updates/components/ChapterUpdateCa
 import { Chapters } from '@/features/chapter/services/Chapters.ts';
 import { useAppTitleAndAction } from '@/features/navigation-bar/hooks/useAppTitleAndAction.ts';
 import { CustomTooltip } from '@/base/components/CustomTooltip.tsx';
+import { STABLE_EMPTY_ARRAY } from '@/base/Base.constants.ts';
 
 export const Updates: React.FC = () => {
     const { t } = useLingui();
@@ -41,7 +42,7 @@ export const Updates: React.FC = () => {
     });
     const hasNextPage = !!chapterUpdateData?.chapters.pageInfo.hasNextPage;
     const endCursor = chapterUpdateData?.chapters.pageInfo.endCursor;
-    const updateEntries = chapterUpdateData?.chapters.nodes ?? [];
+    const updateEntries = chapterUpdateData?.chapters.nodes ?? STABLE_EMPTY_ARRAY;
     const groupedUpdates = useMemo(
         () => Object.entries(Chapters.groupByDate(updateEntries, 'fetchedAt')),
         [updateEntries],
