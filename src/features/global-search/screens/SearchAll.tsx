@@ -28,6 +28,7 @@ import { AppbarSearch } from '@/base/components/AppbarSearch.tsx';
 import { useDebounce } from '@/base/hooks/useDebounce.ts';
 import type { MangaCardProps } from '@/features/manga/Manga.types.ts';
 import { EmptyView } from '@/base/components/feedback/EmptyView.tsx';
+import { STABLE_EMPTY_ARRAY } from '@/base/Base.constants.ts';
 import { defaultPromiseErrorHandler } from '@/lib/DefaultPromiseErrorHandler.ts';
 import { LoadingPlaceholder } from '@/base/components/feedback/LoadingPlaceholder.tsx';
 import { BaseMangaGrid } from '@/features/manga/components/BaseMangaGrid.tsx';
@@ -149,7 +150,7 @@ const SourceSearchPreview = React.memo(
         const { data: searchResult, isLoading, error, abortRequest } = results[0]!;
         currentAbortRequest.current = abortRequest;
 
-        const mangas = searchResult?.fetchSourceManga?.mangas ?? [];
+        const mangas = searchResult?.fetchSourceManga?.mangas ?? STABLE_EMPTY_ARRAY;
         const noMangasFound = !error && !isLoading && !mangas.length;
 
         useEffect(() => {
@@ -254,7 +255,7 @@ export const SearchAll: React.FC = () => {
     } = useMetadataServerSettings();
 
     const { data, loading, error, refetch } = requestManager.useGetSourceList({ notifyOnNetworkStatusChange: true });
-    const sources = useMemo(() => data?.sources.nodes ?? [], [data?.sources.nodes]);
+    const sources = data?.sources.nodes ?? STABLE_EMPTY_ARRAY;
 
     const [sourceToLoadingStateMap, setSourceToLoadingStateMap] = useState<SourceToLoadingStateMap>(new Map());
     const debouncedSourceToLoadingStateMap = useDebounce(sourceToLoadingStateMap, 500);
@@ -304,7 +305,7 @@ export const SearchAll: React.FC = () => {
                 selectedLanguages={shownLangs}
                 setSelectedLanguages={setShownLangs}
                 languages={sourceLanguages}
-                sources={sources ?? []}
+                sources={sources}
             />
         </>,
         [shownLangs, setShownLangs, sourceLanguages, sources],
