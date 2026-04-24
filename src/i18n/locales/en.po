@@ -3436,6 +3436,7 @@ msgid "Tap zones"
 msgstr "Tap zones"
 
 #: src/features/settings/components/images/Processing.tsx
+#: src/features/settings/components/images/Processing.tsx
 msgid "Target mode"
 msgstr "Target mode"
 
@@ -3588,6 +3589,7 @@ msgid "Toggle stretch image"
 msgstr "Toggle stretch image"
 
 #: src/features/library/components/LibraryOptionsPanel.tsx
+#: src/features/library/components/LibraryOptionsPanel.tsx
 #: src/features/manga/components/MangaBadges.tsx
 msgid "Total chapters"
 msgstr "Total chapters"
@@ -3660,6 +3662,7 @@ msgstr "UI Login"
 #: src/features/library/screens/Library.tsx
 #: src/features/library/screens/LibraryDuplicates.tsx
 #: src/features/library/screens/LibrarySettings.tsx
+#: src/features/manga/hooks/useManageMangaLibraryState.tsx
 #: src/features/manga/hooks/useManageMangaLibraryState.tsx
 #: src/features/migration/screens/MigrationSelectMangas.tsx
 #: src/features/migration/screens/MigrationSelectSource.tsx
@@ -3820,6 +3823,7 @@ msgstr "Use the version that was delivered with the server release"
 #: src/base/components/modals/LoginDialog.tsx
 #: src/features/authentication/screens/LoginPage.tsx
 #: src/features/settings/screens/ServerSettings.tsx
+#: src/features/settings/screens/ServerSettings.tsx
 msgid "Username"
 msgstr "Username"
 
@@ -3832,6 +3836,7 @@ msgid "Veronica"
 msgstr "Veronica"
 
 #: src/features/extension/info/components/Meta.tsx
+#: src/features/settings/screens/About.tsx
 #: src/features/settings/screens/About.tsx
 msgid "Version"
 msgstr "Version"
