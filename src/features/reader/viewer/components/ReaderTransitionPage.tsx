@@ -12,7 +12,7 @@ import Button from '@mui/material/Button';
 import { Link } from 'react-router-dom';
 import type { ComponentProps } from 'react';
 import { memo, useMemo } from 'react';
-import { alpha, useTheme } from '@mui/material/styles';
+import { useTheme } from '@mui/material/styles';
 import { useLingui } from '@lingui/react/macro';
 import type { IReaderSettings } from '@/features/reader/Reader.types.ts';
 import { ReaderTransitionPageMode, ReadingMode } from '@/features/reader/Reader.types.ts';
@@ -55,7 +55,7 @@ const ChapterInfo = ({
     const contrastText = theme.palette.getContrastText(
         getValueFromObject(theme.palette, READER_BACKGROUND_TO_COLOR[backgroundColor]),
     );
-    const disabledText = alpha(contrastText, 0.5);
+    const disabledText = theme.alpha(contrastText, 0.5);
 
     if (!name) {
         return null;
@@ -63,12 +63,12 @@ const ChapterInfo = ({
 
     return (
         <Stack>
-            <Typography color={contrastText}>{title}</Typography>
-            <Typography color={contrastText} variant="h6" component="h1">
+            <Typography sx={{ color: contrastText }}>{title}</Typography>
+            <Typography sx={{ color: contrastText }} variant="h6" component="h1">
                 {name}
             </Typography>
             {scanlator && (
-                <Typography variant="body2" color={disabledText}>
+                <Typography variant="body2" sx={{ color: disabledText }}>
                     {scanlator}
                 </Typography>
             )}
