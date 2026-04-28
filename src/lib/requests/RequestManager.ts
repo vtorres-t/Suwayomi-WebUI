@@ -3558,6 +3558,12 @@ export class RequestManager {
         ) as useSubscription.Result<UpdaterSubscription>;
     }
 
+    public getServerSettings(
+        options?: QueryOptions<GetServerSettingsQueryVariables>,
+    ): AbortabaleApolloQueryResponse<GetServerSettingsQuery> {
+        return this.doRequest(GQLMethod.QUERY, GET_SERVER_SETTINGS, undefined, options);
+    }
+
     public useGetServerSettings(
         options?: QueryHookOptions<GetServerSettingsQuery, GetServerSettingsQueryVariables>,
     ): AbortableApolloUseQueryResponse<GetServerSettingsQuery, GetServerSettingsQueryVariables> {
