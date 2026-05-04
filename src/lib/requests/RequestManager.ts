@@ -2227,7 +2227,7 @@ export class RequestManager {
             {
                 id: Number(mangaId),
             },
-            { refetchQueries: [GET_CHAPTERS_MANGA], ...options },
+            { refetchQueries: [GET_CHAPTERS_MANGA], errorPolicy: 'all', ...options },
         );
     }
 
