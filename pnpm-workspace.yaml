@@ -1,0 +1,7 @@
+saveExact: true
+allowBuilds:
+    '@swc/core': true
+    core-js: true
+    esbuild: true
+    protobufjs: true
+    sharp: true
