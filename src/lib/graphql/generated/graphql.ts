@@ -274,14 +274,18 @@ export type GetChaptersHistoryQueryVariables = Exact<{
 export type GetChaptersHistoryQuery = { __typename: 'Query', chapters: { __typename: 'ChapterNodeList', totalCount: number, nodes: Array<{ __typename: 'ChapterType', fetchedAt: string, uploadDate: string, lastReadAt: string, id: number, name: string, mangaId: number, scanlator: string | null, realUrl: string | null, sourceOrder: number, chapterNumber: number, isRead: boolean, isDownloaded: boolean, isBookmarked: boolean, manga: { __typename: 'MangaType', id: number, title: string, thumbnailUrl: string | null, thumbnailUrlLastFetched: string | null, inLibrary: boolean, initialized: boolean, sourceId: string } }>, pageInfo: { __typename: 'PageInfo', endCursor: string | null, hasNextPage: boolean, hasPreviousPage: boolean, startCursor: string | null } } };
 
 export type GetMangasChapterIdsWithStateQueryVariables = Exact<{
-  mangaIds: Array<number> | number;
-  isDownloaded?: boolean | null | undefined;
-  isRead?: boolean | null | undefined;
-  isBookmarked?: boolean | null | undefined;
+  after?: string | null | undefined;
+  before?: string | null | undefined;
+  condition?: Types.ChapterConditionInput | null | undefined;
+  filter?: Types.ChapterFilterInput | null | undefined;
+  first?: number | null | undefined;
+  last?: number | null | undefined;
+  offset?: number | null | undefined;
+  order?: Array<Types.ChapterOrderInput> | Types.ChapterOrderInput | null | undefined;
 }>;
 
 
-export type GetMangasChapterIdsWithStateQuery = { __typename: 'Query', chapters: { __typename: 'ChapterNodeList', nodes: Array<{ __typename: 'ChapterType', mangaId: number, scanlator: string | null, chapterNumber: number, id: number, isRead: boolean, isDownloaded: boolean, isBookmarked: boolean }> } };
+export type GetMangasChapterIdsWithStateQuery = { __typename: 'Query', chapters: { __typename: 'ChapterNodeList', totalCount: number, nodes: Array<{ __typename: 'ChapterType', mangaId: number, scanlator: string | null, chapterNumber: number, id: number, isRead: boolean, isDownloaded: boolean, isBookmarked: boolean }>, pageInfo: { __typename: 'PageInfo', endCursor: string | null, hasNextPage: boolean, hasPreviousPage: boolean, startCursor: string | null } } };
 
 export type PageInfoFragment = { __typename: 'PageInfo', endCursor: string | null, hasNextPage: boolean, hasPreviousPage: boolean, startCursor: string | null };
 
@@ -541,6 +545,13 @@ export type UpdateMangaMetadataMutationVariables = Exact<{
 
 
 export type UpdateMangaMetadataMutation = { __typename: 'Mutation', preUpdateDeletedMeta?: { __typename: 'DeleteMangaMetasPayload', metas: Array<{ __typename: 'MangaMetaType', mangaId: number, key: string, value: string }> } | null, updatedMeta?: { __typename: 'SetMangaMetasPayload', metas: Array<{ __typename: 'MangaMetaType', mangaId: number, key: string, value: string }> } | null, postUpdateDeletedMeta?: { __typename: 'DeleteMangaMetasPayload', metas: Array<{ __typename: 'MangaMetaType', mangaId: number, key: string, value: string }> } | null, migrationMeta?: { __typename: 'SetMangaMetasPayload', metas: Array<{ __typename: 'MangaMetaType', mangaId: number, key: string, value: string }> } | null };
+
+export type GetMangaMetaQueryVariables = Exact<{
+  id: number;
+}>;
+
+
+export type GetMangaMetaQuery = { __typename: 'Query', manga: { __typename: 'MangaType', id: number, meta: Array<{ __typename: 'MangaMetaType', mangaId: number, key: string, value: string }> } };
 
 export type GetMangaScreenQueryVariables = Exact<{
   id: number;
