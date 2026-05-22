@@ -11,6 +11,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - (**Migration**) Add a search option to ignore outdated matches
 - (**Migration**) Add a search option to ignore matches with missing chapters
 - (**Migration**) Add "local source" as a possible destination source
+- (**Migration**) Add option to abort entries that are searching or are waiting to get migrated
 
 ### Changed
 
@@ -24,6 +25,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - (**Migration**) Prevent a manual selected match from getting automatically overwritten by a new-found match
 - (**Migration**) Abort active search when selecting a match through the manual search
 - (**Migration**) Sort unselected matched entries by 1. their latest chapter, 2. their source priority, 3. their title
+- (**Migration**) Change migration match exclude/include icons
+- (**Migration**) Show the exclude/include button only for an entry with a selected match
 
 ### Fixed
 
@@ -36,13 +39,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - (**Migration**) Fix going back to the migration page after a manual search with a changed search string
 - (**Migration**) Fix being able to start search without selected destination sources
 - (**Migration**) Fix search hotkey (ctrl+f) in the single manga migration search page not focusing the search textfield
+- (**Migration**) Fix missing manual search option for in progress entry search without a selected match on mobile
+- (**Migration**) Fix being unable to retry failed search for a match without a selected match
 - (**Reader**) Fix scrollbar appearing with "fit to widt/height/screen" page scale mode and applied safe area insets
 - (**Reader**) Fix wrongly positioned mobile progress bar current page indicator
 - (**Reader**) Fix mobile progress bar previous/next chapter button visibility on hover and while disabled
 - (**Reader**) Fix jumping back to the first page on window resize
 - (**Reader**) Fix chapter not getting marked as read in continuous reading mode in case the last page is not big enough to get marked as the current page
-- (**Browse**) Fix showing only nsfw sources in the browse source page when the "show nsfw" setting is disabled
 - (**Reader**) Fix infinite scrolling with disabled transition page
+- (**Browse**) Fix showing only nsfw sources in the browse source page when the "show nsfw" setting is disabled
 
 ## [20260509.01] (r3147) - 2026-05-09
 
