@@ -30,6 +30,11 @@ msgstr "{0, plural, one {# Chapter} other {# Chapters}}"
 msgid "{0, plural, one {# day} other {# days}}"
 msgstr "{0, plural, one {# day} other {# days}}"
 
+#. placeholder {0}: downloadSettings.maxDownloadsInParallel
+#: src/features/downloads/screens/DownloadSettings.tsx
+msgid "{0, plural, one {# Download} other {# Downloads}}"
+msgstr "{0, plural, one {# Download} other {# Downloads}}"
+
 #. placeholder {0}: selectedItemIds.length
 #: src/features/library/screens/Library.tsx
 msgid "{0, plural, one {# manga} other {# manga}}"
@@ -1403,6 +1408,7 @@ msgstr "Doujinshi"
 #: src/features/chapter/Chapter.constants.ts
 #: src/features/chapter/components/buttons/ChapterDownloadButton.tsx
 #: src/features/chapter/components/ChaptersToolbarMenu.tsx
+#: src/features/downloads/screens/DownloadSettings.tsx
 msgid "Download"
 msgstr "Download"
 
@@ -1417,6 +1423,10 @@ msgstr "Download ahead ({count})"
 #: src/features/library/components/LibraryOptionsPanel.tsx
 msgid "Download chapters"
 msgstr "Download chapters"
+
+#: src/features/downloads/screens/DownloadSettings.tsx
+msgid "Download limit"
+msgstr "Download limit"
 
 #: src/features/downloads/screens/DownloadSettings.tsx
 msgid "Download location"
@@ -1918,6 +1928,7 @@ msgstr ""
 
 #: src/features/manga/components/details/MangaDetails.tsx
 #: src/features/manga/components/MangaBadges.tsx
+#: src/features/migration/components/migration-entry/MigrationEntryThumbnail.tsx
 msgid "In Library"
 msgstr "In Library"
 
@@ -2167,6 +2178,10 @@ msgstr "Limit reader width"
 #: src/features/downloads/screens/DownloadSettings.tsx
 msgid "Limit the amount of new chapters that are going to get downloaded."
 msgstr "Limit the amount of new chapters that are going to get downloaded."
+
+#: src/features/downloads/screens/DownloadSettings.tsx
+msgid "Limit the number of parallel downloads."
+msgstr "Limit the number of parallel downloads."
 
 #: src/features/settings/screens/About.tsx
 msgid "Links"

@@ -1867,6 +1867,7 @@ export type PartialSettingsType = Settings & {
   /** @deprecated Moved to preference store. User is supposed to use a login/logout mutation, replace with MOVE TO PREFERENCES */
   koreaderSyncUsername?: Maybe<Scalars['String']['output']>;
   localSourcePath?: Maybe<Scalars['String']['output']>;
+  maxDownloadsInParallel?: Maybe<Scalars['Int']['output']>;
   maxLogFileSize?: Maybe<Scalars['String']['output']>;
   maxLogFiles?: Maybe<Scalars['Int']['output']>;
   maxLogFolderSize?: Maybe<Scalars['String']['output']>;
@@ -1945,6 +1946,7 @@ export type PartialSettingsTypeInput = {
   koreaderSyncStrategyBackward?: InputMaybe<KoreaderSyncConflictStrategy>;
   koreaderSyncStrategyForward?: InputMaybe<KoreaderSyncConflictStrategy>;
   localSourcePath?: InputMaybe<Scalars['String']['input']>;
+  maxDownloadsInParallel?: InputMaybe<Scalars['Int']['input']>;
   maxLogFileSize?: InputMaybe<Scalars['String']['input']>;
   maxLogFiles?: InputMaybe<Scalars['Int']['input']>;
   maxLogFolderSize?: InputMaybe<Scalars['String']['input']>;
@@ -2467,6 +2469,7 @@ export type Settings = {
   /** @deprecated Moved to preference store. User is supposed to use a login/logout mutation, replace with MOVE TO PREFERENCES */
   koreaderSyncUsername?: Maybe<Scalars['String']['output']>;
   localSourcePath?: Maybe<Scalars['String']['output']>;
+  maxDownloadsInParallel?: Maybe<Scalars['Int']['output']>;
   maxLogFileSize?: Maybe<Scalars['String']['output']>;
   maxLogFiles?: Maybe<Scalars['Int']['output']>;
   maxLogFolderSize?: Maybe<Scalars['String']['output']>;
@@ -2610,6 +2613,7 @@ export type SettingsType = Settings & {
   /** @deprecated Moved to preference store. User is supposed to use a login/logout mutation, replace with MOVE TO PREFERENCES */
   koreaderSyncUsername: Scalars['String']['output'];
   localSourcePath: Scalars['String']['output'];
+  maxDownloadsInParallel: Scalars['Int']['output'];
   maxLogFileSize: Scalars['String']['output'];
   maxLogFiles: Scalars['Int']['output'];
   maxLogFolderSize: Scalars['String']['output'];

@@ -48,6 +48,7 @@ type DownloadSettingsType = Pick<
     | 'excludeEntryWithUnreadChapters'
     | 'autoDownloadIgnoreReUploads'
     | 'downloadConversions'
+    | 'maxDownloadsInParallel'
 >;
 
 export const DownloadSettings = () => {
@@ -125,6 +126,27 @@ export const DownloadSettings = () => {
                 }
                 handleChange={(path) => updateSetting('downloadsPath', path)}
             />
+            <NumberSetting
+                settingTitle={t`Download limit`}
+                dialogDescription={t`Limit the number of parallel downloads.`}
+                value={downloadSettings?.maxDownloadsInParallel ?? 0}
+                settingValue={
+                    !downloadSettings.maxDownloadsInParallel
+                        ? t`None`
+                        : plural(downloadSettings.maxDownloadsInParallel, {
+                              one: '# Download',
+                              other: '# Downloads',
+                          })
+                }
+                defaultValue={3}
+                minValue={1}
+                maxValue={6}
+                showSlider
+                valueUnit={t`Download`}
+                handleUpdate={(maxDownloadsInParallel) =>
+                    updateSetting('maxDownloadsInParallel', maxDownloadsInParallel)
+                }
+            />
             <ListItem>
                 <ListItemText primary={t`Save as CBZ archive`} />
                 <Switch
@@ -133,7 +155,7 @@ export const DownloadSettings = () => {
                     onChange={(e) => updateSetting('downloadAsCbz', e.target.checked)}
                 />
             </ListItem>
-            <ListItemLink to={AppRoutes.settings.childRoutes.images.childRoutes.processingDownloads.path}>
+            <ListItemLink to={AppRoutes.settings.children.images.children.processingDownloads.path}>
                 <ListItemText primary={t`Image download processing`} />
             </ListItemLink>
             <List
