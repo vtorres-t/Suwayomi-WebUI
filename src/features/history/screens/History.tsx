@@ -105,7 +105,7 @@ export const History: React.FC = () => {
 
     return (
         <StyledGroupedVirtuoso
-            persistKey="history"
+            persistKey="history-v5-stable"
             components={{
                 Footer: () => (isLoading ? <LoadingPlaceholder usePadding /> : null),
             }}
@@ -115,14 +115,16 @@ export const History: React.FC = () => {
             groupContent={(index) => (
                 <StyledGroupHeader isFirstItem={index === 0}>
                     <Typography variant="h5" component="h2">
-                        {groupedByDate[index].date}
+                        {groupedByDate[index]?.date}
                     </Typography>
                 </StyledGroupHeader>
             )}
             computeItemKey={computeItemKey}
             itemContent={(index, groupIndex) => {
                 const entry = groupedByDate[groupIndex]?.mangaEntries[index];
-                if (!entry) {return <div style={{ height: '92px' }} />;}
+                if (!entry) {
+                    return <div style={{ height: '92px' }} />;
+                }
 
                 return (
                     <StyledGroupItemWrapper sx={{ minHeight: '92px', display: 'block' }}>
