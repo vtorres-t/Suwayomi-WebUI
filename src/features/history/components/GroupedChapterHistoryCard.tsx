@@ -23,7 +23,6 @@ export const GroupedChapterHistoryCard = memo(({ chapters }: { chapters: Chapter
     const processedData = useMemo(() => {
         if (!chapters || chapters.length === 0) {return null;}
 
-        // Clonamos para evitar mutar el array original si fuera readonly
         const sortedByNumber = [...chapters].sort((a, b) => (a.chapterNumber ?? 0) - (b.chapterNumber ?? 0));
         const sortedByReadDate = [...chapters].sort((a, b) => Number(b.lastReadAt) - Number(a.lastReadAt));
 
@@ -40,9 +39,7 @@ export const GroupedChapterHistoryCard = memo(({ chapters }: { chapters: Chapter
         };
     }, [chapters]);
 
-    if (!processedData) {
-        return null;
-    }
+    if (!processedData) {return null;}
 
     const { firstChapterName, lastChapterName, lastReadAt, mostRecentChapter, manga } = processedData;
 

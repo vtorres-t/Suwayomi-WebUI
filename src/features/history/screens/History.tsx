@@ -45,7 +45,9 @@ export const History: React.FC = () => {
     const readEntries = chapterHistoryData?.chapters.nodes ?? STABLE_EMPTY_ARRAY;
 
     const groupedByDate = useMemo(() => {
-        if (!readEntries.length) {return STABLE_EMPTY_ARRAY;}
+        if (!readEntries.length) {
+            return STABLE_EMPTY_ARRAY;
+        }
 
         const dateGroups = Chapters.groupByDate(readEntries as HistoryNode[], 'lastReadAt');
 
@@ -53,17 +55,16 @@ export const History: React.FC = () => {
             const mangaGroups: Record<number, HistoryNode[]> = {};
 
             chapters.forEach((node) => {
-                const {id} = node.manga;
-                if (!mangaGroups[id]) {mangaGroups[id] = [];}
+                const { id } = node.manga;
+                if (!mangaGroups[id]) {
+                    mangaGroups[id] = [];
+                }
                 mangaGroups[id].push(node);
             });
 
             return {
                 date,
-                mangaEntries: Object.values(mangaGroups).map((nodes) => ({
-                    manga: nodes[0].manga,
-                    chapters: nodes,
-                })),
+                mangaEntries: Object.values(mangaGroups),
             };
         });
     }, [readEntries]);
@@ -75,36 +76,29 @@ export const History: React.FC = () => {
 
     const computeItemKey = VirtuosoUtil.useCreateGroupedComputeItemKey(
         groupCounts,
-        useCallback((index) => groupedByDate[index]?.date ?? index.toString(), [groupedByDate]),
+        useCallback((index) => groupedByDate[index]?.date ?? `date-${index}`, [groupedByDate]),
         useCallback(
             (index, groupIndex) => {
-                const entry = groupedByDate[groupIndex]?.mangaEntries[index];
-                const mangaId = entry?.manga?.id;
-                const date = groupedByDate[groupIndex]?.date;
-
-                if (!mangaId || !date) {
-                    return `temp-key-${groupIndex}-${index}`;
-                }
-
-                return `${date}-${mangaId}`;
+                const group = groupedByDate[groupIndex];
+                const entry = group?.mangaEntries[index];
+                const mangaId = entry?.[0]?.manga?.id;
+                return mangaId ? `${group.date}-${mangaId}` : `fallback-${groupIndex}-${index}`;
             },
             [groupedByDate],
         ),
     );
 
     const loadMore = useCallback(() => {
-        if (!hasNextPage || isLoading) {return;}
-
-        const currentCount = readEntries.length;
+        if (isLoading || !hasNextPage) {return;}
 
         fetchMore({
             variables: {
-                offset: currentCount,
+                offset: readEntries.length,
             },
         }).catch(defaultPromiseErrorHandler('History::loadMore'));
     }, [hasNextPage, isLoading, readEntries.length, fetchMore]);
 
-    if (error) {
+    if (error && !chapterHistoryData) {
         return (
             <EmptyViewAbsoluteCentered
                 message={t`Unable to load data`}
@@ -125,7 +119,7 @@ export const History: React.FC = () => {
             components={{
                 Footer: () => (isLoading ? <LoadingPlaceholder usePadding /> : null),
             }}
-            overscan={window.innerHeight * 0.7}
+            overscan={window.innerHeight}
             endReached={loadMore}
             groupCounts={groupCounts}
             groupContent={(index) => (
@@ -144,7 +138,7 @@ export const History: React.FC = () => {
 
                 return (
                     <StyledGroupItemWrapper sx={{ minHeight: '92px', display: 'block' }}>
-                        <GroupedChapterHistoryCard chapters={entry.chapters} />
+                        <GroupedChapterHistoryCard chapters={entry} />
                     </StyledGroupItemWrapper>
                 );
             }}
