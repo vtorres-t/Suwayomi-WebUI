@@ -462,7 +462,10 @@ export class Chapters {
         for (const entry of entries) {
             const mangaId = entry.manga.id.toString();
             if (!groups[mangaId]) {
-                groups[mangaId] = { manga: entry.manga, chapters: [] };
+                groups[mangaId] = {
+                    manga: entry.manga,
+                    chapters: [] as T[],
+                };
             }
             groups[mangaId].chapters.push(entry);
         }
