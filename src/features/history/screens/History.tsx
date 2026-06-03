@@ -45,28 +45,28 @@ export const History: React.FC = () => {
     const readEntries = chapterHistoryData?.chapters.nodes ?? STABLE_EMPTY_ARRAY;
 
     const groupedByDate = useMemo(() => {
-        if (!readEntries.length) {
-            return STABLE_EMPTY_ARRAY;
-        }
+        if (!readEntries || readEntries.length === 0) {return STABLE_EMPTY_ARRAY;}
 
         const dateGroups = Chapters.groupByDate(readEntries as HistoryNode[], 'lastReadAt');
 
-        return Object.entries(dateGroups).map(([date, chapters]) => {
-            const mangaGroups: Record<number, HistoryNode[]> = {};
+        return Object.entries(dateGroups)
+            .map(([date, chapters]) => {
+                const mangaGroups: Record<number, HistoryNode[]> = {};
 
-            chapters.forEach((node) => {
-                const { id } = node.manga;
-                if (!mangaGroups[id]) {
-                    mangaGroups[id] = [];
-                }
-                mangaGroups[id].push(node);
-            });
+                chapters.forEach((node) => {
+                    const { id } = node.manga;
+                    if (!mangaGroups[id]) {
+                        mangaGroups[id] = [];
+                    }
+                    mangaGroups[id].push(node);
+                });
 
-            return {
-                date,
-                mangaEntries: Object.values(mangaGroups),
-            };
-        });
+                return {
+                    date,
+                    mangaEntries: Object.values(mangaGroups).filter((m) => m.length > 0),
+                };
+            })
+            .filter((group) => group.mangaEntries.length > 0);
     }, [readEntries]);
 
     const groupCounts: number[] = useMemo(
@@ -76,13 +76,13 @@ export const History: React.FC = () => {
 
     const computeItemKey = VirtuosoUtil.useCreateGroupedComputeItemKey(
         groupCounts,
-        useCallback((index) => groupedByDate[index]?.date ?? `date-${index}`, [groupedByDate]),
+        useCallback((groupIndex) => groupedByDate[groupIndex]?.date ?? `header-${groupIndex}`, [groupedByDate]),
         useCallback(
             (index, groupIndex) => {
                 const group = groupedByDate[groupIndex];
                 const entry = group?.mangaEntries[index];
                 const mangaId = entry?.[0]?.manga?.id;
-                return mangaId ? `${group.date}-${mangaId}` : `fallback-${groupIndex}-${index}`;
+                return mangaId ? `${group.date}-${mangaId}` : `loading-${groupIndex}-${index}`;
             },
             [groupedByDate],
         ),
@@ -94,6 +94,17 @@ export const History: React.FC = () => {
         fetchMore({
             variables: {
                 offset: readEntries.length,
+                first: 50,
+            },
+            updateQuery: (prev, { fetchMoreResult }) => {
+                if (!fetchMoreResult) {return prev;}
+                return {
+                    __typename: 'Query',
+                    chapters: {
+                        ...fetchMoreResult.chapters,
+                        nodes: [...(prev.chapters.nodes ?? []), ...(fetchMoreResult.chapters.nodes ?? [])],
+                    },
+                };
             },
         }).catch(defaultPromiseErrorHandler('History::loadMore'));
     }, [hasNextPage, isLoading, readEntries.length, fetchMore]);
@@ -131,14 +142,17 @@ export const History: React.FC = () => {
             )}
             computeItemKey={computeItemKey}
             itemContent={(index, groupIndex) => {
-                const entry = groupedByDate[groupIndex]?.mangaEntries[index];
-                if (!entry) {
+                const group = groupedByDate[groupIndex];
+                if (!group) {return <div style={{ height: '92px' }} />;}
+
+                const mangaEntries = group.mangaEntries[index];
+                if (!mangaEntries) {
                     return <div style={{ height: '92px' }} />;
                 }
 
                 return (
                     <StyledGroupItemWrapper sx={{ minHeight: '92px', display: 'block' }}>
-                        <GroupedChapterHistoryCard chapters={entry} />
+                        <GroupedChapterHistoryCard chapters={mangaEntries} />
                     </StyledGroupItemWrapper>
                 );
             }}
