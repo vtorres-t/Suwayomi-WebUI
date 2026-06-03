@@ -39,23 +39,33 @@ export const History: React.FC = () => {
         refetch,
     } = requestManager.useGetRecentlyReadChapters(undefined, {
         fetchPolicy: 'cache-and-network',
+        notifyOnNetworkStatusChange: true,
     });
     const hasNextPage = !!chapterHistoryData?.chapters.pageInfo.hasNextPage;
-    const endCursor = chapterHistoryData?.chapters.pageInfo.endCursor;
     const readEntries = chapterHistoryData?.chapters.nodes ?? STABLE_EMPTY_ARRAY;
 
     const groupedByDate = useMemo(() => {
+        if (!readEntries.length) {return STABLE_EMPTY_ARRAY;}
+
         const dateGroups = Chapters.groupByDate(readEntries as HistoryNode[], 'lastReadAt');
 
-        return Object.entries(dateGroups)
-            .map(([date, chapters]) => {
-                const mangaGroups = Chapters.groupByManga(chapters);
-                return {
-                    date,
-                    mangaEntries: Object.values(mangaGroups),
-                };
-            })
-            .filter((group) => group.mangaEntries.length > 0);
+        return Object.entries(dateGroups).map(([date, chapters]) => {
+            const mangaGroups: Record<number, HistoryNode[]> = {};
+
+            chapters.forEach((node) => {
+                const {id} = node.manga;
+                if (!mangaGroups[id]) {mangaGroups[id] = [];}
+                mangaGroups[id].push(node);
+            });
+
+            return {
+                date,
+                mangaEntries: Object.values(mangaGroups).map((nodes) => ({
+                    manga: nodes[0].manga,
+                    chapters: nodes,
+                })),
+            };
+        });
     }, [readEntries]);
 
     const groupCounts: number[] = useMemo(
@@ -83,11 +93,16 @@ export const History: React.FC = () => {
     );
 
     const loadMore = useCallback(() => {
-        if (!hasNextPage || isLoading || !endCursor) {
-            return;
-        }
-        fetchMore({ variables: { after: endCursor } });
-    }, [hasNextPage, endCursor, fetchMore, isLoading]);
+        if (!hasNextPage || isLoading) {return;}
+
+        const currentCount = readEntries.length;
+
+        fetchMore({
+            variables: {
+                offset: currentCount,
+            },
+        }).catch(defaultPromiseErrorHandler('History::loadMore'));
+    }, [hasNextPage, isLoading, readEntries.length, fetchMore]);
 
     if (error) {
         return (
@@ -105,11 +120,12 @@ export const History: React.FC = () => {
 
     return (
         <StyledGroupedVirtuoso
-            persistKey="history-v5-stable"
+            useWindowScroll
+            persistKey="history"
             components={{
                 Footer: () => (isLoading ? <LoadingPlaceholder usePadding /> : null),
             }}
-            overscan={window.innerHeight * 0.5}
+            overscan={window.innerHeight * 0.7}
             endReached={loadMore}
             groupCounts={groupCounts}
             groupContent={(index) => (
