@@ -63,18 +63,27 @@ export const History: React.FC = () => {
 
     const computeItemKey = VirtuosoUtil.useCreateGroupedComputeItemKey(
         groupCounts,
-        useCallback((index) => groupedByDate[index].date, [groupedByDate]),
+        useCallback((index) => groupedByDate[index]?.date ?? index.toString(), [groupedByDate]),
         useCallback(
             (index, groupIndex) => {
-                const mangaId = groupedByDate[groupIndex].mangaEntries[index].manga.id;
-                return `${groupedByDate[groupIndex].date}-${mangaId}`;
+                const entry = groupedByDate[groupIndex]?.mangaEntries[index];
+                const mangaId = entry?.manga?.id;
+                const date = groupedByDate[groupIndex]?.date;
+
+                if (!mangaId || !date) {
+                    return `temp-key-${groupIndex}-${index}`;
+                }
+
+                return `${date}-${mangaId}`;
             },
             [groupedByDate],
         ),
     );
 
     const loadMore = useCallback(() => {
-        if (!hasNextPage || isLoading || !endCursor) {return;}
+        if (!hasNextPage || isLoading || !endCursor) {
+            return;
+        }
         fetchMore({ variables: { after: endCursor } });
     }, [hasNextPage, endCursor, fetchMore, isLoading]);
 
@@ -110,7 +119,8 @@ export const History: React.FC = () => {
             )}
             computeItemKey={computeItemKey}
             itemContent={(index, groupIndex) => {
-                const entry = groupedByDate[groupIndex].mangaEntries[index];
+                const entry = groupedByDate[groupIndex]?.mangaEntries[index];
+                if (!entry) {return null;}
                 return (
                     <StyledGroupItemWrapper>
                         <GroupedChapterHistoryCard chapters={entry.chapters} />
