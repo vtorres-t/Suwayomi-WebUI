@@ -47,13 +47,15 @@ export const History: React.FC = () => {
     const groupedByDate = useMemo(() => {
         const dateGroups = Chapters.groupByDate(readEntries as HistoryNode[], 'lastReadAt');
 
-        return Object.entries(dateGroups).map(([date, chapters]) => {
-            const mangaGroups = Chapters.groupByManga(chapters);
-            return {
-                date,
-                mangaEntries: Object.values(mangaGroups),
-            };
-        });
+        return Object.entries(dateGroups)
+            .map(([date, chapters]) => {
+                const mangaGroups = Chapters.groupByManga(chapters);
+                return {
+                    date,
+                    mangaEntries: Object.values(mangaGroups),
+                };
+            })
+            .filter((group) => group.mangaEntries.length > 0);
     }, [readEntries]);
 
     const groupCounts: number[] = useMemo(
@@ -120,9 +122,10 @@ export const History: React.FC = () => {
             computeItemKey={computeItemKey}
             itemContent={(index, groupIndex) => {
                 const entry = groupedByDate[groupIndex]?.mangaEntries[index];
-                if (!entry) {return null;}
+                if (!entry) {return <div style={{ height: '92px' }} />;}
+
                 return (
-                    <StyledGroupItemWrapper>
+                    <StyledGroupItemWrapper sx={{ minHeight: '92px', display: 'block' }}>
                         <GroupedChapterHistoryCard chapters={entry.chapters} />
                     </StyledGroupItemWrapper>
                 );
