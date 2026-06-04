@@ -18,7 +18,7 @@ import { StyledGroupItemWrapper } from '@/base/components/virtuoso/StyledGroupIt
 import { defaultPromiseErrorHandler } from '@/lib/DefaultPromiseErrorHandler.ts';
 import { VirtuosoUtil } from '@/lib/virtuoso/Virtuoso.util.tsx';
 import { getErrorMessage } from '@/lib/HelperFunctions.ts';
-import { GroupedChapterHistoryCard } from '@/features/history/components/GroupedChapterHistoryCard.tsx';
+import { ChapterHistoryCard } from '@/features/history/components/ChapterHistoryCard.tsx';
 import { Chapters } from '@/features/chapter/services/Chapters.ts';
 import { useAppTitle } from '@/features/navigation-bar/hooks/useAppTitle.ts';
 import { STABLE_EMPTY_ARRAY } from '@/base/Base.constants.ts';
@@ -38,62 +38,32 @@ export const History: React.FC = () => {
         fetchPolicy: 'cache-and-network',
     });
     const hasNextPage = !!chapterHistoryData?.chapters.pageInfo.hasNextPage;
+    const endCursor = chapterHistoryData?.chapters.pageInfo.endCursor;
     const readEntries = chapterHistoryData?.chapters.nodes ?? STABLE_EMPTY_ARRAY;
-
-    const groupedData = useMemo(() => {
-        if (!readEntries || readEntries.length === 0) {return STABLE_EMPTY_ARRAY;}
-
-        const groups = Chapters.groupHistoryByDateAndManga(readEntries as any);
-
-        return Object.entries(groups).map(([date, mangasMap]) => ({
-            date,
-            mangaEntries: Object.values(mangasMap),
-        }));
-    }, [readEntries]);
-
-    const groupCounts: number[] = useMemo(() => groupedData.map((group) => group.mangaEntries.length), [groupedData]);
+    const groupedHistory = useMemo(
+        () => Object.entries(Chapters.groupByDate(readEntries, 'lastReadAt')),
+        [readEntries],
+    );
+    const groupCounts: number[] = useMemo(
+        () => groupedHistory.map((group) => group[VirtuosoUtil.ITEMS].length),
+        [groupedHistory],
+    );
 
     const computeItemKey = VirtuosoUtil.useCreateGroupedComputeItemKey(
         groupCounts,
-        useCallback((groupIndex) => groupedData[groupIndex]?.date ?? `header-${groupIndex}`, [groupedData]),
-        useCallback(
-            (index, groupIndex) => {
-                const group = groupedData[groupIndex];
-                const entry = group?.mangaEntries[index];
-                // Ahora entry es el objeto con metadatos, no un array
-                const mangaId = entry?.manga?.id;
-                return mangaId ? `${group.date}-${mangaId}` : `loading-${groupIndex}-${index}`;
-            },
-            [groupedData],
-        ),
+        useCallback((index) => groupedHistory[index][VirtuosoUtil.GROUP], [groupedHistory]),
+        useCallback((index) => readEntries[index].id, [readEntries]),
     );
 
     const loadMore = useCallback(() => {
-        if (isLoading || !hasNextPage) {
+        if (!hasNextPage) {
             return;
         }
 
-        fetchMore({
-            variables: {
-                offset: readEntries.length,
-                first: 50,
-            },
-            updateQuery: (prev, { fetchMoreResult }) => {
-                if (!fetchMoreResult) {
-                    return prev;
-                }
-                return {
-                    __typename: 'Query',
-                    chapters: {
-                        ...fetchMoreResult.chapters,
-                        nodes: [...(prev.chapters.nodes ?? []), ...(fetchMoreResult.chapters.nodes ?? [])],
-                    },
-                };
-            },
-        }).catch(defaultPromiseErrorHandler('History::loadMore'));
-    }, [hasNextPage, isLoading, readEntries.length, fetchMore]);
+        fetchMore({ variables: { offset: readEntries.length } });
+    }, [hasNextPage, endCursor]);
 
-    if (error && !chapterHistoryData) {
+    if (error) {
         return (
             <EmptyViewAbsoluteCentered
                 message={t`Unable to load data`}
@@ -109,34 +79,26 @@ export const History: React.FC = () => {
 
     return (
         <StyledGroupedVirtuoso
-            useWindowScroll
             persistKey="history"
             components={{
                 Footer: () => (isLoading ? <LoadingPlaceholder usePadding /> : null),
             }}
-            overscan={window.innerHeight}
+            overscan={window.innerHeight * 0.5}
             endReached={loadMore}
             groupCounts={groupCounts}
             groupContent={(index) => (
                 <StyledGroupHeader isFirstItem={index === 0}>
                     <Typography variant="h5" component="h2">
-                        {groupedData[index]?.date}
+                        {groupedHistory[index][VirtuosoUtil.GROUP]}
                     </Typography>
                 </StyledGroupHeader>
             )}
             computeItemKey={computeItemKey}
-            itemContent={(index, groupIndex) => {
-                const group = groupedData[groupIndex];
-                const mangaEntry = group?.mangaEntries[index];
-
-                if (!mangaEntry) {return <div style={{ height: '92px' }} />;}
-
-                return (
-                    <StyledGroupItemWrapper sx={{ minHeight: '92px', display: 'block' }}>
-                        <GroupedChapterHistoryCard chapters={mangaEntry.chapters} />
-                    </StyledGroupItemWrapper>
-                );
-            }}
+            itemContent={(index) => (
+                <StyledGroupItemWrapper>
+                    <ChapterHistoryCard chapter={readEntries[index]} />
+                </StyledGroupItemWrapper>
+            )}
         />
     );
 };

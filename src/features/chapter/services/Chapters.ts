@@ -12,11 +12,7 @@ import { t } from '@lingui/core/macro';
 import { makeToast } from '@/base/utils/Toast.ts';
 import { requestManager } from '@/lib/requests/RequestManager.ts';
 import { getMetadataServerSettings } from '@/features/settings/services/ServerSettingsMetadata.ts';
-import type {
-    ChapterListFieldsFragment,
-    DownloadTypeFieldsFragment,
-    ChapterHistoryListFieldsFragment,
-} from '@/lib/graphql/generated/graphql.ts';
+import type { ChapterListFieldsFragment, DownloadTypeFieldsFragment } from '@/lib/graphql/generated/graphql.ts';
 import type { ChapterType } from '@/lib/graphql/generated/graphql-base.types.ts';
 import { DownloadState } from '@/lib/graphql/generated/graphql-base.types.ts';
 import { CHAPTER_LIST_FIELDS } from '@/lib/graphql/chapter/ChapterFragments.ts';
@@ -455,106 +451,6 @@ export class Chapters {
             string,
             T[]
         >;
-    }
-
-    /**
-     * Agrupa el historial por fecha de lectura y manga, extrayendo metadatos
-     * sin exponer campos auxiliares a la UI.
-     */
-    /**
-     * Agrupa el historial: Una tarjeta por manga cada día con el rango de capítulos leídos.
-     */
-    static groupHistoryByDateAndManga(chapters: ChapterHistoryListFieldsFragment[]) {
-        const grouped = chapters.reduce(
-            (accumulator, chapter) => {
-                const acc = accumulator;
-                const dateKey = getDateString(epochToDate(Number(chapter.lastReadAt)));
-
-                if (!acc[dateKey]) {
-                    acc[dateKey] = {};
-                }
-
-                const mId = chapter.mangaId;
-                if (!acc[dateKey][mId]) {
-                    acc[dateKey][mId] = {
-                        firstChapterName: chapter.name ?? '?',
-                        lastChapterName: chapter.name ?? '?',
-                        lastReadAt: chapter.lastReadAt,
-                        mostRecentChapter: chapter,
-                        manga: chapter.manga,
-                        chapters: [] as ChapterHistoryListFieldsFragment[],
-                        _minOrder: chapter.sourceOrder,
-                        _maxOrder: chapter.sourceOrder,
-                        _lastReadTs: Number(chapter.lastReadAt),
-                    };
-                }
-
-                const group = acc[dateKey][mId];
-
-                if (
-                    !group.chapters.some(
-                        (c: any) =>
-                            c.id === chapter.id &&
-                            getDateString(epochToDate(Number(c.lastReadAt))) === dateKey &&
-                            c.mangaId === mId,
-                    )
-                ) {
-                    group.chapters.push(chapter);
-                }
-
-                const currentTs = Number(chapter.lastReadAt);
-
-                if (chapter.sourceOrder < group._minOrder) {
-                    group._minOrder = chapter.sourceOrder;
-                    group.firstChapterName = chapter.name ?? '?';
-                }
-
-                if (chapter.sourceOrder > group._maxOrder) {
-                    group._maxOrder = chapter.sourceOrder;
-                    group.lastChapterName = chapter.name ?? '?';
-                }
-
-                if (currentTs > group._lastReadTs) {
-                    group._lastReadTs = currentTs;
-                    group.lastReadAt = chapter.lastReadAt;
-                    group.mostRecentChapter = chapter;
-                    group.manga = chapter.manga;
-                }
-
-                return acc;
-            },
-            {} as Record<string, Record<number, any>>,
-        );
-
-        const finalResult: Record<string, Record<number, any>> = {};
-        Object.keys(grouped).forEach((date) => {
-            finalResult[date] = {};
-            Object.keys(grouped[date]).forEach((mId) => {
-                const { _minOrder, _maxOrder, _lastReadTs, ...cleanGroup } = grouped[date][Number(mId)];
-                finalResult[date][Number(mId)] = cleanGroup;
-            });
-        });
-
-        return finalResult;
-    }
-
-    /**
-     * Returns the chapters grouped by manga.
-     */
-    static groupByManga<T extends { manga: { id: number | string; title: string } }>(entries: T[]) {
-        const groups: Record<string, { manga: T['manga']; chapters: T[] }> = {};
-
-        for (const entry of entries) {
-            const mangaId = entry.manga.id.toString();
-            if (!groups[mangaId]) {
-                groups[mangaId] = {
-                    manga: entry.manga,
-                    chapters: [] as T[],
-                };
-            }
-            groups[mangaId].chapters.push(entry);
-        }
-        return groups;
     }
 
     static getMissingCount<Chapter extends ChapterNumberInfo>(chapters: Chapter[]): number {
