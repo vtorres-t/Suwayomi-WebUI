@@ -78,7 +78,7 @@ export const History: React.FC = () => {
     );
 
     const loadMore = useCallback(() => {
-        if (!hasNextPage) {
+        if (isLoading || !hasNextPage) {
             return;
         }
 
