@@ -12,7 +12,11 @@ import { t } from '@lingui/core/macro';
 import { makeToast } from '@/base/utils/Toast.ts';
 import { requestManager } from '@/lib/requests/RequestManager.ts';
 import { getMetadataServerSettings } from '@/features/settings/services/ServerSettingsMetadata.ts';
-import type { ChapterListFieldsFragment, DownloadTypeFieldsFragment } from '@/lib/graphql/generated/graphql.ts';
+import type {
+    ChapterListFieldsFragment,
+    DownloadTypeFieldsFragment,
+    ChapterHistoryListFieldsFragment,
+} from '@/lib/graphql/generated/graphql.ts';
 import type { ChapterType } from '@/lib/graphql/generated/graphql-base.types.ts';
 import { DownloadState } from '@/lib/graphql/generated/graphql-base.types.ts';
 import { CHAPTER_LIST_FIELDS } from '@/lib/graphql/chapter/ChapterFragments.ts';
@@ -451,6 +455,87 @@ export class Chapters {
             string,
             T[]
         >;
+    }
+
+    /**
+     * Agrupa el historial por fecha de lectura y manga, extrayendo metadatos
+     * sin exponer campos auxiliares a la UI.
+     */
+    static groupHistoryByDateAndManga(chapters: ChapterHistoryListFieldsFragment[]) {
+        const grouped = chapters.reduce(
+            (accumulator, chapter) => {
+                const dateKey = getDateString(epochToDate(Number(chapter.lastReadAt)));
+                const mId = chapter.mangaId;
+
+                const currentDateGroup = accumulator[dateKey] ?? {};
+
+                const currentMangaGroup = currentDateGroup[mId] ?? {
+                    firstChapterName: chapter.name ?? '?',
+                    lastChapterName: chapter.name ?? '?',
+                    lastReadAt: chapter.lastReadAt,
+                    mostRecentChapter: chapter,
+                    manga: chapter.manga,
+                    chapters: [] as ChapterHistoryListFieldsFragment[],
+                    _minOrder: chapter.sourceOrder,
+                    _maxOrder: chapter.sourceOrder,
+                    _lastReadTs: Number(chapter.lastReadAt),
+                };
+
+                const updatedChapters = [...currentMangaGroup.chapters, chapter];
+
+                let updatedMangaGroup = {
+                    ...currentMangaGroup,
+                    chapters: updatedChapters,
+                };
+
+                const currentTs = Number(chapter.lastReadAt);
+                if (chapter.sourceOrder < updatedMangaGroup._minOrder) {
+                    updatedMangaGroup = {
+                        ...updatedMangaGroup,
+                        _minOrder: chapter.sourceOrder,
+                        firstChapterName: chapter.name ?? '?',
+                    };
+                }
+                if (chapter.sourceOrder > updatedMangaGroup._maxOrder) {
+                    updatedMangaGroup = {
+                        ...updatedMangaGroup,
+                        _maxOrder: chapter.sourceOrder,
+                        lastChapterName: chapter.name ?? '?',
+                    };
+                }
+                if (currentTs > updatedMangaGroup._lastReadTs) {
+                    updatedMangaGroup = {
+                        ...updatedMangaGroup,
+                        _lastReadTs: currentTs,
+                        lastReadAt: chapter.lastReadAt,
+                        mostRecentChapter: chapter,
+                        manga: chapter.manga,
+                    };
+                }
+
+                return {
+                    ...accumulator,
+                    [dateKey]: {
+                        ...currentDateGroup,
+                        [mId]: updatedMangaGroup,
+                    },
+                };
+            },
+            {} as Record<string, Record<number, any>>,
+        );
+
+        const finalGrouped: Record<string, Record<number, any>> = {};
+
+        Object.entries(grouped).forEach(([date, mangasMap]) => {
+            finalGrouped[date] = {};
+            Object.entries(mangasMap).forEach(([mId, group]) => {
+                // Extraemos los campos auxiliares y guardamos el resto en 'cleanGroup'
+                const { _minOrder, _maxOrder, _lastReadTs, ...cleanGroup } = group;
+                finalGrouped[date][Number(mId)] = cleanGroup;
+            });
+        });
+
+        return finalGrouped;
     }
 
     /**
