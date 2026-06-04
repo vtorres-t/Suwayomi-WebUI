@@ -18,7 +18,7 @@ import { StyledGroupItemWrapper } from '@/base/components/virtuoso/StyledGroupIt
 import { defaultPromiseErrorHandler } from '@/lib/DefaultPromiseErrorHandler.ts';
 import { VirtuosoUtil } from '@/lib/virtuoso/Virtuoso.util.tsx';
 import { getErrorMessage } from '@/lib/HelperFunctions.ts';
-import { ChapterHistoryCard } from '@/features/history/components/ChapterHistoryCard.tsx';
+import { GroupedChapterHistoryCard } from '@/features/history/components/GroupedChapterHistoryCard.tsx';
 import { Chapters } from '@/features/chapter/services/Chapters.ts';
 import { useAppTitle } from '@/features/navigation-bar/hooks/useAppTitle.ts';
 import { STABLE_EMPTY_ARRAY } from '@/base/Base.constants.ts';
@@ -40,19 +40,41 @@ export const History: React.FC = () => {
     const hasNextPage = !!chapterHistoryData?.chapters.pageInfo.hasNextPage;
     const endCursor = chapterHistoryData?.chapters.pageInfo.endCursor;
     const readEntries = chapterHistoryData?.chapters.nodes ?? STABLE_EMPTY_ARRAY;
-    const groupedHistory = useMemo(
-        () => Object.entries(Chapters.groupByDate(readEntries, 'lastReadAt')),
-        [readEntries],
-    );
-    const groupCounts: number[] = useMemo(
-        () => groupedHistory.map((group) => group[VirtuosoUtil.ITEMS].length),
-        [groupedHistory],
-    );
+    const historyGroups = useMemo(() => {
+        const byDate = Chapters.groupByDate(readEntries, 'lastReadAt');
+
+        return Object.entries(byDate).map(([date, chapters]) => {
+            const mangaMap = new Map<number, { manga: any; chapters: any[]; lastReadAt: string }>();
+
+            (chapters as any[]).forEach((entry) => {
+                const mangaId = entry.manga.id;
+                if (!mangaMap.has(mangaId)) {
+                    mangaMap.set(mangaId, {
+                        manga: entry.manga,
+                        chapters: [],
+                        lastReadAt: entry.lastReadAt, // Mantenemos el timestamp del más reciente
+                    });
+                }
+                mangaMap.get(mangaId)!.chapters.push(entry);
+            });
+
+            return {
+                date,
+                mangaGroups: Array.from(mangaMap.values()),
+            };
+        });
+    }, [readEntries]);
+    const groupCounts = useMemo(() => historyGroups.map((group) => group.mangaGroups.length), [historyGroups]);
+
+    const flatMangaEntries = useMemo(() => historyGroups.flatMap((g) => g.mangaGroups), [historyGroups]);
 
     const computeItemKey = VirtuosoUtil.useCreateGroupedComputeItemKey(
         groupCounts,
-        useCallback((index) => groupedHistory[index][VirtuosoUtil.GROUP], [groupedHistory]),
-        useCallback((index) => readEntries[index].id, [readEntries]),
+        useCallback((index) => historyGroups[index].date, [historyGroups]),
+        useCallback(
+            (index) => `${flatMangaEntries[index].manga.id}-${flatMangaEntries[index].lastReadAt}`,
+            [flatMangaEntries],
+        ),
     );
 
     const loadMore = useCallback(() => {
@@ -89,16 +111,19 @@ export const History: React.FC = () => {
             groupContent={(index) => (
                 <StyledGroupHeader isFirstItem={index === 0}>
                     <Typography variant="h5" component="h2">
-                        {groupedHistory[index][VirtuosoUtil.GROUP]}
+                        {historyGroups[index].date}
                     </Typography>
                 </StyledGroupHeader>
             )}
             computeItemKey={computeItemKey}
-            itemContent={(index) => (
-                <StyledGroupItemWrapper>
-                    <ChapterHistoryCard chapter={readEntries[index]} />
-                </StyledGroupItemWrapper>
-            )}
+            itemContent={(index) => {
+                const entry = flatMangaEntries[index];
+                return (
+                    <StyledGroupItemWrapper>
+                        <GroupedChapterHistoryCard chapters={entry.chapters} />
+                    </StyledGroupItemWrapper>
+                );
+            }}
         />
     );
 };
