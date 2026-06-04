@@ -462,16 +462,14 @@ export class Chapters {
      * sin exponer campos auxiliares a la UI.
      */
     static groupHistoryByDateAndManga(chapters: ChapterHistoryListFieldsFragment[]) {
-        // 1. Agrupamos por fecha usando las utilidades del proyecto
+        // 1. Agrupar por fecha (SIN multiplicar por 1000, ya viene en ms)
         const groupedByDate = chapters.reduce(
             (accumulator, chapter) => {
-                const acc = accumulator;
-                // Multiplicamos por 1000 porque tus datos vienen en segundos (epoch)
-                const dateKey = getDateString(epochToDate(Number(chapter.lastReadAt) * 1000));
-
-                if (!acc[dateKey]) {acc[dateKey] = [];}
-                acc[dateKey].push(chapter);
-                return acc;
+                const dateKey = getDateString(epochToDate(Number(chapter.lastReadAt)));
+                return {
+                    ...accumulator,
+                    [dateKey]: [...(accumulator[dateKey] ?? []), chapter],
+                };
             },
             {} as Record<string, ChapterHistoryListFieldsFragment[]>,
         );
@@ -479,16 +477,18 @@ export class Chapters {
         const finalResult: Record<string, any[]> = {};
 
         Object.entries(groupedByDate).forEach(([date, dayChapters]) => {
-            // 2. Ordenamos por tiempo de lectura descendente (lo último leído primero)
+            // 2. Ordenar por tiempo de lectura (descendente)
             const sortedDay = [...dayChapters].sort((a, b) => Number(b.lastReadAt) - Number(a.lastReadAt));
             const dailyGroups: any[] = [];
 
             sortedDay.forEach((chapter) => {
                 const lastGroup = dailyGroups[dailyGroups.length - 1];
 
-                // 3. Lógica de agrupación por bloque: mismo manga Y (opcional) capítulos cercanos
-                if (lastGroup && lastGroup.manga.id === chapter.mangaId) {
-                    // Actualizamos el rango del bloque existente
+                // 3. Agrupar SOLO si es el mismo manga Y los capítulos son correlativos
+                const isSameManga = lastGroup && lastGroup.manga.id === chapter.mangaId;
+                const isConsecutive = lastGroup && Math.abs(lastGroup._maxOrder - chapter.sourceOrder) <= 1;
+
+                if (isSameManga && isConsecutive) {
                     const isLower = chapter.sourceOrder < lastGroup._minOrder;
                     const isHigher = chapter.sourceOrder > lastGroup._maxOrder;
 
@@ -501,7 +501,7 @@ export class Chapters {
                         chapters: [...lastGroup.chapters, chapter],
                     };
                 } else {
-                    // Nuevo bloque de lectura
+                    // Nueva tarjeta si cambia el manga o hay salto de capítulos
                     dailyGroups.push({
                         firstChapterName: chapter.name ?? '?',
                         lastChapterName: chapter.name ?? '?',
@@ -515,7 +515,6 @@ export class Chapters {
                 }
             });
 
-            // 4. Limpieza inmutable para evitar errores de oxlint (no-param-reassign)
             finalResult[date] = dailyGroups.map(({ _minOrder, _maxOrder, ...clean }) => clean);
         });
 
