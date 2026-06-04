@@ -462,80 +462,64 @@ export class Chapters {
      * sin exponer campos auxiliares a la UI.
      */
     static groupHistoryByDateAndManga(chapters: ChapterHistoryListFieldsFragment[]) {
-        const grouped = chapters.reduce(
+        // 1. Agrupamos por fecha usando las utilidades del proyecto
+        const groupedByDate = chapters.reduce(
             (accumulator, chapter) => {
-                const dateKey = getDateString(epochToDate(Number(chapter.lastReadAt)));
-                const mId = chapter.mangaId;
+                const acc = accumulator;
+                // Multiplicamos por 1000 porque tus datos vienen en segundos (epoch)
+                const dateKey = getDateString(epochToDate(Number(chapter.lastReadAt) * 1000));
 
-                const currentDateGroup = accumulator[dateKey] ?? {};
+                if (!acc[dateKey]) {acc[dateKey] = [];}
+                acc[dateKey].push(chapter);
+                return acc;
+            },
+            {} as Record<string, ChapterHistoryListFieldsFragment[]>,
+        );
 
-                const currentMangaGroup = currentDateGroup[mId] ?? {
-                    firstChapterName: chapter.name ?? '?',
-                    lastChapterName: chapter.name ?? '?',
-                    lastReadAt: chapter.lastReadAt,
-                    mostRecentChapter: chapter,
-                    manga: chapter.manga,
-                    chapters: [] as ChapterHistoryListFieldsFragment[],
-                    _minOrder: chapter.sourceOrder,
-                    _maxOrder: chapter.sourceOrder,
-                    _lastReadTs: Number(chapter.lastReadAt),
-                };
+        const finalResult: Record<string, any[]> = {};
 
-                const updatedChapters = [...currentMangaGroup.chapters, chapter];
+        Object.entries(groupedByDate).forEach(([date, dayChapters]) => {
+            // 2. Ordenamos por tiempo de lectura descendente (lo último leído primero)
+            const sortedDay = [...dayChapters].sort((a, b) => Number(b.lastReadAt) - Number(a.lastReadAt));
+            const dailyGroups: any[] = [];
 
-                let updatedMangaGroup = {
-                    ...currentMangaGroup,
-                    chapters: updatedChapters,
-                };
+            sortedDay.forEach((chapter) => {
+                const lastGroup = dailyGroups[dailyGroups.length - 1];
 
-                const currentTs = Number(chapter.lastReadAt);
-                if (chapter.sourceOrder < updatedMangaGroup._minOrder) {
-                    updatedMangaGroup = {
-                        ...updatedMangaGroup,
-                        _minOrder: chapter.sourceOrder,
+                // 3. Lógica de agrupación por bloque: mismo manga Y (opcional) capítulos cercanos
+                if (lastGroup && lastGroup.manga.id === chapter.mangaId) {
+                    // Actualizamos el rango del bloque existente
+                    const isLower = chapter.sourceOrder < lastGroup._minOrder;
+                    const isHigher = chapter.sourceOrder > lastGroup._maxOrder;
+
+                    dailyGroups[dailyGroups.length - 1] = {
+                        ...lastGroup,
+                        firstChapterName: isLower ? (chapter.name ?? '?') : lastGroup.firstChapterName,
+                        lastChapterName: isHigher ? (chapter.name ?? '?') : lastGroup.lastChapterName,
+                        _minOrder: isLower ? chapter.sourceOrder : lastGroup._minOrder,
+                        _maxOrder: isHigher ? chapter.sourceOrder : lastGroup._maxOrder,
+                        chapters: [...lastGroup.chapters, chapter],
+                    };
+                } else {
+                    // Nuevo bloque de lectura
+                    dailyGroups.push({
                         firstChapterName: chapter.name ?? '?',
-                    };
-                }
-                if (chapter.sourceOrder > updatedMangaGroup._maxOrder) {
-                    updatedMangaGroup = {
-                        ...updatedMangaGroup,
-                        _maxOrder: chapter.sourceOrder,
                         lastChapterName: chapter.name ?? '?',
-                    };
-                }
-                if (currentTs > updatedMangaGroup._lastReadTs) {
-                    updatedMangaGroup = {
-                        ...updatedMangaGroup,
-                        _lastReadTs: currentTs,
                         lastReadAt: chapter.lastReadAt,
                         mostRecentChapter: chapter,
                         manga: chapter.manga,
-                    };
+                        chapters: [chapter],
+                        _minOrder: chapter.sourceOrder,
+                        _maxOrder: chapter.sourceOrder,
+                    });
                 }
-
-                return {
-                    ...accumulator,
-                    [dateKey]: {
-                        ...currentDateGroup,
-                        [mId]: updatedMangaGroup,
-                    },
-                };
-            },
-            {} as Record<string, Record<number, any>>,
-        );
-
-        const finalGrouped: Record<string, Record<number, any>> = {};
-
-        Object.entries(grouped).forEach(([date, mangasMap]) => {
-            finalGrouped[date] = {};
-            Object.entries(mangasMap).forEach(([mId, group]) => {
-                // Extraemos los campos auxiliares y guardamos el resto en 'cleanGroup'
-                const { _minOrder, _maxOrder, _lastReadTs, ...cleanGroup } = group;
-                finalGrouped[date][Number(mId)] = cleanGroup;
             });
+
+            // 4. Limpieza inmutable para evitar errores de oxlint (no-param-reassign)
+            finalResult[date] = dailyGroups.map(({ _minOrder, _maxOrder, ...clean }) => clean);
         });
 
-        return finalGrouped;
+        return finalResult;
     }
 
     /**
