@@ -462,14 +462,16 @@ export class Chapters {
      * sin exponer campos auxiliares a la UI.
      */
     static groupHistoryByDateAndManga(chapters: ChapterHistoryListFieldsFragment[]) {
-        // 1. Agrupar por fecha (SIN multiplicar por 1000, ya viene en ms)
+        // 1. Agrupar por fecha primero
         const groupedByDate = chapters.reduce(
             (accumulator, chapter) => {
+                const acc = accumulator;
+                // Usamos el timestamp tal cual (asumiendo milisegundos por tu imagen de "Hoy")
                 const dateKey = getDateString(epochToDate(Number(chapter.lastReadAt)));
-                return {
-                    ...accumulator,
-                    [dateKey]: [...(accumulator[dateKey] ?? []), chapter],
-                };
+
+                if (!acc[dateKey]) {acc[dateKey] = [];}
+                acc[dateKey].push(chapter);
+                return acc;
             },
             {} as Record<string, ChapterHistoryListFieldsFragment[]>,
         );
@@ -477,45 +479,59 @@ export class Chapters {
         const finalResult: Record<string, any[]> = {};
 
         Object.entries(groupedByDate).forEach(([date, dayChapters]) => {
-            // 2. Ordenar por tiempo de lectura (descendente)
-            const sortedDay = [...dayChapters].sort((a, b) => Number(b.lastReadAt) - Number(a.lastReadAt));
-            const dailyGroups: any[] = [];
+            // Mapa temporal para agrupar por mangaId dentro de este día
+            const mangaMap: Record<number, any> = {};
 
-            sortedDay.forEach((chapter) => {
-                const lastGroup = dailyGroups[dailyGroups.length - 1];
+            dayChapters.forEach((chapter) => {
+                const mId = chapter.mangaId;
 
-                // 3. Agrupar SOLO si es el mismo manga Y los capítulos son correlativos
-                const isSameManga = lastGroup && lastGroup.manga.id === chapter.mangaId;
-                const isConsecutive = lastGroup && Math.abs(lastGroup._maxOrder - chapter.sourceOrder) <= 1;
-
-                if (isSameManga && isConsecutive) {
-                    const isLower = chapter.sourceOrder < lastGroup._minOrder;
-                    const isHigher = chapter.sourceOrder > lastGroup._maxOrder;
-
-                    dailyGroups[dailyGroups.length - 1] = {
-                        ...lastGroup,
-                        firstChapterName: isLower ? (chapter.name ?? '?') : lastGroup.firstChapterName,
-                        lastChapterName: isHigher ? (chapter.name ?? '?') : lastGroup.lastChapterName,
-                        _minOrder: isLower ? chapter.sourceOrder : lastGroup._minOrder,
-                        _maxOrder: isHigher ? chapter.sourceOrder : lastGroup._maxOrder,
-                        chapters: [...lastGroup.chapters, chapter],
-                    };
-                } else {
-                    // Nueva tarjeta si cambia el manga o hay salto de capítulos
-                    dailyGroups.push({
+                if (!mangaMap[mId]) {
+                    mangaMap[mId] = {
                         firstChapterName: chapter.name ?? '?',
                         lastChapterName: chapter.name ?? '?',
                         lastReadAt: chapter.lastReadAt,
                         mostRecentChapter: chapter,
                         manga: chapter.manga,
-                        chapters: [chapter],
+                        chapters: [] as ChapterHistoryListFieldsFragment[],
                         _minOrder: chapter.sourceOrder,
                         _maxOrder: chapter.sourceOrder,
-                    });
+                        _lastReadTs: Number(chapter.lastReadAt),
+                    };
+                }
+
+                const group = mangaMap[mId];
+
+                // Evitar duplicados exactos de capítulos en la lista interna
+                if (!group.chapters.some((c: any) => c.id === chapter.id)) {
+                    group.chapters.push(chapter);
+                }
+
+                const currentTs = Number(chapter.lastReadAt);
+
+                // Actualizar rangos basados en el orden de la fuente (sourceOrder)
+                if (chapter.sourceOrder < group._minOrder) {
+                    group._minOrder = chapter.sourceOrder;
+                    group.firstChapterName = chapter.name ?? '?';
+                }
+                if (chapter.sourceOrder > group._maxOrder) {
+                    group._maxOrder = chapter.sourceOrder;
+                    group.lastChapterName = chapter.name ?? '?';
+                }
+
+                // Mantener la referencia al más reciente para la UI (thumbnail/título)
+                if (currentTs > group._lastReadTs) {
+                    group._lastReadTs = currentTs;
+                    group.lastReadAt = chapter.lastReadAt;
+                    group.mostRecentChapter = chapter;
+                    group.manga = chapter.manga;
                 }
             });
 
-            finalResult[date] = dailyGroups.map(({ _minOrder, _maxOrder, ...clean }) => clean);
+            // Convertir el mapa de ese día a un array y limpiar campos auxiliares
+            finalResult[date] = Object.values(mangaMap)
+                .map(({ _minOrder, _maxOrder, _lastReadTs, ...clean }) => clean)
+                // Ordenar los mangas del día por la hora de la última lectura
+                .sort((a, b) => Number(b.lastReadAt) - Number(a.lastReadAt));
         });
 
         return finalResult;
