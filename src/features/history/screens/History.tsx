@@ -83,7 +83,7 @@ export const History: React.FC = () => {
         }
 
         fetchMore({ variables: { offset: readEntries.length } });
-    }, [hasNextPage, endCursor]);
+    }, [hasNextPage, endCursor, isLoading, readEntries.length, fetchMore]);
 
     if (error) {
         return (
