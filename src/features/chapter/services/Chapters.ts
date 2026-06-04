@@ -461,32 +461,22 @@ export class Chapters {
      * Agrupa el historial por fecha de lectura y manga, extrayendo metadatos
      * sin exponer campos auxiliares a la UI.
      */
+    /**
+     * Agrupa el historial: Una tarjeta por manga cada día con el rango de capítulos leídos.
+     */
     static groupHistoryByDateAndManga(chapters: ChapterHistoryListFieldsFragment[]) {
-        // 1. Agrupar por fecha primero
-        const groupedByDate = chapters.reduce(
+        const grouped = chapters.reduce(
             (accumulator, chapter) => {
                 const acc = accumulator;
-                // Usamos el timestamp tal cual (asumiendo milisegundos por tu imagen de "Hoy")
                 const dateKey = getDateString(epochToDate(Number(chapter.lastReadAt)));
 
-                if (!acc[dateKey]) {acc[dateKey] = [];}
-                acc[dateKey].push(chapter);
-                return acc;
-            },
-            {} as Record<string, ChapterHistoryListFieldsFragment[]>,
-        );
+                if (!acc[dateKey]) {
+                    acc[dateKey] = {};
+                }
 
-        const finalResult: Record<string, any[]> = {};
-
-        Object.entries(groupedByDate).forEach(([date, dayChapters]) => {
-            // Mapa temporal para agrupar por mangaId dentro de este día
-            const mangaMap: Record<number, any> = {};
-
-            dayChapters.forEach((chapter) => {
                 const mId = chapter.mangaId;
-
-                if (!mangaMap[mId]) {
-                    mangaMap[mId] = {
+                if (!acc[dateKey][mId]) {
+                    acc[dateKey][mId] = {
                         firstChapterName: chapter.name ?? '?',
                         lastChapterName: chapter.name ?? '?',
                         lastReadAt: chapter.lastReadAt,
@@ -499,39 +489,50 @@ export class Chapters {
                     };
                 }
 
-                const group = mangaMap[mId];
+                const group = acc[dateKey][mId];
 
-                // Evitar duplicados exactos de capítulos en la lista interna
-                if (!group.chapters.some((c: any) => c.id === chapter.id)) {
+                if (
+                    !group.chapters.some(
+                        (c: any) =>
+                            c.id === chapter.id &&
+                            getDateString(epochToDate(Number(c.lastReadAt))) === dateKey &&
+                            c.mangaId === mId,
+                    )
+                ) {
                     group.chapters.push(chapter);
                 }
 
                 const currentTs = Number(chapter.lastReadAt);
 
-                // Actualizar rangos basados en el orden de la fuente (sourceOrder)
                 if (chapter.sourceOrder < group._minOrder) {
                     group._minOrder = chapter.sourceOrder;
                     group.firstChapterName = chapter.name ?? '?';
                 }
+
                 if (chapter.sourceOrder > group._maxOrder) {
                     group._maxOrder = chapter.sourceOrder;
                     group.lastChapterName = chapter.name ?? '?';
                 }
 
-                // Mantener la referencia al más reciente para la UI (thumbnail/título)
                 if (currentTs > group._lastReadTs) {
                     group._lastReadTs = currentTs;
                     group.lastReadAt = chapter.lastReadAt;
                     group.mostRecentChapter = chapter;
                     group.manga = chapter.manga;
                 }
-            });
 
-            // Convertir el mapa de ese día a un array y limpiar campos auxiliares
-            finalResult[date] = Object.values(mangaMap)
-                .map(({ _minOrder, _maxOrder, _lastReadTs, ...clean }) => clean)
-                // Ordenar los mangas del día por la hora de la última lectura
-                .sort((a, b) => Number(b.lastReadAt) - Number(a.lastReadAt));
+                return acc;
+            },
+            {} as Record<string, Record<number, any>>,
+        );
+
+        const finalResult: Record<string, Record<number, any>> = {};
+        Object.keys(grouped).forEach((date) => {
+            finalResult[date] = {};
+            Object.keys(grouped[date]).forEach((mId) => {
+                const { _minOrder, _maxOrder, _lastReadTs, ...cleanGroup } = grouped[date][Number(mId)];
+                finalResult[date][Number(mId)] = cleanGroup;
+            });
         });
 
         return finalResult;
