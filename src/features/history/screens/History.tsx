@@ -81,9 +81,19 @@ export const History: React.FC = () => {
         if (isLoading || !hasNextPage) {
             return;
         }
+        // oxlint-disable-next-line no-console
+        console.log('Cargando más... Offset:', readEntries.length);
 
         fetchMore({ variables: { offset: readEntries.length } });
     }, [hasNextPage, endCursor, isLoading, readEntries.length, fetchMore]);
+
+    React.useEffect(() => {
+        // Si no estamos cargando, hay más páginas, pero la lista es muy corta
+        // (menos de 5 filas), forzamos la carga de más capítulos.
+        if (!isLoading && hasNextPage && flatMangaEntries.length < 5) {
+            loadMore();
+        }
+    }, [flatMangaEntries.length, isLoading, hasNextPage, loadMore]);
 
     if (error) {
         return (
@@ -105,7 +115,7 @@ export const History: React.FC = () => {
             components={{
                 Footer: () => (isLoading ? <LoadingPlaceholder usePadding /> : null),
             }}
-            overscan={window.innerHeight * 0.5}
+            overscan={window.innerHeight}
             endReached={loadMore}
             groupCounts={groupCounts}
             groupContent={(index) => (
