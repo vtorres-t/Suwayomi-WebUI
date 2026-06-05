@@ -31,6 +31,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - (**Source/Extension**) Rename language "All" to "Multi"
 - (**Reader**) Simplify changing settings in desktop sidebar
 - (**Reader**) Ignore tap zone clicks while window does not have focus
+- (**Reader**) Improve preloading pages from the previous/next chapter
 
 ### Fixed
 
@@ -51,7 +52,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - (**Reader**) Fix mobile progress bar previous/next chapter button visibility on hover and while disabled
 - (**Reader**) Fix jumping back to the first page on window resize
 - (**Reader**) Fix chapter not getting marked as read in continuous reading mode in case the last page is not big enough to get marked as the current page
-- (**Reader**) Fix infinite scrolling with disabled transition page
+- (**Reader**) Fix infinite scrolling sometimes not opening previous/next chapter
 - (**Browse**) Fix showing only nsfw sources in the browse source page when the "show nsfw" setting is disabled
 
 ## [20260509.01] (r3147) - 2026-05-09
