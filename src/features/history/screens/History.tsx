@@ -38,7 +38,17 @@ export const History: React.FC = () => {
         fetchPolicy: 'cache-and-network',
     });
     const hasNextPage = !!chapterHistoryData?.chapters.pageInfo.hasNextPage;
-    const readEntries = chapterHistoryData?.chapters.nodes ?? STABLE_EMPTY_ARRAY;
+    const allReadEntries = chapterHistoryData?.chapters.nodes ?? STABLE_EMPTY_ARRAY;
+    const readEntries = useMemo(() => {
+        const seenMangaIds = new Set<number>();
+        return allReadEntries.filter((chapter) => {
+            if (seenMangaIds.has(chapter.manga.id)) {
+                return false;
+            }
+            seenMangaIds.add(chapter.manga.id);
+            return true;
+        });
+    }, [allReadEntries]);
     const historyGroups = useMemo(() => {
         const byDate = Chapters.groupByDate(readEntries, 'lastReadAt');
 
@@ -85,18 +95,6 @@ export const History: React.FC = () => {
 
         fetchMore({
             variables: { offset: readEntries.length },
-            updateQuery: (prev, { fetchMoreResult }) => {
-                if (!fetchMoreResult) {
-                    return prev;
-                }
-                return {
-                    __typename: prev.__typename,
-                    chapters: {
-                        ...fetchMoreResult.chapters,
-                        nodes: [...(prev.chapters.nodes ?? []), ...(fetchMoreResult.chapters.nodes ?? [])],
-                    },
-                };
-            },
         }).catch(defaultPromiseErrorHandler('History::loadMore'));
     }, [hasNextPage, isLoading, readEntries.length, fetchMore]);
 
