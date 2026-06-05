@@ -7,8 +7,9 @@
  */
 
 import Typography from '@mui/material/Typography';
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback, useMemo, useRef, useEffect } from 'react';
 import { useLingui } from '@lingui/react/macro';
+import Box from '@mui/material/Box';
 import { requestManager } from '@/lib/requests/RequestManager.ts';
 import { LoadingPlaceholder } from '@/base/components/feedback/LoadingPlaceholder.tsx';
 import { EmptyViewAbsoluteCentered } from '@/base/components/feedback/EmptyViewAbsoluteCentered.tsx';
@@ -21,6 +22,7 @@ import { getErrorMessage } from '@/lib/HelperFunctions.ts';
 import { GroupedChapterHistoryCard } from '@/features/history/components/GroupedChapterHistoryCard.tsx';
 import { Chapters } from '@/features/chapter/services/Chapters.ts';
 import { useAppTitle } from '@/features/navigation-bar/hooks/useAppTitle.ts';
+import { useResizeObserver } from '@/base/hooks/useResizeObserver.tsx';
 import { STABLE_EMPTY_ARRAY } from '@/base/Base.constants.ts';
 
 export const History: React.FC = () => {
@@ -39,6 +41,12 @@ export const History: React.FC = () => {
     });
     const hasNextPage = !!chapterHistoryData?.chapters.pageInfo.hasNextPage;
     const readEntries = chapterHistoryData?.chapters.nodes ?? STABLE_EMPTY_ARRAY;
+
+    const prevReadEntriesLengthRef = useRef(0);
+    const filteredOutAllItemsOfFetchedPage =
+        readEntries.length > 0 && readEntries.length === prevReadEntriesLengthRef.current;
+
+    prevReadEntriesLengthRef.current = readEntries.length;
     const historyGroups = useMemo(() => {
         const byDate = Chapters.groupByDate(readEntries, 'lastReadAt');
 
@@ -88,13 +96,39 @@ export const History: React.FC = () => {
         }).catch(defaultPromiseErrorHandler('History::loadMore'));
     }, [hasNextPage, isLoading, readEntries.length, fetchMore]);
 
-    React.useEffect(() => {
-        // Si no estamos cargando, hay más páginas, pero la lista es muy corta
-        // (menos de 5 filas), forzamos la carga de más capítulos.
-        if (!isLoading && hasNextPage && flatMangaEntries.length < 5) {
+    useEffect(() => {
+        if (!isLoading && hasNextPage && filteredOutAllItemsOfFetchedPage) {
             loadMore();
         }
-    }, [flatMangaEntries.length, isLoading, hasNextPage, loadMore]);
+    }, [filteredOutAllItemsOfFetchedPage, isLoading, hasNextPage, loadMore]);
+
+    const gridRef = useRef<HTMLDivElement>(null);
+    useResizeObserver(
+        gridRef,
+        useCallback(
+            (entries, resizeObserver) => {
+                const gridHeight = entries[0].target.clientHeight;
+                const isScrollbarVisible = gridHeight > document.documentElement.clientHeight;
+
+                if (isLoading) {
+                    return;
+                }
+
+                if (!gridHeight) {
+                    return;
+                }
+
+                if (isScrollbarVisible) {
+                    resizeObserver.disconnect();
+                    return;
+                }
+
+                loadMore();
+                resizeObserver.disconnect();
+            },
+            [gridRef, loadMore, isLoading],
+        ),
+    );
 
     if (error) {
         return (
@@ -111,34 +145,36 @@ export const History: React.FC = () => {
     }
 
     return (
-        <StyledGroupedVirtuoso
-            persistKey="history"
-            components={{
-                Footer: () => (isLoading ? <LoadingPlaceholder usePadding /> : null),
-            }}
-            overscan={window.innerHeight}
-            endReached={loadMore}
-            groupCounts={groupCounts}
-            groupContent={(index) => (
-                <StyledGroupHeader isFirstItem={index === 0}>
-                    <Typography variant="h5" component="h2">
-                        {historyGroups[index].date}
-                    </Typography>
-                </StyledGroupHeader>
-            )}
-            computeItemKey={computeItemKey}
-            itemContent={(index) => {
-                const entry = flatMangaEntries[index];
+        <Box ref={gridRef} sx={{ height: '100%' }}>
+            <StyledGroupedVirtuoso
+                persistKey="history"
+                components={{
+                    Footer: () => (isLoading ? <LoadingPlaceholder usePadding /> : null),
+                }}
+                overscan={window.innerHeight}
+                endReached={loadMore}
+                groupCounts={groupCounts}
+                groupContent={(index) => (
+                    <StyledGroupHeader isFirstItem={index === 0}>
+                        <Typography variant="h5" component="h2">
+                            {historyGroups[index].date}
+                        </Typography>
+                    </StyledGroupHeader>
+                )}
+                computeItemKey={computeItemKey}
+                itemContent={(index) => {
+                    const entry = flatMangaEntries[index];
 
-                if (!entry) {
-                    return <div style={{ height: '92px' }} />;
-                }
-                return (
-                    <StyledGroupItemWrapper sx={{ minHeight: '92px', display: 'block' }}>
-                        <GroupedChapterHistoryCard chapters={entry.chapters} />
-                    </StyledGroupItemWrapper>
-                );
-            }}
-        />
+                    if (!entry) {
+                        return <div style={{ height: '92px' }} />;
+                    }
+                    return (
+                        <StyledGroupItemWrapper sx={{ minHeight: '92px', display: 'block' }}>
+                            <GroupedChapterHistoryCard chapters={entry.chapters} />
+                        </StyledGroupItemWrapper>
+                    );
+                }}
+            />
+        </Box>
     );
 };
