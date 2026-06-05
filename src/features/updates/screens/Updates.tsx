@@ -21,7 +21,7 @@ import { dateTimeFormatter } from '@/base/utils/DateHelper.ts';
 import { defaultPromiseErrorHandler } from '@/lib/DefaultPromiseErrorHandler.ts';
 import { VirtuosoUtil } from '@/lib/virtuoso/Virtuoso.util.tsx';
 import { getErrorMessage } from '@/lib/HelperFunctions.ts';
-import { ChapterUpdateCard } from '@/features/updates/components/ChapterUpdateCard.tsx';
+import { GroupedChapterUpdateCard } from '@/features/updates/components/GroupedChapterUpdateCard.tsx';
 import { Chapters } from '@/features/chapter/services/Chapters.ts';
 import { useAppTitleAndAction } from '@/features/navigation-bar/hooks/useAppTitleAndAction.ts';
 import { CustomTooltip } from '@/base/components/CustomTooltip.tsx';
@@ -40,21 +40,41 @@ export const Updates: React.FC = () => {
         fetchPolicy: 'cache-and-network',
     });
     const hasNextPage = !!chapterUpdateData?.chapters.pageInfo.hasNextPage;
-    const endCursor = chapterUpdateData?.chapters.pageInfo.endCursor;
     const updateEntries = chapterUpdateData?.chapters.nodes ?? STABLE_EMPTY_ARRAY;
-    const groupedUpdates = useMemo(
-        () => Object.entries(Chapters.groupByDate(updateEntries, 'fetchedAt')),
-        [updateEntries],
-    );
-    const groupCounts: number[] = useMemo(
-        () => groupedUpdates.map((group) => group[VirtuosoUtil.ITEMS].length),
-        [groupedUpdates],
-    );
+    const updateGroups = useMemo(() => {
+        const byDate = Chapters.groupByDate(updateEntries, 'fetchedAt');
+
+        return Object.entries(byDate).map(([date, chapters]) => {
+            const mangaMap = new Map<number, { manga: any; chapters: any[]; fetchedAt: string }>();
+
+            (chapters as any[]).forEach((entry) => {
+                const mangaId = entry.manga.id;
+                if (!mangaMap.has(mangaId)) {
+                    mangaMap.set(mangaId, {
+                        manga: entry.manga,
+                        chapters: [],
+                        fetchedAt: entry.fetchedAt,
+                    });
+                }
+                mangaMap.get(mangaId)!.chapters.push(entry);
+            });
+
+            return {
+                date,
+                mangaGroups: Array.from(mangaMap.values()),
+            };
+        });
+    }, [updateEntries]);
+    const groupCounts = useMemo(() => updateGroups.map((group) => group.mangaGroups.length), [updateGroups]);
+    const flatMangaEntries = useMemo(() => updateGroups.flatMap((g) => g.mangaGroups), [updateGroups]);
 
     const computeItemKey = VirtuosoUtil.useCreateGroupedComputeItemKey(
         groupCounts,
-        useCallback((index) => groupedUpdates[index][VirtuosoUtil.GROUP], [groupedUpdates]),
-        useCallback((index) => updateEntries[index].id, [updateEntries]),
+        useCallback((index) => updateGroups[index].date, [updateGroups]),
+        useCallback(
+            (index) => `${flatMangaEntries[index].manga.id}-${flatMangaEntries[index].fetchedAt}-${index}`,
+            [flatMangaEntries],
+        ),
     );
 
     const lastUpdateTimestampCompRef = useRef<HTMLElement>(null);
@@ -83,12 +103,14 @@ export const Updates: React.FC = () => {
     );
 
     const loadMore = useCallback(() => {
-        if (!hasNextPage) {
+        if (isLoading || !hasNextPage) {
             return;
         }
+        // oxlint-disable-next-line no-console
+        console.log('Cargando más... Offset:', updateEntries.length);
 
         fetchMore({ variables: { offset: updateEntries.length } });
-    }, [hasNextPage, endCursor]);
+    }, [hasNextPage, isLoading, updateEntries.length, fetchMore]);
 
     if (error) {
         return (
@@ -113,20 +135,34 @@ export const Updates: React.FC = () => {
             }}
             overscan={window.innerHeight * 0.5}
             endReached={loadMore}
+            atBottomStateChange={(atBottom) => {
+                if (atBottom && hasNextPage && !isLoading) {
+                    // oxlint-disable-next-line no-console
+                    console.log('atBottomStateChange()');
+                    loadMore();
+                }
+            }}
             groupCounts={groupCounts}
             groupContent={(index) => (
                 <StyledGroupHeader isFirstItem={index === 0}>
                     <Typography variant="h5" component="h2">
-                        {groupedUpdates[index][VirtuosoUtil.GROUP]}
+                        {updateGroups[index].date}
                     </Typography>
                 </StyledGroupHeader>
             )}
             computeItemKey={computeItemKey}
-            itemContent={(index) => (
-                <StyledGroupItemWrapper>
-                    <ChapterUpdateCard chapter={updateEntries[index]} />
-                </StyledGroupItemWrapper>
-            )}
+            itemContent={(index) => {
+                const entry = flatMangaEntries[index];
+
+                if (!entry) {
+                    return <div style={{ height: '92px' }} />;
+                }
+                return (
+                    <StyledGroupItemWrapper sx={{ minHeight: '92px', display: 'block' }}>
+                        <GroupedChapterUpdateCard chapters={entry.chapters} />
+                    </StyledGroupItemWrapper>
+                );
+            }}
         />
     );
 };
