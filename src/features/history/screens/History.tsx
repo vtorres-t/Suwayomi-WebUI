@@ -85,18 +85,6 @@ export const History: React.FC = () => {
 
         fetchMore({
             variables: { offset: readEntries.length },
-            updateQuery: (prev, { fetchMoreResult }) => {
-                if (!fetchMoreResult) {
-                    return prev;
-                }
-                return {
-                    __typename: prev.__typename,
-                    chapters: {
-                        ...fetchMoreResult.chapters,
-                        nodes: [...(prev.chapters.nodes ?? []), ...(fetchMoreResult.chapters.nodes ?? [])],
-                    },
-                };
-            },
         }).catch(defaultPromiseErrorHandler('History::loadMore'));
     }, [hasNextPage, isLoading, readEntries.length, fetchMore]);
 
