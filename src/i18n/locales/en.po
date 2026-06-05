@@ -903,6 +903,7 @@ msgstr "Compact grid"
 msgid "Compatible"
 msgstr "Compatible"
 
+#: src/features/category/components/CreateOrEditCategoryDialog.tsx
 #: src/features/manga/Manga.constants.ts
 msgid "Completed"
 msgstr "Completed"

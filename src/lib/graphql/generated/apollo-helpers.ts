@@ -44,8 +44,9 @@ export type CategoryNodeListFieldPolicy = {
 	pageInfo?: FieldPolicy<any> | FieldReadFunction<any>,
 	totalCount?: FieldPolicy<any> | FieldReadFunction<any>
 };
-export type CategoryTypeKeySpecifier = ('default' | 'id' | 'includeInDownload' | 'includeInUpdate' | 'mangas' | 'meta' | 'name' | 'order' | CategoryTypeKeySpecifier)[];
+export type CategoryTypeKeySpecifier = ('completed' | 'default' | 'id' | 'includeInDownload' | 'includeInUpdate' | 'mangas' | 'meta' | 'name' | 'order' | CategoryTypeKeySpecifier)[];
 export type CategoryTypeFieldPolicy = {
+	completed?: FieldPolicy<any> | FieldReadFunction<any>,
 	default?: FieldPolicy<any> | FieldReadFunction<any>,
 	id?: FieldPolicy<any> | FieldReadFunction<any>,
 	includeInDownload?: FieldPolicy<any> | FieldReadFunction<any>,

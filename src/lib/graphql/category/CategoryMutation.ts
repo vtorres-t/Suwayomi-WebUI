@@ -34,6 +34,7 @@ export const UPDATE_CATEGORY = gql`
     mutation UPDATE_CATEGORY(
         $input: UpdateCategoryInput!
         $getDefault: Boolean!
+        $getCompleted: Boolean!
         $getIncludeInUpdate: Boolean!
         $getIncludeInDownload: Boolean!
         $getName: Boolean!
@@ -42,6 +43,7 @@ export const UPDATE_CATEGORY = gql`
             category {
                 id
                 default @include(if: $getDefault)
+                completed @include(if: $getCompleted)
                 includeInUpdate @include(if: $getIncludeInUpdate)
                 includeInDownload @include(if: $getIncludeInDownload)
                 name @include(if: $getName)
@@ -54,6 +56,7 @@ export const UPDATE_CATEGORIES = gql`
     mutation UPDATE_CATEGORIES(
         $input: UpdateCategoriesInput!
         $getDefault: Boolean!
+        $getCompleted: Boolean!
         $getIncludeInUpdate: Boolean!
         $getIncludeInDownload: Boolean!
         $getName: Boolean!
@@ -62,6 +65,7 @@ export const UPDATE_CATEGORIES = gql`
             categories {
                 id
                 default @include(if: $getDefault)
+                completed @include(if: $getCompleted)
                 includeInUpdate @include(if: $getIncludeInUpdate)
                 includeInDownload @include(if: $getIncludeInDownload)
                 name @include(if: $getName)

@@ -17,7 +17,12 @@ import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import { useLingui } from '@lingui/react/macro';
 import { requestManager } from '@/lib/requests/RequestManager.ts';
-import type { CategoryDefaultInfo, CategoryIdInfo, CategoryNameInfo } from '@/features/category/Category.types.ts';
+import type {
+    CategoryDefaultInfo,
+    CategoryIdInfo,
+    CategoryNameInfo,
+    CategoryCompletedInfo,
+} from '@/features/category/Category.types.ts';
 import { getErrorMessage } from '@/lib/HelperFunctions.ts';
 import { makeToast } from '@/base/utils/Toast.ts';
 import { assertIsDefined } from '@/base/Asserts.ts';
@@ -26,7 +31,7 @@ export const CreateOrEditCategoryDialog = ({
     category,
     onClose,
 }: {
-    category: (CategoryIdInfo & CategoryNameInfo & CategoryDefaultInfo) | undefined;
+    category: (CategoryIdInfo & CategoryNameInfo & CategoryDefaultInfo & CategoryCompletedInfo) | undefined;
     onClose: () => void;
 }) => {
     const isEditMode = !!category;
@@ -35,6 +40,7 @@ export const CreateOrEditCategoryDialog = ({
 
     const [dialogName, setDialogName] = useState(category?.name);
     const [dialogDefault, setDialogDefault] = useState(!!category?.default);
+    const [dialogCategoryCompleted, setDialogCategoryCompleted] = useState(!!category?.completed);
 
     const isInvalidName = dialogName !== undefined && !dialogName.trim().length;
     const canSubmit = dialogName !== undefined && !isInvalidName;
@@ -46,14 +52,18 @@ export const CreateOrEditCategoryDialog = ({
 
         if (isEditMode) {
             requestManager
-                .updateCategory(category.id, { name: dialogName, default: dialogDefault })
+                .updateCategory(category.id, {
+                    name: dialogName,
+                    default: dialogDefault,
+                    completed: dialogCategoryCompleted,
+                })
                 .response.catch((e) => makeToast(t`Failed to save changes`, 'error', getErrorMessage(e)));
 
             return;
         }
 
         requestManager
-            .createCategory({ name: dialogName, default: dialogDefault })
+            .createCategory({ name: dialogName, default: dialogDefault, completed: dialogCategoryCompleted })
             .response.catch((e) => makeToast(t`Could not create category`, 'error', getErrorMessage(e)));
     };
 
@@ -76,6 +86,15 @@ export const CreateOrEditCategoryDialog = ({
                 <FormControlLabel
                     control={<Checkbox checked={dialogDefault} onChange={(e) => setDialogDefault(e.target.checked)} />}
                     label={t`Default category when adding new manga to the library`}
+                />
+                <FormControlLabel
+                    control={
+                        <Checkbox
+                            checked={dialogCategoryCompleted}
+                            onChange={(e) => setDialogCategoryCompleted(e.target.checked)}
+                        />
+                    }
+                    label={t`Completed`}
                 />
             </DialogContent>
             <DialogActions>
