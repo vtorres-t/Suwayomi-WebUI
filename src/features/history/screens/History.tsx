@@ -7,7 +7,7 @@
  */
 
 import Typography from '@mui/material/Typography';
-import React, { useCallback, useMemo, useEffect } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { useLingui } from '@lingui/react/macro';
 import { requestManager } from '@/lib/requests/RequestManager.ts';
 import { LoadingPlaceholder } from '@/base/components/feedback/LoadingPlaceholder.tsx';
@@ -87,15 +87,6 @@ export const History: React.FC = () => {
             variables: { offset: readEntries.length },
         }).catch(defaultPromiseErrorHandler('History::loadMore'));
     }, [hasNextPage, isLoading, readEntries.length, fetchMore]);
-
-    useEffect(() => {
-        const timer = setTimeout(() => {
-            if (!isLoading && hasNextPage && flatMangaEntries.length < 3) {
-                loadMore();
-            }
-        }, 500);
-        return () => clearTimeout(timer);
-    }, [flatMangaEntries.length, isLoading, hasNextPage, loadMore]);
 
     if (error) {
         return (
