@@ -38,7 +38,6 @@ export const History: React.FC = () => {
         fetchPolicy: 'cache-and-network',
     });
     const hasNextPage = !!chapterHistoryData?.chapters.pageInfo.hasNextPage;
-    const endCursor = chapterHistoryData?.chapters.pageInfo.endCursor;
     const readEntries = chapterHistoryData?.chapters.nodes ?? STABLE_EMPTY_ARRAY;
     const historyGroups = useMemo(() => {
         const byDate = Chapters.groupByDate(readEntries, 'lastReadAt');
@@ -84,8 +83,22 @@ export const History: React.FC = () => {
         // oxlint-disable-next-line no-console
         console.log('Cargando más... Offset:', readEntries.length);
 
-        fetchMore({ variables: { offset: readEntries.length } });
-    }, [hasNextPage, endCursor, isLoading, readEntries.length, fetchMore]);
+        fetchMore({
+            variables: { offset: readEntries.length },
+            updateQuery: (prev, { fetchMoreResult }) => {
+                if (!fetchMoreResult) {
+                    return prev;
+                }
+                return {
+                    __typename: prev.__typename,
+                    chapters: {
+                        ...fetchMoreResult.chapters,
+                        nodes: [...(prev.chapters.nodes ?? []), ...(fetchMoreResult.chapters.nodes ?? [])],
+                    },
+                };
+            },
+        }).catch(defaultPromiseErrorHandler('History::loadMore'));
+    }, [hasNextPage, isLoading, readEntries.length, fetchMore]);
 
     React.useEffect(() => {
         // Si no estamos cargando, hay más páginas, pero la lista es muy corta
