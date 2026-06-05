@@ -90,7 +90,7 @@ export const History: React.FC = () => {
 
     useEffect(() => {
         const timer = setTimeout(() => {
-            if (!isLoading && hasNextPage && flatMangaEntries.length < 5) {
+            if (!isLoading && hasNextPage && flatMangaEntries.length < 3) {
                 loadMore();
             }
         }, 500);
@@ -120,6 +120,13 @@ export const History: React.FC = () => {
             context={{ isLoading }}
             overscan={window.innerHeight * 0.5}
             endReached={loadMore}
+            atBottomStateChange={(atBottom) => {
+                if (atBottom && hasNextPage && !isLoading) {
+                    // oxlint-disable-next-line no-console
+                    console.log('atBottomStateChange()');
+                    loadMore();
+                }
+            }}
             groupCounts={groupCounts}
             groupContent={(index) => (
                 <StyledGroupHeader isFirstItem={index === 0}>
