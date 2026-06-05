@@ -2978,7 +2978,6 @@ export class RequestManager {
                 getIncludeInDownload: patch.includeInDownload != null,
                 getDefault: patch.default != null,
                 getName: patch.name != null,
-                getCompleted: patch.completed != null,
             },
             options,
         );

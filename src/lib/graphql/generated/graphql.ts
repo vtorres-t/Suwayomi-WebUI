@@ -71,7 +71,6 @@ export type CategoryBaseFieldsFragment = {
     id: number;
     name: string;
     default: boolean;
-    completed: boolean;
     order: number;
 };
 
@@ -80,7 +79,6 @@ export type CategoryLibraryFieldsFragment = {
     id: number;
     name: string;
     default: boolean;
-    completed: boolean;
     order: number;
     meta: Array<{ __typename: 'CategoryMetaType'; categoryId: number; key: string; value: string }>;
     mangas: { __typename: 'MangaNodeList'; totalCount: number };
@@ -93,7 +91,6 @@ export type CategorySettingFieldsFragment = {
     id: number;
     name: string;
     default: boolean;
-    completed: boolean;
     order: number;
 };
 
@@ -112,7 +109,6 @@ export type CreateCategoryMutation = {
             id: number;
             name: string;
             default: boolean;
-            completed: boolean;
             order: number;
         };
     } | null;
@@ -133,7 +129,6 @@ export type DeleteCategoryMutation = {
 export type UpdateCategoryMutationVariables = Exact<{
     input: Types.UpdateCategoryInput;
     getDefault: boolean;
-    getCompleted: boolean;
     getIncludeInUpdate: boolean;
     getIncludeInDownload: boolean;
     getName: boolean;
@@ -147,7 +142,6 @@ export type UpdateCategoryMutation = {
             __typename: 'CategoryType';
             id: number;
             default?: boolean;
-            completed?: boolean;
             includeInUpdate?: Types.IncludeOrExclude;
             includeInDownload?: Types.IncludeOrExclude;
             name?: string;
@@ -158,7 +152,6 @@ export type UpdateCategoryMutation = {
 export type UpdateCategoriesMutationVariables = Exact<{
     input: Types.UpdateCategoriesInput;
     getDefault: boolean;
-    getCompleted: boolean;
     getIncludeInUpdate: boolean;
     getIncludeInDownload: boolean;
     getName: boolean;
@@ -172,7 +165,6 @@ export type UpdateCategoriesMutation = {
             __typename: 'CategoryType';
             id: number;
             default?: boolean;
-            completed?: boolean;
             includeInUpdate?: Types.IncludeOrExclude;
             includeInDownload?: Types.IncludeOrExclude;
             name?: string;
@@ -239,14 +231,7 @@ export type GetCategoriesBaseQuery = {
     categories: {
         __typename: 'CategoryNodeList';
         totalCount: number;
-        nodes: Array<{
-            __typename: 'CategoryType';
-            id: number;
-            name: string;
-            default: boolean;
-            completed: boolean;
-            order: number;
-        }>;
+        nodes: Array<{ __typename: 'CategoryType'; id: number; name: string; default: boolean; order: number }>;
         pageInfo: {
             __typename: 'PageInfo';
             endCursor: string | null;
@@ -278,7 +263,6 @@ export type GetCategoriesLibraryQuery = {
             id: number;
             name: string;
             default: boolean;
-            completed: boolean;
             order: number;
             meta: Array<{ __typename: 'CategoryMetaType'; categoryId: number; key: string; value: string }>;
             mangas: { __typename: 'MangaNodeList'; totalCount: number };
@@ -316,7 +300,6 @@ export type GetCategoriesSettingsQuery = {
             id: number;
             name: string;
             default: boolean;
-            completed: boolean;
             order: number;
         }>;
         pageInfo: {

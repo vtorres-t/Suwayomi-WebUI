@@ -89,7 +89,6 @@ export type BooleanFilterInput = {
 };
 
 export type CategoryConditionInput = {
-    completed?: InputMaybe<Scalars['Boolean']['input']>;
     default?: InputMaybe<Scalars['Boolean']['input']>;
     id?: InputMaybe<Scalars['Int']['input']>;
     name?: InputMaybe<Scalars['String']['input']>;
@@ -104,7 +103,6 @@ export type CategoryEdge = Edge & {
 
 export type CategoryFilterInput = {
     and?: InputMaybe<Array<CategoryFilterInput>>;
-    completed?: InputMaybe<BooleanFilterInput>;
     default?: InputMaybe<BooleanFilterInput>;
     id?: InputMaybe<IntFilterInput>;
     name?: InputMaybe<StringFilterInput>;
@@ -153,7 +151,6 @@ export type CategoryOrderInput = {
 
 export type CategoryType = {
     __typename?: 'CategoryType';
-    completed: Scalars['Boolean']['output'];
     default: Scalars['Boolean']['output'];
     id: Scalars['Int']['output'];
     includeInDownload: IncludeOrExclude;
@@ -352,7 +349,6 @@ export type CreateBackupPayload = {
 
 export type CreateCategoryInput = {
     clientMutationId?: InputMaybe<Scalars['String']['input']>;
-    completed?: InputMaybe<Scalars['Boolean']['input']>;
     default?: InputMaybe<Scalars['Boolean']['input']>;
     includeInDownload?: InputMaybe<IncludeOrExclude>;
     includeInUpdate?: InputMaybe<IncludeOrExclude>;
@@ -3077,7 +3073,6 @@ export type UpdateCategoryOrderPayload = {
 };
 
 export type UpdateCategoryPatchInput = {
-    completed?: InputMaybe<Scalars['Boolean']['input']>;
     default?: InputMaybe<Scalars['Boolean']['input']>;
     includeInDownload?: InputMaybe<IncludeOrExclude>;
     includeInUpdate?: InputMaybe<IncludeOrExclude>;

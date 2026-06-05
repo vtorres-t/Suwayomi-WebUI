@@ -22,7 +22,6 @@ export const CATEGORY_BASE_FIELDS = gql`
         name
 
         default
-        completed
         order
     }
 `;
