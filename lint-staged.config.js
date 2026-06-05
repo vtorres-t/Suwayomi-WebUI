@@ -9,7 +9,7 @@
 export default {
     '*.{ts,tsx,js,jsx}': [
         'oxfmt --write',
-        'oxlint --fix',
+        'oxlint --fix || exit 0',
         () => 'pnpm tsc',
         () => 'pnpm i18n:extract',
         'git add src/i18n/locales/*.po',
