@@ -3304,7 +3304,7 @@ export class RequestManager {
         initialPages: number = 1,
         options?: QueryHookOptions<GetChaptersUpdatesQuery, GetChaptersUpdatesQueryVariables>,
     ): AbortableApolloUseQueryResponse<GetChaptersUpdatesQuery, GetChaptersUpdatesQueryVariables> {
-        const PAGE_SIZE = 50;
+        const PAGE_SIZE = 100;
         const CACHE_KEY = 'useGetRecentlyUpdatedChapters';
 
         const offset = this.cache.getResponseFor<number>(CACHE_KEY, undefined) ?? 0;
