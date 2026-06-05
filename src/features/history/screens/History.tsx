@@ -38,17 +38,7 @@ export const History: React.FC = () => {
         fetchPolicy: 'cache-and-network',
     });
     const hasNextPage = !!chapterHistoryData?.chapters.pageInfo.hasNextPage;
-    const allReadEntries = chapterHistoryData?.chapters.nodes ?? STABLE_EMPTY_ARRAY;
-    const readEntries = useMemo(() => {
-        const seenMangaIds = new Set<number>();
-        return allReadEntries.filter((chapter) => {
-            if (seenMangaIds.has(chapter.manga.id)) {
-                return false;
-            }
-            seenMangaIds.add(chapter.manga.id);
-            return true;
-        });
-    }, [allReadEntries]);
+    const readEntries = chapterHistoryData?.chapters.nodes ?? STABLE_EMPTY_ARRAY;
     const historyGroups = useMemo(() => {
         const byDate = Chapters.groupByDate(readEntries, 'lastReadAt');
 
