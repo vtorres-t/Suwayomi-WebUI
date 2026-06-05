@@ -41,12 +41,6 @@ export const History: React.FC = () => {
     });
     const hasNextPage = !!chapterHistoryData?.chapters.pageInfo.hasNextPage;
     const readEntries = chapterHistoryData?.chapters.nodes ?? STABLE_EMPTY_ARRAY;
-
-    const prevReadEntriesLengthRef = useRef(0);
-    const filteredOutAllItemsOfFetchedPage =
-        readEntries.length > 0 && readEntries.length === prevReadEntriesLengthRef.current;
-
-    prevReadEntriesLengthRef.current = readEntries.length;
     const historyGroups = useMemo(() => {
         const byDate = Chapters.groupByDate(readEntries, 'lastReadAt');
 
@@ -97,10 +91,12 @@ export const History: React.FC = () => {
     }, [hasNextPage, isLoading, readEntries.length, fetchMore]);
 
     useEffect(() => {
-        if (!isLoading && hasNextPage && filteredOutAllItemsOfFetchedPage) {
+        // Si no estamos cargando, hay más páginas, pero la lista es muy corta
+        // (menos de 5 filas), forzamos la carga de más capítulos.
+        if (!isLoading && hasNextPage && flatMangaEntries.length < 5) {
             loadMore();
         }
-    }, [filteredOutAllItemsOfFetchedPage, isLoading, hasNextPage, loadMore]);
+    }, [flatMangaEntries.length, isLoading, hasNextPage, loadMore]);
 
     const gridRef = useRef<HTMLDivElement>(null);
     useResizeObserver(
