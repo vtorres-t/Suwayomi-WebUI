@@ -118,6 +118,10 @@ export const History: React.FC = () => {
             computeItemKey={computeItemKey}
             itemContent={(index) => {
                 const entry = flatMangaEntries[index];
+
+                if (!entry) {
+                    return <div style={{ height: '92px' }} />;
+                }
                 return (
                     <StyledGroupItemWrapper sx={{ minHeight: '92px', display: 'block' }}>
                         <GroupedChapterHistoryCard chapters={entry.chapters} />
