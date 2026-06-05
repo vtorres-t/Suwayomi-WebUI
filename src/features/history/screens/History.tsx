@@ -90,7 +90,7 @@ export const History: React.FC = () => {
 
     useEffect(() => {
         const timer = setTimeout(() => {
-            if (!isLoading && hasNextPage && flatMangaEntries.length < 6) {
+            if (!isLoading && hasNextPage && flatMangaEntries.length < 20) {
                 loadMore();
             }
         }, 500);
@@ -117,7 +117,7 @@ export const History: React.FC = () => {
             components={{
                 Footer: () => (isLoading ? <LoadingPlaceholder usePadding /> : null),
             }}
-            overscan={window.innerHeight * 1.5}
+            overscan={window.innerHeight * 2}
             endReached={loadMore}
             groupCounts={groupCounts}
             groupContent={(index) => (
