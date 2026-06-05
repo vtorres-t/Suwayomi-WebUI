@@ -7,9 +7,8 @@
  */
 
 import Typography from '@mui/material/Typography';
-import React, { useCallback, useMemo, useRef, useEffect } from 'react';
+import React, { useCallback, useMemo, useEffect } from 'react';
 import { useLingui } from '@lingui/react/macro';
-import Box from '@mui/material/Box';
 import { requestManager } from '@/lib/requests/RequestManager.ts';
 import { LoadingPlaceholder } from '@/base/components/feedback/LoadingPlaceholder.tsx';
 import { EmptyViewAbsoluteCentered } from '@/base/components/feedback/EmptyViewAbsoluteCentered.tsx';
@@ -22,7 +21,6 @@ import { getErrorMessage } from '@/lib/HelperFunctions.ts';
 import { GroupedChapterHistoryCard } from '@/features/history/components/GroupedChapterHistoryCard.tsx';
 import { Chapters } from '@/features/chapter/services/Chapters.ts';
 import { useAppTitle } from '@/features/navigation-bar/hooks/useAppTitle.ts';
-import { useResizeObserver } from '@/base/hooks/useResizeObserver.tsx';
 import { STABLE_EMPTY_ARRAY } from '@/base/Base.constants.ts';
 
 export const History: React.FC = () => {
@@ -53,7 +51,7 @@ export const History: React.FC = () => {
                     mangaMap.set(mangaId, {
                         manga: entry.manga,
                         chapters: [],
-                        lastReadAt: entry.lastReadAt, // Mantenemos el timestamp del más reciente
+                        lastReadAt: entry.lastReadAt,
                     });
                 }
                 mangaMap.get(mangaId)!.chapters.push(entry);
@@ -73,7 +71,7 @@ export const History: React.FC = () => {
         groupCounts,
         useCallback((index) => historyGroups[index].date, [historyGroups]),
         useCallback(
-            (index) => `${flatMangaEntries[index].manga.id}-${flatMangaEntries[index].lastReadAt}`,
+            (index) => `${flatMangaEntries[index].manga.id}-${flatMangaEntries[index].lastReadAt}-${index}`,
             [flatMangaEntries],
         ),
     );
@@ -91,40 +89,13 @@ export const History: React.FC = () => {
     }, [hasNextPage, isLoading, readEntries.length, fetchMore]);
 
     useEffect(() => {
-        // Si no estamos cargando, hay más páginas, pero la lista es muy corta
-        // (menos de 5 filas), forzamos la carga de más capítulos.
-        if (!isLoading && hasNextPage && flatMangaEntries.length < 5) {
-            loadMore();
-        }
-    }, [flatMangaEntries.length, isLoading, hasNextPage, loadMore]);
-
-    const gridRef = useRef<HTMLDivElement>(null);
-    useResizeObserver(
-        gridRef,
-        useCallback(
-            (entries, resizeObserver) => {
-                const gridHeight = entries[0].target.clientHeight;
-                const isScrollbarVisible = gridHeight > document.documentElement.clientHeight;
-
-                if (isLoading) {
-                    return;
-                }
-
-                if (!gridHeight) {
-                    return;
-                }
-
-                if (isScrollbarVisible) {
-                    resizeObserver.disconnect();
-                    return;
-                }
-
+        const timer = setTimeout(() => {
+            if (!isLoading && hasNextPage && flatMangaEntries.length < 6) {
                 loadMore();
-                resizeObserver.disconnect();
-            },
-            [gridRef, loadMore, isLoading],
-        ),
-    );
+            }
+        }, 500);
+        return () => clearTimeout(timer);
+    }, [flatMangaEntries.length, isLoading, hasNextPage, loadMore]);
 
     if (error) {
         return (
@@ -141,36 +112,34 @@ export const History: React.FC = () => {
     }
 
     return (
-        <Box ref={gridRef} sx={{ height: '100%' }}>
-            <StyledGroupedVirtuoso
-                persistKey="history"
-                components={{
-                    Footer: () => (isLoading ? <LoadingPlaceholder usePadding /> : null),
-                }}
-                overscan={window.innerHeight}
-                endReached={loadMore}
-                groupCounts={groupCounts}
-                groupContent={(index) => (
-                    <StyledGroupHeader isFirstItem={index === 0}>
-                        <Typography variant="h5" component="h2">
-                            {historyGroups[index].date}
-                        </Typography>
-                    </StyledGroupHeader>
-                )}
-                computeItemKey={computeItemKey}
-                itemContent={(index) => {
-                    const entry = flatMangaEntries[index];
+        <StyledGroupedVirtuoso
+            persistKey="history"
+            components={{
+                Footer: () => (isLoading ? <LoadingPlaceholder usePadding /> : null),
+            }}
+            overscan={window.innerHeight * 1.5}
+            endReached={loadMore}
+            groupCounts={groupCounts}
+            groupContent={(index) => (
+                <StyledGroupHeader isFirstItem={index === 0}>
+                    <Typography variant="h5" component="h2">
+                        {historyGroups[index].date}
+                    </Typography>
+                </StyledGroupHeader>
+            )}
+            computeItemKey={computeItemKey}
+            itemContent={(index) => {
+                const entry = flatMangaEntries[index];
 
-                    if (!entry) {
-                        return <div style={{ height: '92px' }} />;
-                    }
-                    return (
-                        <StyledGroupItemWrapper sx={{ minHeight: '92px', display: 'block' }}>
-                            <GroupedChapterHistoryCard chapters={entry.chapters} />
-                        </StyledGroupItemWrapper>
-                    );
-                }}
-            />
-        </Box>
+                if (!entry) {
+                    return <div style={{ height: '92px' }} />;
+                }
+                return (
+                    <StyledGroupItemWrapper sx={{ minHeight: '92px', display: 'block' }}>
+                        <GroupedChapterHistoryCard chapters={entry.chapters} />
+                    </StyledGroupItemWrapper>
+                );
+            }}
+        />
     );
 };
