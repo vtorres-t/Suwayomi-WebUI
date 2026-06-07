@@ -28,6 +28,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - (**Migration**) Sort unselected matched entries by 1. their latest chapter, 2. their source priority, 3. their title
 - (**Migration**) Change migration match exclude/include icons
 - (**Migration**) Show the exclude/include button only for an entry with a selected match
+- (**Migration**) Allow resuming a migration only in a secure context (localhost or https)
 - (**Source/Extension**) Rename language "All" to "Multi"
 - (**Reader**) Simplify changing settings in desktop sidebar
 - (**Reader**) Ignore tap zone clicks while window does not have focus
@@ -35,6 +36,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ### Fixed
 
+- (**General**) Fix long press actions on desktop
 - (**Migration**) Fix aborting bulk migration search/execution while webUI is served on a subpath
 - (**Migration**) Fix retry button never being shown for failed search/migration entries
 - (**Migration**) Fix showing an empty "Available" source group header when all sources are selected
@@ -48,12 +50,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - (**Migration**) Fix being unable to retry failed search for a match without a selected match
 - (**Migration**) Fix selecting a destination from a source browse search page
 - (**Migration**) Fix being able to migrate an entry to itself
+- (**Migration**) Fix resuming migration when app is opened in multiple tabs
 - (**Reader**) Fix scrollbar appearing with "fit to widt/height/screen" page scale mode and applied safe area insets
 - (**Reader**) Fix wrongly positioned mobile progress bar current page indicator
 - (**Reader**) Fix mobile progress bar previous/next chapter button visibility on hover and while disabled
 - (**Reader**) Fix jumping back to the first page on window resize
 - (**Reader**) Fix chapter not getting marked as read in continuous reading mode in case the last page is not big enough to get marked as the current page
 - (**Reader**) Fix infinite scrolling sometimes not opening previous/next chapter
+- (**Reader**) Fix preserving scroll position with RTL reading direction and a language that is read RTL
 - (**Browse**) Fix showing only nsfw sources in the browse source page when the "show nsfw" setting is disabled
 
 ## [20260509.01] (r3147) - 2026-05-09
