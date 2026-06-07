@@ -3439,7 +3439,7 @@ msgstr "Stop global update"
 
 #: src/features/downloads/screens/DownloadQueue.tsx
 msgid "Storage"
-msgstr "Almacenamiento"
+msgstr "Storage"
 
 #: src/features/reader/overlay/navigation/desktop/quick-settings/components/ReaderNavBarDesktopPageScale.tsx
 #: src/features/reader/settings/layout/components/ReaderSettingStretchPage.tsx
@@ -3930,6 +3930,10 @@ msgstr "Webtoon"
 #: src/features/settings/Settings.constants.ts
 msgid "WebUI"
 msgstr "WebUI"
+
+#: src/features/migration/MigrationManager.ts
+msgid "WebUI must be kept open. Migration can't be resumed"
+msgstr "WebUI must be kept open. Migration can't be resumed"
 
 #. placeholder {0}: webUIUpdateData?.checkForWebUIUpdate.tag
 #. placeholder {1}: webUIUpdateData?.checkForWebUIUpdate.channel
