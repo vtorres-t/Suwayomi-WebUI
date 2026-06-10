@@ -3915,10 +3915,6 @@ msgstr "VUI"
 msgid "Warning"
 msgstr "Warning"
 
-#: src/features/settings/screens/Appearance.tsx
-msgid "Weblate"
-msgstr "Weblate"
-
 #: src/features/manga/Manga.constants.ts
 #: src/features/reader/settings/ReaderSettings.constants.tsx
 msgid "Webtoon"

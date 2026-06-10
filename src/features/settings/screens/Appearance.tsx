@@ -12,7 +12,6 @@ import ListItemText from '@mui/material/ListItemText';
 import MenuItem from '@mui/material/MenuItem';
 import ListSubheader from '@mui/material/ListSubheader';
 import Switch from '@mui/material/Switch';
-import Link from '@mui/material/Link';
 import { useColorScheme } from '@mui/material/styles';
 import { useLingui } from '@lingui/react/macro';
 import { useAppThemeContext } from '@/features/theme/AppThemeContext.tsx';
@@ -120,21 +119,7 @@ export const Appearance = () => {
                 }
             >
                 <ListItem>
-                    <ListItemText
-                        primary={t`Language`}
-                        secondary={
-                            <>
-                                <span>{t`Feel free to translate the project on`} </span>
-                                <Link
-                                    href="https://hosted.weblate.org/projects/suwayomi/suwayomi-webui"
-                                    target="_blank"
-                                    rel="noreferrer"
-                                >
-                                    {t`Weblate`}
-                                </Link>
-                            </>
-                        }
-                    />
+                    <ListItemText primary={t`Language`} />
                     <Select
                         value={locale}
                         onChange={({ target: { value: newLocale } }) => {
