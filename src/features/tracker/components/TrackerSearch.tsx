@@ -23,7 +23,6 @@ import Typography from '@mui/material/Typography';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { useLingui } from '@lingui/react/macro';
 import ContentPasteIcon from '@mui/icons-material/ContentPaste';
-import ContentTranslateIcon from '@mui/icons-material/Translate';
 import { requestManager } from '@/lib/requests/RequestManager.ts';
 import { EmptyViewAbsoluteCentered } from '@/base/components/feedback/EmptyViewAbsoluteCentered.tsx';
 import { LoadingPlaceholder } from '@/base/components/feedback/LoadingPlaceholder.tsx';
@@ -41,7 +40,6 @@ import type { TrackerIdInfo, TTrackerBind } from '@/features/tracker/Tracker.typ
 import { Tracker } from '@/features/tracker/Tracker.types.ts';
 import { CustomIconButton } from '@/base/components/buttons/CustomIconButton.tsx';
 import { CustomTooltip } from '@/base/components/CustomTooltip.tsx';
-import { translateOffline } from '@/lib/utils/TranslationService.ts';
 import { STABLE_EMPTY_ARRAY } from '@/base/Base.constants.ts';
 
 const TrackButton = ({
@@ -167,12 +165,6 @@ export const TrackerSearch = ({
         }
     };
 
-    const translateFromSearch = async () => {
-        const text = await translateOffline(tmpSearchString);
-        setTmpSearchString(text);
-        setSearchString(text);
-    };
-
     return (
         <>
             <DialogTitle sx={{ padding: DIALOG_PADDING }}>
@@ -188,9 +180,6 @@ export const TrackerSearch = ({
                     </IconButton>
                     <IconButton onClick={readFromClipboard} color="inherit">
                         <ContentPasteIcon />
-                    </IconButton>
-                    <IconButton onClick={translateFromSearch} color="inherit">
-                        <ContentTranslateIcon />
                     </IconButton>
                     <SearchTextField
                         sx={{ width: '100%' }}
