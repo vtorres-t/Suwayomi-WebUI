@@ -40,6 +40,12 @@ interface IProps {
     refreshing: boolean;
 }
 
+const saveDynamicColorTheme = () => {
+    AwaitableComponent.show(ThemeCreationDialog, {
+        mode: 'save_dynamic',
+    });
+};
+
 export const MangaToolbarMenu = ({ manga, onRefresh, refreshing }: IProps) => {
     const { t } = useLingui();
 
@@ -55,12 +61,6 @@ export const MangaToolbarMenu = ({ manga, onRefresh, refreshing }: IProps) => {
 
     const openCategorySelection = () => {
         AwaitableComponent.show(CategorySelect, { mangaId: manga.id });
-    };
-
-    const saveDynamicColorTheme = () => {
-        AwaitableComponent.show(ThemeCreationDialog, {
-            mode: 'save_dynamic',
-        });
     };
 
     return (

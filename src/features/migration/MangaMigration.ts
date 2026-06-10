@@ -27,6 +27,22 @@ import { assertIsDefined } from '@/base/Asserts.ts';
 import { t } from '@lingui/core/macro';
 import { makeToast } from '@/base/utils/Toast.ts';
 
+const performMigrationActions = async (...actionCreators: [boolean | undefined, MigrateActionCreator][]) => {
+    const migrationActions: TupleUnion<keyof MigrateAction> = ['copy', 'cleanup'];
+
+    const actions = actionCreators
+        .filter(([performAction]) => performAction)
+        .map(([, actionCreator]) => actionCreator());
+
+    for (const migrationAction of migrationActions) {
+        // the migration actions (copy, cleanup) are supposed to be run sequentially to ensure that the cleanup
+        // only happens in case the copy succeeded
+
+        // oxlint-disable-next-line no-await-in-loop
+        await Promise.all(actions.flatMap((action) => action[migrationAction]()));
+    }
+};
+
 export class MangaMigration {
     private static trackerQueue = new Map<TrackerIdInfo['id'], Queue>();
 
@@ -68,22 +84,6 @@ export class MangaMigration {
         if (migrateChapters && !mangaToMigrate.chapters) {
             throw new Error('MangaMigration::migrate: missing chapters data');
         }
-
-        const performMigrationActions = async (...actionCreators: [boolean | undefined, MigrateActionCreator][]) => {
-            const migrationActions: TupleUnion<keyof MigrateAction> = ['copy', 'cleanup'];
-
-            const actions = actionCreators
-                .filter(([performAction]) => performAction)
-                .map(([, actionCreator]) => actionCreator());
-
-            for (const migrationAction of migrationActions) {
-                // the migration actions (copy, cleanup) are supposed to be run sequentially to ensure that the cleanup
-                // only happens in case the copy succeeded
-
-                // oxlint-disable-next-line no-await-in-loop
-                await Promise.all(actions.flatMap((action) => action[migrationAction]()));
-            }
-        };
 
         await performMigrationActions(
             [
