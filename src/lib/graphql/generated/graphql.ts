@@ -2607,27 +2607,17 @@ export type GetGlobalMetadatasQuery = {
     };
 };
 
-export type AboutWebuiFragment = {
-    __typename: 'AboutWebUI';
-    channel: Types.WebUiChannel;
-    tag: string;
-    updateTimestamp: string;
-};
+export type AboutWebuiFragment = { __typename: 'AboutWebUI'; tag: string; repoUrl: string; updateTimestamp: string };
 
-export type WebuiUpdateCheckFragment = {
-    __typename: 'WebUIUpdateCheck';
-    channel: Types.WebUiChannel;
-    tag: string;
-    updateAvailable: boolean;
-};
+export type WebuiUpdateCheckFragment = { __typename: 'WebUIUpdateCheck'; tag: string; updateAvailable: boolean };
 
-export type WebuiUpdateInfoFragment = { __typename: 'WebUIUpdateInfo'; channel: Types.WebUiChannel; tag: string };
+export type WebuiUpdateInfoFragment = { __typename: 'WebUIUpdateInfo'; tag: string };
 
 export type WebuiUpdateStatusFragment = {
     __typename: 'WebUIUpdateStatus';
     progress: number;
     state: Types.UpdateState;
-    info: { __typename: 'WebUIUpdateInfo'; channel: Types.WebUiChannel; tag: string };
+    info: { __typename: 'WebUIUpdateInfo'; tag: string };
 };
 
 export type UpdateWebuiMutationVariables = Exact<{
@@ -2642,7 +2632,7 @@ export type UpdateWebuiMutation = {
             __typename: 'WebUIUpdateStatus';
             progress: number;
             state: Types.UpdateState;
-            info: { __typename: 'WebUIUpdateInfo'; channel: Types.WebUiChannel; tag: string };
+            info: { __typename: 'WebUIUpdateInfo'; tag: string };
         };
     } | null;
 };
@@ -2654,7 +2644,7 @@ export type ResetWebuiUpdateStatusMutation = {
     resetWebUIUpdateStatus: {
         __typename: 'WebUIUpdateStatus';
         state: Types.UpdateState;
-        info: { __typename: 'WebUIUpdateInfo'; channel: Types.WebUiChannel; tag: string };
+        info: { __typename: 'WebUIUpdateInfo'; tag: string };
     } | null;
 };
 
@@ -2665,36 +2655,25 @@ export type GetAboutQuery = {
     aboutServer: {
         __typename: 'AboutServerPayload';
         buildTime: string;
-        buildType: string;
-        github: string;
+        repoUrl: string;
         name: string;
         version: string;
     };
-    aboutWebUI: { __typename: 'AboutWebUI'; channel: Types.WebUiChannel; tag: string; updateTimestamp: string };
+    aboutWebUI: { __typename: 'AboutWebUI'; tag: string; repoUrl: string; updateTimestamp: string };
 };
 
 export type CheckForServerUpdatesQueryVariables = Exact<{ [key: string]: never }>;
 
 export type CheckForServerUpdatesQuery = {
     __typename: 'Query';
-    checkForServerUpdates: Array<{
-        __typename: 'CheckForServerUpdatesPayload';
-        channel: string;
-        tag: string;
-        url: string;
-    }>;
+    checkForServerUpdates: Array<{ __typename: 'CheckForServerUpdatesPayload'; tag: string; url: string }>;
 };
 
 export type CheckForWebuiUpdateQueryVariables = Exact<{ [key: string]: never }>;
 
 export type CheckForWebuiUpdateQuery = {
     __typename: 'Query';
-    checkForWebUIUpdate: {
-        __typename: 'WebUIUpdateCheck';
-        channel: Types.WebUiChannel;
-        tag: string;
-        updateAvailable: boolean;
-    };
+    checkForWebUIUpdate: { __typename: 'WebUIUpdateCheck'; tag: string; updateAvailable: boolean };
 };
 
 export type GetWebuiUpdateStatusQueryVariables = Exact<{ [key: string]: never }>;
@@ -2705,7 +2684,7 @@ export type GetWebuiUpdateStatusQuery = {
         __typename: 'WebUIUpdateStatus';
         progress: number;
         state: Types.UpdateState;
-        info: { __typename: 'WebUIUpdateInfo'; channel: Types.WebUiChannel; tag: string };
+        info: { __typename: 'WebUIUpdateInfo'; tag: string };
     };
 };
 
@@ -2717,7 +2696,7 @@ export type WebuiUpdateSubscription = {
         __typename: 'WebUIUpdateStatus';
         progress: number;
         state: Types.UpdateState;
-        info: { __typename: 'WebUIUpdateInfo'; channel: Types.WebUiChannel; tag: string };
+        info: { __typename: 'WebUIUpdateInfo'; tag: string };
     };
 };
 
@@ -2735,7 +2714,6 @@ export type ServerSettingsFragment = {
     initialOpenInBrowserEnabled: boolean;
     webUIInterface: Types.WebUiInterface;
     electronPath: string;
-    webUIChannel: Types.WebUiChannel;
     webUIUpdateCheckInterval: number;
     downloadAsCbz: boolean;
     downloadsPath: string;
@@ -2797,6 +2775,10 @@ export type ServerSettingsFragment = {
     databaseUsername: string;
     databasePassword: string;
     useHikariConnectionPool: boolean;
+    repoWebUiUrl: string;
+    repoWebUiType: Types.RepoType;
+    repoServerUrl: string;
+    repoServerType: Types.RepoType;
     downloadConversions: Array<{
         __typename: 'SettingsDownloadConversionType';
         mimeType: string;
@@ -2839,7 +2821,6 @@ export type ResetServerSettingsMutation = {
             initialOpenInBrowserEnabled: boolean;
             webUIInterface: Types.WebUiInterface;
             electronPath: string;
-            webUIChannel: Types.WebUiChannel;
             webUIUpdateCheckInterval: number;
             downloadAsCbz: boolean;
             downloadsPath: string;
@@ -2901,6 +2882,10 @@ export type ResetServerSettingsMutation = {
             databaseUsername: string;
             databasePassword: string;
             useHikariConnectionPool: boolean;
+            repoWebUiUrl: string;
+            repoWebUiType: Types.RepoType;
+            repoServerUrl: string;
+            repoServerType: Types.RepoType;
             downloadConversions: Array<{
                 __typename: 'SettingsDownloadConversionType';
                 mimeType: string;
@@ -2953,7 +2938,6 @@ export type UpdateServerSettingsMutation = {
             initialOpenInBrowserEnabled: boolean;
             webUIInterface: Types.WebUiInterface;
             electronPath: string;
-            webUIChannel: Types.WebUiChannel;
             webUIUpdateCheckInterval: number;
             downloadAsCbz: boolean;
             downloadsPath: string;
@@ -3015,6 +2999,10 @@ export type UpdateServerSettingsMutation = {
             databaseUsername: string;
             databasePassword: string;
             useHikariConnectionPool: boolean;
+            repoWebUiUrl: string;
+            repoWebUiType: Types.RepoType;
+            repoServerUrl: string;
+            repoServerType: Types.RepoType;
             downloadConversions: Array<{
                 __typename: 'SettingsDownloadConversionType';
                 mimeType: string;
@@ -3063,7 +3051,6 @@ export type GetServerSettingsQuery = {
         initialOpenInBrowserEnabled: boolean;
         webUIInterface: Types.WebUiInterface;
         electronPath: string;
-        webUIChannel: Types.WebUiChannel;
         webUIUpdateCheckInterval: number;
         downloadAsCbz: boolean;
         downloadsPath: string;
@@ -3125,6 +3112,10 @@ export type GetServerSettingsQuery = {
         databaseUsername: string;
         databasePassword: string;
         useHikariConnectionPool: boolean;
+        repoWebUiUrl: string;
+        repoWebUiType: Types.RepoType;
+        repoServerUrl: string;
+        repoServerType: Types.RepoType;
         downloadConversions: Array<{
             __typename: 'SettingsDownloadConversionType';
             mimeType: string;

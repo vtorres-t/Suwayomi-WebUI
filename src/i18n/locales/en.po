@@ -783,10 +783,6 @@ msgstr "Changelog"
 msgid "Changes the theme colors on the manga page based on the thumbnail"
 msgstr "Changes the theme colors on the manga page based on the thumbnail"
 
-#: src/features/settings/screens/WebUISettings.tsx
-msgid "Channel"
-msgstr "Channel"
-
 #: src/features/chapter/components/cards/ChapterCard.tsx
 #: src/features/downloads/components/DownloadAheadSetting.tsx
 #: src/features/downloads/screens/DownloadSettings.tsx
@@ -1761,12 +1757,23 @@ msgid "General"
 msgstr "General"
 
 #: src/features/settings/screens/About.tsx
-msgid "GitHub Server"
-msgstr "GitHub Server"
+#: src/features/settings/screens/ServerSettings.tsx
+msgid "Repo Server"
+msgstr "Repository Server"
 
 #: src/features/settings/screens/About.tsx
-msgid "GitHub WebUI"
-msgstr "GitHub WebUI"
+msgid "Repo WebUI"
+msgstr "Repository WebUI"
+
+#: src/features/settings/screens/WebUISettings.tsx
+#: src/features/settings/screens/ServerSettings.tsx
+msgid "Repository url"
+msgstr "Repository url"
+
+#: src/features/settings/screens/WebUISettings.tsx
+#: src/features/settings/screens/ServerSettings.tsx
+msgid "Repository type"
+msgstr "Repository type"
 
 #: src/features/browse/sources/Sources.tsx
 #: src/features/global-search/screens/SearchAll.tsx
@@ -3161,16 +3168,14 @@ msgstr "Server bindings"
 msgid "Server settings"
 msgstr "Server settings"
 
-#. placeholder {0}: selectedServerChannelInfo.tag
-#. placeholder {1}: selectedServerChannelInfo.channel
+#. placeholder {0}: selectedServerInfo.tag
 #: src/features/app-updates/components/ServerUpdateChecker.tsx
-msgid "Server version {0} ({1}) available for download"
-msgstr "Server version {0} ({1}) available for download"
+msgid "Server version {0} available for download"
+msgstr "Server version {0} available for download"
 
-#. placeholder {0}: aboutServer?.buildType
 #: src/features/app-updates/components/ServerUpdateChecker.tsx
-msgid "Server was updated to version {version} ({0})"
-msgstr "Server was updated to version {version} ({0})"
+msgid "Server was updated to version {version}"
+msgstr "Server was updated to version {version}"
 
 #: src/features/theme/components/CreateThemeDialog.tsx
 msgid "Set as active theme"
@@ -3932,15 +3937,13 @@ msgid "WebUI must be kept open. Migration can't be resumed"
 msgstr "WebUI must be kept open. Migration can't be resumed"
 
 #. placeholder {0}: webUIUpdateData?.checkForWebUIUpdate.tag
-#. placeholder {1}: webUIUpdateData?.checkForWebUIUpdate.channel
 #: src/features/app-updates/components/WebUIUpdateChecker.tsx
-msgid "WebUI version {0} ({1}) available for download"
-msgstr "WebUI version {0} ({1}) available for download"
+msgid "WebUI version {0} available for download"
+msgstr "WebUI version {0} available for download"
 
-#. placeholder {0}: aboutWebUI?.channel
 #: src/features/app-updates/components/WebUIUpdateChecker.tsx
-msgid "WebUI was updated to version {newVersion} ({0})"
-msgstr "WebUI was updated to version {newVersion} ({0})"
+msgid "WebUI was updated to version {newVersion}"
+msgstr "WebUI was updated to version {newVersion}"
 
 #: src/features/settings/Settings.constants.ts
 msgid "When you enable this, you may need to refresh this tab for the login page to appear."

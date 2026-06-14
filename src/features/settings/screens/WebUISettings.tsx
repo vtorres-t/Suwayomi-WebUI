@@ -15,7 +15,7 @@ import { requestManager } from '@/lib/requests/RequestManager.ts';
 import { WebUIUpdateIntervalSetting } from '@/features/settings/components/webUI/WebUIUpdateIntervalSetting.tsx';
 import { TextSetting } from '@/base/components/settings/text/TextSetting.tsx';
 import { SelectSetting } from '@/base/components/settings/SelectSetting.tsx';
-import type { WebUiChannel, WebUiInterface } from '@/lib/graphql/generated/graphql-base.types.ts';
+import type { WebUiInterface , RepoType } from '@/lib/graphql/generated/graphql-base.types.ts';
 import { WebUiFlavor } from '@/lib/graphql/generated/graphql-base.types.ts';
 import { LoadingPlaceholder } from '@/base/components/feedback/LoadingPlaceholder.tsx';
 import { EmptyViewAbsoluteCentered } from '@/base/components/feedback/EmptyViewAbsoluteCentered.tsx';
@@ -30,9 +30,9 @@ import type { WebUISettingsType } from '@/features/settings/Settings.types.ts';
 import { getErrorMessage } from '@/lib/HelperFunctions.ts';
 import { useAppTitle } from '@/features/navigation-bar/hooks/useAppTitle.ts';
 import {
-    WEB_UI_CHANNEL_SELECT_VALUES,
     WEB_UI_FLAVOR_SELECT_VALUES,
     WEB_UI_INTERFACE_SELECT_VALUES,
+    REPO_TYPE_SELECT_VALUES,
 } from '@/features/settings/Settings.constants.ts';
 
 export const WebUISettings = () => {
@@ -61,10 +61,6 @@ export const WebUISettings = () => {
         setting: Setting,
         value: WebUISettingsType[Setting],
     ) => {
-        if (setting === 'webUIChannel') {
-            requestManager.graphQLClient.client.cache.evict({ fieldName: 'checkForWebUIUpdate' });
-        }
-
         mutateSettings({ variables: { input: { settings: { [setting]: value } } } }).catch((e) =>
             makeToast(t`Failed to save changes`, 'error', getErrorMessage(e)),
         );
@@ -130,13 +126,6 @@ export const WebUISettings = () => {
                 settingDescription={webUISettings.electronPath.length ? webUISettings.electronPath : t`Default`}
                 handleChange={(path) => updateSetting('electronPath', path)}
             />
-            <SelectSetting<WebUiChannel>
-                settingName={t`Channel`}
-                value={webUISettings.webUIChannel}
-                values={WEB_UI_CHANNEL_SELECT_VALUES}
-                handleChange={(channel) => updateSetting('webUIChannel', channel)}
-                disabled={isCustomWebUI}
-            />
             <WebUIUpdateIntervalSetting
                 disabled={isCustomWebUI}
                 updateCheckInterval={webUISettings.webUIUpdateCheckInterval}
@@ -165,6 +154,18 @@ export const WebUISettings = () => {
                     />
                 </ListItem>
             )}
+            <TextSetting
+                settingName={t`Repository url`}
+                value={webUISettings.repoWebUiUrl}
+                settingDescription={webUISettings.repoWebUiUrl.length ? webUISettings.repoWebUiUrl : t`Default`}
+                handleChange={(repoWebUiUrl) => updateSetting('repoWebUiUrl', repoWebUiUrl)}
+            />
+            <SelectSetting<RepoType>
+                settingName={t`Repository type`}
+                value={webUISettings.repoWebUiType}
+                values={REPO_TYPE_SELECT_VALUES}
+                handleChange={(repoWebUiType) => updateSetting('repoWebUiType', repoWebUiType)}
+            />
         </List>
     );
 };

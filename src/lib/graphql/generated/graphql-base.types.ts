@@ -16,9 +16,8 @@ export type Scalars = {
 export type AboutServerPayload = {
     __typename?: 'AboutServerPayload';
     buildTime: Scalars['LongString']['output'];
-    buildType: Scalars['String']['output'];
-    github: Scalars['String']['output'];
     name: Scalars['String']['output'];
+    repoUrl: Scalars['String']['output'];
     /** @deprecated The version includes the revision as the patch number */
     revision: Scalars['String']['output'];
     version: Scalars['String']['output'];
@@ -26,7 +25,7 @@ export type AboutServerPayload = {
 
 export type AboutWebUi = {
     __typename?: 'AboutWebUI';
-    channel: WebUiChannel;
+    repoUrl: Scalars['String']['output'];
     tag: Scalars['String']['output'];
     updateTimestamp: Scalars['LongString']['output'];
 };
@@ -299,7 +298,6 @@ export type CheckBoxPreference = {
 
 export type CheckForServerUpdatesPayload = {
     __typename?: 'CheckForServerUpdatesPayload';
-    channel: Scalars['String']['output'];
     tag: Scalars['String']['output'];
     url: Scalars['String']['output'];
 };
@@ -1376,6 +1374,7 @@ export type Mutation = {
     setSourceMeta?: Maybe<SetSourceMetaPayload>;
     setSourceMetas?: Maybe<SetSourceMetasPayload>;
     startDownloader?: Maybe<StartDownloaderPayload>;
+    startSync: StartSyncPayload;
     stopDownloader?: Maybe<StopDownloaderPayload>;
     trackProgress?: Maybe<TrackProgressPayload>;
     unbindTrack: UnbindTrackPayload;
@@ -1611,6 +1610,10 @@ export type MutationStartDownloaderArgs = {
     input: StartDownloaderInput;
 };
 
+export type MutationStartSyncArgs = {
+    input: StartSyncInput;
+};
+
 export type MutationStopDownloaderArgs = {
     input: StopDownloaderInput;
 };
@@ -1830,6 +1833,10 @@ export type PartialSettingsType = Settings & {
     opdsShowOnlyUnreadChapters?: Maybe<Scalars['Boolean']['output']>;
     opdsUseBinaryFileSizes?: Maybe<Scalars['Boolean']['output']>;
     port?: Maybe<Scalars['Int']['output']>;
+    repoServerType?: Maybe<RepoType>;
+    repoServerUrl?: Maybe<Scalars['String']['output']>;
+    repoWebUiType?: Maybe<RepoType>;
+    repoWebUiUrl?: Maybe<Scalars['String']['output']>;
     serveConversions?: Maybe<Array<SettingsDownloadConversionType>>;
     socksProxyEnabled?: Maybe<Scalars['Boolean']['output']>;
     socksProxyHost?: Maybe<Scalars['String']['output']>;
@@ -1837,10 +1844,18 @@ export type PartialSettingsType = Settings & {
     socksProxyPort?: Maybe<Scalars['String']['output']>;
     socksProxyUsername?: Maybe<Scalars['String']['output']>;
     socksProxyVersion?: Maybe<Scalars['Int']['output']>;
+    syncDataCategories?: Maybe<Scalars['Boolean']['output']>;
+    syncDataChapters?: Maybe<Scalars['Boolean']['output']>;
+    syncDataHistory?: Maybe<Scalars['Boolean']['output']>;
+    syncDataManga?: Maybe<Scalars['Boolean']['output']>;
+    syncDataTracking?: Maybe<Scalars['Boolean']['output']>;
+    syncInterval?: Maybe<Scalars['Duration']['output']>;
+    syncYomiApiKey?: Maybe<Scalars['String']['output']>;
+    syncYomiEnabled?: Maybe<Scalars['Boolean']['output']>;
+    syncYomiHost?: Maybe<Scalars['String']['output']>;
     systemTrayEnabled?: Maybe<Scalars['Boolean']['output']>;
     updateMangas?: Maybe<Scalars['Boolean']['output']>;
     useHikariConnectionPool?: Maybe<Scalars['Boolean']['output']>;
-    webUIChannel?: Maybe<WebUiChannel>;
     webUIFlavor?: Maybe<WebUiFlavor>;
     webUIInterface?: Maybe<WebUiInterface>;
     webUIUpdateCheckInterval?: Maybe<Scalars['Float']['output']>;
@@ -1909,6 +1924,10 @@ export type PartialSettingsTypeInput = {
     opdsShowOnlyUnreadChapters?: InputMaybe<Scalars['Boolean']['input']>;
     opdsUseBinaryFileSizes?: InputMaybe<Scalars['Boolean']['input']>;
     port?: InputMaybe<Scalars['Int']['input']>;
+    repoServerType?: InputMaybe<RepoType>;
+    repoServerUrl?: InputMaybe<Scalars['String']['input']>;
+    repoWebUiType?: InputMaybe<RepoType>;
+    repoWebUiUrl?: InputMaybe<Scalars['String']['input']>;
     serveConversions?: InputMaybe<Array<SettingsDownloadConversionTypeInput>>;
     socksProxyEnabled?: InputMaybe<Scalars['Boolean']['input']>;
     socksProxyHost?: InputMaybe<Scalars['String']['input']>;
@@ -1916,10 +1935,18 @@ export type PartialSettingsTypeInput = {
     socksProxyPort?: InputMaybe<Scalars['String']['input']>;
     socksProxyUsername?: InputMaybe<Scalars['String']['input']>;
     socksProxyVersion?: InputMaybe<Scalars['Int']['input']>;
+    syncDataCategories?: InputMaybe<Scalars['Boolean']['input']>;
+    syncDataChapters?: InputMaybe<Scalars['Boolean']['input']>;
+    syncDataHistory?: InputMaybe<Scalars['Boolean']['input']>;
+    syncDataManga?: InputMaybe<Scalars['Boolean']['input']>;
+    syncDataTracking?: InputMaybe<Scalars['Boolean']['input']>;
+    syncInterval?: InputMaybe<Scalars['Duration']['input']>;
+    syncYomiApiKey?: InputMaybe<Scalars['String']['input']>;
+    syncYomiEnabled?: InputMaybe<Scalars['Boolean']['input']>;
+    syncYomiHost?: InputMaybe<Scalars['String']['input']>;
     systemTrayEnabled?: InputMaybe<Scalars['Boolean']['input']>;
     updateMangas?: InputMaybe<Scalars['Boolean']['input']>;
     useHikariConnectionPool?: InputMaybe<Scalars['Boolean']['input']>;
-    webUIChannel?: InputMaybe<WebUiChannel>;
     webUIFlavor?: InputMaybe<WebUiFlavor>;
     webUIInterface?: InputMaybe<WebUiInterface>;
     webUIUpdateCheckInterval?: InputMaybe<Scalars['Float']['input']>;
@@ -1971,6 +1998,7 @@ export type Query = {
     extensions: ExtensionNodeList;
     getWebUIUpdateStatus: WebUiUpdateStatus;
     koSyncStatus: KoSyncStatusPayload;
+    lastSyncStatus?: Maybe<SyncStatus>;
     lastUpdateTimestamp: LastUpdateTimestampPayload;
     libraryUpdateStatus: LibraryUpdateStatus;
     manga: MangaType;
@@ -2144,6 +2172,11 @@ export type ReorderChapterDownloadPayload = {
     clientMutationId?: Maybe<Scalars['String']['output']>;
     downloadStatus: DownloadStatus;
 };
+
+export enum RepoType {
+    Gitea = 'GITEA',
+    Github = 'GITHUB',
+}
 
 export type ResetSettingsInput = {
     clientMutationId?: InputMaybe<Scalars['String']['input']>;
@@ -2418,6 +2451,10 @@ export type Settings = {
     opdsShowOnlyUnreadChapters?: Maybe<Scalars['Boolean']['output']>;
     opdsUseBinaryFileSizes?: Maybe<Scalars['Boolean']['output']>;
     port?: Maybe<Scalars['Int']['output']>;
+    repoServerType?: Maybe<RepoType>;
+    repoServerUrl?: Maybe<Scalars['String']['output']>;
+    repoWebUiType?: Maybe<RepoType>;
+    repoWebUiUrl?: Maybe<Scalars['String']['output']>;
     serveConversions?: Maybe<Array<SettingsDownloadConversion>>;
     socksProxyEnabled?: Maybe<Scalars['Boolean']['output']>;
     socksProxyHost?: Maybe<Scalars['String']['output']>;
@@ -2425,10 +2462,18 @@ export type Settings = {
     socksProxyPort?: Maybe<Scalars['String']['output']>;
     socksProxyUsername?: Maybe<Scalars['String']['output']>;
     socksProxyVersion?: Maybe<Scalars['Int']['output']>;
+    syncDataCategories?: Maybe<Scalars['Boolean']['output']>;
+    syncDataChapters?: Maybe<Scalars['Boolean']['output']>;
+    syncDataHistory?: Maybe<Scalars['Boolean']['output']>;
+    syncDataManga?: Maybe<Scalars['Boolean']['output']>;
+    syncDataTracking?: Maybe<Scalars['Boolean']['output']>;
+    syncInterval?: Maybe<Scalars['Duration']['output']>;
+    syncYomiApiKey?: Maybe<Scalars['String']['output']>;
+    syncYomiEnabled?: Maybe<Scalars['Boolean']['output']>;
+    syncYomiHost?: Maybe<Scalars['String']['output']>;
     systemTrayEnabled?: Maybe<Scalars['Boolean']['output']>;
     updateMangas?: Maybe<Scalars['Boolean']['output']>;
     useHikariConnectionPool?: Maybe<Scalars['Boolean']['output']>;
-    webUIChannel?: Maybe<WebUiChannel>;
     webUIFlavor?: Maybe<WebUiFlavor>;
     webUIInterface?: Maybe<WebUiInterface>;
     webUIUpdateCheckInterval?: Maybe<Scalars['Float']['output']>;
@@ -2562,6 +2607,10 @@ export type SettingsType = Settings & {
     opdsShowOnlyUnreadChapters: Scalars['Boolean']['output'];
     opdsUseBinaryFileSizes: Scalars['Boolean']['output'];
     port: Scalars['Int']['output'];
+    repoServerType: RepoType;
+    repoServerUrl: Scalars['String']['output'];
+    repoWebUiType: RepoType;
+    repoWebUiUrl: Scalars['String']['output'];
     serveConversions: Array<SettingsDownloadConversionType>;
     socksProxyEnabled: Scalars['Boolean']['output'];
     socksProxyHost: Scalars['String']['output'];
@@ -2569,10 +2618,18 @@ export type SettingsType = Settings & {
     socksProxyPort: Scalars['String']['output'];
     socksProxyUsername: Scalars['String']['output'];
     socksProxyVersion: Scalars['Int']['output'];
+    syncDataCategories: Scalars['Boolean']['output'];
+    syncDataChapters: Scalars['Boolean']['output'];
+    syncDataHistory: Scalars['Boolean']['output'];
+    syncDataManga: Scalars['Boolean']['output'];
+    syncDataTracking: Scalars['Boolean']['output'];
+    syncInterval: Scalars['Duration']['output'];
+    syncYomiApiKey: Scalars['String']['output'];
+    syncYomiEnabled: Scalars['Boolean']['output'];
+    syncYomiHost: Scalars['String']['output'];
     systemTrayEnabled: Scalars['Boolean']['output'];
     updateMangas: Scalars['Boolean']['output'];
     useHikariConnectionPool: Scalars['Boolean']['output'];
-    webUIChannel: WebUiChannel;
     webUIFlavor: WebUiFlavor;
     webUIInterface: WebUiInterface;
     webUIUpdateCheckInterval: Scalars['Float']['output'];
@@ -2698,6 +2755,22 @@ export type StartDownloaderPayload = {
     downloadStatus: DownloadStatus;
 };
 
+export type StartSyncInput = {
+    clientMutationId?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type StartSyncPayload = {
+    __typename?: 'StartSyncPayload';
+    clientMutationId?: Maybe<Scalars['String']['output']>;
+    result: StartSyncResult;
+};
+
+export enum StartSyncResult {
+    Success = 'SUCCESS',
+    SyncDisabled = 'SYNC_DISABLED',
+    SyncInProgress = 'SYNC_IN_PROGRESS',
+}
+
 export type StopDownloaderInput = {
     clientMutationId?: InputMaybe<Scalars['String']['input']>;
 };
@@ -2790,6 +2863,7 @@ export type Subscription = {
     downloadChanged: DownloadStatus;
     downloadStatusChanged: DownloadUpdates;
     libraryUpdateStatusChanged: UpdaterUpdates;
+    syncStatusChanged: SyncStatus;
     /** @deprecated Replaced with updates, replace with updates(input) */
     updateStatusChanged: UpdateStatus;
     webUIUpdateStatusChange: WebUiUpdateStatus;
@@ -2818,6 +2892,26 @@ export type SyncConflictInfoType = {
     __typename?: 'SyncConflictInfoType';
     deviceName: Scalars['String']['output'];
     remotePage: Scalars['Int']['output'];
+};
+
+export enum SyncState {
+    CreatingBackup = 'CREATING_BACKUP',
+    Downloading = 'DOWNLOADING',
+    Error = 'ERROR',
+    Merging = 'MERGING',
+    Restoring = 'RESTORING',
+    Started = 'STARTED',
+    Success = 'SUCCESS',
+    Uploading = 'UPLOADING',
+}
+
+export type SyncStatus = {
+    __typename?: 'SyncStatus';
+    backupRestoreId?: Maybe<Scalars['String']['output']>;
+    endDate?: Maybe<Scalars['LongString']['output']>;
+    errorMessage?: Maybe<Scalars['String']['output']>;
+    startDate: Scalars['LongString']['output'];
+    state: SyncState;
 };
 
 export type TextFilter = {
@@ -3341,12 +3435,6 @@ export type ValidateBackupTracker = {
     name: Scalars['String']['output'];
 };
 
-export enum WebUiChannel {
-    Bundled = 'BUNDLED',
-    Preview = 'PREVIEW',
-    Stable = 'STABLE',
-}
-
 export enum WebUiFlavor {
     Custom = 'CUSTOM',
     Vui = 'VUI',
@@ -3360,14 +3448,12 @@ export enum WebUiInterface {
 
 export type WebUiUpdateCheck = {
     __typename?: 'WebUIUpdateCheck';
-    channel: WebUiChannel;
     tag: Scalars['String']['output'];
     updateAvailable: Scalars['Boolean']['output'];
 };
 
 export type WebUiUpdateInfo = {
     __typename?: 'WebUIUpdateInfo';
-    channel: WebUiChannel;
     tag: Scalars['String']['output'];
 };
 

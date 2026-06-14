@@ -14,8 +14,7 @@ export const GET_ABOUT = gql`
     query GET_ABOUT {
         aboutServer {
             buildTime
-            buildType
-            github
+            repoUrl
             name
             version
         }
@@ -28,7 +27,6 @@ export const GET_ABOUT = gql`
 export const CHECK_FOR_SERVER_UPDATES = gql`
     query CHECK_FOR_SERVER_UPDATES {
         checkForServerUpdates {
-            channel
             tag
             url
         }

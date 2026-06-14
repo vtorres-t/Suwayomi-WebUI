@@ -27,7 +27,6 @@ export const SERVER_SETTINGS = gql`
         initialOpenInBrowserEnabled
         webUIInterface
         electronPath
-        webUIChannel
         webUIUpdateCheckInterval
 
         # downloader
@@ -136,5 +135,11 @@ export const SERVER_SETTINGS = gql`
         databaseUsername
         databasePassword
         useHikariConnectionPool
+
+        # Repository
+        repoWebUiUrl
+        repoWebUiType
+        repoServerUrl
+        repoServerType
     }
 `;

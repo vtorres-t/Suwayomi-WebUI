@@ -65,11 +65,8 @@ export function About() {
     }
 
     const { aboutServer, aboutWebUI } = data!;
-    const selectedServerChannelInfo = serverUpdateCheckData?.checkForServerUpdates?.find(
-        (channel) => channel.channel === aboutServer.buildType,
-    );
-    const isServerUpdateAvailable =
-        !!selectedServerChannelInfo?.tag && selectedServerChannelInfo.tag !== aboutServer.version;
+    const selectedServerInfo = serverUpdateCheckData?.checkForServerUpdates?.at(0);
+    const isServerUpdateAvailable = !!selectedServerInfo?.tag && selectedServerInfo.tag !== aboutServer.version;
     const isWebUIUpdateAvailable = !!webUIUpdateData?.checkForWebUIUpdate.updateAvailable;
 
     return (
@@ -93,7 +90,7 @@ export function About() {
                                 updateCheckError={serverUpdateCheckError}
                                 checkForUpdate={checkForServerUpdate}
                                 downloadAsLink
-                                url={selectedServerChannelInfo?.url ?? ''}
+                                url={selectedServerInfo?.url ?? ''}
                             />
                         }
                     />
@@ -144,11 +141,11 @@ export function About() {
                     </ListSubheader>
                 }
             >
-                <ListItemLink to={aboutServer.github} target="_blank" rel="noreferrer">
-                    <ListItemText primary={t`GitHub Server`} secondary={aboutServer.github} />
+                <ListItemLink to={aboutServer.repoUrl} target="_blank" rel="noreferrer">
+                    <ListItemText primary={t`Repo Server`} secondary={aboutServer.repoUrl} />
                 </ListItemLink>
-                <ListItemLink to="https://github.com/vtorres-t/Suwayomi-WebUI" target="_blank" rel="noreferrer">
-                    <ListItemText primary={t`GitHub WebUI`} secondary="https://github.com/vtorres-t/Suwayomi-WebUI" />
+                <ListItemLink to={aboutWebUI.repoUrl} target="_blank" rel="noreferrer">
+                    <ListItemText primary={t`Repo WebUI`} secondary={aboutWebUI.repoUrl} />
                 </ListItemLink>
             </List>
         </List>

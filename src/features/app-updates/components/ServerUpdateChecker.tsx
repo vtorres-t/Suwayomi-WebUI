@@ -48,22 +48,17 @@ export const ServerUpdateChecker = () => {
     const { data } = requestManager.useGetAbout();
     const { aboutServer } = data ?? STABLE_EMPTY_OBJECT;
 
-    const selectedServerChannelInfo = serverUpdateCheckData?.checkForServerUpdates?.find(
-        (channel) => channel.channel === aboutServer?.buildType,
-    );
+    const selectedServerInfo = serverUpdateCheckData?.checkForServerUpdates?.at(0);
     const version = aboutServer ? aboutServer.version : undefined;
-    const isServerUpdateAvailable = !!selectedServerChannelInfo?.tag && selectedServerChannelInfo.tag !== version;
+    const isServerUpdateAvailable = !!selectedServerInfo?.tag && selectedServerInfo.tag !== version;
 
     const updateChecker = useUpdateChecker(
         'server',
         serverInformAvailableUpdate ? checkForUpdate : disabledUpdateCheck,
-        selectedServerChannelInfo?.tag,
+        selectedServerInfo?.tag,
     );
 
-    const changelogUrl =
-        aboutServer?.buildType.toLowerCase() === 'stable'
-            ? `https://github.com/vtorres-t/Suwayomi-Server/releases/tag/${aboutServer.version}`
-            : 'https://github.com/vtorres-t/Suwayomi-Server/blob/master/CHANGELOG.md';
+    const changelogUrl = `https://github.com/vtorres-t/Suwayomi-Server/releases/tag/${aboutServer.version}`;
 
     const isSameAsCurrent = !version || !serverVersion || serverVersion === version;
 
@@ -104,10 +99,10 @@ export const ServerUpdateChecker = () => {
 
         return (
             <VersionUpdateInfoDialog
-                info={t`Server version ${selectedServerChannelInfo.tag} (${selectedServerChannelInfo.channel}) available for download`}
+                info={t`Server version ${selectedServerInfo.tag} available for download`}
                 actionTitle={t`Download`}
-                actionUrl={selectedServerChannelInfo.url}
-                updateCheckerProps={['server', checkForUpdate, selectedServerChannelInfo?.tag]}
+                actionUrl={selectedServerInfo.url}
+                updateCheckerProps={['server', checkForUpdate, selectedServerInfo?.tag]}
             />
         );
     }
@@ -120,7 +115,7 @@ export const ServerUpdateChecker = () => {
         <Dialog open={open}>
             <DialogTitle>{t`Updated version`}</DialogTitle>
             <DialogContent>
-                <DialogContentText>{t`Server was updated to version ${version} (${aboutServer?.buildType})`}</DialogContentText>
+                <DialogContentText>{t`Server was updated to version ${version}`}</DialogContentText>
             </DialogContent>
             <DialogActions>
                 {changelogUrl && (

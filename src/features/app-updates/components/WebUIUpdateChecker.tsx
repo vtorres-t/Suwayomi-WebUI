@@ -16,7 +16,7 @@ import Button from '@mui/material/Button';
 import { useLingui } from '@lingui/react/macro';
 import { defaultPromiseErrorHandler } from '@/lib/DefaultPromiseErrorHandler.ts';
 import type { WebUiUpdateStatus } from '@/lib/graphql/generated/graphql-base.types.ts';
-import { UpdateState, WebUiChannel } from '@/lib/graphql/generated/graphql-base.types.ts';
+import { UpdateState } from '@/lib/graphql/generated/graphql-base.types.ts';
 import { useLocalStorage } from '@/base/hooks/useStorage.tsx';
 import { requestManager } from '@/lib/requests/RequestManager.ts';
 import { makeToast } from '@/base/utils/Toast.ts';
@@ -65,10 +65,7 @@ export const WebUIUpdateChecker = () => {
         webUIUpdateData?.checkForWebUIUpdate.tag,
     );
 
-    const changelogUrl =
-        updateStatus.info?.channel === WebUiChannel.Stable
-            ? 'https://github.com/vtorres-t/Suwayomi-WebUI/releases/latest'
-            : 'https://github.com/vtorres-t/Suwayomi-WebUI/blob/master/CHANGELOG.md';
+    const changelogUrl = 'https://github.com/vtorres-t/Suwayomi-WebUI/releases/latest';
 
     const newVersion = aboutWebUI?.tag;
     const isSameAsCurrent = !newVersion || !webUIVersion || webUIVersion === newVersion;
@@ -115,7 +112,6 @@ export const WebUIUpdateChecker = () => {
             fragment: ABOUT_WEBUI,
             data: {
                 __typename: 'AboutWebUI',
-                channel: webUIUpdateStatusData!.getWebUIUpdateStatus.info.channel,
                 tag: webUIUpdateStatusData!.getWebUIUpdateStatus.info.tag,
                 updateTimestamp: Date.now(),
             },
@@ -124,7 +120,6 @@ export const WebUIUpdateChecker = () => {
             fragment: WEBUI_UPDATE_CHECK,
             data: {
                 __typename: 'WebUIUpdateCheck',
-                channel: webUIUpdateStatusData!.getWebUIUpdateStatus.info.channel,
                 tag: webUIUpdateStatusData!.getWebUIUpdateStatus.info.tag,
                 updateAvailable: false,
             },
@@ -138,7 +133,7 @@ export const WebUIUpdateChecker = () => {
 
         return (
             <VersionUpdateInfoDialog
-                info={t`WebUI version ${webUIUpdateData?.checkForWebUIUpdate.tag} (${webUIUpdateData?.checkForWebUIUpdate.channel}) available for download`}
+                info={t`WebUI version ${webUIUpdateData?.checkForWebUIUpdate.tag} available for download`}
                 changelogUrl={changelogUrl}
                 disabled={isUpdateInProgress}
                 onAction={() =>
@@ -164,7 +159,7 @@ export const WebUIUpdateChecker = () => {
         <Dialog open={open} onClose={shouldForceRefresh ? () => setOpen(false) : noOp}>
             <DialogTitle>{t`Updated version`}</DialogTitle>
             <DialogContent>
-                <DialogContentText>{t`WebUI was updated to version ${newVersion} (${aboutWebUI?.channel})`}</DialogContentText>
+                <DialogContentText>{t`WebUI was updated to version ${newVersion}`}</DialogContentText>
             </DialogContent>
             <DialogActions>
                 <Button href={changelogUrl} target="_blank" rel="noreferrer">

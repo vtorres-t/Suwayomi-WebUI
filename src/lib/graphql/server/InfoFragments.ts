@@ -10,15 +10,14 @@ import gql from 'graphql-tag';
 
 export const ABOUT_WEBUI = gql`
     fragment ABOUT_WEBUI on AboutWebUI {
-        channel
         tag
+        repoUrl
         updateTimestamp
     }
 `;
 
 export const WEBUI_UPDATE_CHECK = gql`
     fragment WEBUI_UPDATE_CHECK on WebUIUpdateCheck {
-        channel
         tag
         updateAvailable
     }
@@ -26,7 +25,6 @@ export const WEBUI_UPDATE_CHECK = gql`
 
 export const WEBUI_UPDATE_INFO = gql`
     fragment WEBUI_UPDATE_INFO on WebUIUpdateInfo {
-        channel
         tag
     }
 `;
