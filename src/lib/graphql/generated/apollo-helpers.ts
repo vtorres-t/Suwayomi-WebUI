@@ -1,14 +1,16 @@
 import { FieldPolicy, FieldReadFunction, TypePolicies, TypePolicy } from '@apollo/client/cache';
-export type AboutServerPayloadKeySpecifier = ('buildTime' | 'name' | 'repoUrl' | 'revision' | 'version' | AboutServerPayloadKeySpecifier)[];
+export type AboutServerPayloadKeySpecifier = ('buildTime' | 'name' | 'repoType' | 'repoUrl' | 'revision' | 'version' | AboutServerPayloadKeySpecifier)[];
 export type AboutServerPayloadFieldPolicy = {
 	buildTime?: FieldPolicy<any> | FieldReadFunction<any>,
 	name?: FieldPolicy<any> | FieldReadFunction<any>,
+	repoType?: FieldPolicy<any> | FieldReadFunction<any>,
 	repoUrl?: FieldPolicy<any> | FieldReadFunction<any>,
 	revision?: FieldPolicy<any> | FieldReadFunction<any>,
 	version?: FieldPolicy<any> | FieldReadFunction<any>
 };
-export type AboutWebUIKeySpecifier = ('repoUrl' | 'tag' | 'updateTimestamp' | AboutWebUIKeySpecifier)[];
+export type AboutWebUIKeySpecifier = ('repoType' | 'repoUrl' | 'tag' | 'updateTimestamp' | AboutWebUIKeySpecifier)[];
 export type AboutWebUIFieldPolicy = {
+	repoType?: FieldPolicy<any> | FieldReadFunction<any>,
 	repoUrl?: FieldPolicy<any> | FieldReadFunction<any>,
 	tag?: FieldPolicy<any> | FieldReadFunction<any>,
 	updateTimestamp?: FieldPolicy<any> | FieldReadFunction<any>
