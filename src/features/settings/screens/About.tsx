@@ -142,10 +142,16 @@ export function About() {
                 }
             >
                 <ListItemLink to={aboutServer.repoUrl} target="_blank" rel="noreferrer">
-                    <ListItemText primary={t`Repo Server`} secondary={aboutServer.repoUrl} />
+                    <ListItemText
+                        primary={t`Repo Server`}
+                        secondary={`(${aboutServer.repoType.toUpperCase()}): ${aboutServer.repoUrl}`}
+                    />
                 </ListItemLink>
                 <ListItemLink to={aboutWebUI.repoUrl} target="_blank" rel="noreferrer">
-                    <ListItemText primary={t`Repo WebUI`} secondary={aboutWebUI.repoUrl} />
+                    <ListItemText
+                        primary={t`Repo WebUI`}
+                        secondary={`(${aboutWebUI.repoType.toUpperCase()}): ${aboutWebUI.repoUrl}`}
+                    />
                 </ListItemLink>
             </List>
         </List>

@@ -17,6 +17,7 @@ export type AboutServerPayload = {
     __typename?: 'AboutServerPayload';
     buildTime: Scalars['LongString']['output'];
     name: Scalars['String']['output'];
+    repoType: RepoType;
     repoUrl: Scalars['String']['output'];
     /** @deprecated The version includes the revision as the patch number */
     revision: Scalars['String']['output'];
@@ -25,6 +26,7 @@ export type AboutServerPayload = {
 
 export type AboutWebUi = {
     __typename?: 'AboutWebUI';
+    repoType: RepoType;
     repoUrl: Scalars['String']['output'];
     tag: Scalars['String']['output'];
     updateTimestamp: Scalars['LongString']['output'];
@@ -2174,8 +2176,8 @@ export type ReorderChapterDownloadPayload = {
 };
 
 export enum RepoType {
-    Gitea = 'GITEA',
-    Github = 'GITHUB',
+    Gitea = 'Gitea',
+    Github = 'Github',
 }
 
 export type ResetSettingsInput = {

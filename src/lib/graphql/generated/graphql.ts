@@ -2607,7 +2607,13 @@ export type GetGlobalMetadatasQuery = {
     };
 };
 
-export type AboutWebuiFragment = { __typename: 'AboutWebUI'; tag: string; repoUrl: string; updateTimestamp: string };
+export type AboutWebuiFragment = {
+    __typename: 'AboutWebUI';
+    tag: string;
+    repoUrl: string;
+    repoType: Types.RepoType;
+    updateTimestamp: string;
+};
 
 export type WebuiUpdateCheckFragment = { __typename: 'WebUIUpdateCheck'; tag: string; updateAvailable: boolean };
 
@@ -2655,11 +2661,18 @@ export type GetAboutQuery = {
     aboutServer: {
         __typename: 'AboutServerPayload';
         buildTime: string;
+        repoType: Types.RepoType;
         repoUrl: string;
         name: string;
         version: string;
     };
-    aboutWebUI: { __typename: 'AboutWebUI'; tag: string; repoUrl: string; updateTimestamp: string };
+    aboutWebUI: {
+        __typename: 'AboutWebUI';
+        tag: string;
+        repoUrl: string;
+        repoType: Types.RepoType;
+        updateTimestamp: string;
+    };
 };
 
 export type CheckForServerUpdatesQueryVariables = Exact<{ [key: string]: never }>;

@@ -14,6 +14,7 @@ export const GET_ABOUT = gql`
     query GET_ABOUT {
         aboutServer {
             buildTime
+            repoType
             repoUrl
             name
             version
