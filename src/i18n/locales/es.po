@@ -424,10 +424,6 @@ msgstr "Registro de cambios"
 msgid "Changes the theme colors on the manga page based on the thumbnail"
 msgstr "Cambia los colores del tema en la página del manga basándose en la portada"
 
-#: src/features/settings/screens/WebUISettings.tsx
-msgid "Channel"
-msgstr "Canal"
-
 #: src/features/reader/screens/Reader.tsx
 msgid "Chapter does not exist"
 msgstr "El capítulo no existe"
@@ -1268,12 +1264,23 @@ msgid "General"
 msgstr "General"
 
 #: src/features/settings/screens/About.tsx
-msgid "GitHub Server"
-msgstr "GitHub Servidor"
+#: src/features/settings/screens/ServerSettings.tsx
+msgid "Repo Server"
+msgstr "Repositorio Servidor"
 
 #: src/features/settings/screens/About.tsx
-msgid "GitHub WebUI"
-msgstr "GitHub WebUI"
+msgid "Repo WebUI"
+msgstr "Repositorio WebUI"
+
+#: src/features/settings/screens/WebUISettings.tsx
+#: src/features/settings/screens/ServerSettings.tsx
+msgid "Repository url"
+msgstr "Url repositorio"
+
+#: src/features/settings/screens/WebUISettings.tsx
+#: src/features/settings/screens/ServerSettings.tsx
+msgid "Repository type"
+msgstr "Tipo repositorio"
 
 #: src/features/browse/sources/Sources.tsx
 #: src/features/global-search/screens/SearchAll.tsx

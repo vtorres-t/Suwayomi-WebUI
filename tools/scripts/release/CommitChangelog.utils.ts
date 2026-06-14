@@ -186,7 +186,7 @@ const getContributors = (commits: Commit[]): string[] => [
 ];
 
 export const createCommitChangelog = async (prevReleaseLastCommitSha: string): Promise<string> => {
-    const owner = 'Suwayomi';
+    const owner = 'vtorres-t';
     const repo = 'Suwayomi-WebUI';
 
     const { totalRepoCommitCount: numberOfCommits, commits: githubCommits } = await fetchCommits(

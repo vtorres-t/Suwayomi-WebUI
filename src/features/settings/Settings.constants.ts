@@ -24,9 +24,9 @@ import {
     AuthMode,
     KoreaderSyncChecksumMethod,
     KoreaderSyncConflictStrategy,
-    WebUiChannel,
     WebUiFlavor,
     WebUiInterface,
+    RepoType,
 } from '@/lib/graphql/generated/graphql-base.types.ts';
 import { ThemeMode } from '@/features/theme/AppTheme.types.ts';
 import { getPreferredISOLanguageCodes } from '@/lib/ISOLanguageUtil.ts';
@@ -144,31 +144,6 @@ const WEB_UI_FLAVOR_TO_TRANSLATION: { [flavor in WebUiFlavor]: SelectSettingValu
 export const WEB_UI_FLAVOR_SELECT_VALUES: SelectSettingValue<WebUiFlavor>[] = WEB_UI_FLAVORS.map((flavor) => [
     flavor,
     WEB_UI_FLAVOR_TO_TRANSLATION[flavor],
-]);
-
-const WEB_UI_CHANNELS = Object.values(WebUiChannel);
-const WEB_UI_CHANNEL_TO_TRANSLATIONS: {
-    [channel in WebUiChannel]: SelectSettingValueDisplayInfo;
-} = {
-    [WebUiChannel.Bundled]: {
-        text: msg`Bundled`,
-        description: msg`Use the version that was delivered with the server release`,
-        disclaimer: msg`After changing this setting go to the "About" page and check for a webUI update and install it`,
-    },
-    [WebUiChannel.Stable]: {
-        text: msg`Stable`,
-        description: msg`Use the latest released version.`,
-        disclaimer: msg`After changing this setting go to the "About" page and check for a webUI update and install it`,
-    },
-    [WebUiChannel.Preview]: {
-        text: msg`Preview`,
-        description: msg`Use the latest features and help us get them ready for a stable release.`,
-        disclaimer: msg`Features and changes in this version might not be completely ready yet and can cause bugs.\nMake sure that you have automatic backups enabled to prevent loss of your library!\n\nAfter changing this setting go to the "About" page and check for a webUI update and install it`,
-    },
-};
-export const WEB_UI_CHANNEL_SELECT_VALUES: SelectSettingValue<WebUiChannel>[] = WEB_UI_CHANNELS.map((channel) => [
-    channel,
-    WEB_UI_CHANNEL_TO_TRANSLATIONS[channel],
 ]);
 
 const WEB_UI_INTERFACES = Object.values(WebUiInterface);
@@ -318,3 +293,21 @@ export const IMAGE_PROCESSING_TYPE_TO_SETTING: Record<
     [ImageProcessingType.DOWNLOAD]: 'downloadConversions',
     [ImageProcessingType.SERVE]: 'serveConversions',
 };
+
+const REPOSITORY_TYPES = Object.values(RepoType);
+const REPOSITORY_TYPES_TO_TRANSLATION: {
+    [repoType in RepoType]: SelectSettingValueDisplayInfo;
+} = {
+    [RepoType.Gitea]: {
+        text: msg`Gitea`,
+        description: msg`Gitea`,
+    },
+    [RepoType.Github]: {
+        text: msg`Github`,
+        description: msg`Github`,
+    },
+};
+export const REPO_TYPE_SELECT_VALUES: SelectSettingValue<RepoType>[] = REPOSITORY_TYPES.map((repoType) => [
+    repoType,
+    REPOSITORY_TYPES_TO_TRANSLATION[repoType],
+]);

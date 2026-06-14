@@ -48,8 +48,9 @@ export type WebUISettingsType = Pick<
     | 'initialOpenInBrowserEnabled'
     | 'webUIInterface'
     | 'electronPath'
-    | 'webUIChannel'
     | 'webUIUpdateCheckInterval'
+    | 'repoWebUiUrl'
+    | 'repoWebUiType'
 >;
 
 export type GlobalUpdateSkipEntriesSettings = Pick<
