@@ -26,7 +26,6 @@ import {
     KoreaderSyncConflictStrategy,
     WebUiFlavor,
     WebUiInterface,
-    RepoType,
 } from '@/lib/graphql/generated/graphql-base.types.ts';
 import { ThemeMode } from '@/features/theme/AppTheme.types.ts';
 import { getPreferredISOLanguageCodes } from '@/lib/ISOLanguageUtil.ts';
@@ -293,21 +292,3 @@ export const IMAGE_PROCESSING_TYPE_TO_SETTING: Record<
     [ImageProcessingType.DOWNLOAD]: 'downloadConversions',
     [ImageProcessingType.SERVE]: 'serveConversions',
 };
-
-const REPOSITORY_TYPES = Object.values(RepoType);
-const REPOSITORY_TYPES_TO_TRANSLATION: {
-    [repoType in RepoType]: SelectSettingValueDisplayInfo;
-} = {
-    [RepoType.Gitea]: {
-        text: msg`Gitea`,
-        description: msg`Gitea`,
-    },
-    [RepoType.Github]: {
-        text: msg`Github`,
-        description: msg`Github`,
-    },
-};
-export const REPO_TYPE_SELECT_VALUES: SelectSettingValue<RepoType>[] = REPOSITORY_TYPES.map((repoType) => [
-    repoType,
-    REPOSITORY_TYPES_TO_TRANSLATION[repoType],
-]);

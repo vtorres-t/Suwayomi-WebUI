@@ -15,8 +15,8 @@ import { requestManager } from '@/lib/requests/RequestManager.ts';
 import { WebUIUpdateIntervalSetting } from '@/features/settings/components/webUI/WebUIUpdateIntervalSetting.tsx';
 import { TextSetting } from '@/base/components/settings/text/TextSetting.tsx';
 import { SelectSetting } from '@/base/components/settings/SelectSetting.tsx';
-import type { WebUiInterface , RepoType } from '@/lib/graphql/generated/graphql-base.types.ts';
-import { WebUiFlavor } from '@/lib/graphql/generated/graphql-base.types.ts';
+import type { WebUiInterface } from '@/lib/graphql/generated/graphql-base.types.ts';
+import { WebUiFlavor, RepoType } from '@/lib/graphql/generated/graphql-base.types.ts';
 import { LoadingPlaceholder } from '@/base/components/feedback/LoadingPlaceholder.tsx';
 import { EmptyViewAbsoluteCentered } from '@/base/components/feedback/EmptyViewAbsoluteCentered.tsx';
 import { defaultPromiseErrorHandler } from '@/lib/DefaultPromiseErrorHandler.ts';
@@ -29,11 +29,7 @@ import type { MetadataUpdateSettings } from '@/features/app-updates/AppUpdateChe
 import type { WebUISettingsType } from '@/features/settings/Settings.types.ts';
 import { getErrorMessage } from '@/lib/HelperFunctions.ts';
 import { useAppTitle } from '@/features/navigation-bar/hooks/useAppTitle.ts';
-import {
-    WEB_UI_FLAVOR_SELECT_VALUES,
-    WEB_UI_INTERFACE_SELECT_VALUES,
-    REPO_TYPE_SELECT_VALUES,
-} from '@/features/settings/Settings.constants.ts';
+import { WEB_UI_FLAVOR_SELECT_VALUES, WEB_UI_INTERFACE_SELECT_VALUES } from '@/features/settings/Settings.constants.ts';
 
 export const WebUISettings = () => {
     const { t } = useLingui();
@@ -163,7 +159,20 @@ export const WebUISettings = () => {
             <SelectSetting<RepoType>
                 settingName={t`Repository type`}
                 value={webUISettings.repoWebUiType}
-                values={REPO_TYPE_SELECT_VALUES}
+                values={[
+                    [
+                        RepoType.Github,
+                        {
+                            text: t`Github`,
+                        },
+                    ],
+                    [
+                        RepoType.Gitea,
+                        {
+                            text: t`Gitea`,
+                        },
+                    ],
+                ]}
                 handleChange={(repoWebUiType) => updateSetting('repoWebUiType', repoWebUiType)}
             />
         </List>
