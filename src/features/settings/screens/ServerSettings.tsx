@@ -31,19 +31,17 @@ import { makeToast } from '@/base/utils/Toast.ts';
 import type { MetadataUpdateSettings } from '@/features/app-updates/AppUpdateChecker.types.ts';
 import { getErrorMessage } from '@/lib/HelperFunctions.ts';
 import { useAppTitle } from '@/features/navigation-bar/hooks/useAppTitle.ts';
-import type {
-    RepoType} from '@/lib/graphql/generated/graphql-base.types.ts';
 import {
     AuthMode,
     CbzMediaType,
     DatabaseType,
-    SortOrder
+    SortOrder,
+    RepoType,
 } from '@/lib/graphql/generated/graphql-base.types.ts';
 import {
     AUTH_MODES_SELECT_VALUES,
     JWT_ACCESS_TOKEN_EXPIRY,
     JWT_REFRESH_TOKEN_EXPIRY,
-    REPO_TYPE_SELECT_VALUES,
 } from '@/features/settings/Settings.constants.ts';
 import { ServerAddressSetting } from '@/features/settings/components/ServerAddressSetting.tsx';
 import { AuthManager } from '@/features/authentication/AuthManager.ts';
@@ -725,7 +723,20 @@ export const ServerSettings = () => {
                 <SelectSetting<RepoType>
                     settingName={t`Repository type`}
                     value={serverSettings.repoServerType}
-                    values={REPO_TYPE_SELECT_VALUES}
+                    values={[
+                        [
+                            RepoType.Github,
+                            {
+                                text: t`Github`,
+                            },
+                        ],
+                        [
+                            RepoType.Gitea,
+                            {
+                                text: t`Gitea`,
+                            },
+                        ],
+                    ]}
                     handleChange={(repoServerType) => updateSetting('repoServerType', repoServerType)}
                 />
             </List>
