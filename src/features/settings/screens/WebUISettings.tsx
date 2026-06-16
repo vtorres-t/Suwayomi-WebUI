@@ -163,13 +163,13 @@ export const WebUISettings = () => {
                     [
                         RepoType.Github,
                         {
-                            text: t`Github`,
+                            text: `Github`,
                         },
                     ],
                     [
                         RepoType.Gitea,
                         {
-                            text: t`Gitea`,
+                            text: `Gitea`,
                         },
                     ],
                 ]}
