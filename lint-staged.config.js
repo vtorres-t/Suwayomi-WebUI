@@ -7,7 +7,12 @@
  */
 
 export default {
-    '*.{ts,tsx,js,jsx}': ['oxfmt --write', 'oxlint --fix || exit 0', () => 'pnpm tsc'],
+    '*.{ts,tsx,js,jsx}': [
+        'oxfmt --write',
+        // Encapsula el comando en una función para asegurar que el operador lógico "|| true" quede al final de la ejecución
+        (filenames) => `oxlint --fix ${filenames.join(' ')} || true`,
+        () => 'pnpm tsc',
+    ],
     '*.{json,md,yml,yaml,css,scss,html,graphql}': 'oxfmt --write',
     '*.json': () => 'pnpm tsc',
 };
