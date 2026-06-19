@@ -24,7 +24,6 @@ import {
 import { getPreviousNextChapterVisibility } from '@/features/reader/Reader.utils.ts';
 import type { ChapterIdInfo, TChapterReader } from '@/features/chapter/Chapter.types.ts';
 import { getReaderPagesStore, getReaderSettingsStore } from '@/features/reader/stores/ReaderStore.ts';
-import type { Direction } from '@mui/material/styles';
 
 const shouldPreserveOnResizeChange = (
     readingMode: ReadingMode,
@@ -165,10 +164,14 @@ const useScrollPreservationData = (
                 updateObservation(entry.removedNodes, (element) => intersectionObserver.unobserve(element));
             }
         });
+
         mutationObserver.observe(scrollElement, {
             childList: true,
             subtree: true,
         });
+
+        updateObservation(scrollElement.childNodes, (element) => intersectionObserver.observe(element));
+
         return () => {
             mutationObserver.disconnect();
             intersectionObserver.disconnect();
@@ -182,7 +185,6 @@ const usePreserveOnLeadingPageRender = (
     scrollElementRef: RefObject<HTMLElement | null>,
     readingMode: ReadingMode,
     readingDirection: ReadingDirection,
-    themeDirection: Direction,
 ) => {
     const preservationDataRef = useScrollPreservationData(scrollElementRef);
 
@@ -216,10 +218,6 @@ const usePreserveOnLeadingPageRender = (
 
                 if (isContinuousVerticalReadingModeActive) {
                     return entry.target.offsetTop < top;
-                }
-
-                if (themeDirection === 'rtl') {
-                    return entry.target.offsetLeft < left;
                 }
 
                 return readingDirection === ReadingDirection.LTR
@@ -259,11 +257,13 @@ const usePreserveOnLeadingPageRender = (
             subtree: true,
         });
 
+        updateObservation(scrollElement.childNodes, (element) => resizeObserver.observe(element));
+
         return () => {
             mutationObserver.disconnect();
             resizeObserver.disconnect();
         };
-    }, [isContinuousReadingModeActive, isContinuousVerticalReadingModeActive]);
+    }, [isContinuousReadingModeActive, isContinuousVerticalReadingModeActive, readingDirection]);
 };
 
 const usePreserveOnInfiniteScrollPreviousChapterInitialRender = (
@@ -353,6 +353,8 @@ const usePreserveOnInfiniteScrollPreviousChapterInitialRender = (
             subtree: true,
         });
 
+        updateObservation(scrollElement.childNodes, (element) => resizeObserver.observe(element));
+
         return () => {
             mutationObserver.disconnect();
             resizeObserver.disconnect();
@@ -376,7 +378,6 @@ export const useReaderPreserveScrollPosition = (
     pageScaleMode: ReaderPageScaleMode,
     shouldStretchPage: boolean,
     readerWidth: IReaderSettingsManga['readerWidth'],
-    themeDirection: Direction,
 ) => {
     usePreserveOnInfiniteScrollPreviousChapterInitialRender(
         scrollElementRef,
@@ -387,7 +388,7 @@ export const useReaderPreserveScrollPosition = (
         visibleChapters,
         isContinuousReadingMode(readingMode),
     );
-    usePreserveOnLeadingPageRender(scrollElementRef, readingMode, readingDirection, themeDirection);
+    usePreserveOnLeadingPageRender(scrollElementRef, readingMode, readingDirection);
     usePreserveOnWindowResize(readingMode, pageScaleMode, currentPageIndex);
     usePreserveOnValueChange(readingDirection, currentPageIndex);
     usePreserveOnValueChange(readingMode, currentPageIndex);

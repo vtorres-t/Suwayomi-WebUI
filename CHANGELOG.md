@@ -29,10 +29,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - (**Migration**) Change migration match exclude/include icons
 - (**Migration**) Show the exclude/include button only for an entry with a selected match
 - (**Migration**) Allow resuming a migration only in a secure context (localhost or https)
+- (**Migration**) Show dialog on manual search selection to optionally open the search result entry instead of selecting
+  it
 - (**Source/Extension**) Rename language "All" to "Multi"
 - (**Reader**) Simplify changing settings in desktop sidebar
 - (**Reader**) Ignore tap zone clicks while window does not have focus
 - (**Reader**) Improve preloading pages from the previous/next chapter
+- (**Category**) Require confirmation before deleting a category
 
 ### Fixed
 
@@ -57,7 +60,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - (**Reader**) Fix jumping back to the first page on window resize
 - (**Reader**) Fix chapter not getting marked as read in continuous reading mode in case the last page is not big enough to get marked as the current page
 - (**Reader**) Fix infinite scrolling sometimes not opening previous/next chapter
-- (**Reader**) Fix preserving scroll position with RTL reading direction and a language that is read RTL
+- (**Reader**) Fix infinite scroll immediately opening previous chapter with disabled transition page when opening
+  reader
+- (**Reader**) Fix preserving scroll position
+- (**Reader**) Fix missing gap between chapters in continuous vertical and horizontal reading modes with disabled
+  transition page
 - (**Browse**) Fix showing only nsfw sources in the browse source page when the "show nsfw" setting is disabled
 - (**Manga/Library**) Fix mark as read/unread option not being disabled for manga without any chapters
 - (**Manga/Library**) Fix delete/download option not being disabled for manga without any chapters
