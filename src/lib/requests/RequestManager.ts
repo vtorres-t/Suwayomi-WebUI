@@ -9,6 +9,7 @@
 import type {
     ApolloClient,
     DocumentNode,
+    InMemoryCache,
     MaybeMasked,
     OperationVariables,
     TypedDocumentNode,
@@ -217,6 +218,7 @@ import {
     DownloaderState,
     DownloadUpdateType,
     FetchSourceMangaType,
+    MangaJobStatus,
     SortOrder,
 } from '@/lib/graphql/generated/graphql-base.types.ts';
 import { GET_GLOBAL_METADATAS } from '@/lib/graphql/metadata/GlobalMetadataQuery.ts';
@@ -269,7 +271,12 @@ import {
     START_DOWNLOADER,
     STOP_DOWNLOADER,
 } from '@/lib/graphql/download/DownloaderMutation.ts';
-import { GET_CHAPTERS_HISTORY, GET_CHAPTERS_MANGA, GET_CHAPTERS_UPDATES } from '@/lib/graphql/chapter/ChapterQuery.ts';
+import {
+    GET_CHAPTERS_HISTORY,
+    GET_CHAPTERS_MANGA,
+    GET_CHAPTERS_READER,
+    GET_CHAPTERS_UPDATES,
+} from '@/lib/graphql/chapter/ChapterQuery.ts';
 import {
     GET_CHAPTER_PAGES_FETCH,
     GET_MANGA_CHAPTERS_FETCH,
@@ -328,6 +335,7 @@ import { KO_SYNC_LOGIN, KO_SYNC_LOGOUT } from '@/lib/graphql/koreader/KoreaderSy
 import { GET_KO_SYNC_STATUS } from '@/lib/graphql/koreader/KoreaderSyncQuery.ts';
 import { ImageCache } from '@/lib/service-worker/ImageCache.ts';
 import { Sources } from '@/features/source/services/Sources.ts';
+import uniqBy from 'lodash/fp/uniqBy';
 
 enum GQLMethod {
     QUERY = 'QUERY',
@@ -2216,7 +2224,7 @@ export class RequestManager {
             {
                 id: Number(mangaId),
             },
-            { refetchQueries: [GET_CHAPTERS_MANGA], errorPolicy: 'all', ...options },
+            { refetchQueries: [GET_CHAPTERS_MANGA, GET_CHAPTERS_READER], errorPolicy: 'all', ...options },
         );
     }
 
@@ -2271,8 +2279,12 @@ export class RequestManager {
         const wrappedMutate = (mutateOptions: Parameters<typeof mutate>[0]) =>
             mutate({
                 onCompleted: () => {
-                    this.graphQLClient.client.cache.evict({ broadcast: true, fieldName: 'categories' });
-                    this.graphQLClient.client.cache.evict({ broadcast: true, fieldName: 'mangas' });
+                    this.graphQLClient.client.refetchQueries({
+                        updateCache(cache) {
+                            cache.evict({ fieldName: 'categories' });
+                            cache.evict({ fieldName: 'mangas' });
+                        },
+                    });
                 },
                 ...mutateOptions,
             });
@@ -2293,8 +2305,12 @@ export class RequestManager {
         );
 
         response.response.then(() => {
-            this.graphQLClient.client.cache.evict({ broadcast: true, fieldName: 'categories' });
-            this.graphQLClient.client.cache.evict({ broadcast: true, fieldName: 'mangas' });
+            this.graphQLClient.client.refetchQueries({
+                updateCache(cache) {
+                    cache.evict({ fieldName: 'categories' });
+                    cache.evict({ fieldName: 'mangas' });
+                },
+            });
         });
 
         return response;
@@ -2317,8 +2333,13 @@ export class RequestManager {
         );
 
         result.response.then(() => {
-            this.graphQLClient.client.cache.evict({ broadcast: true, fieldName: 'categories' });
-            this.graphQLClient.client.cache.evict({ broadcast: true, fieldName: 'mangas' });
+            this.graphQLClient.client.refetchQueries({
+                updateCache(cache) {
+                    cache.evict({ fieldName: 'categories' });
+                    cache.evict({ fieldName: 'category' });
+                    cache.evict({ fieldName: 'mangas' });
+                },
+            });
         });
 
         return result;
@@ -2341,9 +2362,13 @@ export class RequestManager {
         );
 
         result.response.then(() => {
-            this.graphQLClient.client.cache.evict({ fieldName: 'categories' });
-            this.graphQLClient.client.cache.evict({ fieldName: 'category' });
-            this.graphQLClient.client.cache.evict({ fieldName: 'mangas' });
+            this.graphQLClient.client.refetchQueries({
+                updateCache(cache) {
+                    cache.evict({ fieldName: 'categories' });
+                    cache.evict({ fieldName: 'category' });
+                    cache.evict({ fieldName: 'mangas' });
+                },
+            });
         });
 
         return result;
@@ -2951,14 +2976,15 @@ export class RequestManager {
             GQLMethod.MUTATION,
             DELETE_CATEGORY,
             { input: { categoryId } },
-            {
-                refetchQueries: [GET_CATEGORIES_BASE, GET_CATEGORIES_LIBRARY, GET_CATEGORIES_SETTINGS],
-                ...options,
-            },
+            options,
         );
 
         result.response.then(() => {
-            this.graphQLClient.client.cache.evict({ fieldName: 'category', id: categoryId.toString() });
+            this.graphQLClient.client.refetchQueries({
+                updateCache(cache) {
+                    cache.evict({ id: cache.identify({ __typename: 'CategoryType', id: categoryId.toString() }) });
+                },
+            });
         });
 
         return result;
@@ -3323,6 +3349,18 @@ export class RequestManager {
             options,
         );
 
+        useEffect(() => {
+            this.graphQLClient.client.refetchQueries({
+                updateCache(cache) {
+                    uniqBy('mangaId', result.data?.chapters.nodes).forEach((chapter) => {
+                        Object.keys((cache as InMemoryCache).extract().ROOT_QUERY as object)
+                            .filter((key) => key.includes('chapters') && key.includes(`mangaId":${chapter.mangaId}`))
+                            .forEach((key) => cache.evict({ fieldName: key }));
+                    });
+                },
+            });
+        }, [result]);
+
         return {
             ...result,
             fetchMore: (...args: Parameters<(typeof result)['fetchMore']>) => {
@@ -3417,9 +3455,12 @@ export class RequestManager {
                     const { cache } = this.graphQLClient.client;
 
                     if (downloadChanged?.omittedUpdates) {
-                        cache.gc();
-                        cache.evict({ broadcast: true, id: 'DownloadStatus:{}' });
-                        cache.evict({ broadcast: true, fieldName: 'downloadStatus' });
+                        this.graphQLClient.client.refetchQueries({
+                            updateCache() {
+                                cache.evict({ id: 'DownloadStatus:{}' });
+                                cache.evict({ fieldName: 'downloadStatus' });
+                            },
+                        });
                         return;
                     }
 
@@ -3511,15 +3552,28 @@ export class RequestManager {
                 onData: (onDataOptions) => {
                     const updatesChanged = onDataOptions.data.data?.libraryUpdateStatusChanged;
 
+                    const cache = this.graphQLClient.client.cache as InMemoryCache;
+
                     if (!updatesChanged?.omittedUpdates) {
+                        updatesChanged?.mangaUpdates
+                            .filter((update) => update.status === MangaJobStatus.Complete)
+                            .forEach((update) =>
+                                Object.keys(cache.extract().ROOT_QUERY as object)
+                                    .filter(
+                                        (key) =>
+                                            key.includes('chapters') && key.includes(`mangaId":${update.manga.id}`),
+                                    )
+                                    .forEach((key) => cache.evict({ fieldName: key })),
+                            );
                         return;
                     }
 
-                    const { cache } = this.graphQLClient.client;
-
-                    cache.gc();
-                    cache.evict({ broadcast: true, id: 'LibraryUpdateStatus' });
-                    cache.evict({ broadcast: true, fieldName: 'libraryUpdateStatus' });
+                    this.graphQLClient.client.refetchQueries({
+                        updateCache() {
+                            cache.evict({ fieldName: 'chapters' });
+                            cache.evict({ fieldName: 'libraryUpdateStatus' });
+                        },
+                    });
                 },
             } as SubscriptionHookOptions<UpdaterSubscription, UpdaterSubscriptionVariables>,
         ) as useSubscription.Result<UpdaterSubscription>;
