@@ -2,6 +2,13 @@ name: Release
 
 on:
   workflow_dispatch:
+  pull_request:
+    paths:
+      - '**'
+      - '!.github/**'
+      - '!.husky/**'
+      - '!**.md'
+      - '.github/workflows/release.yml'
 
 defaults:
   run:
