@@ -3588,11 +3588,11 @@ msgstr "Excluido"
 
 #: src/features/browse/screens/Browse.tsx
 msgid "Extension"
-msgstr "Extinción"
+msgstr "Extensión"
 
 #: src/features/browse/extensions/Extensions.tsx
 msgid "Extension installed"
-msgstr "Extinción instalada"
+msgstr "Extensión instalada"
 
 #: src/features/migration/components/migration-entry/MigrationEntrySearchExcludeActions.tsx
 msgid "Include"
