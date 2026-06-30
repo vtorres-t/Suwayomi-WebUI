@@ -32,6 +32,17 @@ export type AboutWebUi = {
     updateTimestamp: Scalars['LongString']['output'];
 };
 
+export type AddExtensionStoreInput = {
+    clientMutationId?: InputMaybe<Scalars['String']['input']>;
+    indexUrl: Scalars['String']['input'];
+};
+
+export type AddExtensionStorePayload = {
+    __typename?: 'AddExtensionStorePayload';
+    clientMutationId?: Maybe<Scalars['String']['output']>;
+    extensionStore: ExtensionStoreType;
+};
+
 export enum AuthMode {
     BasicAuth = 'BASIC_AUTH',
     None = 'NONE',
@@ -67,6 +78,18 @@ export type BindTrackInput = {
 
 export type BindTrackPayload = {
     __typename?: 'BindTrackPayload';
+    clientMutationId?: Maybe<Scalars['String']['output']>;
+    trackRecord: TrackRecordType;
+};
+
+export type BindTrackRecordInput = {
+    clientMutationId?: InputMaybe<Scalars['String']['input']>;
+    mangaId: Scalars['Int']['input'];
+    trackRecordId: Scalars['Int']['input'];
+};
+
+export type BindTrackRecordPayload = {
+    __typename?: 'BindTrackRecordPayload';
     clientMutationId?: Maybe<Scalars['String']['output']>;
     trackRecord: TrackRecordType;
 };
@@ -334,6 +357,30 @@ export type ConnectKoSyncAccountInput = {
     password: Scalars['String']['input'];
     serverAddress: Scalars['String']['input'];
     username: Scalars['String']['input'];
+};
+
+export enum ContentWarning {
+    Mixed = 'MIXED',
+    Nsfw = 'NSFW',
+    Safe = 'SAFE',
+}
+
+export type ContentWarningFilterInput = {
+    distinctFrom?: InputMaybe<ContentWarning>;
+    distinctFromAll?: InputMaybe<Array<ContentWarning>>;
+    distinctFromAny?: InputMaybe<Array<ContentWarning>>;
+    equalTo?: InputMaybe<ContentWarning>;
+    greaterThan?: InputMaybe<ContentWarning>;
+    greaterThanOrEqualTo?: InputMaybe<ContentWarning>;
+    in?: InputMaybe<Array<ContentWarning>>;
+    isNull?: InputMaybe<Scalars['Boolean']['input']>;
+    lessThan?: InputMaybe<ContentWarning>;
+    lessThanOrEqualTo?: InputMaybe<ContentWarning>;
+    notDistinctFrom?: InputMaybe<ContentWarning>;
+    notEqualTo?: InputMaybe<ContentWarning>;
+    notEqualToAll?: InputMaybe<Array<ContentWarning>>;
+    notEqualToAny?: InputMaybe<Array<ContentWarning>>;
+    notIn?: InputMaybe<Array<ContentWarning>>;
 };
 
 export type CreateBackupInput = {
@@ -716,16 +763,19 @@ export type EnqueueChapterDownloadsPayload = {
 
 export type ExtensionConditionInput = {
     apkName?: InputMaybe<Scalars['String']['input']>;
+    apkUrl?: InputMaybe<Scalars['String']['input']>;
+    contentWarning?: InputMaybe<ContentWarning>;
+    extensionLib?: InputMaybe<Scalars['String']['input']>;
     hasUpdate?: InputMaybe<Scalars['Boolean']['input']>;
     iconUrl?: InputMaybe<Scalars['String']['input']>;
     isInstalled?: InputMaybe<Scalars['Boolean']['input']>;
-    isNsfw?: InputMaybe<Scalars['Boolean']['input']>;
     isObsolete?: InputMaybe<Scalars['Boolean']['input']>;
     lang?: InputMaybe<Scalars['String']['input']>;
     name?: InputMaybe<Scalars['String']['input']>;
     pkgName?: InputMaybe<Scalars['String']['input']>;
-    repo?: InputMaybe<Scalars['String']['input']>;
+    storeIndexUrl?: InputMaybe<Scalars['String']['input']>;
     versionCode?: InputMaybe<Scalars['Int']['input']>;
+    versionCodeLong?: InputMaybe<Scalars['LongString']['input']>;
     versionName?: InputMaybe<Scalars['String']['input']>;
 };
 
@@ -738,18 +788,20 @@ export type ExtensionEdge = Edge & {
 export type ExtensionFilterInput = {
     and?: InputMaybe<Array<ExtensionFilterInput>>;
     apkName?: InputMaybe<StringFilterInput>;
+    apkUrl?: InputMaybe<StringFilterInput>;
+    contentWarning?: InputMaybe<ContentWarningFilterInput>;
+    extensionLib?: InputMaybe<StringFilterInput>;
     hasUpdate?: InputMaybe<BooleanFilterInput>;
     iconUrl?: InputMaybe<StringFilterInput>;
     isInstalled?: InputMaybe<BooleanFilterInput>;
-    isNsfw?: InputMaybe<BooleanFilterInput>;
     isObsolete?: InputMaybe<BooleanFilterInput>;
     lang?: InputMaybe<StringFilterInput>;
     name?: InputMaybe<StringFilterInput>;
     not?: InputMaybe<ExtensionFilterInput>;
     or?: InputMaybe<Array<ExtensionFilterInput>>;
     pkgName?: InputMaybe<StringFilterInput>;
-    repo?: InputMaybe<StringFilterInput>;
-    versionCode?: InputMaybe<IntFilterInput>;
+    storeIndexUrl?: InputMaybe<StringFilterInput>;
+    versionCodeLong?: InputMaybe<LongFilterInput>;
     versionName?: InputMaybe<StringFilterInput>;
 };
 
@@ -762,6 +814,7 @@ export type ExtensionNodeList = NodeList & {
 };
 
 export enum ExtensionOrderBy {
+    /** @deprecated  */
     ApkName = 'APK_NAME',
     Name = 'NAME',
     PkgName = 'PKG_NAME',
@@ -772,20 +825,81 @@ export type ExtensionOrderInput = {
     byType?: InputMaybe<SortOrder>;
 };
 
+export type ExtensionStoreConditionInput = {
+    id?: InputMaybe<Scalars['Int']['input']>;
+    indexUrl?: InputMaybe<Scalars['String']['input']>;
+    name?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type ExtensionStoreEdge = Edge & {
+    __typename?: 'ExtensionStoreEdge';
+    cursor: Scalars['Cursor']['output'];
+    node: ExtensionStoreType;
+};
+
+export type ExtensionStoreFilterInput = {
+    and?: InputMaybe<Array<ExtensionStoreFilterInput>>;
+    indexUrl?: InputMaybe<StringFilterInput>;
+    name?: InputMaybe<StringFilterInput>;
+    not?: InputMaybe<ExtensionStoreFilterInput>;
+    or?: InputMaybe<Array<ExtensionStoreFilterInput>>;
+};
+
+export type ExtensionStoreNodeList = NodeList & {
+    __typename?: 'ExtensionStoreNodeList';
+    edges: Array<ExtensionStoreEdge>;
+    nodes: Array<ExtensionStoreType>;
+    pageInfo: PageInfo;
+    totalCount: Scalars['Int']['output'];
+};
+
+export enum ExtensionStoreOrderBy {
+    IndexUrl = 'INDEX_URL',
+    Name = 'NAME',
+}
+
+export type ExtensionStoreOrderInput = {
+    by: ExtensionStoreOrderBy;
+    byType?: InputMaybe<SortOrder>;
+};
+
+export type ExtensionStoreType = {
+    __typename?: 'ExtensionStoreType';
+    badgeLabel: Scalars['String']['output'];
+    contactDiscord?: Maybe<Scalars['String']['output']>;
+    contactWebsite: Scalars['String']['output'];
+    extensionListUrl?: Maybe<Scalars['String']['output']>;
+    extensions: ExtensionNodeList;
+    indexUrl: Scalars['String']['output'];
+    isLegacy: Scalars['Boolean']['output'];
+    name: Scalars['String']['output'];
+    signingKey: Scalars['String']['output'];
+};
+
 export type ExtensionType = {
     __typename?: 'ExtensionType';
-    apkName: Scalars['String']['output'];
+    /** This will be nullable in the future */
+    apkName?: Maybe<Scalars['String']['output']>;
+    apkUrl?: Maybe<Scalars['String']['output']>;
+    contentWarning: ContentWarning;
+    extensionLib?: Maybe<Scalars['String']['output']>;
+    extensionStore: ExtensionStoreType;
     hasUpdate: Scalars['Boolean']['output'];
     iconUrl: Scalars['String']['output'];
     isInstalled: Scalars['Boolean']['output'];
+    /** @deprecated Removed in extension api v1.6, replace with contentWarning */
     isNsfw: Scalars['Boolean']['output'];
     isObsolete: Scalars['Boolean']['output'];
     lang: Scalars['String']['output'];
     name: Scalars['String']['output'];
     pkgName: Scalars['String']['output'];
+    /** @deprecated Removed in extension api v1.6, replace with storeIndexUrl */
     repo?: Maybe<Scalars['String']['output']>;
     source: SourceNodeList;
+    storeIndexUrl?: Maybe<Scalars['String']['output']>;
+    /** @deprecated Type was changed to Long, will be switched back to this variable name in the future., replace with versionCodeLong */
     versionCode: Scalars['Int']['output'];
+    versionCodeLong: Scalars['LongString']['output'];
     versionName: Scalars['String']['output'];
 };
 
@@ -821,7 +935,22 @@ export type FetchExtensionsInput = {
 export type FetchExtensionsPayload = {
     __typename?: 'FetchExtensionsPayload';
     clientMutationId?: Maybe<Scalars['String']['output']>;
+    extensionStores: Array<ExtensionStoreType>;
     extensions: Array<ExtensionType>;
+};
+
+export type FetchMangaAndChaptersInput = {
+    clientMutationId?: InputMaybe<Scalars['String']['input']>;
+    fetchChapters: Scalars['Boolean']['input'];
+    fetchManga: Scalars['Boolean']['input'];
+    id: Scalars['Int']['input'];
+};
+
+export type FetchMangaAndChaptersPayload = {
+    __typename?: 'FetchMangaAndChaptersPayload';
+    chapters: Array<ChapterType>;
+    clientMutationId?: Maybe<Scalars['String']['output']>;
+    manga: MangaType;
 };
 
 export type FetchMangaInput = {
@@ -1322,7 +1451,9 @@ export type MultiSelectListPreference = {
 
 export type Mutation = {
     __typename?: 'Mutation';
+    addExtensionStore?: Maybe<AddExtensionStorePayload>;
     bindTrack: BindTrackPayload;
+    bindTrackRecord?: Maybe<BindTrackRecordPayload>;
     clearCachedImages: ClearCachedImagesPayload;
     clearDownloader?: Maybe<ClearDownloaderPayload>;
     connectKoSyncAccount: KoSyncConnectPayload;
@@ -1346,9 +1477,12 @@ export type Mutation = {
     enqueueChapterDownload?: Maybe<EnqueueChapterDownloadPayload>;
     enqueueChapterDownloads?: Maybe<EnqueueChapterDownloadsPayload>;
     fetchChapterPages?: Maybe<FetchChapterPagesPayload>;
+    /** @deprecated Deprecated in Tachiyomix 1.6, replace with fetchMangaAndChapters */
     fetchChapters?: Maybe<FetchChaptersPayload>;
     fetchExtensions?: Maybe<FetchExtensionsPayload>;
+    /** @deprecated Deprecated in Tachiyomix 1.6, replace with fetchMangaAndChapters */
     fetchManga?: Maybe<FetchMangaPayload>;
+    fetchMangaAndChapters?: Maybe<FetchMangaAndChaptersPayload>;
     fetchSourceManga?: Maybe<FetchSourceMangaPayload>;
     fetchTrack: FetchTrackPayload;
     installExternalExtension?: Maybe<InstallExternalExtensionPayload>;
@@ -1360,6 +1494,7 @@ export type Mutation = {
     pullKoSyncProgress?: Maybe<PullKoSyncProgressPayload>;
     pushKoSyncProgress?: Maybe<PushKoSyncProgressPayload>;
     refreshToken: RefreshTokenPayload;
+    removeExtensionStore?: Maybe<RemoveExtensionStorePayload>;
     reorderChapterDownload?: Maybe<ReorderChapterDownloadPayload>;
     resetSettings: ResetSettingsPayload;
     resetWebUIUpdateStatus?: Maybe<WebUiUpdateStatus>;
@@ -1400,8 +1535,16 @@ export type Mutation = {
     updateWebUI?: Maybe<WebUiUpdatePayload>;
 };
 
+export type MutationAddExtensionStoreArgs = {
+    input: AddExtensionStoreInput;
+};
+
 export type MutationBindTrackArgs = {
     input: BindTrackInput;
+};
+
+export type MutationBindTrackRecordArgs = {
+    input: BindTrackRecordInput;
 };
 
 export type MutationClearCachedImagesArgs = {
@@ -1508,6 +1651,10 @@ export type MutationFetchMangaArgs = {
     input: FetchMangaInput;
 };
 
+export type MutationFetchMangaAndChaptersArgs = {
+    input: FetchMangaAndChaptersInput;
+};
+
 export type MutationFetchSourceMangaArgs = {
     input: FetchSourceMangaInput;
 };
@@ -1550,6 +1697,10 @@ export type MutationPushKoSyncProgressArgs = {
 
 export type MutationRefreshTokenArgs = {
     input: RefreshTokenInput;
+};
+
+export type MutationRemoveExtensionStoreArgs = {
+    input: RemoveExtensionStoreInput;
 };
 
 export type MutationReorderChapterDownloadArgs = {
@@ -1707,6 +1858,7 @@ export type Node =
     | ChapterType
     | DownloadType
     | DownloadUpdate
+    | ExtensionStoreType
     | ExtensionType
     | GlobalMetaType
     | MangaMetaType
@@ -1791,7 +1943,7 @@ export type PartialSettingsType = Settings & {
     excludeEntryWithUnreadChapters?: Maybe<Scalars['Boolean']['output']>;
     excludeNotStarted?: Maybe<Scalars['Boolean']['output']>;
     excludeUnreadChapters?: Maybe<Scalars['Boolean']['output']>;
-    extensionRepos?: Maybe<Array<Scalars['String']['output']>>;
+    extensionStores?: Maybe<Array<Scalars['String']['output']>>;
     flareSolverrAsResponseFallback?: Maybe<Scalars['Boolean']['output']>;
     flareSolverrEnabled?: Maybe<Scalars['Boolean']['output']>;
     flareSolverrSessionName?: Maybe<Scalars['String']['output']>;
@@ -1897,7 +2049,7 @@ export type PartialSettingsTypeInput = {
     excludeEntryWithUnreadChapters?: InputMaybe<Scalars['Boolean']['input']>;
     excludeNotStarted?: InputMaybe<Scalars['Boolean']['input']>;
     excludeUnreadChapters?: InputMaybe<Scalars['Boolean']['input']>;
-    extensionRepos?: InputMaybe<Array<Scalars['String']['input']>>;
+    extensionStores?: InputMaybe<Array<Scalars['String']['input']>>;
     flareSolverrAsResponseFallback?: InputMaybe<Scalars['Boolean']['input']>;
     flareSolverrEnabled?: InputMaybe<Scalars['Boolean']['input']>;
     flareSolverrSessionName?: InputMaybe<Scalars['String']['input']>;
@@ -2003,6 +2155,8 @@ export type Query = {
     checkForWebUIUpdate: WebUiUpdateCheck;
     downloadStatus: DownloadStatus;
     extension: ExtensionType;
+    extensionStore: ExtensionStoreType;
+    extensionStores: ExtensionStoreNodeList;
     extensions: ExtensionNodeList;
     getWebUIUpdateStatus: WebUiUpdateStatus;
     koSyncStatus: KoSyncStatusPayload;
@@ -2059,6 +2213,21 @@ export type QueryChaptersArgs = {
 
 export type QueryExtensionArgs = {
     pkgName: Scalars['String']['input'];
+};
+
+export type QueryExtensionStoreArgs = {
+    indexUrl: Scalars['String']['input'];
+};
+
+export type QueryExtensionStoresArgs = {
+    after?: InputMaybe<Scalars['Cursor']['input']>;
+    before?: InputMaybe<Scalars['Cursor']['input']>;
+    condition?: InputMaybe<ExtensionStoreConditionInput>;
+    filter?: InputMaybe<ExtensionStoreFilterInput>;
+    first?: InputMaybe<Scalars['Int']['input']>;
+    last?: InputMaybe<Scalars['Int']['input']>;
+    offset?: InputMaybe<Scalars['Int']['input']>;
+    order?: InputMaybe<Array<ExtensionStoreOrderInput>>;
 };
 
 export type QueryExtensionsArgs = {
@@ -2167,6 +2336,17 @@ export type RefreshTokenPayload = {
     __typename?: 'RefreshTokenPayload';
     accessToken: Scalars['String']['output'];
     clientMutationId?: Maybe<Scalars['String']['output']>;
+};
+
+export type RemoveExtensionStoreInput = {
+    clientMutationId?: InputMaybe<Scalars['String']['input']>;
+    indexUrl: Scalars['String']['input'];
+};
+
+export type RemoveExtensionStorePayload = {
+    __typename?: 'RemoveExtensionStorePayload';
+    clientMutationId?: Maybe<Scalars['String']['output']>;
+    extensionStore?: Maybe<ExtensionStoreType>;
 };
 
 export type ReorderChapterDownloadInput = {
@@ -2415,7 +2595,7 @@ export type Settings = {
     excludeEntryWithUnreadChapters?: Maybe<Scalars['Boolean']['output']>;
     excludeNotStarted?: Maybe<Scalars['Boolean']['output']>;
     excludeUnreadChapters?: Maybe<Scalars['Boolean']['output']>;
-    extensionRepos?: Maybe<Array<Scalars['String']['output']>>;
+    extensionStores?: Maybe<Array<Scalars['String']['output']>>;
     flareSolverrAsResponseFallback?: Maybe<Scalars['Boolean']['output']>;
     flareSolverrEnabled?: Maybe<Scalars['Boolean']['output']>;
     flareSolverrSessionName?: Maybe<Scalars['String']['output']>;
@@ -2574,7 +2754,7 @@ export type SettingsType = Settings & {
     excludeEntryWithUnreadChapters: Scalars['Boolean']['output'];
     excludeNotStarted: Scalars['Boolean']['output'];
     excludeUnreadChapters: Scalars['Boolean']['output'];
-    extensionRepos: Array<Scalars['String']['output']>;
+    extensionStores: Array<Scalars['String']['output']>;
     flareSolverrAsResponseFallback: Scalars['Boolean']['output'];
     flareSolverrEnabled: Scalars['Boolean']['output'];
     flareSolverrSessionName: Scalars['String']['output'];
@@ -2677,8 +2857,8 @@ export type SortSelectionInput = {
 };
 
 export type SourceConditionInput = {
+    contentWarning?: InputMaybe<ContentWarning>;
     id?: InputMaybe<Scalars['LongString']['input']>;
-    isNsfw?: InputMaybe<Scalars['Boolean']['input']>;
     lang?: InputMaybe<Scalars['String']['input']>;
     name?: InputMaybe<Scalars['String']['input']>;
 };
@@ -2691,8 +2871,8 @@ export type SourceEdge = Edge & {
 
 export type SourceFilterInput = {
     and?: InputMaybe<Array<SourceFilterInput>>;
+    contentWarning?: InputMaybe<ContentWarningFilterInput>;
     id?: InputMaybe<LongFilterInput>;
-    isNsfw?: InputMaybe<BooleanFilterInput>;
     lang?: InputMaybe<StringFilterInput>;
     name?: InputMaybe<StringFilterInput>;
     not?: InputMaybe<SourceFilterInput>;
@@ -2743,13 +2923,17 @@ export type SourcePreferenceChangeInput = {
 
 export type SourceType = {
     __typename?: 'SourceType';
+    /** @deprecated , replace with homeUrl */
     baseUrl?: Maybe<Scalars['String']['output']>;
+    contentWarning: ContentWarning;
     displayName: Scalars['String']['output'];
     extension: ExtensionType;
     filters: Array<Filter>;
+    homeUrl?: Maybe<Scalars['String']['output']>;
     iconUrl: Scalars['String']['output'];
     id: Scalars['LongString']['output'];
     isConfigurable: Scalars['Boolean']['output'];
+    /** @deprecated , replace with contentWarning */
     isNsfw: Scalars['Boolean']['output'];
     lang: Scalars['String']['output'];
     manga: MangaNodeList;

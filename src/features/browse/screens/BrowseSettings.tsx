@@ -33,7 +33,7 @@ import Stack from '@mui/material/Stack';
 import ErrorOutlineOutlinedIcon from '@mui/icons-material/ErrorOutlineOutlined';
 import ListSubheader from '@mui/material/ListSubheader';
 
-type ExtensionsSettings = Pick<GqlServerSettings, 'maxSourcesInParallel' | 'localSourcePath' | 'extensionRepos'>;
+type ExtensionsSettings = Pick<GqlServerSettings, 'maxSourcesInParallel' | 'localSourcePath' | 'extensionStores'>;
 
 export const BrowseSettings = () => {
     const { t } = useLingui();
@@ -123,10 +123,10 @@ export const BrowseSettings = () => {
                         </Trans>
                     }
                     handleChange={(repos) => {
-                        updateSetting('extensionRepos', repos);
+                        updateSetting('extensionStores', repos);
                         requestManager.clearExtensionCache();
                     }}
-                    valueInfos={serverSettings.extensionRepos.map((extensionRepo) => [extensionRepo])}
+                    valueInfos={serverSettings.extensionStores.map((extensionStores) => [extensionStores])}
                     addItemButtonTitle={t`Add repository`}
                     placeholder="https://github.com/MY_ACCOUNT/MY_REPO/tree/repo"
                     validateItem={(repo) =>

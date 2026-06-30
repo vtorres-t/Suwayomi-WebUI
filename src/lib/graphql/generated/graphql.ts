@@ -2741,7 +2741,7 @@ export type ServerSettingsFragment = {
     excludeEntryWithUnreadChapters: boolean;
     autoDownloadNewChaptersLimit: number;
     autoDownloadIgnoreReUploads: boolean;
-    extensionRepos: Array<string>;
+    extensionStores: Array<string>;
     maxSourcesInParallel: number;
     excludeUnreadChapters: boolean;
     excludeNotStarted: boolean;
@@ -2848,7 +2848,7 @@ export type ResetServerSettingsMutation = {
             excludeEntryWithUnreadChapters: boolean;
             autoDownloadNewChaptersLimit: number;
             autoDownloadIgnoreReUploads: boolean;
-            extensionRepos: Array<string>;
+            extensionStores: Array<string>;
             maxSourcesInParallel: number;
             excludeUnreadChapters: boolean;
             excludeNotStarted: boolean;
@@ -2965,7 +2965,7 @@ export type UpdateServerSettingsMutation = {
             excludeEntryWithUnreadChapters: boolean;
             autoDownloadNewChaptersLimit: number;
             autoDownloadIgnoreReUploads: boolean;
-            extensionRepos: Array<string>;
+            extensionStores: Array<string>;
             maxSourcesInParallel: number;
             excludeUnreadChapters: boolean;
             excludeNotStarted: boolean;
@@ -3078,7 +3078,7 @@ export type GetServerSettingsQuery = {
         excludeEntryWithUnreadChapters: boolean;
         autoDownloadNewChaptersLimit: number;
         autoDownloadIgnoreReUploads: boolean;
-        extensionRepos: Array<string>;
+        extensionStores: Array<string>;
         maxSourcesInParallel: number;
         excludeUnreadChapters: boolean;
         excludeNotStarted: boolean;

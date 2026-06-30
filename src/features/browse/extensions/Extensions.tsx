@@ -31,10 +31,10 @@ import { EmptyViewAbsoluteCentered } from '@/base/components/feedback/EmptyViewA
 import { defaultPromiseErrorHandler } from '@/lib/DefaultPromiseErrorHandler.ts';
 import { VirtuosoUtil } from '@/lib/virtuoso/Virtuoso.util.tsx';
 import {
-    groupExtensionsByLanguage,
-    getLanguagesFromExtensions,
-    translateExtensionLanguage,
     filterExtensions,
+    getLanguagesFromExtensions,
+    groupExtensionsByLanguage,
+    translateExtensionLanguage,
 } from '@/features/extension/Extensions.utils.ts';
 import type { TExtension } from '@/features/extension/Extensions.types.ts';
 import { ExtensionAction, ExtensionGroupState, ExtensionState } from '@/features/extension/Extensions.types.ts';
@@ -140,8 +140,8 @@ export function Extensions({ tabsMenuHeight }: { tabsMenuHeight: number }) {
     const isLoading = areServerSettingsLoading || areExtensionsLoading;
     const error = serverSettingsError ?? extensionsError;
 
-    const areReposDefined = !!serverSettingsData?.settings.extensionRepos.length;
-    const areMultipleReposInUse = (serverSettingsData?.settings.extensionRepos.length ?? 0) > 1;
+    const areReposDefined = !!serverSettingsData?.settings.extensionStores.length;
+    const areMultipleReposInUse = (serverSettingsData?.settings.extensionStores.length ?? 0) > 1;
 
     const allExtensions = data?.fetchExtensions?.extensions ?? STABLE_EMPTY_ARRAY;
     const allLangs = useMemo(() => getLanguagesFromExtensions(allExtensions), [allExtensions]);
