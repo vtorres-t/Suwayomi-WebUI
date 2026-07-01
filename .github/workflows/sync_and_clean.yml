@@ -1,0 +1,120 @@
+name: Sincronizar y Limpiar Fork
+
+on:
+  schedule:
+    # Se ejecuta a las 00:00 y 12:00 UTC
+    - cron: '0 0 * * *'
+  workflow_dispatch:
+
+jobs:
+  sync-fork:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write # Requerido para buscar y crear Pull Requests
+
+    steps:
+      - name: Check out hijo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Configurar Git
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Agregar repositorio padre (Upstream)
+        run: |
+          git remote add upstream https://github.com/Suwayomi/Suwayomi-WebUI
+          git fetch upstream main
+
+      - name: Verificar si hay actualizaciones
+        id: check_changes
+        run: |
+          LOCAL=$(git rev-parse HEAD)
+          UPSTREAM=$(git rev-parse upstream/main)
+          if [ "$LOCAL" = "$UPSTREAM" ]; then
+            echo "No hay actualizaciones en el repositorio padre. Terminando correctamente."
+            echo "has_updates=false" >> $GITHUB_OUTPUT
+          else
+            echo "Se encontraron nuevas actualizaciones."
+            echo "has_updates=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Aplicar cambios y limpiar
+        if: steps.check_changes.outputs.has_updates == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Pasa el token a la GitHub CLI
+        run: |
+          git checkout main
+          
+          # Intenta realizar la fusión. Si falla (retorna un error), ejecutamos el bloque de manejo de conflictos.
+          if ! git merge upstream/main --no-commit --no-ff; then
+            echo "⚠️ Conflictos detectados durante el merge. Preparando Pull Request..."
+          
+            # 1. Comprobar si ya existe un PR abierto desde la rama 'conflict-sync' hacia 'main'
+            EXISTING_PR=$(gh pr list --head "conflict-sync" --base "main" --state "open" --json number --jq 'length')
+          
+            if [ "$EXISTING_PR" -gt 0 ]; then
+              echo "✅ Ya existe un Pull Request abierto para resolver estos conflictos. No se creará otro."
+              git merge --abort
+              exit 0
+            fi
+
+            # 2. Si no existe, abortamos el merge limpio y creamos una rama dedicada para el conflicto
+            git merge --abort
+            git checkout -b conflict-sync
+          
+            # Forzamos la fusión guardando los marcadores de conflicto de Git (<<<<<<< HEAD)
+            git merge upstream/main --no-commit --no-ff || true
+
+            echo "Eliminando archivos de idiomas no deseados en la rama de conflicto..."
+            # Entramos a la ruta de locales e iteramos sobre todos sus archivos
+            for file in src/i18n/locales/*; do
+              if [ -f "$file" ]; then
+                filename=$(basename "$file")
+                # Si el archivo NO es en.po ni es.po, lo eliminamos
+                if [ "$filename" != "en.po" ] && [ "$filename" != "es.po" ]; then
+                  echo "Borrando archivo: src/i18n/locales/$filename"
+                  rm -f "$file"
+                fi
+              fi
+            done
+
+            # Subimos la rama con los conflictos marcados y creamos el PR
+            git add .
+            git commit -m "chore: conflictos detectados al sincronizar con upstream"
+            git push origin conflict-sync --force
+
+            gh pr create \
+              --title "⚠️ Resolver conflictos de sincronización" \
+              --body "Este PR fue creado automáticamente debido a que se encontraron conflictos al fusionar el repositorio padre. Por favor, resuelve los conflictos manualmente y mergea este PR hacia main." \
+              --base main \
+              --head conflict-sync
+          
+            echo "PR creado exitosamente. Terminando ejecución para intervención manual."
+            exit 0
+          fi
+
+          # --- FLUJO NORMAL (Si el merge no tuvo conflictos) ---
+          echo "Eliminando archivos de idiomas no deseados en src/i18n/locales/..."
+          for file in src/i18n/locales/*; do
+            if [ -f "$file" ]; then
+              filename=$(basename "$file")
+              # Si el archivo NO es en.po ni es.po, lo eliminamos
+              if [ "$filename" != "en.po" ] && [ "$filename" != "es.po" ]; then
+                echo "Borrando archivo: src/i18n/locales/$filename"
+                rm -f "$file"
+              fi
+            fi
+          done
+
+          if git diff --quiet && git diff --staged --quiet; then
+            echo "El repositorio ya estaba al día tras filtrar los archivos locales. No se requiere commit."
+          else
+            git add .
+            git commit -m "sync: actualizaciones del padre (solo en.po y es.po)"
+            git push origin main
+          fi
