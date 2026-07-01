@@ -1,0 +1,3 @@
+# Indica las rutas exactas de los archivos que NO deben borrarse bajo ninguna circunstancia
+src/i18n/locales/en.po
+src/i18n/locales/es.po
