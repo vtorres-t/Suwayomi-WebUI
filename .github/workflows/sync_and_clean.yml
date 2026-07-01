@@ -28,13 +28,13 @@ jobs:
       - name: Agregar repositorio padre (Upstream)
         run: |
           git remote add upstream https://github.com/Suwayomi/Suwayomi-WebUI
-          git fetch upstream main
+          git fetch upstream master
 
       - name: Verificar si hay actualizaciones
         id: check_changes
         run: |
           LOCAL=$(git rev-parse HEAD)
-          UPSTREAM=$(git rev-parse upstream/main)
+          UPSTREAM=$(git rev-parse upstream/master)
           if [ "$LOCAL" = "$UPSTREAM" ]; then
             echo "No hay actualizaciones en el repositorio padre. Terminando correctamente."
             echo "has_updates=false" >> $GITHUB_OUTPUT
@@ -48,14 +48,14 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Pasa el token a la GitHub CLI
         run: |
-          git checkout main
+          git checkout master
           
-          # Intenta realizar la fusión. Si falla (retorna un error), ejecutamos el bloque de manejo de conflictos.
-          if ! git merge upstream/main --no-commit --no-ff; then
+          # Intenta realizar la fusión. Si falla, ejecutamos el bloque de manejo de conflictos.
+          if ! git merge upstream/master --no-commit --no-ff; then
             echo "⚠️ Conflictos detectados durante el merge. Preparando Pull Request..."
           
-            # 1. Comprobar si ya existe un PR abierto desde la rama 'conflict-sync' hacia 'main'
-            EXISTING_PR=$(gh pr list --head "conflict-sync" --base "main" --state "open" --json number --jq 'length')
+            # 1. Comprobar si ya existe un PR abierto desde la rama 'conflict-sync' hacia 'master'
+            EXISTING_PR=$(gh pr list --head "conflict-sync" --base "master" --state "open" --json number --jq 'length')
           
             if [ "$EXISTING_PR" -gt 0 ]; then
               echo "✅ Ya existe un Pull Request abierto para resolver estos conflictos. No se creará otro."
@@ -67,15 +67,13 @@ jobs:
             git merge --abort
             git checkout -b conflict-sync
           
-            # Forzamos la fusión guardando los marcadores de conflicto de Git (<<<<<<< HEAD)
-            git merge upstream/main --no-commit --no-ff || true
+            # Forzamos la fusión guardando los marcadores de conflicto de Git
+            git merge upstream/master --no-commit --no-ff || true
 
             echo "Eliminando archivos de idiomas no deseados en la rama de conflicto..."
-            # Entramos a la ruta de locales e iteramos sobre todos sus archivos
             for file in src/i18n/locales/*; do
               if [ -f "$file" ]; then
                 filename=$(basename "$file")
-                # Si el archivo NO es en.po ni es.po, lo eliminamos
                 if [ "$filename" != "en.po" ] && [ "$filename" != "es.po" ]; then
                   echo "Borrando archivo: src/i18n/locales/$filename"
                   rm -f "$file"
@@ -90,8 +88,8 @@ jobs:
 
             gh pr create \
               --title "⚠️ Resolver conflictos de sincronización" \
-              --body "Este PR fue creado automáticamente debido a que se encontraron conflictos al fusionar el repositorio padre. Por favor, resuelve los conflictos manualmente y mergea este PR hacia main." \
-              --base main \
+              --body "Este PR fue creado automáticamente debido a que se encontraron conflictos al fusionar el repositorio padre. Por favor, resuelve los conflictos manualmente y mergea este PR hacia master." \
+              --base master \
               --head conflict-sync
           
             echo "PR creado exitosamente. Terminando ejecución para intervención manual."
@@ -103,7 +101,6 @@ jobs:
           for file in src/i18n/locales/*; do
             if [ -f "$file" ]; then
               filename=$(basename "$file")
-              # Si el archivo NO es en.po ni es.po, lo eliminamos
               if [ "$filename" != "en.po" ] && [ "$filename" != "es.po" ]; then
                 echo "Borrando archivo: src/i18n/locales/$filename"
                 rm -f "$file"
@@ -116,5 +113,5 @@ jobs:
           else
             git add .
             git commit -m "sync: actualizaciones del padre (solo en.po y es.po)"
-            git push origin main
+            git push origin master
           fi
