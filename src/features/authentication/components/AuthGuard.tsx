@@ -15,11 +15,22 @@ import { AuthManager } from '@/features/authentication/AuthManager.ts';
 export const AuthGuard = ({ children }: { children: ReactNode }) => {
     const { isAuthRequired } = AuthManager.useSession();
 
-    const { data } = requestManager.useGetAbout({
+    const { data, error } = requestManager.useGetAbout({
         skip: isAuthRequired !== null,
     });
 
     useEffect(() => {
+        if (error) {
+            const errorMessage = error.message || '';
+            const isUnauthorized = errorMessage.includes('Unauthorized');
+
+            if (isUnauthorized && !AuthManager.isAuthInitialized()) {
+                AuthManager.setAuthRequired(true); // Activa la pantalla de login nativa
+                AuthManager.setAuthInitialized(true);
+                return;
+            }
+        }
+
         if (!data || AuthManager.isAuthInitialized()) {
             return;
         }
@@ -27,7 +38,7 @@ export const AuthGuard = ({ children }: { children: ReactNode }) => {
         AuthManager.setAuthRequired(false);
         AuthManager.setAuthInitialized(true);
         requestManager.processQueues();
-    }, [data]);
+    }, [data, error]);
 
     if (isAuthRequired === null) {
         return <SplashScreen />;
