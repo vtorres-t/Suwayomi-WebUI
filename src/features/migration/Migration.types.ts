@@ -37,7 +37,7 @@ import type {
     ChapterNumberInfo,
     ChapterReadInfo,
 } from '@/features/chapter/Chapter.types.ts';
-import type { GqlMetaHolder } from '@/features/metadata/Metadata.types.ts';
+import type {GqlMetaHolder} from '@/features/metadata/Metadata.types.ts';
 
 export enum SortBy {
     SOURCE_NAME,
@@ -166,7 +166,7 @@ export type TMigratableSource = NonNullable<GetMigratableSourcesQuery['mangas'][
 
 export type MangaToMigrate = NonNullable<GetMangaToMigrateQuery['manga']>;
 
-export type MangaToMigrateTo = NonNullable<GetMangaToMigrateToFetchMutation['fetchManga']>['manga'];
+export type MangaToMigrateTo = NonNullable<GetMangaToMigrateToFetchMutation['fetchMangaAndChapters']>['manga'];
 
 export type MigrationChapter = ChapterIdInfo &
     ChapterReadInfo &

@@ -7,36 +7,36 @@
  */
 
 import CssBaseline from '@mui/material/CssBaseline';
-import type { PropsWithChildren } from 'react';
-import React, { useEffect, useLayoutEffect, useState } from 'react';
-import { Navigate, Outlet, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
-import { loadErrorMessages, loadDevMessages } from '@apollo/client/dev';
-import { loadable } from 'react-lazily/loadable';
+import type {PropsWithChildren} from 'react';
+import React, {useEffect, useLayoutEffect, useState} from 'react';
+import {Navigate, Outlet, Route, Routes, useLocation, useNavigate} from 'react-router-dom';
+import {loadDevMessages, loadErrorMessages} from '@apollo/client/dev';
+import {loadable} from 'react-lazily/loadable';
 import Box from '@mui/material/Box';
-import { AwaitableComponent } from 'awaitable-component';
-import { AppContext } from '@/base/contexts/AppContext.tsx';
-import { DefaultNavBar } from '@/features/navigation-bar/components/DefaultNavBar.tsx';
-import { requestManager } from '@/lib/requests/RequestManager.ts';
-import { WebUIUpdateChecker } from '@/features/app-updates/components/WebUIUpdateChecker.tsx';
-import { ServerUpdateChecker } from '@/features/app-updates/components/ServerUpdateChecker.tsx';
-import { lazyLoadFallback } from '@/base/utils/LazyLoad.tsx';
-import { ErrorBoundary } from '@/base/components/feedback/ErrorBoundary.tsx';
-import { useNavBarContext } from '@/features/navigation-bar/NavbarContext.tsx';
-import { AppRoutes } from '@/base/AppRoute.constants.ts';
-import { useMetadataServerSettings } from '@/features/settings/services/ServerSettingsMetadata.ts';
-import { MediaQuery } from '@/base/utils/MediaQuery.tsx';
-import { BrowseTab } from '@/features/browse/Browse.types.ts';
-import { LoginPage } from '@/features/authentication/screens/LoginPage.tsx';
-import { AuthGuard } from '@/features/authentication/components/AuthGuard.tsx';
-import { SearchParam } from '@/base/Base.types.ts';
-import { defaultPromiseErrorHandler } from '@/lib/DefaultPromiseErrorHandler.ts';
-import { ReactRouter } from '@/lib/react-router/ReactRouter.ts';
-import { AuthManager } from '@/features/authentication/AuthManager.ts';
-import { ImageProcessingType } from '@/features/settings/Settings.types.ts';
-import { MigrationFABIndicator } from '@/features/migration/components/MigrationFABIndicator.tsx';
-import { MigrationManager } from '@/features/migration/MigrationManager.ts';
-import { SplashScreen } from '@/features/authentication/components/SplashScreen.tsx';
-import { d } from 'koration';
+import {AwaitableComponent} from 'awaitable-component';
+import {AppContext} from '@/base/contexts/AppContext.tsx';
+import {DefaultNavBar} from '@/features/navigation-bar/components/DefaultNavBar.tsx';
+import {requestManager} from '@/lib/requests/RequestManager.ts';
+import {WebUIUpdateChecker} from '@/features/app-updates/components/WebUIUpdateChecker.tsx';
+import {ServerUpdateChecker} from '@/features/app-updates/components/ServerUpdateChecker.tsx';
+import {lazyLoadFallback} from '@/base/utils/LazyLoad.tsx';
+import {ErrorBoundary} from '@/base/components/feedback/ErrorBoundary.tsx';
+import {useNavBarContext} from '@/features/navigation-bar/NavbarContext.tsx';
+import {AppRoutes} from '@/base/AppRoute.constants.ts';
+import {useMetadataServerSettings} from '@/features/settings/services/ServerSettingsMetadata.ts';
+import {MediaQuery} from '@/base/utils/MediaQuery.tsx';
+import {BrowseTab} from '@/features/browse/Browse.types.ts';
+import {LoginPage} from '@/features/authentication/screens/LoginPage.tsx';
+import {AuthGuard} from '@/features/authentication/components/AuthGuard.tsx';
+import {SearchParam} from '@/base/Base.types.ts';
+import {defaultPromiseErrorHandler} from '@/lib/DefaultPromiseErrorHandler.ts';
+import {ReactRouter} from '@/lib/react-router/ReactRouter.ts';
+import {AuthManager} from '@/features/authentication/AuthManager.ts';
+import {ImageProcessingType} from '@/features/settings/Settings.types.ts';
+import {MigrationFABIndicator} from '@/features/migration/components/MigrationFABIndicator.tsx';
+import {MigrationManager} from '@/features/migration/MigrationManager.ts';
+import {SplashScreen} from '@/features/authentication/components/SplashScreen.tsx';
+import {d} from 'koration';
 
 const { Browse } = loadable(() => import('@/features/browse/screens/Browse.tsx'), lazyLoadFallback);
 const { DownloadQueue } = loadable(() => import('@/features/downloads/screens/DownloadQueue.tsx'), lazyLoadFallback);
@@ -100,6 +100,10 @@ const { GlobalReaderSettings } = loadable(
 const { More } = loadable(() => import('@/features/settings/screens/More.tsx'), lazyLoadFallback);
 const { Reader } = loadable(() => import('@/features/reader/screens/Reader.tsx'), lazyLoadFallback);
 const { HistorySettings } = loadable(() => import('@/features/history/screens/HistorySettings.tsx'), lazyLoadFallback);
+const { ExtensionStores } = loadable(
+    () => import('@/features/extension/store/screens/ExtensionStores.tsx'),
+    lazyLoadFallback,
+);
 
 if (import.meta.env.DEV) {
     // Adds messages only in a dev environment
@@ -195,6 +199,7 @@ const BackgroundSubscriptions = () => {
     requestManager.useDownloadSubscription({ skip: skipConnection });
     requestManager.useUpdaterSubscription({ skip: skipConnection });
     requestManager.useWebUIUpdateSubscription({ skip: skipConnection });
+    requestManager.useSyncSubscription({ skip: skipConnection });
 
     return null;
 };
@@ -323,7 +328,13 @@ const MainApp = () => {
                             <Route path={AppRoutes.settings.children.backup.match} element={<Backup />} />
                             <Route path={AppRoutes.settings.children.server.match} element={<ServerSettings />} />
                             <Route path={AppRoutes.settings.children.webui.match} element={<WebUISettings />} />
-                            <Route path={AppRoutes.settings.children.browse.match} element={<BrowseSettings />} />
+                            <Route path={AppRoutes.settings.children.browse.match}>
+                                <Route index element={<BrowseSettings />} />
+                                <Route
+                                    path={AppRoutes.settings.children.browse.children.extensionStores.match}
+                                    element={<ExtensionStores />}
+                                />
+                            </Route>
                             <Route path={AppRoutes.settings.children.history.match} element={<HistorySettings />} />
                             <Route path={AppRoutes.settings.children.device.match} element={<DeviceSetting />} />
                             <Route path={AppRoutes.settings.children.tracking.match} element={<TrackingSettings />} />

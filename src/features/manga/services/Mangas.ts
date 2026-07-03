@@ -6,10 +6,10 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-import type { DocumentNode, Unmasked } from '@apollo/client';
-import { t } from '@lingui/core/macro';
-import { i18n } from '@/i18n';
-import { requestManager } from '@/lib/requests/RequestManager.ts';
+import type {DocumentNode, Unmasked} from '@apollo/client';
+import {t} from '@lingui/core/macro';
+import {i18n} from '@/i18n';
+import {requestManager} from '@/lib/requests/RequestManager.ts';
 import type {
     GetMangaMetaQuery,
     GetMangasBaseQuery,
@@ -18,18 +18,17 @@ import type {
     GetMangasChapterIdsWithStateQueryVariables,
     MangaBaseFieldsFragment,
 } from '@/lib/graphql/generated/graphql.ts';
-import { Chapters } from '@/features/chapter/services/Chapters.ts';
-import { makeToast } from '@/base/utils/Toast.ts';
-import { getMetadataServerSettings } from '@/features/settings/services/ServerSettingsMetadata.ts';
-import { GET_MANGA_META, GET_MANGAS_BASE } from '@/lib/graphql/manga/MangaQuery.ts';
-import { MANGA_BASE_FIELDS, MANGA_MIGRATION_FIELDS } from '@/lib/graphql/manga/MangaFragments.ts';
+import {Chapters} from '@/features/chapter/services/Chapters.ts';
+import {makeToast} from '@/base/utils/Toast.ts';
+import {getMetadataServerSettings} from '@/features/settings/services/ServerSettingsMetadata.ts';
+import {GET_MANGA_META, GET_MANGAS_BASE} from '@/lib/graphql/manga/MangaQuery.ts';
+import {MANGA_BASE_FIELDS, MANGA_MIGRATION_FIELDS} from '@/lib/graphql/manga/MangaFragments.ts';
 import type {
     MangaAction,
     MangaArtistInfo,
     MangaAuthorInfo,
     MangaCardMode,
     MangaDownloadInfo,
-    MangaUnreadInfoAndDownloadInfo,
     MangaGenreInfo,
     MangaIdInfo,
     MangaLocationState,
@@ -37,31 +36,32 @@ import type {
     MangaThumbnailInfo,
     MangaTitleInfo,
     MangaUnreadInfo,
+    MangaUnreadInfoAndDownloadInfo,
 } from '@/features/manga/Manga.types.ts';
-import { MangaType } from '@/features/manga/Manga.types.ts';
+import {MangaType} from '@/features/manga/Manga.types.ts';
 import {
     MANGA_ACTION_TO_CONFIRMATION_REQUIRED,
     MANGA_ACTION_TO_TRANSLATION,
     MANGA_TAGS_BY_MANGA_TYPE,
     SOURCES_BY_MANGA_TYPE,
 } from '@/features/manga/Manga.constants.ts';
-import { getErrorMessage } from '@/lib/HelperFunctions.ts';
-import { assertIsDefined } from '@/base/Asserts.ts';
-import { Confirmation } from '@/base/AppAwaitableComponent.ts';
-import { UrlUtil } from '@/lib/UrlUtil.ts';
-import { MigrationManager } from '@/features/migration/MigrationManager.ts';
+import {getErrorMessage} from '@/lib/HelperFunctions.ts';
+import {assertIsDefined} from '@/base/Asserts.ts';
+import {Confirmation} from '@/base/AppAwaitableComponent.ts';
+import {UrlUtil} from '@/lib/UrlUtil.ts';
+import {MigrationManager} from '@/features/migration/MigrationManager.ts';
 import uniq from 'lodash/fp/uniq';
-import { ReactRouter } from '@/lib/react-router/ReactRouter.ts';
-import { AppRoutes } from '@/base/AppRoute.constants.ts';
+import {ReactRouter} from '@/lib/react-router/ReactRouter.ts';
+import {AppRoutes} from '@/base/AppRoute.constants.ts';
 import {
-    ChapterOrderBy,
     type ChapterConditionInput,
+    ChapterOrderBy,
     type UpdateMangaCategoriesPatchInput,
 } from '@/lib/graphql/generated/graphql-base.types.ts';
-import { GET_MANGAS_CHAPTER_IDS_WITH_STATE } from '@/lib/graphql/chapter/ChapterQuery.ts';
-import { filterChapters } from '@/features/chapter/utils/ChapterList.util.tsx';
+import {GET_MANGAS_CHAPTER_IDS_WITH_STATE} from '@/lib/graphql/chapter/ChapterQuery.ts';
+import {filterChapters} from '@/features/chapter/utils/ChapterList.util.tsx';
 import mapValues from 'lodash/fp/mapValues';
-import { getMangaMetadata } from '@/features/manga/services/MangaMetadata.ts';
+import {getMangaMetadata} from '@/features/manga/services/MangaMetadata.ts';
 
 const I18N_PLURAL = 9999;
 
@@ -259,7 +259,6 @@ export class Mangas {
                     (chapter) => chapter.mangaId,
                 );
 
-                // TODO - Filter for scanlators directly in getChapterIdsWithState once fixed on the server
                 const filteredChaptersToConsiderByMangaId = mapValues((chapters) => {
                     const { mangaId } = chapters![0]!;
                     const manga = mangaByMangaId[mangaId]![0]!;

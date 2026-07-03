@@ -11,25 +11,26 @@ import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
 import Typography from '@mui/material/Typography';
 import React from 'react';
-import { Link } from 'react-router-dom';
+import {Link} from 'react-router-dom';
 import Stack from '@mui/material/Stack';
 import PushPinIcon from '@mui/icons-material/PushPin';
 import PushPinOutlinedIcon from '@mui/icons-material/PushPinOutlined';
 import IconButton from '@mui/material/IconButton';
-import { useLingui } from '@lingui/react/macro';
-import { requestManager } from '@/lib/requests/RequestManager.ts';
-import type { GetSourcesListQuery } from '@/lib/graphql/generated/graphql.ts';
-import { AppRoutes } from '@/base/AppRoute.constants.ts';
-import { MUIUtil } from '@/lib/mui/MUI.util.ts';
-import { Sources } from '@/features/source/services/Sources.ts';
-import { ListCardAvatar } from '@/base/components/lists/cards/ListCardAvatar.tsx';
-import { ListCardContent } from '@/base/components/lists/cards/ListCardContent.tsx';
-import { CustomTooltip } from '@/base/components/CustomTooltip.tsx';
-import { createUpdateSourceMetadata, useGetSourceMetadata } from '@/features/source/services/SourceMetadata.ts';
-import { makeToast } from '@/base/utils/Toast.ts';
-import { getErrorMessage } from '@/lib/HelperFunctions.ts';
-import { languageCodeToName } from '@/base/utils/Languages.ts';
-import { SourceContentType } from '@/features/source/Source.types.ts';
+import {useLingui} from '@lingui/react/macro';
+import {requestManager} from '@/lib/requests/RequestManager.ts';
+import type {GetSourcesListQuery} from '@/lib/graphql/generated/graphql.ts';
+import {AppRoutes} from '@/base/AppRoute.constants.ts';
+import {MUIUtil} from '@/lib/mui/MUI.util.ts';
+import {Sources} from '@/features/source/services/Sources.ts';
+import {ListCardAvatar} from '@/base/components/lists/cards/ListCardAvatar.tsx';
+import {ListCardContent} from '@/base/components/lists/cards/ListCardContent.tsx';
+import {CustomTooltip} from '@/base/components/CustomTooltip.tsx';
+import {createUpdateSourceMetadata, useGetSourceMetadata} from '@/features/source/services/SourceMetadata.ts';
+import {makeToast} from '@/base/utils/Toast.ts';
+import {getErrorMessage} from '@/lib/HelperFunctions.ts';
+import {languageCodeToName} from '@/base/utils/Languages.ts';
+import {SourceContentType} from '@/features/source/Source.types.ts';
+import {isNsfw} from '@/features/extension/Extensions.utils.ts';
 
 interface IProps {
     source: GetSourcesListQuery['sources']['nodes'][number];
@@ -47,8 +48,8 @@ export const SourceCard: React.FC<IProps> = (props: IProps) => {
         lang,
         iconUrl,
         supportsLatest,
-        isNsfw,
-        extension: { repo },
+        contentWarning,
+        extension: { extensionStore },
     } = source;
 
     const { isPinned } = useGetSourceMetadata(source);
@@ -92,13 +93,15 @@ export const SourceCard: React.FC<IProps> = (props: IProps) => {
                         </Typography>
                         <Typography variant="caption">
                             {showLanguage && languageCodeToName(lang)}
-                            {isNsfw && (
+                            {isNsfw(contentWarning) && (
                                 <Typography variant="caption" color="error">
                                     {' 18+'}
                                 </Typography>
                             )}
                         </Typography>
-                        {showSourceRepo && <Typography variant="caption">{repo}</Typography>}
+                        {showSourceRepo && extensionStore && (
+                            <Typography variant="caption">{extensionStore.name}</Typography>
+                        )}
                     </Stack>
                     {supportsLatest && (
                         <Button

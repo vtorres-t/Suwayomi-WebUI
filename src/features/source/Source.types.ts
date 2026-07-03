@@ -16,7 +16,7 @@ import type {
     SourcePreferenceChangeInput,
     SourceType,
 } from '@/lib/graphql/generated/graphql-base.types.ts';
-import type { MangaCardMode, MangaIdInfo } from '@/features/manga/Manga.types.ts';
+import type {MangaCardMode, MangaIdInfo} from '@/features/manga/Manga.types.ts';
 
 export interface IPos {
     type: 'selectState' | 'textState' | 'checkBoxState' | 'triState' | 'sortState';
@@ -70,8 +70,8 @@ export type SourceIdInfo = Pick<SourceType, 'id'>;
 export type SourceLanguageInfo = Pick<SourceType, 'lang'>;
 export type SourceNameInfo = Pick<SourceType, 'name'>;
 export type SourceDisplayNameInfo = Pick<SourceType, 'displayName'>;
-export type SourceNsfwInfo = Pick<SourceType, 'isNsfw'>;
-export type SourceRepoInfo = { extension: Pick<ExtensionType, 'repo'> };
+export type SourceNsfwInfo = Pick<SourceType, 'contentWarning'>;
+export type SourceStoreInfo = { extension: Pick<ExtensionType, 'storeIndexUrl'> };
 export type SourceMetaInfo = { meta: SourceMetaFieldsFragment[] };
 export type SourceConfigurableInfo = Pick<SourceType, 'isConfigurable'>;
 export type SourceIconInfo = Pick<SourceType, 'iconUrl'>;

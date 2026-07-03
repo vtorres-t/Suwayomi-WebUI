@@ -60,10 +60,7 @@ export const SERVER_SETTINGS = gql`
             connectTimeout
         }
 
-        # extensions
-        extensionStores
-
-        # requests
+        # extension/source
         maxSourcesInParallel
 
         # updater
@@ -122,6 +119,7 @@ export const SERVER_SETTINGS = gql`
         opdsShowOnlyDownloadedChapters
         opdsChapterSortOrder
         opdsCbzMimetype
+        opdsSkipChapterMetadataFeed
 
         # KOReader sync
         koreaderSyncChecksumMethod
@@ -141,5 +139,16 @@ export const SERVER_SETTINGS = gql`
         repoWebUiType
         repoServerUrl
         repoServerType
+
+        # Sync
+        syncDataCategories
+        syncDataChapters
+        syncDataHistory
+        syncDataManga
+        syncDataTracking
+        syncInterval
+        syncYomiApiKey
+        syncYomiEnabled
+        syncYomiHost
     }
 `;

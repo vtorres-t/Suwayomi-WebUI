@@ -10,30 +10,31 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import Switch from '@mui/material/Switch';
-import { Trans, useLingui } from '@lingui/react/macro';
-import { plural } from '@lingui/core/macro';
-import { requestManager } from '@/lib/requests/RequestManager.ts';
-import { NumberSetting } from '@/base/components/settings/NumberSetting.tsx';
-import { MutableListSetting } from '@/base/components/settings/MutableListSetting.tsx';
-import { TextSetting } from '@/base/components/settings/text/TextSetting.tsx';
+import {useLingui} from '@lingui/react/macro';
+import {plural} from '@lingui/core/macro';
+import {requestManager} from '@/lib/requests/RequestManager.ts';
+import {NumberSetting} from '@/base/components/settings/NumberSetting.tsx';
+import {TextSetting} from '@/base/components/settings/text/TextSetting.tsx';
 import {
     createUpdateMetadataServerSettings,
     useMetadataServerSettings,
 } from '@/features/settings/services/ServerSettingsMetadata.ts';
-import { LoadingPlaceholder } from '@/base/components/feedback/LoadingPlaceholder.tsx';
-import { EmptyViewAbsoluteCentered } from '@/base/components/feedback/EmptyViewAbsoluteCentered.tsx';
-import { defaultPromiseErrorHandler } from '@/lib/DefaultPromiseErrorHandler.ts';
-import { makeToast } from '@/base/utils/Toast.ts';
-import type { MetadataBrowseSettings } from '@/features/browse/Browse.types.ts';
-import type { ServerSettings as GqlServerSettings } from '@/features/settings/Settings.types.ts';
-import { getErrorMessage } from '@/lib/HelperFunctions.ts';
-import { useAppTitle } from '@/features/navigation-bar/hooks/useAppTitle.ts';
+import {LoadingPlaceholder} from '@/base/components/feedback/LoadingPlaceholder.tsx';
+import {EmptyViewAbsoluteCentered} from '@/base/components/feedback/EmptyViewAbsoluteCentered.tsx';
+import {defaultPromiseErrorHandler} from '@/lib/DefaultPromiseErrorHandler.ts';
+import {makeToast} from '@/base/utils/Toast.ts';
+import type {MetadataBrowseSettings} from '@/features/browse/Browse.types.ts';
+import type {ServerSettings as GqlServerSettings} from '@/features/settings/Settings.types.ts';
+import {getErrorMessage} from '@/lib/HelperFunctions.ts';
+import {useAppTitle} from '@/features/navigation-bar/hooks/useAppTitle.ts';
 import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
 import ErrorOutlineOutlinedIcon from '@mui/icons-material/ErrorOutlineOutlined';
 import ListSubheader from '@mui/material/ListSubheader';
+import {ListItemLink} from '@/base/components/lists/ListItemLink.tsx';
+import {AppRoutes} from '@/base/AppRoute.constants.ts';
 
-type ExtensionsSettings = Pick<GqlServerSettings, 'maxSourcesInParallel' | 'localSourcePath' | 'extensionStores'>;
+type ExtensionsSettings = Pick<GqlServerSettings, 'maxSourcesInParallel' | 'localSourcePath'>;
 
 export const BrowseSettings = () => {
     const { t } = useLingui();
@@ -42,6 +43,9 @@ export const BrowseSettings = () => {
 
     const { data, loading, error, refetch } = requestManager.useGetServerSettings();
     const [mutateSettings] = requestManager.useUpdateServerSettings();
+    const extensionStoresRequest = requestManager.useGetExtensionStores();
+
+    const extensionStoreCount = extensionStoresRequest.data?.extensionStores.totalCount;
 
     const updateSetting = <Setting extends keyof ExtensionsSettings>(
         setting: Setting,
@@ -108,34 +112,18 @@ export const BrowseSettings = () => {
                     stepSize={1}
                     handleUpdate={(parallelSources) => updateSetting('maxSourcesInParallel', parallelSources)}
                 />
-                <MutableListSetting
-                    settingName={t`Extension repositories`}
-                    description={t`Add repositories from which extensions can be installed`}
-                    dialogDisclaimer={
-                        <Trans>
-                            <strong>
-                                Suwayomi does not provide any support for 3rd party repositories or extensions!
-                            </strong>
-                            <br />
-                            Use with caution as there could be malicious actors making those repositories.
-                            <br />
-                            You as the user need to verify the security and that you trust any repository or extension.
-                        </Trans>
-                    }
-                    handleChange={(repos) => {
-                        updateSetting('extensionStores', repos);
-                        requestManager.clearExtensionCache();
-                    }}
-                    valueInfos={serverSettings.extensionStores.map((extensionStores) => [extensionStores])}
-                    addItemButtonTitle={t`Add repository`}
-                    placeholder="https://github.com/MY_ACCOUNT/MY_REPO/tree/repo"
-                    validateItem={(repo) =>
-                        !!repo.match(
-                            /https:\/\/(www\.|raw\.)?(github|githubusercontent)\.com\/([^/]+)\/([^/]+)((\/tree|\/blob)?\/([^/\n]*))?(\/([^/\n]*\.json)?)?/g,
-                        )
-                    }
-                    invalidItemError={t`Invalid repository url`}
-                />
+                <ListItemLink to={AppRoutes.settings.children.browse.children.extensionStores.path}>
+                    <ListItemText
+                        primary={t`Extension stores`}
+                        secondary={
+                            extensionStoreCount &&
+                            plural(extensionStoreCount, {
+                                one: '# extension store',
+                                other: '# extension stores',
+                            })
+                        }
+                    />
+                </ListItemLink>
                 <TextSetting
                     settingName={t`Local source location`}
                     dialogDescription={t`The path to the directory on the server where local source files are saved in`}
