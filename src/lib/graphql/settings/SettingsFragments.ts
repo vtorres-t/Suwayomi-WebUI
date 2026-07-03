@@ -60,10 +60,14 @@ export const SERVER_SETTINGS = gql`
             connectTimeout
         }
 
+<<<<<<< HEAD
         # extensions
         extensionStores
 
         # requests
+=======
+        # extension/source
+>>>>>>> upstream/master
         maxSourcesInParallel
 
         # updater
@@ -122,6 +126,7 @@ export const SERVER_SETTINGS = gql`
         opdsShowOnlyDownloadedChapters
         opdsChapterSortOrder
         opdsCbzMimetype
+        opdsSkipChapterMetadataFeed
 
         # KOReader sync
         koreaderSyncChecksumMethod
@@ -136,10 +141,26 @@ export const SERVER_SETTINGS = gql`
         databasePassword
         useHikariConnectionPool
 
+<<<<<<< HEAD
         # Repository
         repoWebUiUrl
         repoWebUiType
         repoServerUrl
         repoServerType
+=======
+        # WebView
+        kcefEnabled
+
+        # Sync
+        syncDataCategories
+        syncDataChapters
+        syncDataHistory
+        syncDataManga
+        syncDataTracking
+        syncInterval
+        syncYomiApiKey
+        syncYomiEnabled
+        syncYomiHost
+>>>>>>> upstream/master
     }
 `;

@@ -426,6 +426,20 @@ export function SourceMangas() {
         <>
             <AppbarSearch />
             <SourceGridLayout />
+<<<<<<< HEAD
+=======
+            <CustomTooltip title={t`Open in WebView`} disabled={!source?.homeUrl}>
+                <IconButton
+                    disabled={!source?.homeUrl}
+                    href={source?.homeUrl ? requestManager.getWebviewUrl(source?.homeUrl) : ''}
+                    rel="noreferrer"
+                    target="_blank"
+                    color="inherit"
+                >
+                    <IconWebView />
+                </IconButton>
+            </CustomTooltip>
+>>>>>>> upstream/master
             {source?.isConfigurable && (
                 <CustomTooltip title={t`Settings`}>
                     <IconButton

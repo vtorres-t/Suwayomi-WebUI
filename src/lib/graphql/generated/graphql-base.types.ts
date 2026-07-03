@@ -883,7 +883,11 @@ export type ExtensionType = {
     apkUrl?: Maybe<Scalars['String']['output']>;
     contentWarning: ContentWarning;
     extensionLib?: Maybe<Scalars['String']['output']>;
+<<<<<<< HEAD
     extensionStore: ExtensionStoreType;
+=======
+    extensionStore?: Maybe<ExtensionStoreType>;
+>>>>>>> upstream/master
     hasUpdate: Scalars['Boolean']['output'];
     iconUrl: Scalars['String']['output'];
     isInstalled: Scalars['Boolean']['output'];
@@ -1943,7 +1947,12 @@ export type PartialSettingsType = Settings & {
     excludeEntryWithUnreadChapters?: Maybe<Scalars['Boolean']['output']>;
     excludeNotStarted?: Maybe<Scalars['Boolean']['output']>;
     excludeUnreadChapters?: Maybe<Scalars['Boolean']['output']>;
+<<<<<<< HEAD
     extensionStores?: Maybe<Array<Scalars['String']['output']>>;
+=======
+    /** @deprecated Replaced with addExtensionStore and removeExtensionStore mutations */
+    extensionRepos?: Maybe<Array<Scalars['String']['output']>>;
+>>>>>>> upstream/master
     flareSolverrAsResponseFallback?: Maybe<Scalars['Boolean']['output']>;
     flareSolverrEnabled?: Maybe<Scalars['Boolean']['output']>;
     flareSolverrSessionName?: Maybe<Scalars['String']['output']>;
@@ -1958,6 +1967,7 @@ export type PartialSettingsType = Settings & {
     jwtAudience?: Maybe<Scalars['String']['output']>;
     jwtRefreshExpiry?: Maybe<Scalars['Duration']['output']>;
     jwtTokenExpiry?: Maybe<Scalars['Duration']['output']>;
+    kcefEnabled?: Maybe<Scalars['Boolean']['output']>;
     koreaderSyncChecksumMethod?: Maybe<KoreaderSyncChecksumMethod>;
     /** @deprecated Moved to preference store. Is supposed to be random and gets auto generated, replace with MOVE TO PREFERENCES */
     koreaderSyncDeviceId?: Maybe<Scalars['String']['output']>;
@@ -2049,7 +2059,10 @@ export type PartialSettingsTypeInput = {
     excludeEntryWithUnreadChapters?: InputMaybe<Scalars['Boolean']['input']>;
     excludeNotStarted?: InputMaybe<Scalars['Boolean']['input']>;
     excludeUnreadChapters?: InputMaybe<Scalars['Boolean']['input']>;
+<<<<<<< HEAD
     extensionStores?: InputMaybe<Array<Scalars['String']['input']>>;
+=======
+>>>>>>> upstream/master
     flareSolverrAsResponseFallback?: InputMaybe<Scalars['Boolean']['input']>;
     flareSolverrEnabled?: InputMaybe<Scalars['Boolean']['input']>;
     flareSolverrSessionName?: InputMaybe<Scalars['String']['input']>;
@@ -2062,6 +2075,7 @@ export type PartialSettingsTypeInput = {
     jwtAudience?: InputMaybe<Scalars['String']['input']>;
     jwtRefreshExpiry?: InputMaybe<Scalars['Duration']['input']>;
     jwtTokenExpiry?: InputMaybe<Scalars['Duration']['input']>;
+    kcefEnabled?: InputMaybe<Scalars['Boolean']['input']>;
     koreaderSyncChecksumMethod?: InputMaybe<KoreaderSyncChecksumMethod>;
     koreaderSyncPercentageTolerance?: InputMaybe<Scalars['Float']['input']>;
     koreaderSyncStrategyBackward?: InputMaybe<KoreaderSyncConflictStrategy>;
@@ -2595,7 +2609,12 @@ export type Settings = {
     excludeEntryWithUnreadChapters?: Maybe<Scalars['Boolean']['output']>;
     excludeNotStarted?: Maybe<Scalars['Boolean']['output']>;
     excludeUnreadChapters?: Maybe<Scalars['Boolean']['output']>;
+<<<<<<< HEAD
     extensionStores?: Maybe<Array<Scalars['String']['output']>>;
+=======
+    /** @deprecated Replaced with addExtensionStore and removeExtensionStore mutations */
+    extensionRepos?: Maybe<Array<Scalars['String']['output']>>;
+>>>>>>> upstream/master
     flareSolverrAsResponseFallback?: Maybe<Scalars['Boolean']['output']>;
     flareSolverrEnabled?: Maybe<Scalars['Boolean']['output']>;
     flareSolverrSessionName?: Maybe<Scalars['String']['output']>;
@@ -2610,6 +2629,7 @@ export type Settings = {
     jwtAudience?: Maybe<Scalars['String']['output']>;
     jwtRefreshExpiry?: Maybe<Scalars['Duration']['output']>;
     jwtTokenExpiry?: Maybe<Scalars['Duration']['output']>;
+    kcefEnabled?: Maybe<Scalars['Boolean']['output']>;
     koreaderSyncChecksumMethod?: Maybe<KoreaderSyncChecksumMethod>;
     /** @deprecated Moved to preference store. Is supposed to be random and gets auto generated, replace with MOVE TO PREFERENCES */
     koreaderSyncDeviceId?: Maybe<Scalars['String']['output']>;
@@ -2754,7 +2774,12 @@ export type SettingsType = Settings & {
     excludeEntryWithUnreadChapters: Scalars['Boolean']['output'];
     excludeNotStarted: Scalars['Boolean']['output'];
     excludeUnreadChapters: Scalars['Boolean']['output'];
+<<<<<<< HEAD
     extensionStores: Array<Scalars['String']['output']>;
+=======
+    /** @deprecated Replaced with addExtensionStore and removeExtensionStore mutations */
+    extensionRepos: Array<Scalars['String']['output']>;
+>>>>>>> upstream/master
     flareSolverrAsResponseFallback: Scalars['Boolean']['output'];
     flareSolverrEnabled: Scalars['Boolean']['output'];
     flareSolverrSessionName: Scalars['String']['output'];
@@ -2769,6 +2794,7 @@ export type SettingsType = Settings & {
     jwtAudience: Scalars['String']['output'];
     jwtRefreshExpiry: Scalars['Duration']['output'];
     jwtTokenExpiry: Scalars['Duration']['output'];
+    kcefEnabled: Scalars['Boolean']['output'];
     koreaderSyncChecksumMethod: KoreaderSyncChecksumMethod;
     /** @deprecated Moved to preference store. Is supposed to be random and gets auto generated, replace with MOVE TO PREFERENCES */
     koreaderSyncDeviceId: Scalars['String']['output'];

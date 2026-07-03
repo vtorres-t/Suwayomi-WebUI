@@ -10,11 +10,10 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import Switch from '@mui/material/Switch';
-import { Trans, useLingui } from '@lingui/react/macro';
+import { useLingui } from '@lingui/react/macro';
 import { plural } from '@lingui/core/macro';
 import { requestManager } from '@/lib/requests/RequestManager.ts';
 import { NumberSetting } from '@/base/components/settings/NumberSetting.tsx';
-import { MutableListSetting } from '@/base/components/settings/MutableListSetting.tsx';
 import { TextSetting } from '@/base/components/settings/text/TextSetting.tsx';
 import {
     createUpdateMetadataServerSettings,
@@ -32,8 +31,14 @@ import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
 import ErrorOutlineOutlinedIcon from '@mui/icons-material/ErrorOutlineOutlined';
 import ListSubheader from '@mui/material/ListSubheader';
+import { ListItemLink } from '@/base/components/lists/ListItemLink.tsx';
+import { AppRoutes } from '@/base/AppRoute.constants.ts';
 
+<<<<<<< HEAD
 type ExtensionsSettings = Pick<GqlServerSettings, 'maxSourcesInParallel' | 'localSourcePath' | 'extensionStores'>;
+=======
+type ExtensionsSettings = Pick<GqlServerSettings, 'maxSourcesInParallel' | 'localSourcePath'>;
+>>>>>>> upstream/master
 
 export const BrowseSettings = () => {
     const { t } = useLingui();
@@ -42,6 +47,9 @@ export const BrowseSettings = () => {
 
     const { data, loading, error, refetch } = requestManager.useGetServerSettings();
     const [mutateSettings] = requestManager.useUpdateServerSettings();
+    const extensionStoresRequest = requestManager.useGetExtensionStores();
+
+    const extensionStoreCount = extensionStoresRequest.data?.extensionStores.totalCount;
 
     const updateSetting = <Setting extends keyof ExtensionsSettings>(
         setting: Setting,
@@ -108,6 +116,7 @@ export const BrowseSettings = () => {
                     stepSize={1}
                     handleUpdate={(parallelSources) => updateSetting('maxSourcesInParallel', parallelSources)}
                 />
+<<<<<<< HEAD
                 <MutableListSetting
                     settingName={t`Extension repositories`}
                     description={t`Add repositories from which extensions can be installed`}
@@ -136,6 +145,20 @@ export const BrowseSettings = () => {
                     }
                     invalidItemError={t`Invalid repository url`}
                 />
+=======
+                <ListItemLink to={AppRoutes.settings.children.browse.children.extensionStores.path}>
+                    <ListItemText
+                        primary={t`Extension stores`}
+                        secondary={
+                            extensionStoreCount &&
+                            plural(extensionStoreCount, {
+                                one: '# extension store',
+                                other: '# extension stores',
+                            })
+                        }
+                    />
+                </ListItemLink>
+>>>>>>> upstream/master
                 <TextSetting
                     settingName={t`Local source location`}
                     dialogDescription={t`The path to the directory on the server where local source files are saved in`}
