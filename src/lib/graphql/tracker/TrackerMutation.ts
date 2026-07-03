@@ -7,8 +7,8 @@
  */
 
 import gql from 'graphql-tag';
-import { TRACK_RECORD_BIND_FIELDS } from '@/lib/graphql/tracker/TrackRecordFragments.ts';
-import { TRACKER_SETTING_FIELDS } from '@/lib/graphql/tracker/TrackFragments.ts';
+import {TRACK_RECORD_BIND_FIELDS} from '@/lib/graphql/tracker/TrackRecordFragments.ts';
+import {TRACKER_SETTING_FIELDS} from '@/lib/graphql/tracker/TrackFragments.ts';
 
 export const TRACKER_LOGIN_OAUTH = gql`
     ${TRACKER_SETTING_FIELDS}
@@ -52,6 +52,28 @@ export const TRACKER_BIND = gql`
 
     mutation TRACKER_BIND($input: BindTrackInput!) {
         bindTrack(input: $input) {
+            trackRecord {
+                ...TRACK_RECORD_BIND_FIELDS
+                manga {
+                    id
+                    trackRecords {
+                        totalCount
+                        nodes {
+                            id
+                            trackerId
+                        }
+                    }
+                }
+            }
+        }
+    }
+`;
+
+export const TRACK_BIND_TRACK_RECORD = gql`
+    ${TRACK_RECORD_BIND_FIELDS}
+
+    mutation TRACKER_BIND_TRACK_RECORD($input: BindTrackRecordInput!) {
+        bindTrackRecord(input: $input) {
             trackRecord {
                 ...TRACK_RECORD_BIND_FIELDS
                 manga {

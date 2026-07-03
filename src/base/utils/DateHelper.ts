@@ -6,9 +6,9 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-import type { Dayjs } from 'dayjs';
+import type {Dayjs} from 'dayjs';
 import dayjs from 'dayjs';
-import { t } from '@lingui/core/macro';
+import {t} from '@lingui/core/macro';
 
 export const timeFormatter = new Intl.DateTimeFormat(navigator.language, { hour: '2-digit', minute: '2-digit' });
 export const dateFormatter = new Intl.DateTimeFormat(navigator.language, {
@@ -48,7 +48,7 @@ export const isSameDay = (first: Dayjs, second: Dayjs): boolean => first.isSame(
  * @param date
  * @param withTime
  */
-export const getDateString = (date: Dayjs | number, withTime: boolean = false) => {
+export const getDateString = (date: Dayjs | number, withTime: boolean = false, dateTime: boolean = false) => {
     const actualDate = date instanceof dayjs ? date : dayjs(date);
     const timeString = timeFormatter.format(actualDate.toDate());
 
@@ -66,6 +66,10 @@ export const getDateString = (date: Dayjs | number, withTime: boolean = false) =
         }
 
         return t`Yesterday`;
+    }
+
+    if (dateTime) {
+        return dateTimeFormatter.format(actualDate.toDate());
     }
 
     return dateFormatter.format(actualDate.toDate());

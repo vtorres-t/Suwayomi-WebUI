@@ -13,25 +13,27 @@ import RemoveDone from '@mui/icons-material/RemoveDone';
 import Done from '@mui/icons-material/Done';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import Label from '@mui/icons-material/Label';
-import { useMemo, useState } from 'react';
+import {useMemo, useState} from 'react';
 import SyncAltIcon from '@mui/icons-material/SyncAlt';
 import SyncIcon from '@mui/icons-material/Sync';
 import Dialog from '@mui/material/Dialog';
-import { AwaitableComponent } from 'awaitable-component';
-import { useLingui } from '@lingui/react/macro';
-import { Mangas } from '@/features/manga/services/Mangas.ts';
-import type { SelectableCollectionReturnType } from '@/base/collection/hooks/useSelectableCollection.ts';
-import { MenuItem } from '@/base/components/menu/MenuItem.tsx';
+import {AwaitableComponent} from 'awaitable-component';
+import {useLingui} from '@lingui/react/macro';
+import {Mangas} from '@/features/manga/services/Mangas.ts';
+import type {SelectableCollectionReturnType} from '@/base/collection/hooks/useSelectableCollection.ts';
+import {MenuItem} from '@/base/components/menu/MenuItem.tsx';
 import {
     createGetMenuItemTitle,
     createIsMenuItemDisabled,
     createShouldShowMenuItem,
 } from '@/base/components/menu/Menu.utils.ts';
-import { defaultPromiseErrorHandler } from '@/lib/DefaultPromiseErrorHandler.ts';
-import { TrackManga } from '@/features/tracker/components/TrackManga.tsx';
-import { ChaptersDownloadActionMenuItems } from '@/features/chapter/components/actions/ChaptersDownloadActionMenuItems.tsx';
-import { NestedMenuItem } from '@/base/components/menu/NestedMenuItem.tsx';
-import type { MangaChapterStatFieldsFragment } from '@/lib/graphql/generated/graphql.ts';
+import {defaultPromiseErrorHandler} from '@/lib/DefaultPromiseErrorHandler.ts';
+import {TrackManga} from '@/features/tracker/components/TrackManga.tsx';
+import {
+    ChaptersDownloadActionMenuItems
+} from '@/features/chapter/components/actions/ChaptersDownloadActionMenuItems.tsx';
+import {NestedMenuItem} from '@/base/components/menu/NestedMenuItem.tsx';
+import type {MangaChapterStatFieldsFragment} from '@/lib/graphql/generated/graphql.ts';
 import type {
     MangaAction,
     MangaDownloadInfo,
@@ -41,9 +43,9 @@ import type {
     MangaTitleInfo,
     MangaUnreadInfo,
 } from '@/features/manga/Manga.types.ts';
-import { MANGA_ACTION_TO_TRANSLATION } from '@/features/manga/Manga.constants.ts';
-import { CategorySelect } from '@/features/category/components/CategorySelect.tsx';
-import { STABLE_EMPTY_ARRAY } from '@/base/Base.constants.ts';
+import {MANGA_ACTION_TO_TRANSLATION} from '@/features/manga/Manga.constants.ts';
+import {CategorySelect} from '@/features/category/components/CategorySelect.tsx';
+import {STABLE_EMPTY_ARRAY} from '@/base/Base.constants.ts';
 
 type BaseProps = { onClose: () => void; setHideMenu: (hide: boolean) => void };
 
@@ -84,7 +86,7 @@ export const MangaActionMenuItems = ({
 
     const isDownloadable = !!manga && !!manga.chapters.totalCount && !Mangas.isFullyDownloaded(manga);
     const hasDownloadedChapters = manga && Mangas.isPartiallyDownloaded(manga);
-    const hasUnreadChapters = manga && Mangas.isPartiallyRead(manga);
+    const hasUnreadChapters = manga && !!manga.chapters.totalCount && !Mangas.isFullyRead(manga);
     const hasReadChapters = !!manga && Mangas.isPartiallyRead(manga);
 
     const handleSelect = () => {

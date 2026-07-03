@@ -6,50 +6,50 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-import { useCallback, useEffect, useMemo, useState } from 'react';
-import { fromEvent } from 'file-selector';
+import {useCallback, useEffect, useMemo, useState} from 'react';
+import {fromEvent} from 'file-selector';
 import IconButton from '@mui/material/IconButton';
 import AddIcon from '@mui/icons-material/Add';
-import { StringParam, useQueryParam } from 'use-query-params';
+import {StringParam, useQueryParam} from 'use-query-params';
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import { Link } from 'react-router-dom';
-import { useWindowEvent } from '@mantine/hooks';
-import { useLingui } from '@lingui/react/macro';
-import { CustomTooltip } from '@/base/components/CustomTooltip.tsx';
-import { requestManager } from '@/lib/requests/RequestManager.ts';
-import { AppbarSearch } from '@/base/components/AppbarSearch.tsx';
-import { LoadingPlaceholder } from '@/base/components/feedback/LoadingPlaceholder.tsx';
-import { makeToast } from '@/base/utils/Toast.ts';
-import { LanguageSelect } from '@/base/components/inputs/LanguageSelect.tsx';
-import { ExtensionCard } from '@/features/browse/extensions/components/ExtensionCard.tsx';
-import { StyledGroupedVirtuoso } from '@/base/components/virtuoso/StyledGroupedVirtuoso.tsx';
-import { StyledGroupHeader } from '@/base/components/virtuoso/StyledGroupHeader.tsx';
-import { StyledGroupItemWrapper } from '@/base/components/virtuoso/StyledGroupItemWrapper.tsx';
-import { EmptyViewAbsoluteCentered } from '@/base/components/feedback/EmptyViewAbsoluteCentered.tsx';
-import { defaultPromiseErrorHandler } from '@/lib/DefaultPromiseErrorHandler.ts';
-import { VirtuosoUtil } from '@/lib/virtuoso/Virtuoso.util.tsx';
+import {Link} from 'react-router-dom';
+import {useWindowEvent} from '@mantine/hooks';
+import {useLingui} from '@lingui/react/macro';
+import {CustomTooltip} from '@/base/components/CustomTooltip.tsx';
+import {requestManager} from '@/lib/requests/RequestManager.ts';
+import {AppbarSearch} from '@/base/components/AppbarSearch.tsx';
+import {LoadingPlaceholder} from '@/base/components/feedback/LoadingPlaceholder.tsx';
+import {makeToast} from '@/base/utils/Toast.ts';
+import {LanguageSelect} from '@/base/components/inputs/LanguageSelect.tsx';
+import {ExtensionCard} from '@/features/browse/extensions/components/ExtensionCard.tsx';
+import {StyledGroupedVirtuoso} from '@/base/components/virtuoso/StyledGroupedVirtuoso.tsx';
+import {StyledGroupHeader} from '@/base/components/virtuoso/StyledGroupHeader.tsx';
+import {StyledGroupItemWrapper} from '@/base/components/virtuoso/StyledGroupItemWrapper.tsx';
+import {EmptyViewAbsoluteCentered} from '@/base/components/feedback/EmptyViewAbsoluteCentered.tsx';
+import {defaultPromiseErrorHandler} from '@/lib/DefaultPromiseErrorHandler.ts';
+import {VirtuosoUtil} from '@/lib/virtuoso/Virtuoso.util.tsx';
 import {
     filterExtensions,
     getLanguagesFromExtensions,
     groupExtensionsByLanguage,
     translateExtensionLanguage,
 } from '@/features/extension/Extensions.utils.ts';
-import type { TExtension } from '@/features/extension/Extensions.types.ts';
-import { ExtensionAction, ExtensionGroupState, ExtensionState } from '@/features/extension/Extensions.types.ts';
-import { EXTENSION_ACTION_TO_FAILURE_TRANSLATION_MAP } from '@/features/extension/Extensions.constants.ts';
-import { AppRoutes } from '@/base/AppRoute.constants.ts';
-import { getErrorMessage } from '@/lib/HelperFunctions.ts';
-import { STABLE_EMPTY_ARRAY } from '@/base/Base.constants.ts';
+import type {TExtension} from '@/features/extension/Extensions.types.ts';
+import {ExtensionAction, ExtensionGroupState, ExtensionState} from '@/features/extension/Extensions.types.ts';
+import {EXTENSION_ACTION_TO_FAILURE_TRANSLATION_MAP} from '@/features/extension/Extensions.constants.ts';
+import {AppRoutes} from '@/base/AppRoute.constants.ts';
+import {getErrorMessage} from '@/lib/HelperFunctions.ts';
+import {STABLE_EMPTY_ARRAY} from '@/base/Base.constants.ts';
 import {
     createUpdateMetadataServerSettings,
     useMetadataServerSettings,
 } from '@/features/settings/services/ServerSettingsMetadata.ts';
-import type { MetadataBrowseSettings } from '@/features/browse/Browse.types.ts';
-import { useAppAction } from '@/features/navigation-bar/hooks/useAppAction.ts';
-import { SearchParam } from '@/base/Base.types.ts';
-import { i18n } from '@/i18n';
+import type {MetadataBrowseSettings} from '@/features/browse/Browse.types.ts';
+import {useAppAction} from '@/features/navigation-bar/hooks/useAppAction.ts';
+import {SearchParam} from '@/base/Base.types.ts';
+import {i18n} from '@/i18n';
 
 const LANGUAGE = 0;
 const EXTENSIONS = 1;
@@ -116,14 +116,9 @@ const GroupHeader = ({
 export function Extensions({ tabsMenuHeight }: { tabsMenuHeight: number }) {
     const { t } = useLingui();
 
-    const {
-        data: serverSettingsData,
-        loading: areServerSettingsLoading,
-        error: serverSettingsError,
-        refetch: refetchServerSettings,
-    } = requestManager.useGetServerSettings();
     const [fetchExtensions, { data, loading: areExtensionsLoading, error: extensionsError }] =
         requestManager.useExtensionListFetch();
+    const extensionStoresRequest = requestManager.useGetExtensionStores();
 
     const {
         settings: { browseLanguages: shownLangs, showNsfw },
@@ -137,11 +132,8 @@ export function Extensions({ tabsMenuHeight }: { tabsMenuHeight: number }) {
     const [updatingExtensionIds, setUpdatingExtensionIds] = useState<string[]>([]);
     const [refetchExtensions, setRefetchExtensions] = useState({});
 
-    const isLoading = areServerSettingsLoading || areExtensionsLoading;
-    const error = serverSettingsError ?? extensionsError;
-
-    const areReposDefined = !!serverSettingsData?.settings.extensionStores.length;
-    const areMultipleReposInUse = (serverSettingsData?.settings.extensionStores.length ?? 0) > 1;
+    const isLoading = extensionStoresRequest.loading || areExtensionsLoading;
+    const error = extensionStoresRequest.error ?? extensionsError;
 
     const allExtensions = data?.fetchExtensions?.extensions ?? STABLE_EMPTY_ARRAY;
     const allLangs = useMemo(() => getLanguagesFromExtensions(allExtensions), [allExtensions]);
@@ -159,6 +151,17 @@ export function Extensions({ tabsMenuHeight }: { tabsMenuHeight: number }) {
         () => groupedExtensions.flatMap(([, extensions]) => extensions),
         [groupedExtensions],
     );
+
+    const areReposDefined = !!extensionStoresRequest.data?.extensionStores.totalCount;
+    const areMultipleReposInUse = useMemo(() => {
+        if (!allExtensions.length) {
+            return false;
+        }
+
+        const store = allExtensions[0].extensionStore?.indexUrl;
+
+        return allExtensions.slice(1).some((extension) => extension.extensionStore?.indexUrl !== store);
+    }, [allExtensions]);
 
     const computeItemKey = VirtuosoUtil.useCreateGroupedComputeItemKey(
         groupCounts,
@@ -244,8 +247,10 @@ export function Extensions({ tabsMenuHeight }: { tabsMenuHeight: number }) {
                 message={t`Unable to load data`}
                 messageExtra={getErrorMessage(error)}
                 retry={() => {
-                    if (serverSettingsError) {
-                        refetchServerSettings().catch(defaultPromiseErrorHandler('Extensions::refetchServerSettings'));
+                    if (extensionStoresRequest.error) {
+                        extensionStoresRequest
+                            .refetch()
+                            .catch(defaultPromiseErrorHandler('Extensions::refetchExtensionsStores'));
                     }
 
                     if (extensionsError) {
@@ -267,9 +272,13 @@ export function Extensions({ tabsMenuHeight }: { tabsMenuHeight: number }) {
                     paddingTop: '20px',
                 }}
             >
-                <Typography>{t`You have to add a extension repository to be able to install extensions`}</Typography>
-                <Button component={Link} variant="contained" to={AppRoutes.settings.children.browse.path}>
-                    {t`Settings`}
+                <Typography>{t`You have to add a extension store to be able to install extensions`}</Typography>
+                <Button
+                    component={Link}
+                    variant="contained"
+                    to={AppRoutes.settings.children.browse.children.extensionStores.path}
+                >
+                    {t`Add extension store`}
                 </Button>
             </Stack>
         );
@@ -306,7 +315,7 @@ export function Extensions({ tabsMenuHeight }: { tabsMenuHeight: number }) {
                         <ExtensionCard
                             extension={item}
                             handleUpdate={handleExtensionUpdate}
-                            showSourceRepo={areMultipleReposInUse}
+                            showSourceStore={areMultipleReposInUse}
                             forcedState={
                                 updatingExtensionIds.includes(item.pkgName) ? ExtensionState.UPDATING : undefined
                             }

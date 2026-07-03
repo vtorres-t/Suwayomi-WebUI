@@ -883,7 +883,7 @@ export type ExtensionType = {
     apkUrl?: Maybe<Scalars['String']['output']>;
     contentWarning: ContentWarning;
     extensionLib?: Maybe<Scalars['String']['output']>;
-    extensionStore: ExtensionStoreType;
+    extensionStore?: Maybe<ExtensionStoreType>;
     hasUpdate: Scalars['Boolean']['output'];
     iconUrl: Scalars['String']['output'];
     isInstalled: Scalars['Boolean']['output'];
@@ -1943,7 +1943,6 @@ export type PartialSettingsType = Settings & {
     excludeEntryWithUnreadChapters?: Maybe<Scalars['Boolean']['output']>;
     excludeNotStarted?: Maybe<Scalars['Boolean']['output']>;
     excludeUnreadChapters?: Maybe<Scalars['Boolean']['output']>;
-    extensionStores?: Maybe<Array<Scalars['String']['output']>>;
     flareSolverrAsResponseFallback?: Maybe<Scalars['Boolean']['output']>;
     flareSolverrEnabled?: Maybe<Scalars['Boolean']['output']>;
     flareSolverrSessionName?: Maybe<Scalars['String']['output']>;
@@ -2049,7 +2048,6 @@ export type PartialSettingsTypeInput = {
     excludeEntryWithUnreadChapters?: InputMaybe<Scalars['Boolean']['input']>;
     excludeNotStarted?: InputMaybe<Scalars['Boolean']['input']>;
     excludeUnreadChapters?: InputMaybe<Scalars['Boolean']['input']>;
-    extensionStores?: InputMaybe<Array<Scalars['String']['input']>>;
     flareSolverrAsResponseFallback?: InputMaybe<Scalars['Boolean']['input']>;
     flareSolverrEnabled?: InputMaybe<Scalars['Boolean']['input']>;
     flareSolverrSessionName?: InputMaybe<Scalars['String']['input']>;
@@ -2595,7 +2593,6 @@ export type Settings = {
     excludeEntryWithUnreadChapters?: Maybe<Scalars['Boolean']['output']>;
     excludeNotStarted?: Maybe<Scalars['Boolean']['output']>;
     excludeUnreadChapters?: Maybe<Scalars['Boolean']['output']>;
-    extensionStores?: Maybe<Array<Scalars['String']['output']>>;
     flareSolverrAsResponseFallback?: Maybe<Scalars['Boolean']['output']>;
     flareSolverrEnabled?: Maybe<Scalars['Boolean']['output']>;
     flareSolverrSessionName?: Maybe<Scalars['String']['output']>;
@@ -2754,7 +2751,6 @@ export type SettingsType = Settings & {
     excludeEntryWithUnreadChapters: Scalars['Boolean']['output'];
     excludeNotStarted: Scalars['Boolean']['output'];
     excludeUnreadChapters: Scalars['Boolean']['output'];
-    extensionStores: Array<Scalars['String']['output']>;
     flareSolverrAsResponseFallback: Scalars['Boolean']['output'];
     flareSolverrEnabled: Scalars['Boolean']['output'];
     flareSolverrSessionName: Scalars['String']['output'];
