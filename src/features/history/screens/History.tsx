@@ -7,7 +7,7 @@
  */
 
 import Typography from '@mui/material/Typography';
-import React, { useCallback, useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 import { useLingui } from '@lingui/react/macro';
 import { requestManager } from '@/lib/requests/RequestManager.ts';
 import { LoadingPlaceholder } from '@/base/components/feedback/LoadingPlaceholder.tsx';
@@ -80,8 +80,6 @@ export const History: React.FC = () => {
         if (isLoading || !hasNextPage) {
             return;
         }
-        // oxlint-disable-next-line no-console
-        console.log('Cargando más... Offset:', readEntries.length);
 
         fetchMore({
             variables: { offset: readEntries.length },
