@@ -14,15 +14,15 @@ import type {
     OperationVariables,
     TypedDocumentNode,
 } from '@apollo/client/core';
-import {CombinedGraphQLErrors} from '@apollo/client/core';
-import {useMutation, useQuery, useSubscription} from '@apollo/client/react';
-import type {Reference} from '@apollo/client/utilities';
-import {useEffect, useMemo, useRef, useState} from 'react';
-import {d} from 'koration';
-import type {IRestClient} from '@/lib/requests/client/RestClient.ts';
-import {RestClient} from '@/lib/requests/client/RestClient.ts';
-import {GraphQLClient} from '@/lib/requests/client/GraphQLClient.ts';
-import {BaseClient} from '@/lib/requests/client/BaseClient.ts';
+import { CombinedGraphQLErrors } from '@apollo/client/core';
+import { useMutation, useQuery, useSubscription } from '@apollo/client/react';
+import type { Reference } from '@apollo/client/utilities';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { d } from 'koration';
+import type { IRestClient } from '@/lib/requests/client/RestClient.ts';
+import { RestClient } from '@/lib/requests/client/RestClient.ts';
+import { GraphQLClient } from '@/lib/requests/client/GraphQLClient.ts';
+import { BaseClient } from '@/lib/requests/client/BaseClient.ts';
 import type {
     AddExtensionStoreMutation,
     AddExtensionStoreMutationVariables,
@@ -234,22 +234,22 @@ import {
     MangaJobStatus,
     SortOrder,
 } from '@/lib/graphql/generated/graphql-base.types.ts';
-import {GET_GLOBAL_METADATAS} from '@/lib/graphql/metadata/GlobalMetadataQuery.ts';
-import {UPDATE_GLOBAL_METADATA} from '@/lib/graphql/metadata/GlobalMetadataMutation.ts';
+import { GET_GLOBAL_METADATAS } from '@/lib/graphql/metadata/GlobalMetadataQuery.ts';
+import { UPDATE_GLOBAL_METADATA } from '@/lib/graphql/metadata/GlobalMetadataMutation.ts';
 import {
     CHECK_FOR_SERVER_UPDATES,
     CHECK_FOR_WEBUI_UPDATE,
     GET_ABOUT,
     GET_WEBUI_UPDATE_STATUS,
 } from '@/lib/graphql/server/ServerInfoQuery.ts';
-import {GET_EXTENSION, GET_EXTENSIONS} from '@/lib/graphql/extension/ExtensionQuery.ts';
+import { GET_EXTENSION, GET_EXTENSIONS } from '@/lib/graphql/extension/ExtensionQuery.ts';
 import {
     GET_EXTENSIONS_FETCH,
     INSTALL_EXTERNAL_EXTENSION,
     UPDATE_EXTENSION,
     UPDATE_EXTENSIONS,
 } from '@/lib/graphql/extension/ExtensionMutation.ts';
-import {GET_MIGRATABLE_SOURCES, GET_SOURCES_LIST} from '@/lib/graphql/source/SourceQuery.ts';
+import { GET_MIGRATABLE_SOURCES, GET_SOURCES_LIST } from '@/lib/graphql/source/SourceQuery.ts';
 import {
     GET_MANGA_TO_MIGRATE_TO_FETCH,
     REFRESH_MANGA,
@@ -259,7 +259,7 @@ import {
     UPDATE_MANGAS,
     UPDATE_MANGAS_CATEGORIES,
 } from '@/lib/graphql/manga/MangaMutation.ts';
-import {GET_MANGA_TO_MIGRATE, GET_MANGA_TRACK_RECORDS, GET_MANGAS_LIBRARY} from '@/lib/graphql/manga/MangaQuery.ts';
+import { GET_MANGA_TO_MIGRATE, GET_MANGA_TRACK_RECORDS, GET_MANGAS_LIBRARY } from '@/lib/graphql/manga/MangaQuery.ts';
 import {
     GET_CATEGORIES_BASE,
     GET_CATEGORIES_LIBRARY,
@@ -302,23 +302,23 @@ import {
     UPDATE_CATEGORY_METADATA,
     UPDATE_CATEGORY_ORDER,
 } from '@/lib/graphql/category/CategoryMutation.ts';
-import {STOP_UPDATER, UPDATE_LIBRARY} from '@/lib/graphql/updater/UpdaterMutation.ts';
-import {GET_LAST_UPDATE_TIMESTAMP, GET_UPDATE_STATUS} from '@/lib/graphql/updater/UpdaterQuery.ts';
-import {CustomCache} from '@/lib/storage/CustomCache.ts';
-import {CREATE_BACKUP, RESTORE_BACKUP} from '@/lib/graphql/backup/BackupMutation.ts';
-import {GET_RESTORE_STATUS, VALIDATE_BACKUP} from '@/lib/graphql/backup/BackupQuery.ts';
-import {DOWNLOAD_STATUS_SUBSCRIPTION} from '@/lib/graphql/download/DownloaderSubscription.ts';
-import {UPDATER_SUBSCRIPTION} from '@/lib/graphql/updater/UpdaterSubscription.ts';
-import {GET_SERVER_SETTINGS} from '@/lib/graphql/settings/SettingsQuery.ts';
-import {UPDATE_SERVER_SETTINGS} from '@/lib/graphql/settings/SettingsMutation.ts';
-import {CLEAR_SERVER_CACHE} from '@/lib/graphql/image/ImageMutation.ts';
-import {RESET_WEBUI_UPDATE_STATUS, UPDATE_WEBUI} from '@/lib/graphql/server/ServerInfoMutation.ts';
-import {WEBUI_UPDATE_SUBSCRIPTION} from '@/lib/graphql/server/ServerInfoSubscription.ts';
-import {GET_DOWNLOAD_STATUS} from '@/lib/graphql/download/DownloaderQuery.ts';
-import {defaultPromiseErrorHandler} from '@/lib/DefaultPromiseErrorHandler.ts';
-import type {QueuePriority} from '@/lib/Queue.ts';
-import {SourceAwareQueue} from '@/lib/SourceAwareQueue.ts';
-import {TRACKER_SEARCH} from '@/lib/graphql/tracker/TrackerQuery.ts';
+import { STOP_UPDATER, UPDATE_LIBRARY } from '@/lib/graphql/updater/UpdaterMutation.ts';
+import { GET_LAST_UPDATE_TIMESTAMP, GET_UPDATE_STATUS } from '@/lib/graphql/updater/UpdaterQuery.ts';
+import { CustomCache } from '@/lib/storage/CustomCache.ts';
+import { CREATE_BACKUP, RESTORE_BACKUP } from '@/lib/graphql/backup/BackupMutation.ts';
+import { GET_RESTORE_STATUS, VALIDATE_BACKUP } from '@/lib/graphql/backup/BackupQuery.ts';
+import { DOWNLOAD_STATUS_SUBSCRIPTION } from '@/lib/graphql/download/DownloaderSubscription.ts';
+import { UPDATER_SUBSCRIPTION } from '@/lib/graphql/updater/UpdaterSubscription.ts';
+import { GET_SERVER_SETTINGS } from '@/lib/graphql/settings/SettingsQuery.ts';
+import { UPDATE_SERVER_SETTINGS } from '@/lib/graphql/settings/SettingsMutation.ts';
+import { CLEAR_SERVER_CACHE } from '@/lib/graphql/image/ImageMutation.ts';
+import { RESET_WEBUI_UPDATE_STATUS, UPDATE_WEBUI } from '@/lib/graphql/server/ServerInfoMutation.ts';
+import { WEBUI_UPDATE_SUBSCRIPTION } from '@/lib/graphql/server/ServerInfoSubscription.ts';
+import { GET_DOWNLOAD_STATUS } from '@/lib/graphql/download/DownloaderQuery.ts';
+import { defaultPromiseErrorHandler } from '@/lib/DefaultPromiseErrorHandler.ts';
+import type { QueuePriority } from '@/lib/Queue.ts';
+import { SourceAwareQueue } from '@/lib/SourceAwareQueue.ts';
+import { TRACKER_SEARCH } from '@/lib/graphql/tracker/TrackerQuery.ts';
 import {
     TRACK_BIND_TRACK_RECORD,
     TRACKER_BIND,
@@ -329,32 +329,32 @@ import {
     TRACKER_UNBIND,
     TRACKER_UPDATE_BIND,
 } from '@/lib/graphql/tracker/TrackerMutation.ts';
-import {ControlledPromise} from '@/lib/ControlledPromise.ts';
-import {DOWNLOAD_STATUS_FIELDS} from '@/lib/graphql/download/DownloadFragments.ts';
-import {EXTENSION_LIST_FIELDS} from '@/lib/graphql/extension/ExtensionFragments.ts';
-import {MANGA_BASE_FIELDS, MANGA_META_FIELDS} from '@/lib/graphql/manga/MangaFragments.ts';
-import {GLOBAL_METADATA} from '@/lib/graphql/common/Fragments.ts';
-import {CATEGORY_META_FIELDS} from '@/lib/graphql/category/CategoryFragments.ts';
-import {SOURCE_META_FIELDS} from '@/lib/graphql/source/SourceFragments.ts';
-import {CHAPTER_META_FIELDS} from '@/lib/graphql/chapter/ChapterFragments.ts';
-import type {MetadataMigrationSettings} from '@/features/migration/Migration.types.ts';
-import type {MangaIdInfo} from '@/features/manga/Manga.types.ts';
-import {updateMetadataList} from '@/features/metadata/services/MetadataApolloCacheHandler.ts';
-import {USER_LOGIN, USER_REFRESH} from '@/lib/graphql/user/UserMutation.ts';
-import {AuthManager} from '@/features/authentication/AuthManager.ts';
-import {useLocalStorage} from '@/base/hooks/useStorage.tsx';
-import {KO_SYNC_LOGIN, KO_SYNC_LOGOUT} from '@/lib/graphql/koreader/KoreaderSyncMutation.ts';
-import {GET_KO_SYNC_STATUS} from '@/lib/graphql/koreader/KoreaderSyncQuery.ts';
-import {ImageCache} from '@/lib/service-worker/ImageCache.ts';
-import {Sources} from '@/features/source/services/Sources.ts';
+import { ControlledPromise } from '@/lib/ControlledPromise.ts';
+import { DOWNLOAD_STATUS_FIELDS } from '@/lib/graphql/download/DownloadFragments.ts';
+import { EXTENSION_LIST_FIELDS } from '@/lib/graphql/extension/ExtensionFragments.ts';
+import { MANGA_BASE_FIELDS, MANGA_META_FIELDS } from '@/lib/graphql/manga/MangaFragments.ts';
+import { GLOBAL_METADATA } from '@/lib/graphql/common/Fragments.ts';
+import { CATEGORY_META_FIELDS } from '@/lib/graphql/category/CategoryFragments.ts';
+import { SOURCE_META_FIELDS } from '@/lib/graphql/source/SourceFragments.ts';
+import { CHAPTER_META_FIELDS } from '@/lib/graphql/chapter/ChapterFragments.ts';
+import type { MetadataMigrationSettings } from '@/features/migration/Migration.types.ts';
+import type { MangaIdInfo } from '@/features/manga/Manga.types.ts';
+import { updateMetadataList } from '@/features/metadata/services/MetadataApolloCacheHandler.ts';
+import { USER_LOGIN, USER_REFRESH } from '@/lib/graphql/user/UserMutation.ts';
+import { AuthManager } from '@/features/authentication/AuthManager.ts';
+import { useLocalStorage } from '@/base/hooks/useStorage.tsx';
+import { KO_SYNC_LOGIN, KO_SYNC_LOGOUT } from '@/lib/graphql/koreader/KoreaderSyncMutation.ts';
+import { GET_KO_SYNC_STATUS } from '@/lib/graphql/koreader/KoreaderSyncQuery.ts';
+import { ImageCache } from '@/lib/service-worker/ImageCache.ts';
+import { Sources } from '@/features/source/services/Sources.ts';
 import uniqBy from 'lodash/fp/uniqBy';
-import {EXTENSION_STORE_FIELDS} from '@/lib/graphql/extension/store/ExtensionStoreFragments.ts';
-import {ADD_EXTENSION_STORE, REMOVE_EXTENSION_STORE} from '@/lib/graphql/extension/store/ExtensionStoreMutation.ts';
-import {assertIsDefined} from '@/base/Asserts.ts';
-import {GET_EXTENSION_STORE, GET_EXTENSION_STORES} from '@/lib/graphql/extension/store/ExtensionStoreQuery.ts';
-import {SYNC_SUBSCRIPTION} from '@/lib/graphql/sync/SyncSubscription.ts';
-import {START_SYNC} from '@/lib/graphql/sync/SyncMutation.ts';
-import {GET_SYNC_STATUS} from '@/lib/graphql/sync/SyncQuery.ts';
+import { EXTENSION_STORE_FIELDS } from '@/lib/graphql/extension/store/ExtensionStoreFragments.ts';
+import { ADD_EXTENSION_STORE, REMOVE_EXTENSION_STORE } from '@/lib/graphql/extension/store/ExtensionStoreMutation.ts';
+import { assertIsDefined } from '@/base/Asserts.ts';
+import { GET_EXTENSION_STORE, GET_EXTENSION_STORES } from '@/lib/graphql/extension/store/ExtensionStoreQuery.ts';
+import { SYNC_SUBSCRIPTION } from '@/lib/graphql/sync/SyncSubscription.ts';
+import { START_SYNC } from '@/lib/graphql/sync/SyncMutation.ts';
+import { GET_SYNC_STATUS } from '@/lib/graphql/sync/SyncQuery.ts';
 
 enum GQLMethod {
     QUERY = 'QUERY',
@@ -3426,7 +3426,7 @@ export class RequestManager {
         initialPages: number = 1,
         options?: QueryHookOptions<GetChaptersUpdatesQuery, GetChaptersUpdatesQueryVariables>,
     ): AbortableApolloUseQueryResponse<GetChaptersUpdatesQuery, GetChaptersUpdatesQueryVariables> {
-        const PAGE_SIZE = 100;
+        const PAGE_SIZE = 150;
         const CACHE_KEY = 'useGetRecentlyUpdatedChapters';
 
         const offset = this.cache.getResponseFor<number>(CACHE_KEY, undefined) ?? 0;
