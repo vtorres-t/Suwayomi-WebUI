@@ -3474,7 +3474,7 @@ export class RequestManager {
         initialPages: number = 1,
         options?: QueryHookOptions<GetChaptersHistoryQuery, GetChaptersHistoryQueryVariables>,
     ): AbortableApolloUseQueryResponse<GetChaptersHistoryQuery, GetChaptersHistoryQueryVariables> {
-        const PAGE_SIZE = 100;
+        const PAGE_SIZE = 150;
         const CACHE_KEY = 'useGetRecentlyReadChapters';
 
         const offset = this.cache.getResponseFor<number>(CACHE_KEY, undefined) ?? 0;
