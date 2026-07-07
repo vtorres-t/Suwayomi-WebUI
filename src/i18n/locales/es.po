@@ -3777,3 +3777,8 @@ msgstr "No se pudo instalar la extensión"
 #, fuzzy
 msgid "Show in sources and extensions lists"
 msgstr "Mostrar en las listas de fuentes y extensiones"
+
+#. placeholder {0}: otherChapters.length
+#: src/features/updates/components/ChapterUpdateCard.tsx
+msgid "{0, plural, one {Show # more chapter} other {Show # more chapters}}"
+msgstr "{0, plural, one {Muestra # capítulo más} other {Muestra # capítulos más}}"
