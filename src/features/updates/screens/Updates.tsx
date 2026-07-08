@@ -21,20 +21,36 @@ import { defaultPromiseErrorHandler } from '@/lib/DefaultPromiseErrorHandler.ts'
 import { VirtuosoUtil } from '@/lib/virtuoso/Virtuoso.util.tsx';
 import { getErrorMessage } from '@/lib/HelperFunctions.ts';
 import { ChapterUpdateCard } from '@/features/updates/components/ChapterUpdateCard.tsx';
-import { useNavBarContext } from '@/features/navigation-bar/NavbarContext.tsx';
 import { Chapters } from '@/features/chapter/services/Chapters.ts';
 import { useAppTitleAndAction } from '@/features/navigation-bar/hooks/useAppTitleAndAction.ts';
-import { GROUPED_VIRTUOSO_Z_INDEX } from '@/lib/virtuoso/Virtuoso.constants.ts';
 import { STABLE_EMPTY_ARRAY } from '@/base/Base.constants.ts';
 import mapValues from 'lodash/fp/mapValues';
 import difference from 'lodash/fp/difference';
 import uniqBy from 'lodash/fp/uniqBy';
+import { CustomTooltip } from '@/base/components/CustomTooltip.tsx';
+import IconButton from '@mui/material/IconButton';
 
 export const Updates: React.FC = () => {
     const { t } = useLingui();
-    const { appBarHeight } = useNavBarContext();
 
-    useAppTitleAndAction(t`Updates`, <UpdateChecker />);
+    const { data: lastUpdateTimestampData } = requestManager.useGetLastGlobalUpdateTimestamp({
+        /**
+         * The {@link UpdateChecker} is responsible for updating the timestamp
+         */
+        fetchPolicy: 'cache-only',
+    });
+    const lastUpdateTimestamp = lastUpdateTimestampData?.lastUpdateTimestamp.timestamp;
+    const date = lastUpdateTimestamp ? dateTimeFormatter.format(+lastUpdateTimestamp) : '-';
+
+    useAppTitleAndAction(
+        t`Updates`,
+        <div>
+            <CustomTooltip title={t`Last update`}>
+                <IconButton color="inherit">{date}</IconButton>
+            </CustomTooltip>
+            <UpdateChecker />
+        </div>,
+    );
 
     const {
         data: chapterUpdateData,
@@ -121,15 +137,6 @@ export const Updates: React.FC = () => {
         setLastUpdateTimestampCompHeight(lastUpdateTimestampCompRef.current?.clientHeight ?? 0);
     }, [lastUpdateTimestampCompRef.current]);
 
-    const { data: lastUpdateTimestampData } = requestManager.useGetLastGlobalUpdateTimestamp({
-        /**
-         * The {@link UpdateChecker} is responsible for updating the timestamp
-         */
-        fetchPolicy: 'cache-only',
-    });
-    const lastUpdateTimestamp = lastUpdateTimestampData?.lastUpdateTimestamp.timestamp;
-    const date = lastUpdateTimestamp ? dateTimeFormatter.format(+lastUpdateTimestamp) : '-';
-
     const loadMore = useCallback(() => {
         if (!hasNextPage) {
             return;
@@ -163,50 +170,35 @@ export const Updates: React.FC = () => {
     }
 
     return (
-        <>
-            <Typography
-                ref={lastUpdateTimestampCompRef}
-                sx={{
-                    position: 'sticky',
-                    top: appBarHeight,
-                    zIndex: GROUPED_VIRTUOSO_Z_INDEX,
-                    backgroundColor: 'background.default',
-                    marginLeft: '10px',
-                    paddingTop: (theme) => ({ [theme.breakpoints.up('sm')]: { paddingTop: '6px' } }),
-                }}
-            >
-                {t`Last update: ${date}`}
-            </Typography>
-            <StyledGroupedVirtuoso
-                persistKey="updates"
-                heightToSubtract={lastUpdateTimestampCompHeight}
-                components={{
-                    Footer: () => (isLoading ? <LoadingPlaceholder usePadding /> : null),
-                }}
-                overscan={window.innerHeight * 0.5}
-                endReached={loadMore}
-                groupCounts={firstUnreadUpdatesGroupCounts}
-                groupContent={(index) => (
-                    <StyledGroupHeader isFirstItem={index === 0}>
-                        <Typography variant="h5" component="h2">
-                            {firstUnreadUpdatesByGroup[index][VirtuosoUtil.GROUP]}
-                        </Typography>
-                    </StyledGroupHeader>
-                )}
-                computeItemKey={computeFirstUnreadUpdateItemKey}
-                itemContent={(index) => (
-                    <StyledGroupItemWrapper>
-                        <ChapterUpdateCard
-                            chapter={firstUnreadUpdatesEntries[index]}
-                            otherChapters={
-                                otherUpdatesByMangaByGroup[
-                                    getDateString(epochToDate(Number(firstUnreadUpdatesEntries[index].fetchedAt)))
-                                ][firstUnreadUpdatesEntries[index].mangaId]
-                            }
-                        />
-                    </StyledGroupItemWrapper>
-                )}
-            />
-        </>
+        <StyledGroupedVirtuoso
+            persistKey="updates"
+            heightToSubtract={lastUpdateTimestampCompHeight}
+            components={{
+                Footer: () => (isLoading ? <LoadingPlaceholder usePadding /> : null),
+            }}
+            overscan={window.innerHeight * 0.5}
+            endReached={loadMore}
+            groupCounts={firstUnreadUpdatesGroupCounts}
+            groupContent={(index) => (
+                <StyledGroupHeader isFirstItem={index === 0}>
+                    <Typography variant="h5" component="h2">
+                        {firstUnreadUpdatesByGroup[index][VirtuosoUtil.GROUP]}
+                    </Typography>
+                </StyledGroupHeader>
+            )}
+            computeItemKey={computeFirstUnreadUpdateItemKey}
+            itemContent={(index) => (
+                <StyledGroupItemWrapper>
+                    <ChapterUpdateCard
+                        chapter={firstUnreadUpdatesEntries[index]}
+                        otherChapters={
+                            otherUpdatesByMangaByGroup[
+                                getDateString(epochToDate(Number(firstUnreadUpdatesEntries[index].fetchedAt)))
+                            ][firstUnreadUpdatesEntries[index].mangaId]
+                        }
+                    />
+                </StyledGroupItemWrapper>
+            )}
+        />
     );
 };
