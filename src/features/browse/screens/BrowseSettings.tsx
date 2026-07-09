@@ -10,29 +10,29 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import Switch from '@mui/material/Switch';
-import {useLingui} from '@lingui/react/macro';
-import {plural} from '@lingui/core/macro';
-import {requestManager} from '@/lib/requests/RequestManager.ts';
-import {NumberSetting} from '@/base/components/settings/NumberSetting.tsx';
-import {TextSetting} from '@/base/components/settings/text/TextSetting.tsx';
+import { useLingui } from '@lingui/react/macro';
+import { plural } from '@lingui/core/macro';
+import { requestManager } from '@/lib/requests/RequestManager.ts';
+import { NumberSetting } from '@/base/components/settings/NumberSetting.tsx';
+import { TextSetting } from '@/base/components/settings/text/TextSetting.tsx';
 import {
     createUpdateMetadataServerSettings,
     useMetadataServerSettings,
 } from '@/features/settings/services/ServerSettingsMetadata.ts';
-import {LoadingPlaceholder} from '@/base/components/feedback/LoadingPlaceholder.tsx';
-import {EmptyViewAbsoluteCentered} from '@/base/components/feedback/EmptyViewAbsoluteCentered.tsx';
-import {defaultPromiseErrorHandler} from '@/lib/DefaultPromiseErrorHandler.ts';
-import {makeToast} from '@/base/utils/Toast.ts';
-import type {MetadataBrowseSettings} from '@/features/browse/Browse.types.ts';
-import type {ServerSettings as GqlServerSettings} from '@/features/settings/Settings.types.ts';
-import {getErrorMessage} from '@/lib/HelperFunctions.ts';
-import {useAppTitle} from '@/features/navigation-bar/hooks/useAppTitle.ts';
+import { LoadingPlaceholder } from '@/base/components/feedback/LoadingPlaceholder.tsx';
+import { EmptyViewAbsoluteCentered } from '@/base/components/feedback/EmptyViewAbsoluteCentered.tsx';
+import { defaultPromiseErrorHandler } from '@/lib/DefaultPromiseErrorHandler.ts';
+import { makeToast } from '@/base/utils/Toast.ts';
+import type { MetadataBrowseSettings } from '@/features/browse/Browse.types.ts';
+import type { ServerSettings as GqlServerSettings } from '@/features/settings/Settings.types.ts';
+import { getErrorMessage } from '@/lib/HelperFunctions.ts';
+import { useAppTitle } from '@/features/navigation-bar/hooks/useAppTitle.ts';
 import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
 import ErrorOutlineOutlinedIcon from '@mui/icons-material/ErrorOutlineOutlined';
 import ListSubheader from '@mui/material/ListSubheader';
-import {ListItemLink} from '@/base/components/lists/ListItemLink.tsx';
-import {AppRoutes} from '@/base/AppRoute.constants.ts';
+import { ListItemLink } from '@/base/components/lists/ListItemLink.tsx';
+import { AppRoutes } from '@/base/AppRoute.constants.ts';
 
 type ExtensionsSettings = Pick<GqlServerSettings, 'maxSourcesInParallel' | 'localSourcePath'>;
 
@@ -57,7 +57,7 @@ export const BrowseSettings = () => {
     };
 
     const {
-        settings: { hideLibraryEntries, showNsfw },
+        settings: { hideLibraryEntries, showNsfw, showRelatedForEachManga },
     } = useMetadataServerSettings();
     const updateMetadataServerSettings = createUpdateMetadataServerSettings<keyof MetadataBrowseSettings>((e) =>
         makeToast(t`Failed to save changes`, 'error', getErrorMessage(e)),
@@ -133,6 +133,27 @@ export const BrowseSettings = () => {
                     }
                     handleChange={(path) => updateSetting('localSourcePath', path)}
                 />
+            </List>
+            <List
+                subheader={
+                    <ListSubheader component="div" id="browse-settings-manga">
+                        {t`Manga`}
+                    </ListSubheader>
+                }
+            >
+                <ListItem>
+                    <ListItemText
+                        primary={t`Show related for each manga`}
+                        secondary={t`Currently supported for: AniList, MyAnimeList`}
+                    />
+                    <Switch
+                        edge="end"
+                        checked={showRelatedForEachManga}
+                        onChange={() =>
+                            updateMetadataServerSettings('showRelatedForEachManga', !showRelatedForEachManga)
+                        }
+                    />
+                </ListItem>
             </List>
             <List
                 subheader={
