@@ -24,8 +24,6 @@ import { RestClient } from '@/lib/requests/client/RestClient.ts';
 import { GraphQLClient } from '@/lib/requests/client/GraphQLClient.ts';
 import { BaseClient } from '@/lib/requests/client/BaseClient.ts';
 import type {
-    AddExtensionStoreMutation,
-    AddExtensionStoreMutationVariables,
     CheckForServerUpdatesQuery,
     CheckForServerUpdatesQueryVariables,
     CheckForWebuiUpdateQuery,
@@ -76,16 +74,18 @@ import type {
     GetExtensionsFetchMutationVariables,
     GetExtensionsQuery,
     GetExtensionsQueryVariables,
-    GetExtensionStoreQuery,
-    GetExtensionStoreQueryVariables,
-    GetExtensionStoresQuery,
-    GetExtensionStoresQueryVariables,
     GetGlobalMetadatasQuery,
     GetGlobalMetadatasQueryVariables,
     GetKoSyncStatusQuery,
     GetKoSyncStatusQueryVariables,
     GetLastUpdateTimestampQuery,
     GetLastUpdateTimestampQueryVariables,
+    GetMangaChaptersFetchMutation,
+    GetMangaChaptersFetchMutationVariables,
+    GetMangaFetchMutation,
+    GetMangaFetchMutationVariables,
+    GetMangaRelatedQuery,
+    GetMangaRelatedQueryVariables,
     GetMangasLibraryQuery,
     GetMangasLibraryQueryVariables,
     GetMangaToMigrateQuery,
@@ -116,8 +116,6 @@ import type {
     KoSyncLogoutMutationVariables,
     RefreshMangaMutation,
     RefreshMangaMutationVariables,
-    RemoveExtensionStoreMutation,
-    RemoveExtensionStoreMutationVariables,
     ReorderChapterDownloadMutation,
     ReorderChapterDownloadMutationVariables,
     ResetWebuiUpdateStatusMutation,
@@ -199,7 +197,6 @@ import type {
     ValidateBackupQuery,
     ValidateBackupQueryVariables,
     WebuiUpdateSubscription,
-    WebuiUpdateSubscriptionVariables,
 } from '@/lib/graphql/generated/graphql.ts';
 import type {
     CreateBackupInput,
@@ -318,7 +315,7 @@ import { GET_DOWNLOAD_STATUS } from '@/lib/graphql/download/DownloaderQuery.ts';
 import { defaultPromiseErrorHandler } from '@/lib/DefaultPromiseErrorHandler.ts';
 import type { QueuePriority } from '@/lib/Queue.ts';
 import { SourceAwareQueue } from '@/lib/SourceAwareQueue.ts';
-import { TRACKER_SEARCH } from '@/lib/graphql/tracker/TrackerQuery.ts';
+import { GET_MANGA_RELATED, TRACKER_SEARCH } from '@/lib/graphql/tracker/TrackerQuery.ts';
 import {
     TRACK_BIND_TRACK_RECORD,
     TRACKER_BIND,
@@ -348,10 +345,6 @@ import { GET_KO_SYNC_STATUS } from '@/lib/graphql/koreader/KoreaderSyncQuery.ts'
 import { ImageCache } from '@/lib/service-worker/ImageCache.ts';
 import { Sources } from '@/features/source/services/Sources.ts';
 import uniqBy from 'lodash/fp/uniqBy';
-import { EXTENSION_STORE_FIELDS } from '@/lib/graphql/extension/store/ExtensionStoreFragments.ts';
-import { ADD_EXTENSION_STORE, REMOVE_EXTENSION_STORE } from '@/lib/graphql/extension/store/ExtensionStoreMutation.ts';
-import { assertIsDefined } from '@/base/Asserts.ts';
-import { GET_EXTENSION_STORE, GET_EXTENSION_STORES } from '@/lib/graphql/extension/store/ExtensionStoreQuery.ts';
 import { SYNC_SUBSCRIPTION } from '@/lib/graphql/sync/SyncSubscription.ts';
 import { START_SYNC } from '@/lib/graphql/sync/SyncMutation.ts';
 import { GET_SYNC_STATUS } from '@/lib/graphql/sync/SyncQuery.ts';
@@ -1438,81 +1431,6 @@ export class RequestManager {
         return this.doRequest(GQLMethod.MUTATION, UPDATE_WEBUI, undefined, options);
     }
 
-    public useGetExtensionStore(
-        indexUrl: string,
-        options?: QueryHookOptions<GetExtensionStoreQuery, GetExtensionStoreQueryVariables>,
-    ): AbortableApolloUseQueryResponse<GetExtensionStoreQuery, GetExtensionStoreQueryVariables> {
-        return this.doRequest(GQLMethod.USE_QUERY, GET_EXTENSION_STORE, { indexUrl }, options);
-    }
-
-    public useGetExtensionStores(
-        options?: QueryHookOptions<GetExtensionStoresQuery, GetExtensionStoresQueryVariables>,
-    ): AbortableApolloUseQueryResponse<GetExtensionStoresQuery, GetExtensionStoresQueryVariables> {
-        return this.doRequest(GQLMethod.USE_QUERY, GET_EXTENSION_STORES, undefined, options);
-    }
-
-    public useAddExtensionStore(
-        options?: MutationHookOptions<AddExtensionStoreMutation, AddExtensionStoreMutationVariables>,
-    ): AbortableApolloUseMutationResponse<AddExtensionStoreMutation, AddExtensionStoreMutationVariables> {
-        return this.doRequest(GQLMethod.USE_MUTATION, ADD_EXTENSION_STORE, undefined, {
-            refetchQueries: [GET_EXTENSION_STORES],
-            ...options,
-        });
-    }
-
-    public useRemoveExtensionStore(
-        options?: MutationHookOptions<RemoveExtensionStoreMutation, RemoveExtensionStoreMutationVariables>,
-    ): AbortableApolloUseMutationResponse<RemoveExtensionStoreMutation, RemoveExtensionStoreMutationVariables> {
-        const [mutate, request] = this.doRequest(GQLMethod.USE_MUTATION, REMOVE_EXTENSION_STORE, undefined, {
-            refetchQueries: [GET_EXTENSION_STORES],
-            ...options,
-        });
-
-        const wrappedMutate = (mutateOptions: Parameters<typeof mutate>[0]) => {
-            const variables = mutateOptions?.variables;
-
-            assertIsDefined(variables);
-
-            const { indexUrl } = variables.input;
-
-            return mutate({
-                update: (cache) => {
-                    cache.updateQuery<GetExtensionStoresQuery, GetExtensionStoresQueryVariables>(
-                        { query: GET_EXTENSION_STORES },
-                        (data) => ({
-                            ...data!,
-                            extensionStores: {
-                                ...data!.extensionStores,
-                                nodes: data!.extensionStores.nodes.filter((store) => store.indexUrl !== indexUrl),
-                            },
-                        }),
-                    );
-                },
-                optimisticResponse: {
-                    __typename: 'Mutation',
-                    removeExtensionStore: {
-                        __typename: 'RemoveExtensionStorePayload',
-                        extensionStore: {
-                            __typename: 'ExtensionStoreType',
-                            indexUrl,
-                            signingKey: '',
-                            name: 'store',
-                            isLegacy: false,
-                            badgeLabel: '',
-                            contactWebsite: '',
-                            contactDiscord: null,
-                            extensionListUrl: null,
-                            extensions: { __typename: 'ExtensionNodeList', totalCount: 0 },
-                        },
-                    },
-                },
-                ...mutateOptions,
-            });
-        };
-
-        return [wrappedMutate, request];
-    }
-
     public useGetExtension(
         pkgName: string,
         options?: QueryHookOptions<GetExtensionQuery, GetExtensionQueryVariables>,
@@ -1535,19 +1453,17 @@ export class RequestManager {
             {},
             {
                 ...options,
-                refetchQueries: [GET_EXTENSIONS],
                 update(cache, { data: mutationData }) {
                     if (!mutationData?.fetchExtensions?.extensions) {
                         return;
                     }
 
-                    cache.updateQuery<GetExtensionsQuery, GetExtensionsQueryVariables>(
-                        { query: GET_EXTENSIONS },
-                        () => ({
-                            __typename: 'Query',
+                    cache.writeQuery({
+                        query: GET_EXTENSIONS,
+                        data: {
                             extensions: {
                                 __typename: 'ExtensionNodeList',
-                                nodes: mutationData?.fetchExtensions?.extensions ?? [],
+                                nodes: mutationData.fetchExtensions.extensions,
                                 pageInfo: {
                                     __typename: 'PageInfo',
                                     hasNextPage: false,
@@ -1555,10 +1471,10 @@ export class RequestManager {
                                     startCursor: null,
                                     endCursor: null,
                                 },
-                                totalCount: mutationData?.fetchExtensions?.extensions.length ?? 0,
+                                totalCount: mutationData.fetchExtensions.extensions.length,
                             },
-                        }),
-                    );
+                        },
+                    });
                 },
             },
         );
@@ -1577,14 +1493,11 @@ export class RequestManager {
             setUpdatedCache({});
         }, [result.loading]);
 
-        const getCachedResult = () =>
-            this.cache.getResponseFor<typeof result>(
-                EXTENSION_LIST_CACHE_KEY,
-                undefined,
-                d(1).minutes.inWholeMilliseconds,
-            );
-
-        const cachedResult = getCachedResult();
+        const cachedResult = this.cache.getResponseFor<typeof result>(
+            EXTENSION_LIST_CACHE_KEY,
+            undefined,
+            d(1).minutes.inWholeMilliseconds,
+        );
         const normalizedCachedResult = useMemo(
             () =>
                 !cachedResult
@@ -1608,17 +1521,6 @@ export class RequestManager {
                                                     fragment: EXTENSION_LIST_FIELDS,
                                                 }) ?? extension,
                                         ),
-                                        extensionStores: cachedResult.data.fetchExtensions.extensionStores.map(
-                                            (store) =>
-                                                this.graphQLClient.client.cache.readFragment<
-                                                    NonNullable<
-                                                        GetExtensionsFetchMutation['fetchExtensions']
-                                                    >['extensionStores'][0]
-                                                >({
-                                                    id: this.graphQLClient.client.cache.identify(store),
-                                                    fragment: EXTENSION_STORE_FIELDS,
-                                                }),
-                                        ),
                                     },
                                 },
                       },
@@ -1626,7 +1528,7 @@ export class RequestManager {
         );
 
         const wrappedMutate = async (mutateOptions: Parameters<typeof mutate>[0]) => {
-            if (getCachedResult()) {
+            if (cachedResult) {
                 return normalizedCachedResult;
             }
 
@@ -1695,9 +1597,7 @@ export class RequestManager {
                                   return {
                                       ...extension,
                                       ...installedExtension,
-                                      hasUpdate:
-                                          Number(installedExtension?.versionCodeLong ?? -1) <
-                                          Number(extension.versionCodeLong),
+                                      hasUpdate: installedExtension?.versionCode < extension.versionCode,
                                   };
                               })
                             : [
@@ -1706,7 +1606,6 @@ export class RequestManager {
                                       GetExtensionsFetchMutation['fetchExtensions']
                                   >['extensions'][number],
                               ],
-                        extensionStores: cachedExtensions.data?.fetchExtensions!.extensionStores,
                     },
                 },
             };
@@ -1772,7 +1671,6 @@ export class RequestManager {
                                         ...(response.data?.updateExtension?.extension ?? []),
                                     };
                                 }) ?? [],
-                        extensionStores: cachedExtensions.data.fetchExtensions?.extensionStores ?? [],
                     },
                 },
             };
@@ -1840,7 +1738,6 @@ export class RequestManager {
                                         ) ?? []),
                                     };
                                 }) ?? [],
-                        extensionStores: cachedExtensions.data.fetchExtensions?.extensionStores ?? [],
                     },
                 },
             };
@@ -2313,26 +2210,33 @@ export class RequestManager {
         );
     }
 
+    public getMangaFetch(
+        mangaId: number | string,
+        options?: MutationOptions<GetMangaFetchMutation, GetMangaFetchMutationVariables>,
+    ): AbortableApolloMutationResponse<GetMangaFetchMutation> {
+        return this.doRequest<GetMangaFetchMutation, GetMangaFetchMutationVariables>(
+            GQLMethod.MUTATION,
+            GET_MANGA_FETCH,
+            {
+                input: {
+                    id: Number(mangaId),
+                },
+            },
+            options,
+        );
+    }
+
     public refreshManga(
         mangaId: number | string,
-        {
-            fetchManga = true,
-            fetchChapters = true,
-            ...options
-        }: MutationOptions<RefreshMangaMutation, RefreshMangaMutationVariables> & {
-            fetchManga?: boolean;
-            fetchChapters?: boolean;
-        } = {},
+        options?: MutationOptions<RefreshMangaMutation, RefreshMangaMutationVariables>,
     ): AbortableApolloMutationResponse<RefreshMangaMutation> {
         return this.doRequest<RefreshMangaMutation, RefreshMangaMutationVariables>(
             GQLMethod.MUTATION,
             REFRESH_MANGA,
             {
                 id: Number(mangaId),
-                fetchManga,
-                fetchChapters,
             },
-            { refetchQueries: [GET_CHAPTERS_MANGA, GET_CHAPTERS_READER], ...options },
+            { refetchQueries: [GET_CHAPTERS_MANGA, GET_CHAPTERS_READER], errorPolicy: 'all', ...options },
         );
     }
 
@@ -2654,6 +2558,18 @@ export class RequestManager {
                 order: [{ by: ChapterOrderBy.SourceOrder, byType: SortOrder.Desc }],
             } satisfies GetChaptersMangaQueryVariables as unknown as Variables,
             options,
+        );
+    }
+
+    public getMangaChaptersFetch(
+        mangaId: number | string,
+        options?: MutationOptions<GetMangaChaptersFetchMutation, GetMangaChaptersFetchMutationVariables>,
+    ): AbortableApolloMutationResponse<GetMangaChaptersFetchMutation> {
+        return this.doRequest<GetMangaChaptersFetchMutation, GetMangaChaptersFetchMutationVariables>(
+            GQLMethod.MUTATION,
+            GET_MANGA_CHAPTERS_FETCH,
+            { input: { mangaId: Number(mangaId) } },
+            { refetchQueries: [GET_CHAPTERS_MANGA], ...options },
         );
     }
 
@@ -3426,7 +3342,7 @@ export class RequestManager {
         initialPages: number = 1,
         options?: QueryHookOptions<GetChaptersUpdatesQuery, GetChaptersUpdatesQueryVariables>,
     ): AbortableApolloUseQueryResponse<GetChaptersUpdatesQuery, GetChaptersUpdatesQueryVariables> {
-        const PAGE_SIZE = 150;
+        const PAGE_SIZE = 50;
         const CACHE_KEY = 'useGetRecentlyUpdatedChapters';
 
         const offset = this.cache.getResponseFor<number>(CACHE_KEY, undefined) ?? 0;
@@ -3474,7 +3390,7 @@ export class RequestManager {
         initialPages: number = 1,
         options?: QueryHookOptions<GetChaptersHistoryQuery, GetChaptersHistoryQueryVariables>,
     ): AbortableApolloUseQueryResponse<GetChaptersHistoryQuery, GetChaptersHistoryQueryVariables> {
-        const PAGE_SIZE = 150;
+        const PAGE_SIZE = 50;
         const CACHE_KEY = 'useGetRecentlyReadChapters';
 
         const offset = this.cache.getResponseFor<number>(CACHE_KEY, undefined) ?? 0;
@@ -3575,7 +3491,7 @@ export class RequestManager {
                         query: GET_DOWNLOAD_STATUS,
                     });
 
-                    const downloadsToAdd = downloadChanged?.updates.filter((update: any) => {
+                    const downloadsToAdd = downloadChanged?.updates.filter((update) => {
                         const removeDownload = [DownloadUpdateType.Dequeued, DownloadUpdateType.Finished].includes(
                             update.type,
                         );
@@ -3604,14 +3520,14 @@ export class RequestManager {
                                         DownloaderState.Stopped,
                                     queue: [
                                         ...(downloadStatusQueryCache?.downloadStatus?.queue ?? []),
-                                        ...(downloadsToAdd?.map((update: any) => update.download) ?? []),
+                                        ...(downloadsToAdd?.map((update) => update.download) ?? []),
                                     ],
-                                } as any,
+                                },
                             },
                         });
                     }
 
-                    downloadChanged?.updates.forEach((update: any) => {
+                    downloadChanged?.updates.forEach((update) => {
                         const removeDownload = [DownloadUpdateType.Dequeued, DownloadUpdateType.Finished].includes(
                             update.type,
                         );
@@ -3723,7 +3639,7 @@ export class RequestManager {
     }
 
     public useWebUIUpdateSubscription(
-        options?: SubscriptionHookOptions<WebuiUpdateSubscription, WebuiUpdateSubscriptionVariables>,
+        options?: SubscriptionHookOptions<WebuiUpdateSubscription, WebuiUpdateSubscription>,
     ): useSubscription.Result<WebuiUpdateSubscription> {
         return this.doRequest(GQLMethod.USE_SUBSCRIPTION, WEBUI_UPDATE_SUBSCRIPTION, undefined, options);
     }
@@ -3790,10 +3706,30 @@ export class RequestManager {
         return this.doRequest(GQLMethod.USE_QUERY, TRACKER_SEARCH, { trackerId, query }, options);
     }
 
+    public useGetMangaRelated(
+        mangaId: number,
+        options?: QueryHookOptions<GetMangaRelatedQuery, GetMangaRelatedQueryVariables>,
+    ): AbortableApolloUseQueryResponse<GetMangaRelatedQuery, GetMangaRelatedQueryVariables> {
+        return this.doRequest(GQLMethod.USE_QUERY, GET_MANGA_RELATED, { mangaId }, options);
+    }
+
+    /**
+     * Evicts the cached "mangaRelated" results so they are refetched the next time the Related
+     * modal is opened. The related/recommendation data depends on the manga's tracker bindings
+     * (which remote id is used), so it has to be invalidated whenever a binding changes.
+     */
+    private evictMangaRelated(): void {
+        this.graphQLClient.client.cache.evict({ fieldName: 'mangaRelated' });
+        this.graphQLClient.client.cache.gc();
+    }
+
     public useBindTracker(
         options?: MutationHookOptions<TrackerBindMutation, TrackerBindMutationVariables>,
     ): AbortableApolloUseMutationResponse<TrackerBindMutation, TrackerBindMutationVariables> {
-        return this.doRequest(GQLMethod.USE_MUTATION, TRACKER_BIND, undefined, options);
+        return this.doRequest(GQLMethod.USE_MUTATION, TRACKER_BIND, undefined, {
+            update: () => this.evictMangaRelated(),
+            ...options,
+        });
     }
 
     public bindTracker(
@@ -3803,11 +3739,14 @@ export class RequestManager {
         asPrivate: boolean,
         options?: MutationOptions<TrackerBindMutation, TrackerBindMutationVariables>,
     ): AbortableApolloMutationResponse<TrackerBindMutation> {
-        return this.doRequest(
+        return this.doRequest<TrackerBindMutation, TrackerBindMutationVariables>(
             GQLMethod.MUTATION,
             TRACKER_BIND,
             { input: { mangaId, remoteId, trackerId, private: asPrivate } },
-            options,
+            {
+                update: () => this.evictMangaRelated(),
+                ...options,
+            } as MutationOptions<TrackerBindMutation, TrackerBindMutationVariables>,
         );
     }
 
@@ -3833,10 +3772,11 @@ export class RequestManager {
             GQLMethod.MUTATION,
             TRACKER_UNBIND,
             { input: { recordId, deleteRemoteTrack } },
-            { refetchQueries: [GET_MANGA_TRACK_RECORDS], ...options } as MutationOptions<
-                TrackerUnbindMutation,
-                TrackerUnbindMutationVariables
-            >,
+            {
+                refetchQueries: [GET_MANGA_TRACK_RECORDS],
+                update: () => this.evictMangaRelated(),
+                ...options,
+            } as MutationOptions<TrackerUnbindMutation, TrackerUnbindMutationVariables>,
         );
     }
 
