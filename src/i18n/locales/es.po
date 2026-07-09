@@ -172,6 +172,10 @@ msgstr "Velocidad de desplazamiento automático"
 msgid "Auto webtoon mode"
 msgstr "Modo webtoon automático"
 
+#: src/features/reader/settings/behaviour/ReaderBehaviourSettings.tsx
+msgid "Keep screen on while reading"
+msgstr "Mantener pantalla encendida cuando estas leyendo"
+
 #: src/features/downloads/screens/DownloadSettings.tsx
 msgid "Auto-download"
 msgstr "Descarga automática"

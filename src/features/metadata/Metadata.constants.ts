@@ -332,6 +332,9 @@ export const APP_METADATA: Record<
     shouldInformAboutScanlatorChange: {
         convert: convertToBoolean,
     },
+    shouldKeepScreenReading: {
+        convert: convertToBoolean,
+    },
     hideHistory: {
         convert: convertToBoolean,
     },

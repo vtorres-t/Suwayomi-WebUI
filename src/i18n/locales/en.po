@@ -525,8 +525,8 @@ msgid "Auto scroll speed"
 msgstr "Auto scroll speed"
 
 #: src/features/reader/settings/behaviour/ReaderBehaviourSettings.tsx
-msgid "Auto webtoon mode"
-msgstr "Auto webtoon mode"
+msgid "Keep screen on while reading"
+msgstr "Keep screen on while reading"
 
 #: src/features/downloads/screens/DownloadSettings.tsx
 msgid "Auto-download"

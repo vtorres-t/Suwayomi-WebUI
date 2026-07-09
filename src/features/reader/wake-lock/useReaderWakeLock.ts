@@ -8,15 +8,14 @@
 
 import { useEffect, useRef } from 'react';
 
-export function useReaderWakeLock(isLoading: boolean) {
-    // Usamos any para evitar conflictos si los tipos globales del navegador no están en el proyecto
+export function useReaderWakeLock(isLoading: boolean, shouldKeepScreenReading: boolean) {
     const wakeLockSentinelRef = useRef<any | null>(null);
 
     useEffect(() => {
         const requestWakeLock = async () => {
             if (!('wakeLock' in navigator)) {return;}
             try {
-                if (wakeLockSentinelRef.current) {return;} // Evita duplicar bloqueos
+                if (wakeLockSentinelRef.current) {return;}
 
                 wakeLockSentinelRef.current = await navigator.wakeLock.request('screen');
 
@@ -37,24 +36,22 @@ export function useReaderWakeLock(isLoading: boolean) {
         };
 
         const handleVisibilityChange = async () => {
-            // Si el usuario minimizó y volvió a abrir la pestaña de lectura
-            if (document.visibilityState === 'visible' && !isLoading) {
+            if (document.visibilityState === 'visible' && !isLoading && shouldKeepScreenReading) {
                 await requestWakeLock();
             }
         };
 
-        // Regla: Mantener pantalla encendida SOLO si ya terminó de cargar el capítulo
-        if (!isLoading) {
+        // Regla: Bloquear pantalla solo si NO está cargando Y la configuración está activada
+        if (!isLoading && shouldKeepScreenReading) {
             requestWakeLock();
             document.addEventListener('visibilitychange', handleVisibilityChange);
         } else {
             releaseWakeLock();
         }
 
-        // Limpieza absoluta al salir del lector o si se activa una pantalla de carga
         return () => {
             document.removeEventListener('visibilitychange', handleVisibilityChange);
             releaseWakeLock();
         };
-    }, [isLoading]);
+    }, [isLoading, shouldKeepScreenReading]);
 }
