@@ -361,6 +361,7 @@ msgstr "A-Z"
 
 #: src/features/migration/components/migration-entry/MigrationEntrySearchExcludeActions.tsx
 #: src/features/migration/screens/MigrationExecute.tsx
+#: src/features/migration/screens/MigrationSearch.tsx
 msgid "Abort"
 msgstr "Abort"
 
@@ -539,6 +540,10 @@ msgstr "Keep screen on while reading"
 #: src/features/downloads/screens/DownloadSettings.tsx
 msgid "Auto-download"
 msgstr "Auto-download"
+
+#: src/features/backup/screens/Backup.tsx
+msgid "Automated backup"
+msgstr "Automated backup"
 
 #: src/features/reader/overlay/progress-bar/settings/components/ReaderSettingProgressBarPosition.tsx
 msgid "Automatic progress bar vertical position"
