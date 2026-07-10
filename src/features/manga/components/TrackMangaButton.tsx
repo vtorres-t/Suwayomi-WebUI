@@ -27,7 +27,7 @@ import { STABLE_EMPTY_ARRAY } from '@/base/Base.constants.ts';
 import { MangaRelated } from '@/features/tracker/components/MangaRelated.tsx';
 import RecommendIcon from '@mui/icons-material/Recommend';
 import { useMetadataServerSettings } from '@/features/settings/services/ServerSettingsMetadata.ts';
-import Stack from '@mui/material/Stack';
+import Box from '@mui/material/Box';
 
 export const TrackMangaButton = ({ manga }: { manga: MangaTrackRecordInfo & MangaTitleInfo & MangaIdInfo }) => {
     const { t } = useLingui();
@@ -45,6 +45,9 @@ export const TrackMangaButton = ({ manga }: { manga: MangaTrackRecordInfo & Mang
         settings: { showRelatedForEachManga },
     } = useMetadataServerSettings();
 
+    // Guardamos en una constante si el segundo botón cumple los criterios de visibilidad
+    const isRelatedVisible = showRelatedForEachManga && trackersInUse.length > 0;
+
     const handleClick = (openPopup: () => void) => {
         if (trackerList.error) {
             makeToast(t`Could not load track info`, 'error', trackerList.error?.toString());
@@ -60,7 +63,15 @@ export const TrackMangaButton = ({ manga }: { manga: MangaTrackRecordInfo & Mang
     };
 
     return (
-        <Stack direction="column" spacing={1} sx={{ width: '100%' }}>
+        <Box
+            sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                gap: 1,
+                width: '100%',
+                height: '100%',
+            }}
+        >
             <PopupState variant="dialog" popupId="manga-track-modal">
                 {(popupState) => (
                     <>
@@ -71,6 +82,10 @@ export const TrackMangaButton = ({ manga }: { manga: MangaTrackRecordInfo & Mang
                             onClick={() => handleClick(popupState.open)}
                             variant={trackersInUse.length ? 'contained' : 'outlined'}
                             fullWidth
+                            sx={{
+                                flexGrow: 1,
+                                height: isRelatedVisible ? 'calc(50% - 4px)' : '100%',
+                            }}
                         >
                             {trackersInUse.length ? <CheckIcon /> : <SyncIcon />}
                             {trackersInUse.length
@@ -88,7 +103,8 @@ export const TrackMangaButton = ({ manga }: { manga: MangaTrackRecordInfo & Mang
                     </>
                 )}
             </PopupState>
-            {showRelatedForEachManga && trackersInUse.length > 0 && (
+
+            {isRelatedVisible && (
                 <PopupState variant="dialog" popupId="manga-related-modal">
                     {(popupState) => (
                         <>
@@ -97,6 +113,10 @@ export const TrackMangaButton = ({ manga }: { manga: MangaTrackRecordInfo & Mang
                                 size={isMobileWidth ? 'small' : 'medium'}
                                 variant="outlined"
                                 fullWidth
+                                sx={{
+                                    flexGrow: 1,
+                                    height: 'calc(50% - 4px)',
+                                }}
                             >
                                 <RecommendIcon />
                                 {t`Related`}
@@ -110,6 +130,6 @@ export const TrackMangaButton = ({ manga }: { manga: MangaTrackRecordInfo & Mang
                     )}
                 </PopupState>
             )}
-        </Stack>
+        </Box>
     );
 };
