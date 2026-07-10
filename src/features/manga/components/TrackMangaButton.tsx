@@ -27,6 +27,7 @@ import { STABLE_EMPTY_ARRAY } from '@/base/Base.constants.ts';
 import { MangaRelated } from '@/features/tracker/components/MangaRelated.tsx';
 import RecommendIcon from '@mui/icons-material/Recommend';
 import { useMetadataServerSettings } from '@/features/settings/services/ServerSettingsMetadata.ts';
+import Stack from '@mui/material/Stack';
 
 export const TrackMangaButton = ({ manga }: { manga: MangaTrackRecordInfo & MangaTitleInfo & MangaIdInfo }) => {
     const { t } = useLingui();
@@ -59,7 +60,7 @@ export const TrackMangaButton = ({ manga }: { manga: MangaTrackRecordInfo & Mang
     };
 
     return (
-        <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+        <Stack direction="column" spacing={1} sx={{ width: '100%' }}>
             <PopupState variant="dialog" popupId="manga-track-modal">
                 {(popupState) => (
                     <>
@@ -69,6 +70,7 @@ export const TrackMangaButton = ({ manga }: { manga: MangaTrackRecordInfo & Mang
                             disabled={trackerList.loading || !!trackerList.error}
                             onClick={() => handleClick(popupState.open)}
                             variant={trackersInUse.length ? 'contained' : 'outlined'}
+                            fullWidth
                         >
                             {trackersInUse.length ? <CheckIcon /> : <SyncIcon />}
                             {trackersInUse.length
@@ -94,6 +96,7 @@ export const TrackMangaButton = ({ manga }: { manga: MangaTrackRecordInfo & Mang
                                 {...bindTrigger(popupState)}
                                 size={isMobileWidth ? 'small' : 'medium'}
                                 variant="outlined"
+                                fullWidth
                             >
                                 <RecommendIcon />
                                 {t`Related`}
@@ -107,6 +110,6 @@ export const TrackMangaButton = ({ manga }: { manga: MangaTrackRecordInfo & Mang
                     )}
                 </PopupState>
             )}
-        </div>
+        </Stack>
     );
 };
