@@ -25,7 +25,6 @@ import { Mangas } from '@/features/manga/services/Mangas.ts';
 import { SpinnerImage } from '@/base/components/SpinnerImage.tsx';
 import { FlexWrapButton } from '@/base/components/buttons/FlexWrapButton.tsx';
 import { TrackMangaButton } from '@/features/manga/components/TrackMangaButton.tsx';
-import { RelatedMangaButton } from '@/features/manga/components/RelatedMangaButton.tsx';
 import { useManageMangaLibraryState } from '@/features/manga/hooks/useManageMangaLibraryState.tsx';
 import { Metadata as BaseMetadata } from '@/base/components/texts/Metadata.tsx';
 import { defaultPromiseErrorHandler } from '@/lib/DefaultPromiseErrorHandler.ts';
@@ -283,7 +282,6 @@ export const MangaDetails = ({
                         {manga.inLibrary ? t`In Library` : t`Add To Library`}
                     </FlexWrapButton>
                     <TrackMangaButton manga={manga} />
-                    <RelatedMangaButton manga={manga} />
                     <OpenSourceButton url={manga.realUrl} />
                 </MangaButtonsContainer>
             </TopContentWrapper>

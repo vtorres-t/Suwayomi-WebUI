@@ -3786,3 +3786,8 @@ msgstr "Mostrar en las listas de fuentes y extensiones"
 #: src/features/updates/components/ChapterUpdateCard.tsx
 msgid "{0, plural, one {Show # more chapter} other {Show # more chapters}}"
 msgstr "{0, plural, one {Muestra # capítulo más} other {Muestra # capítulos más}}"
+
+#: src/features/manga/components/RelatedMangaButton.tsx
+#: src/features/tracker/components/MangaRelated.tsx
+msgid "Related"
+msgstr "Relacionado"
