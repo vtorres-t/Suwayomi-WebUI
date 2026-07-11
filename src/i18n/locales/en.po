@@ -534,6 +534,10 @@ msgid "Auto scroll speed"
 msgstr "Auto scroll speed"
 
 #: src/features/reader/settings/behaviour/ReaderBehaviourSettings.tsx
+msgid "Auto webtoon mode"
+msgstr "Auto webtoon mode"
+
+#: src/features/reader/settings/behaviour/ReaderBehaviourSettings.tsx
 msgid "Keep screen on while reading"
 msgstr "Keep screen on while reading"
 
@@ -930,8 +934,10 @@ msgstr "Color filter blend mode"
 msgid "Comfortable grid"
 msgstr "Comfortable grid"
 
+#. Used to detect the type of an entry by using it to check if the genre/tags of an entry includes this string. This is NOT shown to any user. Do NOT include any unnecessary text or characters, this will break the type detection (e.g. "MangaInMyLanguage (Manga)")
+#. js-lingui-explicit-id
 #: src/features/manga/Manga.constants.ts
-msgid "Comic"
+msgid "entry-type-detection-comic"
 msgstr "Comic"
 
 #: src/base/components/GridLayouts.tsx
@@ -2385,8 +2391,10 @@ msgstr "Logged in"
 msgid "Logging in to {trackerName}…"
 msgstr "Logging in to {trackerName}…"
 
+#. Used to detect the type of an entry by using it to check if the genre/tags of an entry includes this string. This is NOT shown to any user. Do NOT include any unnecessary text or characters, this will break the type detection (e.g. "MangaInMyLanguage (Manga)")
+#. js-lingui-explicit-id
 #: src/features/manga/Manga.constants.ts
-msgid "Long strip"
+msgid "entry-type-detection-long-strip"
 msgstr "Long strip"
 
 #: src/features/device/screens/DeviceSetting.tsx
@@ -2407,6 +2415,12 @@ msgstr ""
 msgid "Manga"
 msgstr "Manga"
 
+#. Used to detect the type of an entry by using it to check if the genre/tags of an entry includes this string. This is NOT shown to any user. Do NOT include any unnecessary text or characters, this will break the type detection (e.g. "MangaInMyLanguage (Manga)")
+#. js-lingui-explicit-id
+#: src/features/manga/Manga.constants.ts
+msgid "entry-type-detection-manga"
+msgstr "Manga"
+
 #: src/features/settings/screens/Appearance.tsx
 msgid "Manga item width"
 msgstr "Manga item width"
@@ -2415,14 +2429,24 @@ msgstr "Manga item width"
 msgid "Manga thumbnail as background"
 msgstr "Manga thumbnail as background"
 
-#: src/features/manga/Manga.constants.ts
 #: src/features/tracker/Tracker.constants.ts
 msgid "Manhua"
 msgstr "Manhua"
 
+#. Used to detect the type of an entry by using it to check if the genre/tags of an entry includes this string. This is NOT shown to any user. Do NOT include any unnecessary text or characters, this will break the type detection (e.g. "MangaInMyLanguage (Manga)")
+#. js-lingui-explicit-id
 #: src/features/manga/Manga.constants.ts
+msgid "entry-type-detection-manhua"
+msgstr "Manhua"
+
 #: src/features/tracker/Tracker.constants.ts
 msgid "Manhwa"
+msgstr "Manhwa"
+
+#. Used to detect the type of an entry by using it to check if the genre/tags of an entry includes this string. This is NOT shown to any user. Do NOT include any unnecessary text or characters, this will break the type detection (e.g. "MangaInMyLanguage (Manga)")
+#. js-lingui-explicit-id
+#: src/features/manga/Manga.constants.ts
+msgid "entry-type-detection-manhwa"
 msgstr "Manhwa"
 
 #: src/features/migration/MigrationManager.ts
@@ -4156,6 +4180,12 @@ msgstr "Warning"
 #: src/features/manga/Manga.constants.ts
 #: src/features/reader/settings/ReaderSettings.constants.tsx
 msgid "Webtoon"
+msgstr "Webtoon"
+
+#. Used to detect the type of an entry by using it to check if the genre/tags of an entry includes this string. This is NOT shown to any user. Do NOT include any unnecessary text or characters, this will break the type detection (e.g. "MangaInMyLanguage (Manga)")
+#. js-lingui-explicit-id
+#: src/features/manga/Manga.constants.ts
+msgid "entry-type-detection-webtoon"
 msgstr "Webtoon"
 
 #: src/features/settings/screens/About.tsx
