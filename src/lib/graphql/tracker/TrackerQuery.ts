@@ -72,17 +72,14 @@ export const GET_MANGA_RELATED = gql`
 
     query GET_MANGA_RELATED($mangaId: Int!) {
         mangaRelated(input: { mangaId: $mangaId }) {
-            anilistRelations {
-                ...RELATED_MANGA_FIELDS
-            }
-            anilistRecommendations {
-                ...RELATED_MANGA_FIELDS
-            }
-            myanimelistRelations {
-                ...RELATED_MANGA_FIELDS
-            }
-            myanimelistRecommendations {
-                ...RELATED_MANGA_FIELDS
+            mangaTrackerRelated {
+                recommendations {
+                    ...RELATED_MANGA_FIELDS
+                }
+                relations {
+                    ...RELATED_MANGA_FIELDS
+                }
+                trackerId
             }
         }
     }

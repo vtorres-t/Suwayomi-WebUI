@@ -13,7 +13,6 @@ import Typography from '@mui/material/Typography';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import { useLingui } from '@lingui/react/macro';
-import type { MessageDescriptor } from '@lingui/core';
 import { msg } from '@lingui/core/macro';
 import { i18n } from '@/i18n';
 import { requestManager } from '@/lib/requests/RequestManager.ts';
@@ -23,49 +22,17 @@ import { AvatarSpinner } from '@/base/components/AvatarSpinner.tsx';
 import { SpinnerImage } from '@/base/components/SpinnerImage.tsx';
 import { defaultPromiseErrorHandler } from '@/lib/DefaultPromiseErrorHandler.ts';
 import { getErrorMessage } from '@/lib/HelperFunctions.ts';
-import type {
-    GetMangaRelatedQuery,
-    GetTrackersSettingsQuery,
-    RelatedMangaFieldsFragment,
-} from '@/lib/graphql/generated/graphql.ts';
+import type { GetTrackersSettingsQuery, RelatedMangaFieldsFragment } from '@/lib/graphql/generated/graphql.ts';
 import { GET_TRACKERS_SETTINGS } from '@/lib/graphql/tracker/TrackerQuery.ts';
 import type { MangaIdInfo } from '@/features/manga/Manga.types.ts';
 import { STABLE_EMPTY_ARRAY } from '@/base/Base.constants.ts';
 
-type RelatedManga = GetMangaRelatedQuery['mangaRelated'];
-
-type SectionDefinition = {
-    title: MessageDescriptor;
-    trackerName: string;
-    items: (related: RelatedManga) => RelatedMangaFieldsFragment[];
+const TRACKER_MAP: Record<number, string> = {
+    1: 'AniList',
+    2: 'MyAnimeList',
+    3: 'Kitsu',
+    4: 'MangaUpdates',
 };
-
-// The tracker names must match the names provided by the server (see TrackerManager on the server).
-const ANILIST_NAME = 'AniList';
-const MYANIMELIST_NAME = 'MyAnimeList';
-
-const SECTIONS: SectionDefinition[] = [
-    {
-        title: msg`AniList - Relations`,
-        trackerName: ANILIST_NAME,
-        items: (related) => related.anilistRelations,
-    },
-    {
-        title: msg`AniList - Recommendations`,
-        trackerName: ANILIST_NAME,
-        items: (related) => related.anilistRecommendations,
-    },
-    {
-        title: msg`MyAnimeList - Related Entries`,
-        trackerName: MYANIMELIST_NAME,
-        items: (related) => related.myanimelistRelations,
-    },
-    {
-        title: msg`MyAnimeList - Recommendations`,
-        trackerName: MYANIMELIST_NAME,
-        items: (related) => related.myanimelistRecommendations,
-    },
-];
 
 const RelatedMangaCard = ({ item }: { item: RelatedMangaFieldsFragment }) => (
     <Link
@@ -160,8 +127,11 @@ export const MangaRelated = ({ manga }: { manga: MangaIdInfo }) => {
     const trackerList = requestManager.useGetTrackerList<GetTrackersSettingsQuery>(GET_TRACKERS_SETTINGS);
 
     const trackers = trackerList.data?.trackers.nodes ?? STABLE_EMPTY_ARRAY;
-    const getIconUrl = (trackerName: string): string | undefined => {
-        const tracker = trackers.find(({ name }) => name === trackerName);
+
+    const getIconUrl = (trackerId: number): string | undefined => {
+        const serverName = TRACKER_MAP[trackerId];
+        if (!serverName) {return undefined;}
+        const tracker = trackers.find(({ name }) => name === serverName);
         return tracker ? requestManager.getValidImgUrlFor(tracker.icon) : undefined;
     };
 
@@ -197,21 +167,58 @@ export const MangaRelated = ({ manga }: { manga: MangaIdInfo }) => {
         );
     }
 
-    const related = relatedList.data.mangaRelated;
+    const trackerRelatedList = relatedList.data.mangaRelated?.mangaTrackerRelated ?? STABLE_EMPTY_ARRAY;
+
+    if (trackerRelatedList.length === 0) {
+        return (
+            <>
+                <DialogTitle>{t`Related`}</DialogTitle>
+                <DialogContent dividers>
+                    <Typography color="textSecondary" variant="body1" sx={{ textCentered: 'center', p: 2 }}>
+                        {t`Nothing found`}
+                    </Typography>
+                </DialogContent>
+            </>
+        );
+    }
 
     return (
         <>
             <DialogTitle>{t`Related`}</DialogTitle>
             <DialogContent dividers>
-                <Stack sx={{ gap: 3 }}>
-                    {SECTIONS.map((section) => (
-                        <RelatedSection
-                            key={i18n._(section.title)}
-                            title={i18n._(section.title)}
-                            iconUrl={getIconUrl(section.trackerName)}
-                            items={section.items(related)}
-                        />
-                    ))}
+                <Stack sx={{ gap: 4 }}>
+                    {trackerRelatedList.map((trackerData) => {
+                        const trackerName = TRACKER_MAP[trackerData.trackerId] || t`Unknown`;
+                        const iconUrl = getIconUrl(trackerData.trackerId);
+
+                        return (
+                            <Stack
+                                key={trackerData.trackerId}
+                                sx={{
+                                    gap: 2.5,
+                                    borderBottom: '1px solid rgba(255,255,255,0.05)',
+                                    pb: 3,
+                                    '&:last-child': { border: 0, pb: 0 },
+                                }}
+                            >
+                                {trackerData.relations.length > 0 && (
+                                    <RelatedSection
+                                        title={`${trackerName} - ${i18n._(msg`Relations`)}`}
+                                        iconUrl={iconUrl}
+                                        items={trackerData.relations}
+                                    />
+                                )}
+
+                                {trackerData.recommendations.length > 0 && (
+                                    <RelatedSection
+                                        title={`${trackerName} - ${i18n._(msg`Recommendations`)}`}
+                                        iconUrl={iconUrl}
+                                        items={trackerData.recommendations}
+                                    />
+                                )}
+                            </Stack>
+                        );
+                    })}
                 </Stack>
             </DialogContent>
         </>
