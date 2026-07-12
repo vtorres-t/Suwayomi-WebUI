@@ -13,8 +13,6 @@ import Typography from '@mui/material/Typography';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import { useLingui } from '@lingui/react/macro';
-import { msg } from '@lingui/core/macro';
-import { i18n } from '@/i18n';
 import { requestManager } from '@/lib/requests/RequestManager.ts';
 import { LoadingPlaceholder } from '@/base/components/feedback/LoadingPlaceholder.tsx';
 import { EmptyView } from '@/base/components/feedback/EmptyView.tsx';
@@ -28,10 +26,12 @@ import type { MangaIdInfo } from '@/features/manga/Manga.types.ts';
 import { STABLE_EMPTY_ARRAY } from '@/base/Base.constants.ts';
 
 const TRACKER_MAP: Record<number, string> = {
-    1: 'AniList',
-    2: 'MyAnimeList',
+    1: 'MyAnimeList',
+    2: 'AniList',
     3: 'Kitsu',
-    4: 'MangaUpdates',
+    4: 'Shikimori',
+    5: 'Bangumi',
+    7: 'MangaUpdates',
 };
 
 const RelatedMangaCard = ({ item }: { item: RelatedMangaFieldsFragment }) => (
@@ -130,7 +130,9 @@ export const MangaRelated = ({ manga }: { manga: MangaIdInfo }) => {
 
     const getIconUrl = (trackerId: number): string | undefined => {
         const serverName = TRACKER_MAP[trackerId];
-        if (!serverName) {return undefined;}
+        if (!serverName) {
+            return undefined;
+        }
         const tracker = trackers.find(({ name }) => name === serverName);
         return tracker ? requestManager.getValidImgUrlFor(tracker.icon) : undefined;
     };
@@ -191,6 +193,9 @@ export const MangaRelated = ({ manga }: { manga: MangaIdInfo }) => {
                         const trackerName = TRACKER_MAP[trackerData.trackerId] || t`Unknown`;
                         const iconUrl = getIconUrl(trackerData.trackerId);
 
+                        const relationsTitle = `${trackerName} - ${t`Related Entries`}`;
+                        const recommendationsTitle = `${trackerName} - ${t`Recommendations`}`;
+
                         return (
                             <Stack
                                 key={trackerData.trackerId}
@@ -203,7 +208,7 @@ export const MangaRelated = ({ manga }: { manga: MangaIdInfo }) => {
                             >
                                 {trackerData.relations.length > 0 && (
                                     <RelatedSection
-                                        title={`${trackerName} - ${i18n._(msg`Relations`)}`}
+                                        title={relationsTitle}
                                         iconUrl={iconUrl}
                                         items={trackerData.relations}
                                     />
@@ -211,7 +216,7 @@ export const MangaRelated = ({ manga }: { manga: MangaIdInfo }) => {
 
                                 {trackerData.recommendations.length > 0 && (
                                     <RelatedSection
-                                        title={`${trackerName} - ${i18n._(msg`Recommendations`)}`}
+                                        title={recommendationsTitle}
                                         iconUrl={iconUrl}
                                         items={trackerData.recommendations}
                                     />
