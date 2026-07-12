@@ -48,6 +48,7 @@ const RelatedMangaCard = ({ item }: { item: RelatedMangaFieldsFragment }) => (
                 src={item.coverUrl}
                 alt={item.title}
                 useFetchApi={false}
+                disableCors
                 imgStyle={{ objectFit: 'cover', width: '100%', height: '100%' }}
             />
         </Box>
