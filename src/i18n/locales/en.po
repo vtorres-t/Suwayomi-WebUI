@@ -465,12 +465,12 @@ msgid "Also remove from {0}"
 msgstr "Also remove from {0}"
 
 #: src/features/tracker/components/MangaRelated.tsx
-msgid "AniList - Recommendations"
-msgstr "AniList - Recommendations"
+msgid "Recommendations"
+msgstr "Recommendations"
 
 #: src/features/tracker/components/MangaRelated.tsx
-msgid "AniList - Relations"
-msgstr "AniList - Relations"
+msgid "Relations"
+msgstr "Relations"
 
 #: src/features/settings/screens/Appearance.tsx
 #: src/features/settings/screens/Settings.tsx
@@ -2621,13 +2621,10 @@ msgstr "Multi"
 msgid "Multiply"
 msgstr "Multiply"
 
-#: src/features/tracker/components/MangaRelated.tsx
-msgid "MyAnimeList - Recommendations"
-msgstr "MyAnimeList - Recommendations"
 
 #: src/features/tracker/components/MangaRelated.tsx
-msgid "MyAnimeList - Related Entries"
-msgstr "MyAnimeList - Related Entries"
+msgid "Related Entries"
+msgstr "Related entries"
 
 #: src/features/settings/components/images/KeyValueItem.tsx
 #: src/features/theme/components/CreateThemeDialog.tsx

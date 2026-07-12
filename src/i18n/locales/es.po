@@ -3791,3 +3791,15 @@ msgstr "{0, plural, one {Muestra # capítulo más} other {Muestra # capítulos m
 #: src/features/tracker/components/MangaRelated.tsx
 msgid "Related"
 msgstr "Relacionado"
+
+#: src/features/tracker/components/MangaRelated.tsx
+msgid "Related Entries"
+msgstr "Relacionados"
+
+#: src/features/tracker/components/MangaRelated.tsx
+msgid "Recommendations"
+msgstr "Recomendaciones"
+
+#: src/features/tracker/components/MangaRelated.tsx
+msgid "Relations"
+msgstr "Relaciones"
