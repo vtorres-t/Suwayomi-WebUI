@@ -3803,3 +3803,7 @@ msgstr "Recomendaciones"
 #: src/features/tracker/components/MangaRelated.tsx
 msgid "Relations"
 msgstr "Relaciones"
+
+#: src/features/browse/screens/BrowseSettings.tsx
+msgid "Show related for each manga"
+msgstr "Mostrar mangas relacionados"

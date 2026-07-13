@@ -142,10 +142,7 @@ export const BrowseSettings = () => {
                 }
             >
                 <ListItem>
-                    <ListItemText
-                        primary={t`Show related for each manga`}
-                        secondary={t`Currently supported for: AniList, MyAnimeList`}
-                    />
+                    <ListItemText primary={t`Show related for each manga`} />
                     <Switch
                         edge="end"
                         checked={showRelatedForEachManga}
