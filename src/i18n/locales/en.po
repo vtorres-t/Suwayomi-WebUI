@@ -3574,6 +3574,7 @@ msgid "Source title"
 msgstr "Source title"
 
 #: src/features/browse/screens/BrowseSettings.tsx
+#: src/features/library/components/LibraryOptionsPanel.tsx
 msgid "Sources"
 msgstr "Sources"
 

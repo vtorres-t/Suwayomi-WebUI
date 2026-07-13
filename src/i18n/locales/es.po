@@ -3646,6 +3646,7 @@ msgstr "Búsqueda fallida"
 
 #: src/features/browse/screens/BrowseSettings.tsx
 #, fuzzy
+#: src/features/library/components/LibraryOptionsPanel.tsx
 msgid "Sources"
 msgstr "Fuentes"
 

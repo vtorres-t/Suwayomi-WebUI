@@ -11,7 +11,7 @@ import Chip from '@mui/material/Chip';
 import Tab from '@mui/material/Tab';
 import { styled, useTheme } from '@mui/material/styles';
 import { useCallback, useMemo, useState } from 'react';
-import { useQueryParam, NumberParam, StringParam } from 'use-query-params';
+import { NumberParam, StringParam, useQueryParam } from 'use-query-params';
 import Button from '@mui/material/Button';
 import { Link } from 'react-router-dom';
 import Box from '@mui/material/Box';
@@ -91,6 +91,7 @@ export function Library() {
 
     const [tabSearchParam, setTabSearchParam] = useQueryParam(SearchParam.TAB, NumberParam);
     const [query] = useQueryParam(SearchParam.QUERY, StringParam);
+    const [selectedSource, setSelectedSource] = useQueryParam('source', StringParam);
 
     const activeTab: (typeof tabs)[number] | undefined = tabs.find((tab) => tab.id === tabSearchParam) ?? tabs[0];
 
@@ -101,11 +102,21 @@ export function Library() {
         refetch: refetchCategoryMangas,
     } = requestManager.useGetCategoryMangas(activeTab?.id, { skip: !activeTab });
     const categoryMangas = categoryMangaResponse?.mangas.nodes ?? STABLE_EMPTY_ARRAY;
+    const uniqueSources = useMemo(() => {
+        if (!categoryMangas) {return STABLE_EMPTY_ARRAY;}
+        const sources = categoryMangas.map((manga: any) => manga.source).filter(Boolean);
+        return Array.from(new Set(sources)).sort();
+    }, [categoryMangas]);
     const {
-        visibleMangas: mangas,
+        visibleMangas: visibleLibraryMangas,
         showFilteredOutMessage,
         filterKey,
     } = useGetVisibleLibraryMangas(categoryMangas as any, activeTab);
+
+    const mangas = useMemo(() => {
+        if (!selectedSource) {return visibleLibraryMangas;}
+        return visibleLibraryMangas.filter((manga: any) => manga.source === selectedSource);
+    }, [visibleLibraryMangas, selectedSource]);
 
     const retryFetchCategoryMangas = useCallback(
         () => refetchCategoryMangas().catch(defaultPromiseErrorHandler('Library::refetchCategoryMangas')),
@@ -207,7 +218,12 @@ export function Library() {
             {!isSelectModeActive && activeTab && (
                 <>
                     <AppbarSearch />
-                    <LibraryToolbarMenu category={activeTab} />
+                    <LibraryToolbarMenu
+                        category={activeTab}
+                        uniqueSources={uniqueSources}
+                        selectedSource={selectedSource}
+                        onSourceChange={setSelectedSource}
+                    />
                     <UpdateChecker categoryId={activeTab?.id} />
                 </>
             )}

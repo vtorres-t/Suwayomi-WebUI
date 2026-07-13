@@ -17,13 +17,20 @@ import { getCategoryMetadata } from '@/features/category/services/CategoryMetada
 
 export const LibraryToolbarMenu = ({
     category,
+    uniqueSources,
+    selectedSource,
+    onSourceChange,
 }: {
     category: ComponentProps<typeof LibraryOptionsPanel>['category'];
+    uniqueSources: string[];
+    selectedSource: string | null | undefined;
+    onSourceChange: (source: string | undefined) => void;
 }) => {
     const { t } = useLingui();
 
     const [open, setOpen] = useState(false);
     const options = getCategoryMetadata(category);
+    const isSourceFilterActive = !!selectedSource;
     const active =
         options.hasDownloadedChapters != null ||
         options.hasUnreadChapters != null ||
@@ -31,8 +38,8 @@ export const LibraryToolbarMenu = ({
         options.hasBookmarkedChapters != null ||
         options.hasDuplicateChapters != null ||
         Object.values(options.hasStatus).some((hasStatus) => hasStatus != null) ||
-        Object.values(options.hasTrackerBinding).some((trackerFilterStatus) => trackerFilterStatus != null);
-
+        Object.values(options.hasTrackerBinding).some((trackerFilterStatus) => trackerFilterStatus != null) ||
+        isSourceFilterActive;
     return (
         <>
             <CustomTooltip title={t`Settings`}>
@@ -40,7 +47,14 @@ export const LibraryToolbarMenu = ({
                     <FilterList />
                 </IconButton>
             </CustomTooltip>
-            <LibraryOptionsPanel category={category} open={open} onClose={() => setOpen(false)} />
+            <LibraryOptionsPanel
+                category={category}
+                open={open}
+                onClose={() => setOpen(false)}
+                uniqueSources={uniqueSources}
+                selectedSource={selectedSource}
+                onSourceChange={onSourceChange}
+            />
         </>
     );
 };
