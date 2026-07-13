@@ -6,11 +6,11 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-import {requestManager} from '@/lib/requests/RequestManager.ts';
-import type {SetChapterMetasItemInput} from '@/lib/graphql/generated/graphql-base.types.ts';
-import type {MangaIdInfo} from '@/features/manga/Manga.types.ts';
-import {Chapters} from '@/features/chapter/services/Chapters.ts';
-import {ALL_APP_METADATA_KEY_PREFIXES} from '@/features/metadata/Metadata.constants.ts';
+import { requestManager } from '@/lib/requests/RequestManager.ts';
+import type { SetChapterMetasItemInput } from '@/lib/graphql/generated/graphql-base.types.ts';
+import type { MangaIdInfo } from '@/features/manga/Manga.types.ts';
+import { Chapters } from '@/features/chapter/services/Chapters.ts';
+import { ALL_APP_METADATA_KEY_PREFIXES } from '@/features/metadata/Metadata.constants.ts';
 import type {
     MangaToMigrate,
     MangaToMigrateTo,
@@ -20,9 +20,9 @@ import type {
     MigrateOptions,
     MigrationChapter,
 } from '@/features/migration/Migration.types.ts';
-import {getMetadataServerSettings} from '@/features/settings/services/ServerSettingsMetadata.ts';
-import {t} from '@lingui/core/macro';
-import {makeToast} from '@/base/utils/Toast.ts';
+import { getMetadataServerSettings } from '@/features/settings/services/ServerSettingsMetadata.ts';
+import { t } from '@lingui/core/macro';
+import { makeToast } from '@/base/utils/Toast.ts';
 
 const performMigrationActions = async (...actionCreators: [boolean | undefined, MigrateActionCreator][]) => {
     const migrationActions: TupleUnion<keyof MigrateAction> = ['copy', 'cleanup'];

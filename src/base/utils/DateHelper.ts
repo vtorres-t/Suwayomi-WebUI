@@ -6,9 +6,9 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-import type {Dayjs} from 'dayjs';
+import type { Dayjs } from 'dayjs';
 import dayjs from 'dayjs';
-import {t} from '@lingui/core/macro';
+import { t } from '@lingui/core/macro';
 
 export const timeFormatter = new Intl.DateTimeFormat(navigator.language, { hour: '2-digit', minute: '2-digit' });
 export const dateFormatter = new Intl.DateTimeFormat(navigator.language, {

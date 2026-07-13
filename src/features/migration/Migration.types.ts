@@ -37,7 +37,7 @@ import type {
     ChapterNumberInfo,
     ChapterReadInfo,
 } from '@/features/chapter/Chapter.types.ts';
-import type {GqlMetaHolder} from '@/features/metadata/Metadata.types.ts';
+import type { GqlMetaHolder } from '@/features/metadata/Metadata.types.ts';
 
 export enum SortBy {
     SOURCE_NAME,

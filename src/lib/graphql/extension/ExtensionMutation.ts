@@ -7,8 +7,8 @@
  */
 
 import gql from 'graphql-tag';
-import {EXTENSION_LIST_FIELDS} from '@/lib/graphql/extension/ExtensionFragments.ts';
-import {EXTENSION_STORE_FIELDS} from '@/lib/graphql/extension/store/ExtensionStoreFragments.ts';
+import { EXTENSION_LIST_FIELDS } from '@/lib/graphql/extension/ExtensionFragments.ts';
+import { EXTENSION_STORE_FIELDS } from '@/lib/graphql/extension/store/ExtensionStoreFragments.ts';
 
 // makes the server fetch and return the latest extensions
 export const GET_EXTENSIONS_FETCH = gql`

@@ -6,33 +6,33 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-import {useMemo} from 'react';
-import {useLingui} from '@lingui/react/macro';
-import {requestManager} from '@/lib/requests/RequestManager.ts';
-import {LoadingPlaceholder} from '@/base/components/feedback/LoadingPlaceholder.tsx';
-import {EmptyViewAbsoluteCentered} from '@/base/components/feedback/EmptyViewAbsoluteCentered.tsx';
-import {BaseMangaGrid} from '@/features/manga/components/BaseMangaGrid.tsx';
-import {GridLayout} from '@/base/Base.types.ts';
-import {getErrorMessage, noOp} from '@/lib/HelperFunctions.ts';
-import {useAppTitleAndAction} from '@/features/navigation-bar/hooks/useAppTitleAndAction.ts';
-import {GridLayouts} from '@/base/components/GridLayouts.tsx';
-import {useLocalStorage} from '@/base/hooks/useStorage.tsx';
-import {defaultPromiseErrorHandler} from '@/lib/DefaultPromiseErrorHandler.ts';
-import {MigrationManager} from '@/features/migration/MigrationManager.ts';
-import {useSelectableCollection} from '@/base/collection/hooks/useSelectableCollection.ts';
+import { useMemo } from 'react';
+import { useLingui } from '@lingui/react/macro';
+import { requestManager } from '@/lib/requests/RequestManager.ts';
+import { LoadingPlaceholder } from '@/base/components/feedback/LoadingPlaceholder.tsx';
+import { EmptyViewAbsoluteCentered } from '@/base/components/feedback/EmptyViewAbsoluteCentered.tsx';
+import { BaseMangaGrid } from '@/features/manga/components/BaseMangaGrid.tsx';
+import { GridLayout } from '@/base/Base.types.ts';
+import { getErrorMessage, noOp } from '@/lib/HelperFunctions.ts';
+import { useAppTitleAndAction } from '@/features/navigation-bar/hooks/useAppTitleAndAction.ts';
+import { GridLayouts } from '@/base/components/GridLayouts.tsx';
+import { useLocalStorage } from '@/base/hooks/useStorage.tsx';
+import { defaultPromiseErrorHandler } from '@/lib/DefaultPromiseErrorHandler.ts';
+import { MigrationManager } from '@/features/migration/MigrationManager.ts';
+import { useSelectableCollection } from '@/base/collection/hooks/useSelectableCollection.ts';
 import type {
     GetMigratableSourceMangasQuery,
     GetMigratableSourceMangasQueryVariables,
     GetSourceMigratableQuery,
     GetSourceMigratableQueryVariables,
 } from '@/lib/graphql/generated/graphql.ts';
-import {GET_SOURCE_MIGRATABLE} from '@/lib/graphql/source/SourceQuery.ts';
-import {SelectableCollectionSelectMode} from '@/base/collection/components/SelectableCollectionSelectMode.tsx';
-import {Mangas} from '@/features/manga/services/Mangas.ts';
-import {STABLE_EMPTY_ARRAY} from '@/base/Base.constants.ts';
-import {MigrationContinueButton} from '@/features/migration/components/MigrationContinueButton.tsx';
-import {GET_MIGRATABLE_SOURCE_MANGAS} from '@/lib/graphql/manga/MangaQuery.ts';
-import {MangaOrderBy, SortOrder} from '@/lib/graphql/generated/graphql-base.types.ts';
+import { GET_SOURCE_MIGRATABLE } from '@/lib/graphql/source/SourceQuery.ts';
+import { SelectableCollectionSelectMode } from '@/base/collection/components/SelectableCollectionSelectMode.tsx';
+import { Mangas } from '@/features/manga/services/Mangas.ts';
+import { STABLE_EMPTY_ARRAY } from '@/base/Base.constants.ts';
+import { MigrationContinueButton } from '@/features/migration/components/MigrationContinueButton.tsx';
+import { GET_MIGRATABLE_SOURCE_MANGAS } from '@/lib/graphql/manga/MangaQuery.ts';
+import { MangaOrderBy, SortOrder } from '@/lib/graphql/generated/graphql-base.types.ts';
 
 const getSourceError = (error: unknown): unknown => {
     const message = getErrorMessage(error);

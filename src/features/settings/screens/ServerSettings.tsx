@@ -6,32 +6,32 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-import {useMemo} from 'react';
+import { useMemo } from 'react';
 import Link from '@mui/material/Link';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import Switch from '@mui/material/Switch';
 import ListSubheader from '@mui/material/ListSubheader';
-import {d} from 'koration';
-import {Trans, useLingui} from '@lingui/react/macro';
-import {plural, t as translate} from '@lingui/core/macro';
-import {requestManager} from '@/lib/requests/RequestManager.ts';
-import {TextSetting} from '@/base/components/settings/text/TextSetting.tsx';
-import {NumberSetting} from '@/base/components/settings/NumberSetting.tsx';
-import {SelectSetting} from '@/base/components/settings/SelectSetting.tsx';
-import {LoadingPlaceholder} from '@/base/components/feedback/LoadingPlaceholder.tsx';
-import {EmptyViewAbsoluteCentered} from '@/base/components/feedback/EmptyViewAbsoluteCentered.tsx';
-import {defaultPromiseErrorHandler} from '@/lib/DefaultPromiseErrorHandler.ts';
+import { d } from 'koration';
+import { Trans, useLingui } from '@lingui/react/macro';
+import { plural, t as translate } from '@lingui/core/macro';
+import { requestManager } from '@/lib/requests/RequestManager.ts';
+import { TextSetting } from '@/base/components/settings/text/TextSetting.tsx';
+import { NumberSetting } from '@/base/components/settings/NumberSetting.tsx';
+import { SelectSetting } from '@/base/components/settings/SelectSetting.tsx';
+import { LoadingPlaceholder } from '@/base/components/feedback/LoadingPlaceholder.tsx';
+import { EmptyViewAbsoluteCentered } from '@/base/components/feedback/EmptyViewAbsoluteCentered.tsx';
+import { defaultPromiseErrorHandler } from '@/lib/DefaultPromiseErrorHandler.ts';
 import {
     createUpdateMetadataServerSettings,
     useMetadataServerSettings,
 } from '@/features/settings/services/ServerSettingsMetadata.ts';
-import {makeToast} from '@/base/utils/Toast.ts';
-import type {MetadataUpdateSettings} from '@/features/app-updates/AppUpdateChecker.types.ts';
-import {getErrorMessage} from '@/lib/HelperFunctions.ts';
-import {useAppTitle} from '@/features/navigation-bar/hooks/useAppTitle.ts';
-import type {PartialSettingsTypeInput} from '@/lib/graphql/generated/graphql-base.types.ts';
+import { makeToast } from '@/base/utils/Toast.ts';
+import type { MetadataUpdateSettings } from '@/features/app-updates/AppUpdateChecker.types.ts';
+import { getErrorMessage } from '@/lib/HelperFunctions.ts';
+import { useAppTitle } from '@/features/navigation-bar/hooks/useAppTitle.ts';
+import type { PartialSettingsTypeInput } from '@/lib/graphql/generated/graphql-base.types.ts';
 import {
     AuthMode,
     CbzMediaType,
@@ -53,17 +53,17 @@ import {
     SYNC_START_RESULT_TRANSLATION,
     SYNC_STATE_TRANSLATION,
 } from '@/features/settings/Settings.constants.ts';
-import {ServerAddressSetting} from '@/features/settings/components/ServerAddressSetting.tsx';
-import {AuthManager} from '@/features/authentication/AuthManager.ts';
-import type {ServerSettings as ServerSettingsType} from '@/features/settings/Settings.types.ts';
-import {KoreaderSyncSettings} from '@/features/settings/components/koreaderSync/KoreaderSyncSettings.tsx';
-import {Confirmation} from '@/base/AppAwaitableComponent.ts';
-import {BackupFlagInclusionDialog} from '@/features/backup/component/BackupFlagInclusionDialog.tsx';
+import { ServerAddressSetting } from '@/features/settings/components/ServerAddressSetting.tsx';
+import { AuthManager } from '@/features/authentication/AuthManager.ts';
+import type { ServerSettings as ServerSettingsType } from '@/features/settings/Settings.types.ts';
+import { KoreaderSyncSettings } from '@/features/settings/components/koreaderSync/KoreaderSyncSettings.tsx';
+import { Confirmation } from '@/base/AppAwaitableComponent.ts';
+import { BackupFlagInclusionDialog } from '@/features/backup/component/BackupFlagInclusionDialog.tsx';
 import ListItemButton from '@mui/material/ListItemButton';
-import {AwaitableComponent} from 'awaitable-component';
-import {convertToAutoBackupFlags, getAutoBackupFlagsInfo} from '@/features/backup/Backup.utils.ts';
-import type {BackupFlagInclusionState} from '@/features/backup/Backup.types.ts';
-import {epochToDate, getDateString} from '@/base/utils/DateHelper.ts';
+import { AwaitableComponent } from 'awaitable-component';
+import { convertToAutoBackupFlags, getAutoBackupFlagsInfo } from '@/features/backup/Backup.utils.ts';
+import type { BackupFlagInclusionState } from '@/features/backup/Backup.types.ts';
+import { epochToDate, getDateString } from '@/base/utils/DateHelper.ts';
 
 const convertSyncDataToBackupFlags = (settings: ServerSettingsType): BackupFlagInclusionState => ({
     includeManga: settings.syncDataManga,

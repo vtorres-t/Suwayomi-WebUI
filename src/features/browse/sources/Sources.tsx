@@ -6,31 +6,31 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-import {useCallback, useMemo} from 'react';
+import { useCallback, useMemo } from 'react';
 import IconButton from '@mui/material/IconButton';
 import TravelExploreIcon from '@mui/icons-material/TravelExplore';
-import {useNavigate} from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import Typography from '@mui/material/Typography';
-import {useLingui} from '@lingui/react/macro';
-import {CustomTooltip} from '@/base/components/CustomTooltip.tsx';
-import {requestManager} from '@/lib/requests/RequestManager.ts';
-import {DefaultLanguage} from '@/base/utils/Languages.ts';
-import {LoadingPlaceholder} from '@/base/components/feedback/LoadingPlaceholder.tsx';
-import {SourceCard} from '@/features/browse/sources/components/SourceCard.tsx';
-import {EmptyViewAbsoluteCentered} from '@/base/components/feedback/EmptyViewAbsoluteCentered.tsx';
-import {defaultPromiseErrorHandler} from '@/lib/DefaultPromiseErrorHandler.ts';
-import {isPinnedOrLastUsedSource, translateExtensionLanguage} from '@/features/extension/Extensions.utils.ts';
-import {AppRoutes} from '@/base/AppRoute.constants.ts';
-import {getErrorMessage} from '@/lib/HelperFunctions.ts';
-import {Sources as SourceService} from '@/features/source/services/Sources.ts';
-import {useMetadataServerSettings} from '@/features/settings/services/ServerSettingsMetadata.ts';
-import {useAppAction} from '@/features/navigation-bar/hooks/useAppAction.ts';
-import {StyledGroupedVirtuoso} from '@/base/components/virtuoso/StyledGroupedVirtuoso.tsx';
-import {VirtuosoUtil} from '@/lib/virtuoso/Virtuoso.util.tsx';
-import {StyledGroupHeader} from '@/base/components/virtuoso/StyledGroupHeader.tsx';
-import {StyledGroupItemWrapper} from '@/base/components/virtuoso/StyledGroupItemWrapper.tsx';
-import {SourceLanguageSelect} from '@/features/source/components/SourceLanguageSelect.tsx';
-import {STABLE_EMPTY_ARRAY} from '@/base/Base.constants.ts';
+import { useLingui } from '@lingui/react/macro';
+import { CustomTooltip } from '@/base/components/CustomTooltip.tsx';
+import { requestManager } from '@/lib/requests/RequestManager.ts';
+import { DefaultLanguage } from '@/base/utils/Languages.ts';
+import { LoadingPlaceholder } from '@/base/components/feedback/LoadingPlaceholder.tsx';
+import { SourceCard } from '@/features/browse/sources/components/SourceCard.tsx';
+import { EmptyViewAbsoluteCentered } from '@/base/components/feedback/EmptyViewAbsoluteCentered.tsx';
+import { defaultPromiseErrorHandler } from '@/lib/DefaultPromiseErrorHandler.ts';
+import { isPinnedOrLastUsedSource, translateExtensionLanguage } from '@/features/extension/Extensions.utils.ts';
+import { AppRoutes } from '@/base/AppRoute.constants.ts';
+import { getErrorMessage } from '@/lib/HelperFunctions.ts';
+import { Sources as SourceService } from '@/features/source/services/Sources.ts';
+import { useMetadataServerSettings } from '@/features/settings/services/ServerSettingsMetadata.ts';
+import { useAppAction } from '@/features/navigation-bar/hooks/useAppAction.ts';
+import { StyledGroupedVirtuoso } from '@/base/components/virtuoso/StyledGroupedVirtuoso.tsx';
+import { VirtuosoUtil } from '@/lib/virtuoso/Virtuoso.util.tsx';
+import { StyledGroupHeader } from '@/base/components/virtuoso/StyledGroupHeader.tsx';
+import { StyledGroupItemWrapper } from '@/base/components/virtuoso/StyledGroupItemWrapper.tsx';
+import { SourceLanguageSelect } from '@/features/source/components/SourceLanguageSelect.tsx';
+import { STABLE_EMPTY_ARRAY } from '@/base/Base.constants.ts';
 
 export function Sources({ tabsMenuHeight }: { tabsMenuHeight: number }) {
     const { t } = useLingui();

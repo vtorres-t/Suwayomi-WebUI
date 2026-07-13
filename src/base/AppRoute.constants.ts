@@ -6,15 +6,15 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-import type {MangaIdInfo} from '@/features/manga/Manga.types.ts';
+import type { MangaIdInfo } from '@/features/manga/Manga.types.ts';
 
-import type {ChapterSourceOrderInfo} from '@/features/chapter/Chapter.types.ts';
-import type {BrowseTab} from '@/features/browse/Browse.types.ts';
-import {SearchParam} from '@/base/Base.types.ts';
-import {UrlUtil} from '@/lib/UrlUtil.ts';
-import type {RouteStateSourceBrowse, SourceIdInfo} from '@/features/source/Source.types.ts';
-import type {RouteStateReader} from '@/features/reader/Reader.types.ts';
-import type {RouteStateSourcesSearchAll} from '@/features/global-search/SearchAll.types.ts';
+import type { ChapterSourceOrderInfo } from '@/features/chapter/Chapter.types.ts';
+import type { BrowseTab } from '@/features/browse/Browse.types.ts';
+import { SearchParam } from '@/base/Base.types.ts';
+import { UrlUtil } from '@/lib/UrlUtil.ts';
+import type { RouteStateSourceBrowse, SourceIdInfo } from '@/features/source/Source.types.ts';
+import type { RouteStateReader } from '@/features/reader/Reader.types.ts';
+import type { RouteStateSourcesSearchAll } from '@/features/global-search/SearchAll.types.ts';
 
 type AppRouteInfo = {
     match: string;

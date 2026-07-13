@@ -6,13 +6,13 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-import {plural, t} from '@lingui/core/macro';
+import { plural, t } from '@lingui/core/macro';
 import type {
     AutoBackupFlagInclusionState,
     BackupFlag,
     BackupFlagInclusionState,
 } from '@/features/backup/Backup.types.ts';
-import {BACKUP_FLAGS_TO_TRANSLATION} from '@/features/backup/Backup.constants.ts';
+import { BACKUP_FLAGS_TO_TRANSLATION } from '@/features/backup/Backup.constants.ts';
 import omit from 'lodash/fp/omit';
 
 export const convertToAutoBackupFlags = (flags: BackupFlagInclusionState): AutoBackupFlagInclusionState => ({

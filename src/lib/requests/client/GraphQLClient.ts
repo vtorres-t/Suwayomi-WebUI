@@ -6,27 +6,27 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-import {ErrorLink} from '@apollo/client/link/error';
-import {SetContextLink} from '@apollo/client/link/context';
-import type {ErrorLike} from '@apollo/client';
-import {ApolloClient, ApolloLink, CombinedGraphQLErrors, InMemoryCache, ServerError} from '@apollo/client';
-import {filter, firstValueFrom, from, map, switchMap} from 'rxjs';
+import { ErrorLink } from '@apollo/client/link/error';
+import { SetContextLink } from '@apollo/client/link/context';
+import type { ErrorLike } from '@apollo/client';
+import { ApolloClient, ApolloLink, CombinedGraphQLErrors, InMemoryCache, ServerError } from '@apollo/client';
+import { filter, firstValueFrom, from, map, switchMap } from 'rxjs';
 import UploadHttpLink from 'apollo-upload-client/UploadHttpLink.mjs';
-import {GraphQLWsLink} from '@apollo/client/link/subscriptions';
-import type {Client} from 'graphql-ws';
-import {createClient} from 'graphql-ws';
-import {getMainDefinition} from '@apollo/client/utilities';
-import {RemoveTypenameFromVariablesLink} from '@apollo/client/link/remove-typename';
-import {d} from 'koration';
-import {useId} from '@mantine/hooks';
-import {useEffect} from 'react';
-import type {GraphQLFormattedError} from 'graphql';
-import {BaseClient} from '@/lib/requests/client/BaseClient.ts';
-import type {TypedTypePolicies} from '@/lib/graphql/generated/apollo-helpers.ts';
-import {AuthManager} from '@/features/authentication/AuthManager.ts';
-import type {UserRefreshMutation} from '@/lib/graphql/generated/graphql.ts';
-import type {AbortableApolloMutationResponse} from '@/lib/requests/RequestManager.ts';
-import type {ChapterNodeList} from '@/lib/graphql/generated/graphql-base.types.ts';
+import { GraphQLWsLink } from '@apollo/client/link/subscriptions';
+import type { Client } from 'graphql-ws';
+import { createClient } from 'graphql-ws';
+import { getMainDefinition } from '@apollo/client/utilities';
+import { RemoveTypenameFromVariablesLink } from '@apollo/client/link/remove-typename';
+import { d } from 'koration';
+import { useId } from '@mantine/hooks';
+import { useEffect } from 'react';
+import type { GraphQLFormattedError } from 'graphql';
+import { BaseClient } from '@/lib/requests/client/BaseClient.ts';
+import type { TypedTypePolicies } from '@/lib/graphql/generated/apollo-helpers.ts';
+import { AuthManager } from '@/features/authentication/AuthManager.ts';
+import type { UserRefreshMutation } from '@/lib/graphql/generated/graphql.ts';
+import type { AbortableApolloMutationResponse } from '@/lib/requests/RequestManager.ts';
+import type { ChapterNodeList } from '@/lib/graphql/generated/graphql-base.types.ts';
 
 const typePolicies: TypedTypePolicies = {
     MangaType: {

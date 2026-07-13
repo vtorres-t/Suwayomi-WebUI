@@ -6,8 +6,8 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-import {useCallback} from 'react';
-import {useLingui} from '@lingui/react/macro';
+import { useCallback } from 'react';
+import { useLingui } from '@lingui/react/macro';
 import type {
     SourceDisplayNameInfo,
     SourceIdInfo,
@@ -23,18 +23,18 @@ import {
     toComparableLanguages,
     toUniqueLanguageCodes,
 } from '@/base/utils/Languages.ts';
-import {getSourceMetadata} from '@/features/source/services/SourceMetadata.ts';
+import { getSourceMetadata } from '@/features/source/services/SourceMetadata.ts';
 import {
     createUpdateMetadataServerSettings,
     useMetadataServerSettings,
 } from '@/features/settings/services/ServerSettingsMetadata.ts';
-import {makeToast} from '@/base/utils/Toast.ts';
-import {getErrorMessage} from '@/lib/HelperFunctions.ts';
-import type {SourceBaseFieldsFragment} from '@/lib/graphql/generated/graphql.ts';
-import {requestManager} from '@/lib/requests/RequestManager.ts';
-import type {DocumentNode, Unmasked} from '@apollo/client';
-import {SOURCE_BASE_FIELDS} from '@/lib/graphql/source/SourceFragments.ts';
-import {isNsfw as isNsfwFnc} from '@/features/extension/Extensions.utils.ts';
+import { makeToast } from '@/base/utils/Toast.ts';
+import { getErrorMessage } from '@/lib/HelperFunctions.ts';
+import type { SourceBaseFieldsFragment } from '@/lib/graphql/generated/graphql.ts';
+import { requestManager } from '@/lib/requests/RequestManager.ts';
+import type { DocumentNode, Unmasked } from '@apollo/client';
+import { SOURCE_BASE_FIELDS } from '@/lib/graphql/source/SourceFragments.ts';
+import { isNsfw as isNsfwFnc } from '@/features/extension/Extensions.utils.ts';
 
 export class Sources {
     static readonly LOCAL_SOURCE_ID = '0';

@@ -7,8 +7,8 @@
  */
 
 import gql from 'graphql-tag';
-import {MANGA_META_FIELDS, MANGA_SCREEN_FIELDS} from '@/lib/graphql/manga/MangaFragments.ts';
-import {CHAPTER_LIST_FIELDS} from '@/lib/graphql/chapter/ChapterFragments.ts';
+import { MANGA_META_FIELDS, MANGA_SCREEN_FIELDS } from '@/lib/graphql/manga/MangaFragments.ts';
+import { CHAPTER_LIST_FIELDS } from '@/lib/graphql/chapter/ChapterFragments.ts';
 
 // makes the server fetch and return the manga
 export const REFRESH_MANGA = gql`

@@ -103,7 +103,9 @@ export function Library() {
     } = requestManager.useGetCategoryMangas(activeTab?.id, { skip: !activeTab });
     const categoryMangas = categoryMangaResponse?.mangas.nodes ?? STABLE_EMPTY_ARRAY;
     const uniqueSources = useMemo(() => {
-        if (!categoryMangas) {return STABLE_EMPTY_ARRAY;}
+        if (!categoryMangas) {
+            return STABLE_EMPTY_ARRAY;
+        }
         const sources = categoryMangas.map((manga: any) => manga.source).filter(Boolean);
         return Array.from(new Set(sources)).sort();
     }, [categoryMangas]);
@@ -114,7 +116,9 @@ export function Library() {
     } = useGetVisibleLibraryMangas(categoryMangas as any, activeTab);
 
     const mangas = useMemo(() => {
-        if (!selectedSource) {return visibleLibraryMangas;}
+        if (!selectedSource) {
+            return visibleLibraryMangas;
+        }
         return visibleLibraryMangas.filter((manga: any) => manga.source === selectedSource);
     }, [visibleLibraryMangas, selectedSource]);
 

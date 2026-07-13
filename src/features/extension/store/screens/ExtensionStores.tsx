@@ -6,35 +6,35 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-import {requestManager} from '@/lib/requests/RequestManager.ts';
-import {EmptyViewAbsoluteCentered} from '@/base/components/feedback/EmptyViewAbsoluteCentered.tsx';
-import {getErrorMessage, noOp} from '@/lib/HelperFunctions.ts';
-import {defaultPromiseErrorHandler} from '@/lib/DefaultPromiseErrorHandler.ts';
-import {useLingui} from '@lingui/react/macro';
-import {LoadingPlaceholder} from '@/base/components/feedback/LoadingPlaceholder.tsx';
-import {STABLE_EMPTY_ARRAY} from '@/base/Base.constants.ts';
-import type {ExtensionStoreFieldsFragment} from '@/lib/graphql/generated/graphql.ts';
-import {VirtuosoPersisted} from '@/lib/virtuoso/Component/VirtuosoPersisted.tsx';
+import { requestManager } from '@/lib/requests/RequestManager.ts';
+import { EmptyViewAbsoluteCentered } from '@/base/components/feedback/EmptyViewAbsoluteCentered.tsx';
+import { getErrorMessage, noOp } from '@/lib/HelperFunctions.ts';
+import { defaultPromiseErrorHandler } from '@/lib/DefaultPromiseErrorHandler.ts';
+import { useLingui } from '@lingui/react/macro';
+import { LoadingPlaceholder } from '@/base/components/feedback/LoadingPlaceholder.tsx';
+import { STABLE_EMPTY_ARRAY } from '@/base/Base.constants.ts';
+import type { ExtensionStoreFieldsFragment } from '@/lib/graphql/generated/graphql.ts';
+import { VirtuosoPersisted } from '@/lib/virtuoso/Component/VirtuosoPersisted.tsx';
 import Card from '@mui/material/Card';
-import {ListCardContent} from '@/base/components/lists/cards/ListCardContent.tsx';
-import {TypographyMaxLines} from '@/base/components/texts/TypographyMaxLines.tsx';
+import { ListCardContent } from '@/base/components/lists/cards/ListCardContent.tsx';
+import { TypographyMaxLines } from '@/base/components/texts/TypographyMaxLines.tsx';
 import Stack from '@mui/material/Stack';
-import {CustomTooltip} from '@/base/components/CustomTooltip.tsx';
+import { CustomTooltip } from '@/base/components/CustomTooltip.tsx';
 import IconButton from '@mui/material/IconButton';
-import {plural} from '@lingui/core/macro';
+import { plural } from '@lingui/core/macro';
 import DeleteIcon from '@mui/icons-material/Delete';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
-import {IconBrowser} from '@/assets/icons/IconBrowser.tsx';
-import {makeToast} from '@/base/utils/Toast.ts';
-import {Confirmation} from '@/base/AppAwaitableComponent.ts';
+import { IconBrowser } from '@/assets/icons/IconBrowser.tsx';
+import { makeToast } from '@/base/utils/Toast.ts';
+import { Confirmation } from '@/base/AppAwaitableComponent.ts';
 import Box from '@mui/material/Box';
-import {ContentWarning} from '@/lib/graphql/generated/graphql-base.types.ts';
-import {DEFAULT_FULL_FAB_HEIGHT, StyledFab} from '@/base/components/buttons/StyledFab.tsx';
+import { ContentWarning } from '@/lib/graphql/generated/graphql-base.types.ts';
+import { DEFAULT_FULL_FAB_HEIGHT, StyledFab } from '@/base/components/buttons/StyledFab.tsx';
 import AddIcon from '@mui/icons-material/Add';
-import {AwaitableComponent, type AwaitableComponentProps} from 'awaitable-component';
-import {TextSettingDialog} from '@/base/components/settings/text/TextSettingDialog.tsx';
-import {useMemo} from 'react';
-import {useAppTitle} from '@/features/navigation-bar/hooks/useAppTitle.ts';
+import { AwaitableComponent, type AwaitableComponentProps } from 'awaitable-component';
+import { TextSettingDialog } from '@/base/components/settings/text/TextSettingDialog.tsx';
+import { useMemo } from 'react';
+import { useAppTitle } from '@/features/navigation-bar/hooks/useAppTitle.ts';
 
 const ExtensionStoreCard = ({
     indexUrl,

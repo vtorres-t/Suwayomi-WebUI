@@ -7,8 +7,8 @@
  */
 
 import gql from 'graphql-tag';
-import {TRACK_RECORD_BIND_FIELDS} from '@/lib/graphql/tracker/TrackRecordFragments.ts';
-import {TRACKER_SETTING_FIELDS} from '@/lib/graphql/tracker/TrackFragments.ts';
+import { TRACK_RECORD_BIND_FIELDS } from '@/lib/graphql/tracker/TrackRecordFragments.ts';
+import { TRACKER_SETTING_FIELDS } from '@/lib/graphql/tracker/TrackFragments.ts';
 
 export const TRACKER_LOGIN_OAUTH = gql`
     ${TRACKER_SETTING_FIELDS}

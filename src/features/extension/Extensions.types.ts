@@ -6,7 +6,7 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-import type {ExtensionStoreType, ExtensionType} from '@/lib/graphql/generated/graphql-base.types.ts';
+import type { ExtensionStoreType, ExtensionType } from '@/lib/graphql/generated/graphql-base.types.ts';
 
 export enum ExtensionAction {
     UPDATE = 'UPDATE',

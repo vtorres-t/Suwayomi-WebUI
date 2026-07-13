@@ -7,11 +7,11 @@
  */
 
 import Stack from '@mui/material/Stack';
-import {useLingui} from '@lingui/react/macro';
-import type {TExtension} from '@/features/extension/Extensions.types.ts';
-import {ExtensionMetadata} from '@/features/extension/info/components/ExtensionMetadata.tsx';
-import {languageCodeToName} from '@/base/utils/Languages.ts';
-import {isNsfw} from '@/features/extension/Extensions.utils.ts';
+import { useLingui } from '@lingui/react/macro';
+import type { TExtension } from '@/features/extension/Extensions.types.ts';
+import { ExtensionMetadata } from '@/features/extension/info/components/ExtensionMetadata.tsx';
+import { languageCodeToName } from '@/base/utils/Languages.ts';
+import { isNsfw } from '@/features/extension/Extensions.utils.ts';
 
 export const Meta = ({ versionName, lang, contentWarning }: TExtension) => {
     const { t } = useLingui();

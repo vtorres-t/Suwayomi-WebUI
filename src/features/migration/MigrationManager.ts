@@ -6,11 +6,11 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-import type {LimitFunction} from 'p-limit';
+import type { LimitFunction } from 'p-limit';
 import pLimit from 'p-limit';
-import {create} from 'zustand';
-import {immer} from 'zustand/middleware/immer';
-import {devtools, persist} from 'zustand/middleware';
+import { create } from 'zustand';
+import { immer } from 'zustand/middleware/immer';
+import { devtools, persist } from 'zustand/middleware';
 import {
     type EntrySourceSearchResult,
     type MigratableEntry,
@@ -31,8 +31,8 @@ import {
     MIGRATE_SEARCH_ENTRY_GROUP_EXPAND_DEFAULT_STATE,
     MIGRATION_LOCAL_STORAGE_KEY,
 } from '@/features/migration/Migration.constants.ts';
-import {requestManager} from '@/lib/requests/RequestManager.ts';
-import {GET_MIGRATION_SOURCE_MANGAS_FETCH} from '@/lib/graphql/source/SourceMutation.ts';
+import { requestManager } from '@/lib/requests/RequestManager.ts';
+import { GET_MIGRATION_SOURCE_MANGAS_FETCH } from '@/lib/graphql/source/SourceMutation.ts';
 import type {
     GetMigrationSourceMangasFetchMutation,
     GetMigrationSourceMangasFetchMutationVariables,
@@ -40,9 +40,9 @@ import type {
     GetServerSettingsQueryVariables,
     MangaMigrationFieldsFragment,
 } from '@/lib/graphql/generated/graphql.ts';
-import {FetchSourceMangaType} from '@/lib/graphql/generated/graphql-base.types.ts';
-import {GET_SERVER_SETTINGS} from '@/lib/graphql/settings/SettingsQuery.ts';
-import {MangaMigration} from '@/features/migration/MangaMigration.ts';
+import { FetchSourceMangaType } from '@/lib/graphql/generated/graphql-base.types.ts';
+import { GET_SERVER_SETTINGS } from '@/lib/graphql/settings/SettingsQuery.ts';
+import { MangaMigration } from '@/features/migration/MangaMigration.ts';
 import type {
     MangaArtistInfo,
     MangaAuthorInfo,
@@ -53,26 +53,26 @@ import type {
     MangaThumbnailInfo,
     MangaTitleInfo,
 } from '@/features/manga/Manga.types.ts';
-import type {SourceIdInfo} from '@/features/source/Source.types.ts';
-import {assertIsDefined} from '@/base/Asserts.ts';
-import {ReactRouter} from '@/lib/react-router/ReactRouter.ts';
-import {AppRoutes} from '@/base/AppRoute.constants.ts';
-import {Confirmation} from '@/base/AppAwaitableComponent.ts';
-import {defaultPromiseErrorHandler} from '@/lib/DefaultPromiseErrorHandler.ts';
-import {t} from '@lingui/core/macro';
-import {enhancedCleanup} from '@/base/utils/Strings.ts';
-import {BrowseTab} from '@/features/browse/Browse.types.ts';
-import {Mangas} from '@/features/manga/services/Mangas.ts';
-import {MANGA_MIGRATION_FIELDS} from '@/lib/graphql/manga/MangaFragments.ts';
-import {ZustandUtil} from '@/lib/zustand/ZustandUtil.ts';
-import {getErrorMessage} from '@/lib/HelperFunctions.ts';
+import type { SourceIdInfo } from '@/features/source/Source.types.ts';
+import { assertIsDefined } from '@/base/Asserts.ts';
+import { ReactRouter } from '@/lib/react-router/ReactRouter.ts';
+import { AppRoutes } from '@/base/AppRoute.constants.ts';
+import { Confirmation } from '@/base/AppAwaitableComponent.ts';
+import { defaultPromiseErrorHandler } from '@/lib/DefaultPromiseErrorHandler.ts';
+import { t } from '@lingui/core/macro';
+import { enhancedCleanup } from '@/base/utils/Strings.ts';
+import { BrowseTab } from '@/features/browse/Browse.types.ts';
+import { Mangas } from '@/features/manga/services/Mangas.ts';
+import { MANGA_MIGRATION_FIELDS } from '@/lib/graphql/manga/MangaFragments.ts';
+import { ZustandUtil } from '@/lib/zustand/ZustandUtil.ts';
+import { getErrorMessage } from '@/lib/HelperFunctions.ts';
 import isEqual from 'lodash/fp/isEqual';
 import uniqBy from 'lodash/fp/uniqBy';
-import {MigrationEntries} from '@/features/migration/MigrationEntries.ts';
-import {Chapters} from '@/features/chapter/services/Chapters.ts';
-import {AppSession} from '@/base/AppSession.ts';
-import {ControlledPromise} from '@/lib/ControlledPromise.ts';
-import {d} from 'koration';
+import { MigrationEntries } from '@/features/migration/MigrationEntries.ts';
+import { Chapters } from '@/features/chapter/services/Chapters.ts';
+import { AppSession } from '@/base/AppSession.ts';
+import { ControlledPromise } from '@/lib/ControlledPromise.ts';
+import { d } from 'koration';
 import merge from 'lodash/fp/merge';
 import mapValues from 'lodash/fp/mapValues';
 

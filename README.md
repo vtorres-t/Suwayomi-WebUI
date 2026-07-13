@@ -52,7 +52,6 @@ Thus, there is no need to manually download any builds unless you want to host t
 
 See [CONTRIBUTING.md](./CONTRIBUTING.md).
 
-
 ## License
 
     Copyright (C) Contributors to the Suwayomi project

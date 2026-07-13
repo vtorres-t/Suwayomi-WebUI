@@ -13,9 +13,9 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import TextField from '@mui/material/TextField';
 import DialogActions from '@mui/material/DialogActions';
-import {useEffect, useMemo, useState} from 'react';
-import {useLingui} from '@lingui/react/macro';
-import {PasswordTextField} from '@/base/components/inputs/PasswordTextField.tsx';
+import { useEffect, useMemo, useState } from 'react';
+import { useLingui } from '@lingui/react/macro';
+import { PasswordTextField } from '@/base/components/inputs/PasswordTextField.tsx';
 
 export type TextSettingDialogProps = {
     settingName: string;

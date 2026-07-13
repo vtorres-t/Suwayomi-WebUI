@@ -6,50 +6,50 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-import {useCallback, useEffect, useMemo, useState} from 'react';
-import {fromEvent} from 'file-selector';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { fromEvent } from 'file-selector';
 import IconButton from '@mui/material/IconButton';
 import AddIcon from '@mui/icons-material/Add';
-import {StringParam, useQueryParam} from 'use-query-params';
+import { StringParam, useQueryParam } from 'use-query-params';
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import {Link} from 'react-router-dom';
-import {useWindowEvent} from '@mantine/hooks';
-import {useLingui} from '@lingui/react/macro';
-import {CustomTooltip} from '@/base/components/CustomTooltip.tsx';
-import {requestManager} from '@/lib/requests/RequestManager.ts';
-import {AppbarSearch} from '@/base/components/AppbarSearch.tsx';
-import {LoadingPlaceholder} from '@/base/components/feedback/LoadingPlaceholder.tsx';
-import {makeToast} from '@/base/utils/Toast.ts';
-import {LanguageSelect} from '@/base/components/inputs/LanguageSelect.tsx';
-import {ExtensionCard} from '@/features/browse/extensions/components/ExtensionCard.tsx';
-import {StyledGroupedVirtuoso} from '@/base/components/virtuoso/StyledGroupedVirtuoso.tsx';
-import {StyledGroupHeader} from '@/base/components/virtuoso/StyledGroupHeader.tsx';
-import {StyledGroupItemWrapper} from '@/base/components/virtuoso/StyledGroupItemWrapper.tsx';
-import {EmptyViewAbsoluteCentered} from '@/base/components/feedback/EmptyViewAbsoluteCentered.tsx';
-import {defaultPromiseErrorHandler} from '@/lib/DefaultPromiseErrorHandler.ts';
-import {VirtuosoUtil} from '@/lib/virtuoso/Virtuoso.util.tsx';
+import { Link } from 'react-router-dom';
+import { useWindowEvent } from '@mantine/hooks';
+import { useLingui } from '@lingui/react/macro';
+import { CustomTooltip } from '@/base/components/CustomTooltip.tsx';
+import { requestManager } from '@/lib/requests/RequestManager.ts';
+import { AppbarSearch } from '@/base/components/AppbarSearch.tsx';
+import { LoadingPlaceholder } from '@/base/components/feedback/LoadingPlaceholder.tsx';
+import { makeToast } from '@/base/utils/Toast.ts';
+import { LanguageSelect } from '@/base/components/inputs/LanguageSelect.tsx';
+import { ExtensionCard } from '@/features/browse/extensions/components/ExtensionCard.tsx';
+import { StyledGroupedVirtuoso } from '@/base/components/virtuoso/StyledGroupedVirtuoso.tsx';
+import { StyledGroupHeader } from '@/base/components/virtuoso/StyledGroupHeader.tsx';
+import { StyledGroupItemWrapper } from '@/base/components/virtuoso/StyledGroupItemWrapper.tsx';
+import { EmptyViewAbsoluteCentered } from '@/base/components/feedback/EmptyViewAbsoluteCentered.tsx';
+import { defaultPromiseErrorHandler } from '@/lib/DefaultPromiseErrorHandler.ts';
+import { VirtuosoUtil } from '@/lib/virtuoso/Virtuoso.util.tsx';
 import {
     filterExtensions,
     getLanguagesFromExtensions,
     groupExtensionsByLanguage,
     translateExtensionLanguage,
 } from '@/features/extension/Extensions.utils.ts';
-import type {TExtension} from '@/features/extension/Extensions.types.ts';
-import {ExtensionAction, ExtensionGroupState, ExtensionState} from '@/features/extension/Extensions.types.ts';
-import {EXTENSION_ACTION_TO_FAILURE_TRANSLATION_MAP} from '@/features/extension/Extensions.constants.ts';
-import {AppRoutes} from '@/base/AppRoute.constants.ts';
-import {getErrorMessage} from '@/lib/HelperFunctions.ts';
-import {STABLE_EMPTY_ARRAY} from '@/base/Base.constants.ts';
+import type { TExtension } from '@/features/extension/Extensions.types.ts';
+import { ExtensionAction, ExtensionGroupState, ExtensionState } from '@/features/extension/Extensions.types.ts';
+import { EXTENSION_ACTION_TO_FAILURE_TRANSLATION_MAP } from '@/features/extension/Extensions.constants.ts';
+import { AppRoutes } from '@/base/AppRoute.constants.ts';
+import { getErrorMessage } from '@/lib/HelperFunctions.ts';
+import { STABLE_EMPTY_ARRAY } from '@/base/Base.constants.ts';
 import {
     createUpdateMetadataServerSettings,
     useMetadataServerSettings,
 } from '@/features/settings/services/ServerSettingsMetadata.ts';
-import type {MetadataBrowseSettings} from '@/features/browse/Browse.types.ts';
-import {useAppAction} from '@/features/navigation-bar/hooks/useAppAction.ts';
-import {SearchParam} from '@/base/Base.types.ts';
-import {i18n} from '@/i18n';
+import type { MetadataBrowseSettings } from '@/features/browse/Browse.types.ts';
+import { useAppAction } from '@/features/navigation-bar/hooks/useAppAction.ts';
+import { SearchParam } from '@/base/Base.types.ts';
+import { i18n } from '@/i18n';
 
 const LANGUAGE = 0;
 const EXTENSIONS = 1;

@@ -6,31 +6,31 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-import {useEffect, useState} from 'react';
+import { useEffect, useState } from 'react';
 import Card from '@mui/material/Card';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import SettingsIcon from '@mui/icons-material/Settings';
 import Stack from '@mui/material/Stack';
-import {useLingui} from '@lingui/react/macro';
-import {requestManager} from '@/lib/requests/RequestManager.ts';
-import {defaultPromiseErrorHandler} from '@/lib/DefaultPromiseErrorHandler.ts';
-import type {InstalledStates, TExtension} from '@/features/extension/Extensions.types.ts';
-import {ExtensionAction, ExtensionState} from '@/features/extension/Extensions.types.ts';
+import { useLingui } from '@lingui/react/macro';
+import { requestManager } from '@/lib/requests/RequestManager.ts';
+import { defaultPromiseErrorHandler } from '@/lib/DefaultPromiseErrorHandler.ts';
+import type { InstalledStates, TExtension } from '@/features/extension/Extensions.types.ts';
+import { ExtensionAction, ExtensionState } from '@/features/extension/Extensions.types.ts';
 import {
     EXTENSION_ACTION_TO_NEXT_ACTION_MAP,
     EXTENSION_ACTION_TO_STATE_MAP,
     INSTALLED_STATE_TO_TRANSLATION_MAP,
 } from '@/features/extension/Extensions.constants.ts';
-import {getInstalledState, isNsfw, updateExtension} from '@/features/extension/Extensions.utils.ts';
-import {CustomTooltip} from '@/base/components/CustomTooltip.tsx';
-import {ListCardAvatar} from '@/base/components/lists/cards/ListCardAvatar.tsx';
-import {ListCardContent} from '@/base/components/lists/cards/ListCardContent.tsx';
-import {AppRoutes} from '@/base/AppRoute.constants.ts';
-import {MUIUtil} from '@/lib/mui/MUI.util.ts';
-import {OptionalCardActionAreaLink} from '@/base/components/lists/cards/OptionalCardActionAreaLink.tsx';
-import {languageCodeToName} from '@/base/utils/Languages.ts';
+import { getInstalledState, isNsfw, updateExtension } from '@/features/extension/Extensions.utils.ts';
+import { CustomTooltip } from '@/base/components/CustomTooltip.tsx';
+import { ListCardAvatar } from '@/base/components/lists/cards/ListCardAvatar.tsx';
+import { ListCardContent } from '@/base/components/lists/cards/ListCardContent.tsx';
+import { AppRoutes } from '@/base/AppRoute.constants.ts';
+import { MUIUtil } from '@/lib/mui/MUI.util.ts';
+import { OptionalCardActionAreaLink } from '@/base/components/lists/cards/OptionalCardActionAreaLink.tsx';
+import { languageCodeToName } from '@/base/utils/Languages.ts';
 
 interface IProps {
     extension: TExtension;

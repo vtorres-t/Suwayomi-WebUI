@@ -6,7 +6,7 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-import type {CodegenConfig} from '@graphql-codegen/cli';
+import type { CodegenConfig } from '@graphql-codegen/cli';
 // eslint-disable-next-line import-x/no-extraneous-dependencies
 import 'dotenv/config';
 
@@ -37,7 +37,7 @@ const config: CodegenConfig = {
             plugins: ['typescript-operations'],
             config: {
                 importSchemaTypesFrom: 'src/lib/graphql/generated/graphql-base.types.ts',
-                nonOptionalTypename: true
+                nonOptionalTypename: true,
             },
         },
         'src/lib/graphql/generated/apollo-helpers.ts': {

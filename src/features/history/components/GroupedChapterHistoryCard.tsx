@@ -21,7 +21,9 @@ import { Chapters } from '@/features/chapter/services/Chapters.ts';
 
 export const GroupedChapterHistoryCard = memo(({ chapters }: { chapters: ChapterHistoryListFieldsFragment[] }) => {
     const processedData = useMemo(() => {
-        if (!chapters || chapters.length === 0) {return null;}
+        if (!chapters || chapters.length === 0) {
+            return null;
+        }
 
         const sortedByNumber = [...chapters].sort((a, b) => (a.chapterNumber ?? 0) - (b.chapterNumber ?? 0));
         const sortedByReadDate = [...chapters].sort((a, b) => Number(b.lastReadAt) - Number(a.lastReadAt));
@@ -39,7 +41,9 @@ export const GroupedChapterHistoryCard = memo(({ chapters }: { chapters: Chapter
         };
     }, [chapters]);
 
-    if (!processedData) {return null;}
+    if (!processedData) {
+        return null;
+    }
 
     const { firstChapterName, lastChapterName, lastReadAt, mostRecentChapter, manga } = processedData;
 

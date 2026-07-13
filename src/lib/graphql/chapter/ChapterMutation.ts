@@ -7,8 +7,8 @@
  */
 
 import gql from 'graphql-tag';
-import {CHAPTER_META_FIELDS} from '@/lib/graphql/chapter/ChapterFragments.ts';
-import {TRACK_RECORD_BIND_FIELDS} from '@/lib/graphql/tracker/TrackRecordFragments.ts';
+import { CHAPTER_META_FIELDS } from '@/lib/graphql/chapter/ChapterFragments.ts';
+import { TRACK_RECORD_BIND_FIELDS } from '@/lib/graphql/tracker/TrackRecordFragments.ts';
 
 // makes the server fetch and return the pages of a chapter
 export const GET_CHAPTER_PAGES_FETCH = gql`
