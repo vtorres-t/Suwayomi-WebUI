@@ -62,9 +62,9 @@ export const LibraryOptionsPanel = ({
     category: CategoryMetadataInfo;
     open: boolean;
     onClose: () => void;
-    uniqueSources?: string[];
+    uniqueSources?: Array<{ id: string; name: string; displayName?: string }>;
     selectedSource?: string | null;
-    onSourceChange: (source: string | undefined) => void;
+    onSourceChange: (sourceId: string | undefined) => void;
 }) => {
     const { t } = useLingui();
 
@@ -159,12 +159,12 @@ export const LibraryOptionsPanel = ({
                                 checked={!selectedSource}
                                 onChange={() => onSourceChange(undefined)}
                             />
-                            {uniqueSources.map((sourceName) => (
+                            {uniqueSources.map((source) => (
                                 <RadioInput
-                                    key={sourceName}
-                                    label={sourceName}
-                                    checked={selectedSource === sourceName}
-                                    onChange={() => onSourceChange(sourceName)}
+                                    key={source.id}
+                                    label={source.displayName || source.name}
+                                    checked={selectedSource === source.id}
+                                    onChange={() => onSourceChange(source.id)}
                                 />
                             ))}
                         </>

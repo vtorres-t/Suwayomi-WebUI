@@ -107,7 +107,15 @@ export function Library() {
             return STABLE_EMPTY_ARRAY;
         }
         const sources = categoryMangas.map((manga: any) => manga.source).filter(Boolean);
-        return Array.from(new Set(sources)).sort();
+        const uniqueMap = new Map();
+        sources.forEach((source: any) => {
+            if (!uniqueMap.has(source.id)) {
+                uniqueMap.set(source.id, source);
+            }
+        });
+        return Array.from(uniqueMap.values()).sort((a: any, b: any) =>
+            (a.displayName || a.name).localeCompare(b.displayName || b.name),
+        );
     }, [categoryMangas]);
     const {
         visibleMangas: visibleLibraryMangas,
@@ -119,7 +127,7 @@ export function Library() {
         if (!selectedSource) {
             return visibleLibraryMangas;
         }
-        return visibleLibraryMangas.filter((manga: any) => manga.source === selectedSource);
+        return visibleLibraryMangas.filter((manga: any) => manga.source?.id === selectedSource);
     }, [visibleLibraryMangas, selectedSource]);
 
     const retryFetchCategoryMangas = useCallback(

@@ -22,9 +22,9 @@ export const LibraryToolbarMenu = ({
     onSourceChange,
 }: {
     category: ComponentProps<typeof LibraryOptionsPanel>['category'];
-    uniqueSources: string[];
+    uniqueSources: Array<{ id: string; name: string; displayName?: string }>;
     selectedSource: string | null | undefined;
-    onSourceChange: (source: string | undefined) => void;
+    onSourceChange: (sourceId: string | undefined) => void;
 }) => {
     const { t } = useLingui();
 
