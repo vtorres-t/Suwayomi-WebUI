@@ -18,19 +18,19 @@ import { getCategoryMetadata } from '@/features/category/services/CategoryMetada
 export const LibraryToolbarMenu = ({
     category,
     uniqueSources,
-    selectedSource,
+    sourceFilters = {},
     onSourceChange,
 }: {
     category: ComponentProps<typeof LibraryOptionsPanel>['category'];
     uniqueSources: Array<{ id: string; name: string; displayName?: string }>;
-    selectedSource: string | null | undefined;
-    onSourceChange: (sourceId: string | undefined) => void;
+    sourceFilters?: Record<string, boolean> | null;
+    onSourceChange: (sourceId: string, checked: boolean | null) => void;
 }) => {
     const { t } = useLingui();
 
     const [open, setOpen] = useState(false);
     const options = getCategoryMetadata(category);
-    const isSourceFilterActive = !!selectedSource;
+    const isSourceFilterActive = !!(sourceFilters && Object.keys(sourceFilters).length > 0);
     const active =
         options.hasDownloadedChapters != null ||
         options.hasUnreadChapters != null ||
@@ -52,7 +52,7 @@ export const LibraryToolbarMenu = ({
                 open={open}
                 onClose={() => setOpen(false)}
                 uniqueSources={uniqueSources}
-                selectedSource={selectedSource}
+                sourceFilters={sourceFilters}
                 onSourceChange={onSourceChange}
             />
         </>

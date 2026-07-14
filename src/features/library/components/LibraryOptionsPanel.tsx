@@ -56,15 +56,15 @@ export const LibraryOptionsPanel = ({
     open,
     onClose,
     uniqueSources = STABLE_EMPTY_ARRAY,
-    selectedSource = null,
+    sourceFilters = {},
     onSourceChange,
 }: {
     category: CategoryMetadataInfo;
     open: boolean;
     onClose: () => void;
     uniqueSources?: Array<{ id: string; name: string; displayName?: string }>;
-    selectedSource?: string | null;
-    onSourceChange: (sourceId: string | undefined) => void;
+    sourceFilters?: Record<string, boolean> | null;
+    onSourceChange: (sourceId: string, checked: boolean | null) => void;
 }) => {
     const { t } = useLingui();
 
@@ -154,19 +154,18 @@ export const LibraryOptionsPanel = ({
                                 />
                             ))}
                             <FormLabel sx={{ mt: 2 }}>{t`Sources`}</FormLabel>
-                            <RadioInput
-                                label={t`All`}
-                                checked={!selectedSource}
-                                onChange={() => onSourceChange(undefined)}
-                            />
-                            {uniqueSources.map((source) => (
-                                <RadioInput
-                                    key={source.id}
-                                    label={source.displayName || source.name}
-                                    checked={selectedSource === source.id}
-                                    onChange={() => onSourceChange(source.id)}
-                                />
-                            ))}
+                            {uniqueSources.map((source) => {
+                                const currentStatus = sourceFilters?.[source.id] ?? null;
+
+                                return (
+                                    <ThreeStateCheckboxInput
+                                        key={source.id}
+                                        label={source.displayName || source.name}
+                                        checked={currentStatus}
+                                        onChange={(checked) => onSourceChange(source.id, checked ?? null)}
+                                    />
+                                );
+                            })}
                         </>
                     );
                 }

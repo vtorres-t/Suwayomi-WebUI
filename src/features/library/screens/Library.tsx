@@ -11,7 +11,7 @@ import Chip from '@mui/material/Chip';
 import Tab from '@mui/material/Tab';
 import { styled, useTheme } from '@mui/material/styles';
 import { useCallback, useMemo, useState } from 'react';
-import { NumberParam, StringParam, useQueryParam } from 'use-query-params';
+import { JsonParam, NumberParam, StringParam, useQueryParam } from 'use-query-params';
 import Button from '@mui/material/Button';
 import { Link } from 'react-router-dom';
 import Box from '@mui/material/Box';
@@ -91,7 +91,7 @@ export function Library() {
 
     const [tabSearchParam, setTabSearchParam] = useQueryParam(SearchParam.TAB, NumberParam);
     const [query] = useQueryParam(SearchParam.QUERY, StringParam);
-    const [selectedSource, setSelectedSource] = useQueryParam('source', StringParam);
+    const [sourceFilters, setSourceFilters] = useQueryParam('sources', JsonParam);
 
     const activeTab: (typeof tabs)[number] | undefined = tabs.find((tab) => tab.id === tabSearchParam) ?? tabs[0];
 
@@ -124,15 +124,48 @@ export function Library() {
     } = useGetVisibleLibraryMangas(categoryMangas as any, activeTab);
 
     const mangas = useMemo(() => {
-        if (!selectedSource) {
+        if (!sourceFilters || Object.keys(sourceFilters).length === 0) {
             return visibleLibraryMangas;
         }
-        return visibleLibraryMangas.filter((manga: any) => manga.source?.id === selectedSource);
-    }, [visibleLibraryMangas, selectedSource]);
+
+        const entries = Object.entries(sourceFilters);
+        const includedIds = entries.filter(([_, value]) => value === true).map(([id]) => id);
+        const excludedIds = entries.filter(([_, value]) => value === false).map(([id]) => id);
+
+        return visibleLibraryMangas.filter((manga: any) => {
+            const mSourceId = manga.source?.id;
+
+            if (includedIds.length > 0 && !includedIds.includes(mSourceId)) {
+                return false;
+            }
+            if (excludedIds.includes(mSourceId)) {
+                return false;
+            }
+
+            return true;
+        });
+    }, [visibleLibraryMangas, sourceFilters]);
 
     const retryFetchCategoryMangas = useCallback(
         () => refetchCategoryMangas().catch(defaultPromiseErrorHandler('Library::refetchCategoryMangas')),
         [refetchCategoryMangas, activeTab],
+    );
+
+    const handleSourceChange = useCallback(
+        (sourceId: string, checked: boolean | null) => {
+            setSourceFilters((prev: Record<string, boolean> | undefined) => {
+                const next = { ...prev };
+
+                if (checked === null) {
+                    delete next[sourceId];
+                } else {
+                    next[sourceId] = checked;
+                }
+
+                return Object.keys(next).length ? next : undefined;
+            });
+        },
+        [setSourceFilters],
     );
 
     const mangaIds = useMemo(() => mangas.map((manga) => manga.id), [mangas]);
@@ -233,8 +266,8 @@ export function Library() {
                     <LibraryToolbarMenu
                         category={activeTab}
                         uniqueSources={uniqueSources}
-                        selectedSource={selectedSource}
-                        onSourceChange={setSelectedSource}
+                        sourceFilters={sourceFilters as Record<string, boolean> | undefined}
+                        onSourceChange={handleSourceChange}
                     />
                     <UpdateChecker categoryId={activeTab?.id} />
                 </>
