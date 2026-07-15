@@ -15,6 +15,7 @@ import { JsonParam, NumberParam, StringParam, useQueryParam } from 'use-query-pa
 import Button from '@mui/material/Button';
 import { Link } from 'react-router-dom';
 import Box from '@mui/material/Box';
+import CircularProgress from '@mui/material/CircularProgress';
 import { useLingui } from '@lingui/react/macro';
 import { plural } from '@lingui/core/macro';
 import { requestManager } from '@/lib/requests/RequestManager.ts';
@@ -355,8 +356,16 @@ export function Library() {
                     const totalCount = isCurrentTabActive ? visibleLibraryMangas.length : (tab.mangas?.totalCount ?? 0);
 
                     const filtradosCount = isCurrentTabActive ? mangas.length : totalCount;
-                    const labelText =
-                        filtradosCount === totalCount ? `${totalCount}` : `${filtradosCount} / ${totalCount}`;
+                    let labelContent: React.ReactNode;
+
+                    if (isCurrentTabActive && mangaLoading) {
+                        labelContent = (
+                            <CircularProgress size={12} color="inherit" sx={{ display: 'block', opacity: 0.7 }} />
+                        );
+                    } else {
+                        labelContent =
+                            filtradosCount === totalCount ? `${totalCount}` : `${filtradosCount} / ${totalCount}`;
+                    }
 
                     return (
                         <Tab
@@ -365,7 +374,7 @@ export function Library() {
                             label={
                                 <TitleWithSizeTag>
                                     {tab.name}
-                                    {showTabSize ? <TitleSizeTag label={labelText} /> : null}
+                                    {showTabSize ? <TitleSizeTag label={labelContent} /> : null}
                                 </TitleWithSizeTag>
                             }
                             value={tab.id}

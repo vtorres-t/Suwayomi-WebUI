@@ -36,7 +36,7 @@ export const CATEGORY_LIBRARY_FIELDS = gql`
         meta {
             ...CATEGORY_META_FIELDS
         }
-        mangas {
+        mangas(inLibrary: true) {
             totalCount
         }
     }

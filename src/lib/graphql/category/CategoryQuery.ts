@@ -124,10 +124,10 @@ export const GET_CATEGORY_MANGAS = gql`
     ${MANGA_LIBRARY_FIELDS}
     ${PAGE_INFO}
 
-    query GET_CATEGORY_MANGAS($id: Int!) {
+    query GET_CATEGORY_MANGAS($id: Int!, $inLibrary: Boolean) {
         category(id: $id) {
             id
-            mangas {
+            mangas(inLibrary: $inLibrary) {
                 nodes {
                     ...MANGA_LIBRARY_FIELDS
                 }
