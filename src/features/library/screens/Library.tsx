@@ -352,9 +352,11 @@ export function Library() {
             <TabsMenu value={activeTab.id} onChange={(e, newTab) => handleTabChange(newTab)}>
                 {tabs.map((tab) => {
                     const isCurrentTabActive = activeTab.id === tab.id;
-                    const totalCount = tab.mangas?.totalCount ?? 0;
+                    const totalCount = isCurrentTabActive ? visibleLibraryMangas.length : (tab.mangas?.totalCount ?? 0);
 
                     const filtradosCount = isCurrentTabActive ? mangas.length : totalCount;
+                    const labelText =
+                        filtradosCount === totalCount ? `${totalCount}` : `${filtradosCount} / ${totalCount}`;
 
                     return (
                         <Tab
@@ -363,7 +365,7 @@ export function Library() {
                             label={
                                 <TitleWithSizeTag>
                                     {tab.name}
-                                    {showTabSize ? <TitleSizeTag label={`${filtradosCount}/${totalCount}`} /> : null}
+                                    {showTabSize ? <TitleSizeTag label={labelText} /> : null}
                                 </TitleWithSizeTag>
                             }
                             value={tab.id}
