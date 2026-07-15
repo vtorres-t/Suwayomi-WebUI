@@ -15,6 +15,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - (**Migration**) Add "in library" indicator
 - (**Settings/WebView**) Add setting to enable/disable WebView
 - (**Settings/Sync**) Add sync settings
+- (**Extension**) Support installing external JARs
 
 ### Changed
 
@@ -42,6 +43,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - (**Download**) Respect manga chapter filters on bulk manga download in the library
 - (**History**) Show only the last read chapter per manga
 - (**Updates**) Show only the first unread chapter per manga per day
+- (**Manga**) Hide details page title copy button in unsupported environments (secure context (https, localhost) required)
 
 ### Fixed
 
@@ -75,8 +77,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - (**Browse**) Fix not being able to select some languages as an "allowed language" in some situations (e.g., browser native language "en-GB" prevented "English" from getting visually shown as enabled)
 - (**Manga/Library**) Fix mark as read/unread option not being disabled for manga without any chapters
 - (**Manga/Library**) Fix delete/download option not being disabled for manga without any chapters
+- (**Library**) Fix showing outdated category item after removing non library manga from categories
 - (**Source**) Fix changing configuration settings with multi option selection where a selected option does not exist anymore. (E.g. Komgas "Default libraries" setting, still having a library selected that has been deleted)
 - (**Download**) Fix not respecting chapter list filters for downloads
+- (**Download**) Fix showing outdated download info in for some chapter cards after clearing the download queue
 
 ## [20260509.01] (r3147) - 2026-05-09
 

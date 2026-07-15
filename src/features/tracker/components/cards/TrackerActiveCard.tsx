@@ -224,6 +224,7 @@ const TrackerActiveHeader = ({
                     />
                 </TrackerActiveLink>
             </Badge>
+
             <ListItemButton sx={{ flexGrow: 1 }} onClick={openSearch}>
                 <CustomTooltip title={trackRecord.title}>
                     <TypographyMaxLines sx={{ flexGrow: 1 }} lines={1}>
@@ -231,19 +232,18 @@ const TrackerActiveHeader = ({
                     </TypographyMaxLines>
                 </CustomTooltip>
             </ListItemButton>
-            <Stack
-                sx={{
-                    justifyContent: 'center',
-                }}
-            >
+            <Stack sx={{ justifyContent: 'center', direction: 'row', alignItems: 'center' }}>
+                {!!navigator.clipboard && (
+                    <CustomTooltip title={t`Copy`}>
+                        <IconButton onClick={copyTitle} color="inherit">
+                            <ContentCopyIcon fontSize="small" />
+                        </IconButton>
+                    </CustomTooltip>
+                )}
+
                 <PopupState variant="popover" popupId={`tracker-active-menu-popup-${tracker.id}`}>
                     {(popupState) => (
                         <>
-                            <CustomTooltip title={t`Copy`}>
-                                <IconButton onClick={copyTitle} color="inherit">
-                                    <ContentCopyIcon fontSize="small" />
-                                </IconButton>
-                            </CustomTooltip>
                             <IconButton {...bindTrigger(popupState)}>
                                 <MoreVertIcon />
                             </IconButton>
