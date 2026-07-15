@@ -350,19 +350,26 @@ export function Library() {
     return (
         <TabsWrapper>
             <TabsMenu value={activeTab.id} onChange={(e, newTab) => handleTabChange(newTab)}>
-                {tabs.map((tab) => (
-                    <Tab
-                        sx={{ flexGrow: 1, maxWidth: 'unset' }}
-                        key={tab.id}
-                        label={
-                            <TitleWithSizeTag>
-                                {tab.name}
-                                {showTabSize ? <TitleSizeTag label={tab.mangas.totalCount} /> : null}
-                            </TitleWithSizeTag>
-                        }
-                        value={tab.id}
-                    />
-                ))}
+                {tabs.map((tab) => {
+                    const isCurrentTabActive = activeTab.id === tab.id;
+                    const totalCount = tab.mangas?.totalCount ?? 0;
+
+                    const filtradosCount = isCurrentTabActive ? mangas.length : totalCount;
+
+                    return (
+                        <Tab
+                            sx={{ flexGrow: 1, maxWidth: 'unset' }}
+                            key={tab.id}
+                            label={
+                                <TitleWithSizeTag>
+                                    {tab.name}
+                                    {showTabSize ? <TitleSizeTag label={`${filtradosCount}/${totalCount}`} /> : null}
+                                </TitleWithSizeTag>
+                            }
+                            value={tab.id}
+                        />
+                    );
+                })}
             </TabsMenu>
             {triggerGlobalSearchButton}
             {tabs.map((tab) => (
