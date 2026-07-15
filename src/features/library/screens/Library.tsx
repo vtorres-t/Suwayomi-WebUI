@@ -145,7 +145,7 @@ export function Library() {
 
             return true;
         });
-    }, [visibleLibraryMangas, sourceFilters]);
+    }, [visibleLibraryMangas, sourceFilters, filterKey]);
 
     const retryFetchCategoryMangas = useCallback(
         () => refetchCategoryMangas().catch(defaultPromiseErrorHandler('Library::refetchCategoryMangas')),
@@ -353,7 +353,7 @@ export function Library() {
             <TabsMenu value={activeTab.id} onChange={(e, newTab) => handleTabChange(newTab)}>
                 {tabs.map((tab) => {
                     const isCurrentTabActive = activeTab.id === tab.id;
-                    const totalCount = isCurrentTabActive ? visibleLibraryMangas.length : (tab.mangas?.totalCount ?? 0);
+                    const totalCount = tab.mangas?.totalCount ?? 0;
 
                     const filtradosCount = isCurrentTabActive ? mangas.length : totalCount;
                     let labelContent: React.ReactNode;
