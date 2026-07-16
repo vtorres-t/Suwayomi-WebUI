@@ -15,8 +15,6 @@
         "lint": "oxlint src tools",
         "format": "oxfmt --write .",
         "format:check": "oxfmt --check .",
-        "createCommitChangelog": "tsx tools/scripts/release/createCommitChangelog.ts",
-        "createReleaseChangelog": "tsx tools/scripts/release/createReleaseChangelog.ts",
         "updateDeps": "tsx tools/scripts/updateDependencies.ts",
         "gql:codegen-base": "graphql-codegen --config gql_codegen.ts",
         "gql:codegen-formatter": "tsx tools/scripts/codegenFormatter.ts",
@@ -24,7 +22,6 @@
         "dayjs:gen-locales-array": "tsx tools/scripts/dayjs/generateDayJsLocales.ts",
         "dayjs:gen-locales-import": "tsx tools/scripts/dayjs/generateDayJsLocalesImport.ts",
         "dayjs:gen-locales": "pnpm dayjs:gen-locales-array && pnpm dayjs:gen-locales-import",
-        "manga:gen-type-tags": "tsx tools/scripts/manga/generateMangaTypeTags.ts",
         "tsc": "tsgo",
         "tsc:legacy": "tsc",
         "prepare": "husky"
