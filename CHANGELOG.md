@@ -16,6 +16,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - (**Settings/WebView**) Add setting to enable/disable WebView
 - (**Settings/Sync**) Add sync settings
 - (**Extension**) Support installing external JARs
+- (**Reader**) Add auto background color setting
 
 ### Changed
 
@@ -39,6 +40,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - (**Reader**) Simplify changing settings in desktop sidebar
 - (**Reader**) Ignore tap zone clicks while window does not have focus
 - (**Reader**) Improve preloading pages from the previous/next chapter
+- (**Reader**) Show page number with the standard desktop progress bar selected
 - (**Category**) Require confirmation before deleting a category
 - (**Download**) Respect manga chapter filters on bulk manga download in the library
 - (**History**) Show only the last read chapter per manga
@@ -73,6 +75,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - (**Reader**) Fix infinite scroll immediately opening previous chapter with disabled transition page when opening reader
 - (**Reader**) Fix preserving scroll position
 - (**Reader**) Fix missing gap between chapters in continuous vertical and horizontal reading modes with disabled transition page
+- (**Reader**) Fix desktop standard progress bar open/close transition with double page reading mode
 - (**Browse**) Fix showing only nsfw sources in the browse source page when the "show nsfw" setting is disabled
 - (**Browse**) Fix not being able to select some languages as an "allowed language" in some situations (e.g., browser native language "en-GB" prevented "English" from getting visually shown as enabled)
 - (**Manga/Library**) Fix mark as read/unread option not being disabled for manga without any chapters
