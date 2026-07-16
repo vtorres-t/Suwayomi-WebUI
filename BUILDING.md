@@ -36,3 +36,19 @@ Compile typescript
 ### `pnpm oxlint`
 
 Lint
+
+### `pnpm prune && pnpm dedupe`
+
+Clean and remove duplicate dependencies in pnpm-lock.yaml
+
+### Full re-install pnpm-lock
+
+rm pnpm-lock.yaml
+
+rm -rf node_modules
+
+pnpm install
+
+### `pnpm dlx knip`
+
+### `pnpm dlx depcheck`

@@ -1,5 +1,4 @@
 import { FieldPolicy, FieldReadFunction, TypePolicies, TypePolicy } from '@apollo/client/cache';
-
 export type AboutServerPayloadKeySpecifier = (
     | 'buildTime'
     | 'name'
