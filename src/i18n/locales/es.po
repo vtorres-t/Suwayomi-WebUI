@@ -3798,3 +3798,7 @@ msgstr "Relaciones"
 #: src/features/browse/screens/BrowseSettings.tsx
 msgid "Show related for each manga"
 msgstr "Mostrar mangas relacionados"
+
+#: src/features/library/components/LibraryOptionsPanel.tsx
+msgid "Clear filters"
+msgstr "Limpiar filtros"

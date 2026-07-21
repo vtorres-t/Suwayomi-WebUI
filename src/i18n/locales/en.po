@@ -4312,3 +4312,7 @@ msgstr "Your library is empty"
 #: src/features/settings/Settings.constants.ts
 msgid "Your library will be accessible. Use this only on private networks or when otherwise securing access."
 msgstr "Your library will be accessible. Use this only on private networks or when otherwise securing access."
+
+#: src/features/library/components/LibraryOptionsPanel.tsx
+msgid "Clear filters"
+msgstr "Clear filters"

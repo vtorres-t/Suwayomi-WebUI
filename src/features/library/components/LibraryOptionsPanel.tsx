@@ -9,6 +9,8 @@
 import type { MessageDescriptor } from '@lingui/core';
 import FormLabel from '@mui/material/FormLabel';
 import RadioGroup from '@mui/material/RadioGroup';
+import IconButton from '@mui/material/IconButton';
+import Box from '@mui/material/Box';
 import { useLingui } from '@lingui/react/macro';
 import { msg } from '@lingui/core/macro';
 import type { ReactNode } from 'react';
@@ -125,12 +127,82 @@ export const LibraryOptionsPanel = ({
     );
     const isSourceFilterActive = librarySources.some((source) => categoryLibraryOptions.hasSource[source.id] != null);
 
+    const isAnyFilterActive =
+        categoryLibraryOptions.hasUnreadChapters != null ||
+        categoryLibraryOptions.hasReadChapters != null ||
+        categoryLibraryOptions.hasDownloadedChapters != null ||
+        categoryLibraryOptions.hasBookmarkedChapters != null ||
+        categoryLibraryOptions.hasDuplicateChapters != null ||
+        isStatusFilterActive ||
+        isTrackerFilterActive ||
+        isSourceFilterActive;
+
+    const handleClearFilters = () => {
+        updateCategoryLibraryOptions('hasUnreadChapters', null);
+        updateCategoryLibraryOptions('hasReadChapters', null);
+        updateCategoryLibraryOptions('hasDownloadedChapters', null);
+        updateCategoryLibraryOptions('hasBookmarkedChapters', null);
+        updateCategoryLibraryOptions('hasDuplicateChapters', null);
+
+        const clearedStatus = Object.values(MangaStatus).reduce(
+            (acc, status) => {
+                const nextAcc = { ...acc };
+                nextAcc[status] = null;
+                return nextAcc;
+            },
+            {} as Record<MangaStatus, null>,
+        );
+        updateCategoryLibraryOptions('hasStatus', clearedStatus);
+
+        const clearedTrackers = loggedInTrackers.reduce(
+            (acc, tracker) => {
+                const nextAcc = { ...acc };
+                nextAcc[tracker.id] = null;
+                return nextAcc;
+            },
+            {} as Record<string, null>,
+        );
+        updateCategoryLibraryOptions('hasTrackerBinding', clearedTrackers);
+
+        const clearedSources = librarySources.reduce(
+            (acc, source) => {
+                const nextAcc = { ...acc };
+                nextAcc[source.id] = null;
+                return nextAcc;
+            },
+            {} as Record<string, null>,
+        );
+        updateCategoryLibraryOptions('hasSource', clearedSources);
+    };
+
     return (
         <OptionsTabs<'filter' | 'sort' | 'display'>
             open={open}
             onClose={onClose}
             tabs={['filter', 'sort', 'display']}
-            tabTitle={(key) => t(TITLES[key])}
+            tabTitle={(key) => {
+                if (key === 'filter') {
+                    return (
+                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                            <span>{t(TITLES[key])}</span>
+                            <IconButton
+                                size="small"
+                                onClick={(e) => {
+                                    e.stopPropagation(); // Previene que la pestaña cambie de foco al hacer clic en el botón
+                                    handleClearFilters();
+                                }}
+                                disabled={!isAnyFilterActive} // Se deshabilita si no hay filtros activos
+                                color="warning"
+                                title={t`Clear filters`}
+                                sx={{ p: 0.5 }}
+                            >
+                                <Replay fontSize="small" />
+                            </IconButton>
+                        </Box>
+                    );
+                }
+                return t(TITLES[key]);
+            }}
             tabContent={(key) => {
                 if (key === 'filter') {
                     return (
