@@ -92,7 +92,7 @@ export function Library() {
 
     const [tabSearchParam, setTabSearchParam] = useQueryParam(SearchParam.TAB, NumberParam);
     const [query] = useQueryParam(SearchParam.QUERY, StringParam);
-    const [sourceFilters, setSourceFilters] = useQueryParam('sources', JsonParam);
+    const [sourceFilters] = useQueryParam('sources', JsonParam);
 
     const activeTab: (typeof tabs)[number] | undefined = tabs.find((tab) => tab.id === tabSearchParam) ?? tabs[0];
 
@@ -103,21 +103,6 @@ export function Library() {
         refetch: refetchCategoryMangas,
     } = requestManager.useGetCategoryMangas(activeTab?.id, { skip: !activeTab });
     const categoryMangas = categoryMangaResponse?.mangas.nodes ?? STABLE_EMPTY_ARRAY;
-    const uniqueSources = useMemo(() => {
-        if (!categoryMangas) {
-            return STABLE_EMPTY_ARRAY;
-        }
-        const sources = categoryMangas.map((manga: any) => manga.source).filter(Boolean);
-        const uniqueMap = new Map();
-        sources.forEach((source: any) => {
-            if (!uniqueMap.has(source.id)) {
-                uniqueMap.set(source.id, source);
-            }
-        });
-        return Array.from(uniqueMap.values()).sort((a: any, b: any) =>
-            (a.displayName || a.name).localeCompare(b.displayName || b.name),
-        );
-    }, [categoryMangas]);
     const {
         visibleMangas: visibleLibraryMangas,
         showFilteredOutMessage,
@@ -150,23 +135,6 @@ export function Library() {
     const retryFetchCategoryMangas = useCallback(
         () => refetchCategoryMangas().catch(defaultPromiseErrorHandler('Library::refetchCategoryMangas')),
         [refetchCategoryMangas, activeTab],
-    );
-
-    const handleSourceChange = useCallback(
-        (sourceId: string, checked: boolean | null) => {
-            setSourceFilters((prev: Record<string, boolean> | undefined) => {
-                const next = { ...prev };
-
-                if (checked === null) {
-                    delete next[sourceId];
-                } else {
-                    next[sourceId] = checked;
-                }
-
-                return Object.keys(next).length ? next : undefined;
-            });
-        },
-        [setSourceFilters],
     );
 
     const mangaIds = useMemo(() => mangas.map((manga) => manga.id), [mangas]);
@@ -264,12 +232,7 @@ export function Library() {
             {!isSelectModeActive && activeTab && (
                 <>
                     <AppbarSearch />
-                    <LibraryToolbarMenu
-                        category={activeTab}
-                        uniqueSources={uniqueSources}
-                        sourceFilters={sourceFilters as Record<string, boolean> | undefined}
-                        onSourceChange={handleSourceChange}
-                    />
+                    <LibraryToolbarMenu category={activeTab} />
                     <UpdateChecker categoryId={activeTab?.id} />
                 </>
             )}

@@ -538,10 +538,6 @@ msgstr "Auto scroll speed"
 msgid "Auto webtoon mode"
 msgstr "Auto webtoon mode"
 
-#: src/features/reader/settings/behaviour/ReaderBehaviourSettings.tsx
-msgid "Keep screen on while reading"
-msgstr "Keep screen on while reading"
-
 #: src/features/downloads/screens/DownloadSettings.tsx
 msgid "Auto-download"
 msgstr "Auto-download"
@@ -1140,6 +1136,10 @@ msgstr "Could not log out from KOReader Sync"
 msgid "Could not migrate manga"
 msgstr "Could not migrate manga"
 
+#: src/features/library/components/LibraryToolbarMenu.tsx
+msgid "Could not open random entry"
+msgstr "Could not open random entry"
+
 #: src/features/downloads/screens/DownloadQueue.tsx
 msgid "Could not remove all downloads from the queue"
 msgstr "Could not remove all downloads from the queue"
@@ -1261,10 +1261,6 @@ msgstr "Current:"
 #: src/features/tracker/Tracker.constants.ts
 msgid "Currently publishing"
 msgstr "Currently publishing"
-
-#: src/features/browse/screens/BrowseSettings.tsx
-msgid "Currently supported for: AniList, MyAnimeList"
-msgstr "Currently supported for: AniList, MyAnimeList"
 
 #: src/features/settings/Settings.constants.ts
 msgid "Custom"
@@ -2207,6 +2203,10 @@ msgstr "Keep previous and upcoming chapters visible while reading in continuous 
 msgid "Keep remote"
 msgstr "Keep remote"
 
+#: src/features/reader/settings/behaviour/ReaderBehaviourSettings.tsx
+msgid "Keep screen on"
+msgstr "Keep screen on"
+
 #: src/features/reader/settings/ReaderSettings.constants.tsx
 msgid "Keybinds"
 msgstr "Keybinds"
@@ -2828,6 +2828,10 @@ msgstr "Open in browser"
 msgid "Open page on exit"
 msgstr "Open page on exit"
 
+#: src/features/library/components/LibraryToolbarMenu.tsx
+msgid "Open random entry"
+msgstr "Open random entry"
+
 #: src/features/settings/screens/WebUISettings.tsx
 msgid "Open the WebUI when starting the server"
 msgstr "Open the WebUI when starting the server"
@@ -2994,6 +2998,10 @@ msgstr "Quick settings"
 #: src/features/manga/components/MangaBadges.tsx
 msgid "Read chapters"
 msgstr "Read chapters"
+
+#: src/features/library/components/LibraryOptionsPanel.tsx
+msgid "Random"
+msgstr "Random"
 
 #: src/features/reader/settings/screens/GlobalReaderSettings.tsx
 #: src/features/settings/screens/Settings.tsx
@@ -3560,6 +3568,7 @@ msgstr "Sort"
 
 #: src/features/browse/screens/Browse.tsx
 #: src/features/browse/screens/BrowseSettings.tsx
+#: src/features/library/components/LibraryOptionsPanel.tsx
 #: src/features/manga/components/details/MangaDetails.tsx
 #: src/features/source/browse/screens/SourceMangas.tsx
 msgid "Source"
