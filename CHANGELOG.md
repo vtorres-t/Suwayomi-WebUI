@@ -15,8 +15,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - (**Migration**) Add "in library" indicator
 - (**Settings/WebView**) Add setting to enable/disable WebView
 - (**Settings/Sync**) Add sync settings
+- (**Reader**) Add setting to keep the screen on while reading
 - (**Extension**) Support installing external JARs
 - (**Reader**) Add auto background color setting
+- (**Library**) Add source filter
+- (**Library**) Add random sort option to library
+- (**Library**) Add button to open random library entry
 
 ### Changed
 
@@ -46,6 +50,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - (**History**) Show only the last read chapter per manga
 - (**Updates**) Show only the first unread chapter per manga per day
 - (**Manga**) Hide details page title copy button in unsupported environments (secure context (https, localhost) required)
+- (**Library**) Collapse `Status`, `Tracked` and `Source` filters
 
 ### Fixed
 

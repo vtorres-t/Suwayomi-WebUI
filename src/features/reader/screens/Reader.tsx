@@ -28,7 +28,7 @@ import { getErrorMessage } from '@/lib/HelperFunctions.ts';
 import type { NavbarContextType } from '@/features/navigation-bar/NavigationBar.types.ts';
 import { withPropsFrom } from '@/base/hoc/withPropsFrom.tsx';
 import { useReaderResetStates } from '@/features/reader/hooks/useReaderResetStates.ts';
-import { useReaderWakeLock } from '@/features/reader/wake-lock/useReaderWakeLock.ts';
+import { useWakeLock } from '@/base/hooks/useWakeLock.ts';
 import { useReaderSetSettingsState } from '@/features/reader/hooks/useReaderSetSettingsState.ts';
 import { useReaderShowSettingPreviewOnChange } from '@/features/reader/hooks/useReaderShowSettingPreviewOnChange.ts';
 import { useReaderSetChaptersState } from '@/features/reader/hooks/useReaderSetChaptersState.ts';
@@ -70,16 +70,16 @@ const BaseReader = ({
         backgroundColor,
         shouldShowReadingModePreview,
         shouldShowTapZoneLayoutPreview,
+        shouldWakeLockScreen,
         useAutoBackgroundColorContinuousMode,
-        shouldKeepScreenReading,
     } = useReaderSettingsStore(
         'shouldSkipDupChapters',
         'shouldSkipFilteredChapters',
         'backgroundColor',
         'shouldShowReadingModePreview',
         'shouldShowTapZoneLayoutPreview',
+        'shouldWakeLockScreen',
         'useAutoBackgroundColorContinuousMode',
-        'shouldKeepScreenReading',
     );
     const readingMode = useReaderSettingsStore('readingMode');
     const readingDirection = useReaderSettingsStore('readingDirection');
@@ -160,7 +160,7 @@ const BaseReader = ({
     }, [mangaResponse.data?.manga]);
 
     useReaderResetStates();
-    useReaderWakeLock(shouldKeepScreenReading);
+    useWakeLock(shouldWakeLockScreen);
     useReaderSetSettingsState(
         mangaResponse,
         defaultSettingsResponse,
