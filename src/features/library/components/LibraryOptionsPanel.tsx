@@ -183,14 +183,15 @@ export const LibraryOptionsPanel = ({
             tabTitle={(key) => {
                 if (key === 'filter') {
                     return (
-                        <Box sx={{ p: 2, display: 'flex', flexDirection: 'column', gap: 1 }}>
+                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                             <span>{t(TITLES[key])}</span>
                             <IconButton
                                 size="small"
                                 onClick={handleClearFilters}
                                 disabled={!isAnyFilterActive}
                                 color="warning"
-                                sx={{ alignSelf: 'flex-end', mb: 1 }}
+                                title={t`Clear filters`}
+                                sx={{ p: 0.5 }}
                             >
                                 <Replay fontSize="small" />
                             </IconButton>
