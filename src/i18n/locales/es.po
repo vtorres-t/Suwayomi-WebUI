@@ -3802,3 +3802,11 @@ msgstr "Mostrar mangas relacionados"
 #: src/features/library/components/LibraryOptionsPanel.tsx
 msgid "Clear filters"
 msgstr "Limpiar filtros"
+
+#: src/features/library/components/LibraryToolbarMenu.tsx
+msgid "Open random entry"
+msgstr "Manga aleatorio"
+
+#: src/features/library/components/LibraryToolbarMenu.tsx
+msgid "Could not open random entry"
+msgstr "No se puede abrir manga aleatorio"
