@@ -153,7 +153,11 @@ const GLOBAL_READER_SETTING_OBJECT: Record<keyof IReaderSettingsGlobal, undefine
     shouldShowTapZoneLayoutPreview: undefined,
     shouldInformAboutMissingChapter: undefined,
     shouldInformAboutScanlatorChange: undefined,
+<<<<<<< HEAD
     shouldKeepScreenReading: undefined,
+=======
+    shouldWakeLockScreen: undefined,
+>>>>>>> upstream/master
     scrollAmount: undefined,
     shouldUseInfiniteScroll: undefined,
     shouldShowTransitionPage: undefined,
@@ -243,7 +247,11 @@ export const DEFAULT_READER_SETTINGS: IReaderSettings = {
     shouldShowTapZoneLayoutPreview: true,
     shouldInformAboutMissingChapter: true,
     shouldInformAboutScanlatorChange: true,
+<<<<<<< HEAD
     shouldKeepScreenReading: true,
+=======
+    shouldWakeLockScreen: true,
+>>>>>>> upstream/master
     scrollAmount: ReaderScrollAmount.LARGE,
     shouldUseInfiniteScroll: true,
     shouldShowTransitionPage: true,

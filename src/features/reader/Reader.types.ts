@@ -175,7 +175,11 @@ export interface IReaderSettingsGlobal {
     shouldShowTapZoneLayoutPreview: boolean;
     shouldInformAboutMissingChapter: boolean;
     shouldInformAboutScanlatorChange: boolean;
+<<<<<<< HEAD
     shouldKeepScreenReading: boolean;
+=======
+    shouldWakeLockScreen: boolean;
+>>>>>>> upstream/master
     scrollAmount: ReaderScrollAmount;
     shouldUseInfiniteScroll: boolean;
     shouldShowTransitionPage: boolean;
