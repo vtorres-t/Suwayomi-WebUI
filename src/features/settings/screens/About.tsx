@@ -22,6 +22,8 @@ import { VersionInfo } from '@/features/app-updates/components/VersionInfo.tsx';
 import { getErrorMessage } from '@/lib/HelperFunctions.ts';
 import { epochToDate } from '@/base/utils/DateHelper.ts';
 import { useAppTitle } from '@/features/navigation-bar/hooks/useAppTitle.ts';
+import { DebugInformation } from '@/features/settings/components/DebugInformation.tsx';
+import Stack from '@mui/material/Stack';
 
 export function About() {
     const { t } = useLingui();
@@ -153,6 +155,17 @@ export function About() {
                         secondary={`(${aboutWebUI.repoType.toUpperCase()}): ${aboutWebUI.repoUrl}`}
                     />
                 </ListItemLink>
+            </List>
+            <List
+                subheader={
+                    <ListSubheader component="div" id="about-webui-info">
+                        {t`Debug information`}
+                    </ListSubheader>
+                }
+            >
+                <Stack sx={{ px: 2, py: 1 }}>
+                    <DebugInformation />
+                </Stack>
             </List>
         </List>
     );
