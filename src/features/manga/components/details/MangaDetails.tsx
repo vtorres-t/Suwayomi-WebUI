@@ -27,7 +27,6 @@ import { FlexWrapButton } from '@/base/components/buttons/FlexWrapButton.tsx';
 import { TrackMangaButton } from '@/features/manga/components/TrackMangaButton.tsx';
 import { useManageMangaLibraryState } from '@/features/manga/hooks/useManageMangaLibraryState.tsx';
 import { Metadata as BaseMetadata } from '@/base/components/texts/Metadata.tsx';
-import { defaultPromiseErrorHandler } from '@/lib/DefaultPromiseErrorHandler.ts';
 import type { MangaType, SourceType } from '@/lib/graphql/generated/graphql-base.types.ts';
 import { useMetadataServerSettings } from '@/features/settings/services/ServerSettingsMetadata.ts';
 import { MANGA_STATUS_TO_TRANSLATION } from '@/features/manga/Manga.constants.ts';
@@ -54,6 +53,7 @@ import { DescriptionGenre } from '@/features/manga/components/details/Descriptio
 import { SearchLink } from '@/features/manga/components/details/SearchLink.tsx';
 import { IconBrowser } from '@/assets/icons/IconBrowser.tsx';
 import { MediaQuery } from '@/base/utils/MediaQuery.tsx';
+import { copyToClipboard } from '@/lib/HelperFunctions.ts';
 
 const DetailsWrapper = styled('div')(({ theme }) => ({
     display: 'flex',
@@ -225,15 +225,6 @@ export const MangaDetails = ({
 
     const { updateLibraryState } = useManageMangaLibraryState(manga);
 
-    const copyTitle = async () => {
-        try {
-            await navigator.clipboard.writeText(manga.title);
-            makeToast(t`Copied to clipboard`, 'info');
-        } catch (e) {
-            defaultPromiseErrorHandler('MangaDetails::copyTitleLongPress')(e);
-        }
-    };
-
     return (
         <DetailsWrapper>
             <TopContentWrapper url={Mangas.getThumbnailUrl(manga)} mangaThumbnailBackdrop={mangaThumbnailBackdrop}>
@@ -248,7 +239,7 @@ export const MangaDetails = ({
                             </SearchLink>
                             {!!navigator.clipboard && (
                                 <CustomTooltip title={t`Copy`}>
-                                    <IconButton onClick={copyTitle} color="inherit">
+                                    <IconButton onClick={() => copyToClipboard(manga.title)} color="inherit">
                                         <ContentCopyIcon fontSize="small" />
                                     </IconButton>
                                 </CustomTooltip>
