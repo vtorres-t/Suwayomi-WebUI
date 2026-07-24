@@ -35,6 +35,7 @@ import { AwaitableComponent, type AwaitableComponentProps } from 'awaitable-comp
 import { TextSettingDialog } from '@/base/components/settings/text/TextSettingDialog.tsx';
 import { useMemo } from 'react';
 import { useAppTitle } from '@/features/navigation-bar/hooks/useAppTitle.ts';
+import { ClipBoardGuard } from '@/base/components/guard/ClipBoardGuard.tsx';
 
 const ExtensionStoreCard = ({
     indexUrl,
@@ -111,6 +112,7 @@ const ExtensionStoreCard = ({
                                 </IconButton>
                             </CustomTooltip>
                         )}
+<<<<<<< HEAD
                         <CustomTooltip title={t`Copy index url`}>
                             <IconButton
                                 onClick={() => {
@@ -121,6 +123,32 @@ const ExtensionStoreCard = ({
                                 <ContentCopyIcon />
                             </IconButton>
                         </CustomTooltip>
+=======
+                        {contactDiscord && (
+                            <CustomTooltip title={t`Open discord`} disabled={!contactDiscord}>
+                                <IconButton
+                                    href={contactDiscord ?? undefined}
+                                    target="_blank"
+                                    rel="noreferrer"
+                                    color="inherit"
+                                >
+                                    <DiscordIcon />
+                                </IconButton>
+                            </CustomTooltip>
+                        )}
+                        <ClipBoardGuard>
+                            <CustomTooltip title={t`Copy index url`}>
+                                <IconButton
+                                    onClick={() => {
+                                        copyToClipboard(indexUrl);
+                                    }}
+                                    color="inherit"
+                                >
+                                    <ContentCopyIcon />
+                                </IconButton>
+                            </CustomTooltip>
+                        </ClipBoardGuard>
+>>>>>>> upstream/master
                         <CustomTooltip disabled={loading} title={t`Delete`}>
                             <IconButton
                                 disabled={loading}

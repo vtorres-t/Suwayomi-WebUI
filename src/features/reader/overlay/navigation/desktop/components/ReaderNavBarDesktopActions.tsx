@@ -24,8 +24,12 @@ import {
     getReaderPagesStore,
     useReaderChaptersStore,
     useReaderPagesStore,
+    useReaderStore,
 } from '@/features/reader/stores/ReaderStore.ts';
 import type { ChapterDownloadInfo, ChapterIdInfo } from '@/features/chapter/Chapter.types.ts';
+import { defaultPromiseErrorHandler } from '@/lib/DefaultPromiseErrorHandler.ts';
+import ShareIcon from '@mui/icons-material/Share';
+import { ShareGuard } from '@/base/components/guard/ShareGuard.tsx';
 
 const DownloadButton = ({ id = -1, isDownloaded }: ChapterIdInfo & ChapterDownloadInfo) => {
     const { t } = useLingui();
@@ -62,8 +66,10 @@ const DownloadButton = ({ id = -1, isDownloaded }: ChapterIdInfo & ChapterDownlo
 };
 
 export const ReaderNavBarDesktopActions = memo(() => {
-    const { id, isDownloaded, isBookmarked, realUrl } = useReaderChaptersStore((state) => ({
+    const mangaTitle = useReaderStore((state) => state.manga?.title);
+    const { id, name, isDownloaded, isBookmarked, realUrl } = useReaderChaptersStore((state) => ({
         id: state.currentChapter?.id ?? FALLBACK_CHAPTER.id,
+        name: state.currentChapter?.name ?? FALLBACK_CHAPTER.name,
         isDownloaded: state.currentChapter?.isDownloaded ?? FALLBACK_CHAPTER.isDownloaded,
         isBookmarked: state.currentChapter?.isBookmarked ?? FALLBACK_CHAPTER.isBookmarked,
         realUrl: state.currentChapter?.realUrl ?? FALLBACK_CHAPTER.realUrl,
@@ -107,6 +113,38 @@ export const ReaderNavBarDesktopActions = memo(() => {
                     <IconBrowser />
                 </IconButton>
             </CustomTooltip>
+<<<<<<< HEAD
+=======
+            <CustomTooltip title={t`Open in WebView`} disabled={!realUrl}>
+                <IconButton
+                    disabled={!realUrl}
+                    href={realUrl ? requestManager.getWebviewUrl(realUrl) : ''}
+                    rel="noreferrer"
+                    target="_blank"
+                    color="inherit"
+                >
+                    <IconWebView />
+                </IconButton>
+            </CustomTooltip>
+            <ShareGuard>
+                <CustomTooltip title={t`Share`} disabled={!realUrl}>
+                    <IconButton
+                        color="inherit"
+                        disabled={!realUrl}
+                        onClick={() =>
+                            navigator
+                                .share({
+                                    title: `${mangaTitle} - ${name}`,
+                                    url: realUrl ?? undefined,
+                                })
+                                .catch(defaultPromiseErrorHandler('MangaToolbarMenu::share'))
+                        }
+                    >
+                        <ShareIcon />
+                    </IconButton>
+                </CustomTooltip>
+            </ShareGuard>
+>>>>>>> upstream/master
         </Stack>
     );
 });

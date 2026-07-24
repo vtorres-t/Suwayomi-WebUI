@@ -37,6 +37,7 @@ import { defaultPromiseErrorHandler } from '@/lib/DefaultPromiseErrorHandler.ts'
 import { useLocalStorage } from '@/base/hooks/useStorage.tsx';
 import { MIGRATION_LOCAL_STORAGE_KEY } from '@/features/migration/Migration.constants.ts';
 import type { MigrationState } from '@/features/migration/Migration.types.ts';
+import { useNetwork, useOrientation, useViewportSize } from '@mantine/hooks';
 
 const PRIVACY_UNSAFE_SERVER_SETTINGS: (keyof ServerSettings)[] = [
     'socksProxyUsername',
@@ -245,7 +246,7 @@ export const DebugInformation = () => {
     const sources = sourcesRequest.data?.sources.nodes ?? STABLE_EMPTY_ARRAY;
 
     const areFromMultipleStores = useMemo(() => Sources.areFromMultipleStores(sources), [sources]);
-    const enabledSourcesCount = useMemo(() => Sources.filter(sources, { enabled: true }).length, [sources]);
+    const disabledSourcesCount = useMemo(() => Sources.filter(sources, { enabled: false }).length, [sources]);
     const nsfwSourcesCount = useMemo(() => Sources.filter(sources, { isNsfw: true }).length, [sources]);
     const pinnedSourcesCount = useMemo(() => Sources.filter(sources, { pinned: true }).length, [sources]);
 
@@ -295,7 +296,7 @@ export const DebugInformation = () => {
                 'Extension stores': extensionStoresCount,
                 'Extensions installed': extensions.length,
                 'Sources from different stores': areFromMultipleStores,
-                'Sources enabled': enabledSourcesCount,
+                'Sources disabled': disabledSourcesCount,
                 'Sources NSFW': nsfwSourcesCount,
                 'Sources pinned': pinnedSourcesCount,
                 'Show NSFW': clientSettings.settings.showNsfw,
@@ -315,7 +316,7 @@ export const DebugInformation = () => {
             extensionStoresCount,
             extensions.length,
             areFromMultipleStores,
-            enabledSourcesCount,
+            disabledSourcesCount,
             nsfwSourcesCount,
             pinnedSourcesCount,
             browserDebugInfo,
@@ -345,11 +346,14 @@ export const DebugInformation = () => {
         setReaderSettingsByReadingMode(settingsByReadingMode);
     }, [defaultReaderSettings.metadata, defaultReaderSettings.settings]);
 
+    const viewportSize = useViewportSize();
+    const orientation = useOrientation();
+    const network = useNetwork();
     useEffect(() => {
         getBrowserDebugInfo(baseUrl)
             .then(setBrowserDebugInfo)
             .catch(defaultPromiseErrorHandler('DebugInformation::getBrowserDebugInfo'));
-    }, [baseUrl]);
+    }, [baseUrl, viewportSize, orientation, network]);
 
     const isLoading =
         aboutRequest.loading ||
@@ -422,12 +426,14 @@ export const DebugInformation = () => {
         <Collapsable
             slots={{
                 headerWrapper: { sx: { alignItems: 'center' } },
-                collapse: { slotProps: { wrapperInner: { sx: { whiteSpace: 'pre' } } }, unmountOnExit: false },
+                collapse: {
+                    slotProps: { wrapperInner: { sx: { whiteSpace: 'pre', textWrap: 'pretty' } } },
+                },
             }}
             header={
                 <Stack sx={{ flexDirection: 'row', alignItems: 'center', gap: 1 }}>
                     {t`Show`}
-                    {'clipboard' in navigator && (
+                    {!!navigator.clipboard && (
                         <Button
                             variant="text"
                             size="small"
@@ -440,7 +446,7 @@ export const DebugInformation = () => {
                     )}
                 </Stack>
             }
-            collapse={<Stack ref={contentTextRef}>{mapObjectToMetadata(debugInfo)}</Stack>}
+            collapse={<Stack ref={contentTextRef}>{mapObjectToMetadata(debugInfo, 2)}</Stack>}
         />
     );
 };

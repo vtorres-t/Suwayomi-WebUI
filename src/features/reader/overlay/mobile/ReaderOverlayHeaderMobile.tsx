@@ -33,7 +33,8 @@ import {
     useReaderScrollbarStore,
     useReaderStore,
 } from '@/features/reader/stores/ReaderStore.ts';
-import { copyToClipboard } from '@/lib/HelperFunctions.ts';
+import { defaultPromiseErrorHandler } from '@/lib/DefaultPromiseErrorHandler.ts';
+import { ShareGuard } from '@/base/components/guard/ShareGuard.tsx';
 
 const DEFAULT_MANGA = { ...FALLBACK_MANGA, title: '' };
 
@@ -103,9 +104,53 @@ const BaseReaderOverlayHeaderMobile = ({ isVisible, ref }: MobileHeaderProps & {
                     >
                         {t`Open in browser`}
                     </MenuItem>
+<<<<<<< HEAD
                     <MenuItem disabled={!realUrl} onClick={() => copyToClipboard(title)}>
                         {t`Share`}
                     </MenuItem>
+=======
+                    <MenuItem
+                        component={Link}
+                        disabled={!realUrl}
+                        href={realUrl ? requestManager.getWebviewUrl(realUrl) : ''}
+                        rel="noreferrer"
+                        target="_blank"
+                    >
+                        {t`Open in WebView`}
+                    </MenuItem>
+                    <ShareGuard>
+                        <MenuItem
+                            disabled={!realUrl}
+                            onClick={() => {
+                                navigator
+                                    .share({
+                                        title: `${title} - ${name}`,
+                                        text: name,
+                                        url: realUrl ?? undefined,
+                                    })
+                                    .catch(defaultPromiseErrorHandler('ReaderOverlayHeaderMobile::share'));
+                            }}
+                        >
+                            {t`Share`}
+                        </MenuItem>
+                    </ShareGuard>
+                    <ShareGuard>
+                        <MenuItem
+                            disabled={!realUrl}
+                            onClick={() => {
+                                navigator
+                                    .share({
+                                        title: `${title} - ${name}`,
+                                        text: name,
+                                        url: realUrl ?? undefined,
+                                    })
+                                    .catch(defaultPromiseErrorHandler('ReaderOverlayHeaderMobile::share'));
+                            }}
+                        >
+                            {t`Share`}
+                        </MenuItem>
+                    </ShareGuard>
+>>>>>>> upstream/master
                 </Menu>
             </Stack>
         </Slide>
