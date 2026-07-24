@@ -32,10 +32,14 @@ import type {
     MangaInLibraryInfo,
     MangaSourceIdInfo,
     MangaTitleInfo,
+    MangaUrlInfo,
 } from '@/features/manga/Manga.types.ts';
+import ShareIcon from '@mui/icons-material/Share';
+import { defaultPromiseErrorHandler } from '@/lib/DefaultPromiseErrorHandler.ts';
+import { ShareGuard } from '@/base/components/guard/ShareGuard.tsx';
 
 interface IProps {
-    manga: MangaIdInfo & MangaInLibraryInfo & MangaSourceIdInfo & MangaTitleInfo;
+    manga: MangaIdInfo & MangaInLibraryInfo & MangaSourceIdInfo & MangaTitleInfo & MangaUrlInfo;
     onRefresh: () => any;
     refreshing: boolean;
 }
@@ -85,6 +89,24 @@ export const MangaToolbarMenu = ({ manga, onRefresh, refreshing }: IProps) => {
                             </IconButton>
                         </CustomTooltip>
                     )}
+                    <ShareGuard>
+                        <CustomTooltip title={t`Share`} disabled={!manga.realUrl}>
+                            <IconButton
+                                color="inherit"
+                                disabled={!manga.realUrl}
+                                onClick={() =>
+                                    navigator
+                                        .share({
+                                            title: manga.title,
+                                            url: manga.realUrl ?? undefined,
+                                        })
+                                        .catch(defaultPromiseErrorHandler('MangaToolbarMenu::share'))
+                                }
+                            >
+                                <ShareIcon />
+                            </IconButton>
+                        </CustomTooltip>
+                    </ShareGuard>
                     {manga.inLibrary && (
                         <>
                             <CustomTooltip title={t`Migrate`}>
@@ -195,6 +217,24 @@ export const MangaToolbarMenu = ({ manga, onRefresh, refreshing }: IProps) => {
                                 <ListItemText>{t`Edit manga categories`}</ListItemText>
                             </MenuItem>,
                         ]}
+                        <ShareGuard>
+                            <MenuItem
+                                disabled={!manga.realUrl}
+                                onClick={() =>
+                                    navigator
+                                        .share({
+                                            title: manga.title,
+                                            url: manga.realUrl ?? undefined,
+                                        })
+                                        .catch(defaultPromiseErrorHandler('MangaToolbarMenu::share'))
+                                }
+                            >
+                                <ListItemIcon>
+                                    <ShareIcon fontSize="small" />
+                                </ListItemIcon>
+                                <ListItemText>{t`Share`}</ListItemText>
+                            </MenuItem>
+                        </ShareGuard>
                     </Menu>
                 </>
             )}

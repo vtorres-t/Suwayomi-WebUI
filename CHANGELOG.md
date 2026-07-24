@@ -8,15 +8,19 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ### Added
 
-- /
+- (**Manga**) Add share button (secure context (localhost, https))
+- (**Reader**) Add share button to desktop navigation bar (secure context (localhost, https))
 
 ### Changed
 
-- /
+- (**Reader**) Hide share button in unsecure context (not localhost or https)
+- (**Reader**) Use device share functionality for "Share" button in reader mobile header (secure context (localhost, https))
+- (**Extension**) Hide extension store copy button in unsecure context (not localhost or https)
+- (**Library**) Open random manga based on active category and filters
 
 ### Fixed
 
-- /
+- (**Reader**) Fix electron asking for "wake lock" permission even with the "Keep screen on" setting disabled
 
 ## [20260722.01] (r3355) - 2026-07-22
 
