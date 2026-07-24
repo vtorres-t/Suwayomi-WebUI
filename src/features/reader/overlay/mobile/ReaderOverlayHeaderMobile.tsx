@@ -33,7 +33,8 @@ import {
     useReaderScrollbarStore,
     useReaderStore,
 } from '@/features/reader/stores/ReaderStore.ts';
-import { copyToClipboard } from '@/lib/HelperFunctions.ts';
+import { defaultPromiseErrorHandler } from '@/lib/DefaultPromiseErrorHandler.ts';
+import { ShareGuard } from '@/base/components/guard/ShareGuard.tsx';
 
 const DEFAULT_MANGA = { ...FALLBACK_MANGA, title: '' };
 
@@ -103,9 +104,38 @@ const BaseReaderOverlayHeaderMobile = ({ isVisible, ref }: MobileHeaderProps & {
                     >
                         {t`Open in browser`}
                     </MenuItem>
-                    <MenuItem disabled={!realUrl} onClick={() => copyToClipboard(title)}>
-                        {t`Share`}
-                    </MenuItem>
+                    <ShareGuard>
+                        <MenuItem
+                            disabled={!realUrl}
+                            onClick={() => {
+                                navigator
+                                    .share({
+                                        title: `${title} - ${name}`,
+                                        text: name,
+                                        url: realUrl ?? undefined,
+                                    })
+                                    .catch(defaultPromiseErrorHandler('ReaderOverlayHeaderMobile::share'));
+                            }}
+                        >
+                            {t`Share`}
+                        </MenuItem>
+                    </ShareGuard>
+                    <ShareGuard>
+                        <MenuItem
+                            disabled={!realUrl}
+                            onClick={() => {
+                                navigator
+                                    .share({
+                                        title: `${title} - ${name}`,
+                                        text: name,
+                                        url: realUrl ?? undefined,
+                                    })
+                                    .catch(defaultPromiseErrorHandler('ReaderOverlayHeaderMobile::share'));
+                            }}
+                        >
+                            {t`Share`}
+                        </MenuItem>
+                    </ShareGuard>
                 </Menu>
             </Stack>
         </Slide>

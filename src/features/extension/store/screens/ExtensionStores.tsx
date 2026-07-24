@@ -35,6 +35,7 @@ import { AwaitableComponent, type AwaitableComponentProps } from 'awaitable-comp
 import { TextSettingDialog } from '@/base/components/settings/text/TextSettingDialog.tsx';
 import { useMemo } from 'react';
 import { useAppTitle } from '@/features/navigation-bar/hooks/useAppTitle.ts';
+import { ClipBoardGuard } from '@/base/components/guard/ClipBoardGuard.tsx';
 
 const ExtensionStoreCard = ({
     indexUrl,
@@ -111,16 +112,18 @@ const ExtensionStoreCard = ({
                                 </IconButton>
                             </CustomTooltip>
                         )}
-                        <CustomTooltip title={t`Copy index url`}>
-                            <IconButton
-                                onClick={() => {
-                                    copyToClipboard(indexUrl);
-                                }}
-                                color="inherit"
-                            >
-                                <ContentCopyIcon />
-                            </IconButton>
-                        </CustomTooltip>
+                        <ClipBoardGuard>
+                            <CustomTooltip title={t`Copy index url`}>
+                                <IconButton
+                                    onClick={() => {
+                                        copyToClipboard(indexUrl);
+                                    }}
+                                    color="inherit"
+                                >
+                                    <ContentCopyIcon />
+                                </IconButton>
+                            </CustomTooltip>
+                        </ClipBoardGuard>
                         <CustomTooltip disabled={loading} title={t`Delete`}>
                             <IconButton
                                 disabled={loading}
