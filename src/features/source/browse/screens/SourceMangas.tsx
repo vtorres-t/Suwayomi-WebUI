@@ -59,6 +59,7 @@ import { useNavBarContext } from '@/features/navigation-bar/NavbarContext.tsx';
 import { VirtuosoUtil } from '@/lib/virtuoso/Virtuoso.util.tsx';
 import { MigrationManager } from '@/features/migration/MigrationManager.ts';
 import { ReactRouter } from '@/lib/react-router/ReactRouter.ts';
+import type { FilterChangeInput } from '@/lib/graphql/generated/graphql-base.types.ts';
 
 const DEFAULT_SOURCE: SourceIdInfo = { id: '-1' };
 
@@ -119,6 +120,7 @@ const useSourceManga = (
         GetSourceMangasFetchMutation,
         GetSourceMangasFetchMutationVariables
     >;
+
     switch (contentType) {
         case SourceContentType.POPULAR:
             result = requestManager.useGetSourcePopularMangas(sourceId, initialPages);
@@ -131,21 +133,27 @@ const useSourceManga = (
                 sourceId,
                 searchTerm ?? '',
                 filters.map((filter) => {
-                    const { position, state, group } = filter;
+                    const { positions, state } = filter;
 
-                    const isPartOfGroup = group !== undefined;
+                    const isPartOfGroup = positions.length > 1;
                     if (isPartOfGroup) {
-                        return {
-                            position: group,
-                            groupChange: {
+                        return positions.reduceRight((update, position, index) => {
+                            if (index === positions.length - 1) {
+                                return {
+                                    position: positions.slice(-1)[0],
+                                    [filter.type]: state,
+                                };
+                            }
+
+                            return {
                                 position,
-                                [filter.type]: state,
-                            },
-                        };
+                                groupChange: update,
+                            };
+                        }, {} as FilterChangeInput);
                     }
 
                     return {
-                        position,
+                        position: positions[0],
                         [filter.type]: state,
                     };
                 }),
