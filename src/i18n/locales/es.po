@@ -2246,6 +2246,10 @@ msgstr "Restaurar"
 msgid "Restore Backup"
 msgstr "Restaurar la copia de seguridad"
 
+#: src/features/settings/Settings.constants.ts
+msgid "Restoring"
+msgstr "Restaurando"
+
 #: src/features/backup/screens/Backup.tsx
 msgid "Restoring backup…"
 msgstr "Restaurando la copia de seguridad…"
@@ -4077,10 +4081,6 @@ msgstr "Arrastra para priorizar"
 msgid "Enable auto background color in continuous reading mode"
 msgstr "Activar el color de fondo automático en modo de lectura continua"
 
-#: src/features/settings/screens/ServerSettings.tsx
-msgid "Enable the WebView via CEF (Chromium)"
-msgstr "Permitir el WebView a través de CEF (Chromium)"
-
 #. placeholder {0}: entry.mangaTitle
 #. placeholder {1}: entry.mangaId
 #. placeholder {2}: entry.sourceId
@@ -4088,3 +4088,80 @@ msgstr "Permitir el WebView a través de CEF (Chromium)"
 #: src/features/migration/MigrationManager.ts
 msgid "Entry \"{0} ({1}; {sourceTitle} ({2}))\" in invalid state \"{3}\""
 msgstr "Entrada \"{0} ({1}; {sourceTitle} ({2})\" en estado inválido \"{3}\""
+
+#: src/features/settings/screens/ServerSettings.tsx
+msgid "Skip chapter metadata feed"
+msgstr "Omitir metadatos del capítulo"
+
+#: src/features/settings/screens/ServerSettings.tsx
+msgid "When enabled, download and streaming links are provided directly in the chapter list. KoSync strategies are applied, but PROMPT conflicts are ignored (treating local progress as priority)"
+msgstr "Cuando está habilitada, los enlaces de descarga y transmisión se proporcionan directamente en la lista de capítulos. Se aplican las estrategias de KoSync, pero se ignoran los conflictos de PROMPT (dando prioridad al progreso local)"
+
+#: src/features/extension/store/screens/ExtensionStores.tsx
+#: src/features/manga/components/details/MangaDetails.tsx
+#: src/features/reader/overlay/mobile/ReaderOverlayHeaderMobile.tsx
+#: src/features/tracker/components/cards/TrackerActiveCard.tsx
+#: src/lib/HelperFunctions.ts
+msgid "Copied to clipboard"
+msgstr "Copiado al portapapeles"
+
+#: src/lib/HelperFunctions.ts
+msgid "Could not copy to clipboard"
+msgstr "No se pudo copiar al portapapeles"
+
+#: src/features/settings/Settings.constants.ts
+msgid "Every 12 hours"
+msgstr "Cada 12 horas"
+
+#: src/features/settings/Settings.constants.ts
+msgid "Every 3 hours"
+msgstr "Cada 3 horas"
+
+#: src/features/settings/Settings.constants.ts
+msgid "Every 30 minutes"
+msgstr "Cada 30 minutos"
+
+#: src/features/settings/Settings.constants.ts
+msgid "Every 6 hours"
+msgstr "Cada 6 horas"
+
+#: src/features/settings/Settings.constants.ts
+msgid "Every hour"
+msgstr "Cada hora"
+
+#: src/features/settings/Settings.constants.ts
+msgid "Weekly"
+msgstr "Semanal"
+
+#: src/features/settings/screens/ServerSettings.tsx
+msgid "SyncYomi enabled"
+msgstr "SyncYomi habilitado"
+
+#: src/features/migration/Migration.constants.ts
+msgid "Searching…"
+msgstr "Buscando…"
+
+#: src/features/settings/components/DebugInformation.tsx
+msgid "Show"
+msgstr "Mostrar"
+
+#. placeholder {0}: webUIUpdateData?.checkForWebUIUpdate.tag
+#: src/features/app-updates/components/WebUIUpdateChecker.tsx
+msgid "WebUI version {0} available for download"
+msgstr "WebUI version {0} disponible"
+
+#: src/features/app-updates/components/WebUIUpdateChecker.tsx
+msgid "WebUI was updated to version {newVersion}"
+msgstr "WebUI ha sido actualizado a la versión {newVersion}"
+
+#: src/features/library/components/LibraryOptionsPanel.tsx
+msgid "Random"
+msgstr "Aleatorio"
+
+#: src/features/migration/Migration.constants.ts
+msgid "Pending…"
+msgstr "En progreso…"
+
+#: src/features/settings/components/DebugInformation.tsx
+msgid "Could not load data"
+msgstr "No se pueden cargar datos"

@@ -1631,10 +1631,6 @@ msgstr "Enable debug logs"
 msgid "Enable page read progress"
 msgstr "Enable page read progress"
 
-#: src/features/settings/screens/ServerSettings.tsx
-msgid "Enable the WebView via CEF (Chromium)"
-msgstr "Enable the WebView via CEF (Chromium)"
-
 #: src/features/downloads/screens/DownloadSettings.tsx
 msgid "Entries in excluded categories will not be downloaded even if they are also in included categories"
 msgstr "Entries in excluded categories will not be downloaded even if they are also in included categories"
@@ -2825,10 +2821,6 @@ msgstr "OPDS"
 #: src/features/reader/services/ReaderControls.ts
 msgid "Open"
 msgstr "Open"
-
-#: src/features/extension/store/screens/ExtensionStores.tsx
-msgid "Open discord"
-msgstr "Open discord"
 
 #: src/features/chapter/components/actions/ChapterActionMenuItems.tsx
 #: src/features/manga/components/details/MangaDetails.tsx
@@ -4226,10 +4218,6 @@ msgstr "WebUI version {0} available for download"
 #: src/features/app-updates/components/WebUIUpdateChecker.tsx
 msgid "WebUI was updated to version {newVersion}"
 msgstr "WebUI was updated to version {newVersion}"
-
-#: src/features/settings/screens/ServerSettings.tsx
-msgid "WebView"
-msgstr "WebView"
 
 #: src/features/settings/Settings.constants.ts
 msgid "Weekly"
