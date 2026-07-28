@@ -16,7 +16,7 @@ import { WebUIUpdateIntervalSetting } from '@/features/settings/components/webUI
 import { TextSetting } from '@/base/components/settings/text/TextSetting.tsx';
 import { SelectSetting } from '@/base/components/settings/SelectSetting.tsx';
 import type { WebUiInterface } from '@/lib/graphql/generated/graphql-base.types.ts';
-import { WebUiFlavor, RepoType } from '@/lib/graphql/generated/graphql-base.types.ts';
+import { RepoType, WebUiFlavor } from '@/lib/graphql/generated/graphql-base.types.ts';
 import { LoadingPlaceholder } from '@/base/components/feedback/LoadingPlaceholder.tsx';
 import { EmptyViewAbsoluteCentered } from '@/base/components/feedback/EmptyViewAbsoluteCentered.tsx';
 import { defaultPromiseErrorHandler } from '@/lib/DefaultPromiseErrorHandler.ts';
@@ -101,14 +101,6 @@ export const WebUISettings = () => {
                 values={WEB_UI_FLAVOR_SELECT_VALUES}
                 handleChange={(flavor) => updateSetting('webUIFlavor', flavor)}
             />
-            <ListItem>
-                <ListItemText primary={t`Open the WebUI when starting the server`} />
-                <Switch
-                    edge="end"
-                    checked={webUISettings.initialOpenInBrowserEnabled}
-                    onChange={(e) => updateSetting('initialOpenInBrowserEnabled', e.target.checked)}
-                />
-            </ListItem>
             <SelectSetting<WebUiInterface>
                 settingName={t`Interface`}
                 value={webUISettings.webUIInterface}

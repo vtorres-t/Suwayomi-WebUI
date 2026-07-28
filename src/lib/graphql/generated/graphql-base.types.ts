@@ -1977,7 +1977,6 @@ export type PartialSettingsType = Settings & {
     globalUpdateInterval?: Maybe<Scalars['Float']['output']>;
     /** @deprecated Removed - does not do anything */
     gqlDebugLogsEnabled?: Maybe<Scalars['Boolean']['output']>;
-    initialOpenInBrowserEnabled?: Maybe<Scalars['Boolean']['output']>;
     ip?: Maybe<Scalars['String']['output']>;
     jwtAudience?: Maybe<Scalars['String']['output']>;
     jwtRefreshExpiry?: Maybe<Scalars['Duration']['output']>;
@@ -2034,7 +2033,6 @@ export type PartialSettingsType = Settings & {
     syncYomiApiKey?: Maybe<Scalars['String']['output']>;
     syncYomiEnabled?: Maybe<Scalars['Boolean']['output']>;
     syncYomiHost?: Maybe<Scalars['String']['output']>;
-    systemTrayEnabled?: Maybe<Scalars['Boolean']['output']>;
     updateMangas?: Maybe<Scalars['Boolean']['output']>;
     useHikariConnectionPool?: Maybe<Scalars['Boolean']['output']>;
     webUIFlavor?: Maybe<WebUiFlavor>;
@@ -2080,7 +2078,6 @@ export type PartialSettingsTypeInput = {
     flareSolverrTimeout?: InputMaybe<Scalars['Int']['input']>;
     flareSolverrUrl?: InputMaybe<Scalars['String']['input']>;
     globalUpdateInterval?: InputMaybe<Scalars['Float']['input']>;
-    initialOpenInBrowserEnabled?: InputMaybe<Scalars['Boolean']['input']>;
     ip?: InputMaybe<Scalars['String']['input']>;
     jwtAudience?: InputMaybe<Scalars['String']['input']>;
     jwtRefreshExpiry?: InputMaybe<Scalars['Duration']['input']>;
@@ -2127,7 +2124,6 @@ export type PartialSettingsTypeInput = {
     syncYomiApiKey?: InputMaybe<Scalars['String']['input']>;
     syncYomiEnabled?: InputMaybe<Scalars['Boolean']['input']>;
     syncYomiHost?: InputMaybe<Scalars['String']['input']>;
-    systemTrayEnabled?: InputMaybe<Scalars['Boolean']['input']>;
     updateMangas?: InputMaybe<Scalars['Boolean']['input']>;
     useHikariConnectionPool?: InputMaybe<Scalars['Boolean']['input']>;
     webUIFlavor?: InputMaybe<WebUiFlavor>;
@@ -2632,7 +2628,6 @@ export type Settings = {
     globalUpdateInterval?: Maybe<Scalars['Float']['output']>;
     /** @deprecated Removed - does not do anything */
     gqlDebugLogsEnabled?: Maybe<Scalars['Boolean']['output']>;
-    initialOpenInBrowserEnabled?: Maybe<Scalars['Boolean']['output']>;
     ip?: Maybe<Scalars['String']['output']>;
     jwtAudience?: Maybe<Scalars['String']['output']>;
     jwtRefreshExpiry?: Maybe<Scalars['Duration']['output']>;
@@ -2689,7 +2684,6 @@ export type Settings = {
     syncYomiApiKey?: Maybe<Scalars['String']['output']>;
     syncYomiEnabled?: Maybe<Scalars['Boolean']['output']>;
     syncYomiHost?: Maybe<Scalars['String']['output']>;
-    systemTrayEnabled?: Maybe<Scalars['Boolean']['output']>;
     updateMangas?: Maybe<Scalars['Boolean']['output']>;
     useHikariConnectionPool?: Maybe<Scalars['Boolean']['output']>;
     webUIFlavor?: Maybe<WebUiFlavor>;
@@ -2790,7 +2784,6 @@ export type SettingsType = Settings & {
     globalUpdateInterval: Scalars['Float']['output'];
     /** @deprecated Removed - does not do anything */
     gqlDebugLogsEnabled: Scalars['Boolean']['output'];
-    initialOpenInBrowserEnabled: Scalars['Boolean']['output'];
     ip: Scalars['String']['output'];
     jwtAudience: Scalars['String']['output'];
     jwtRefreshExpiry: Scalars['Duration']['output'];
@@ -2847,7 +2840,6 @@ export type SettingsType = Settings & {
     syncYomiApiKey: Scalars['String']['output'];
     syncYomiEnabled: Scalars['Boolean']['output'];
     syncYomiHost: Scalars['String']['output'];
-    systemTrayEnabled: Scalars['Boolean']['output'];
     updateMangas: Scalars['Boolean']['output'];
     useHikariConnectionPool: Scalars['Boolean']['output'];
     webUIFlavor: WebUiFlavor;

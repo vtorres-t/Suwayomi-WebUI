@@ -1980,10 +1980,6 @@ msgstr "Abrir en el navegador"
 msgid "Open page on exit"
 msgstr "Abrir página al salir"
 
-#: src/features/settings/screens/WebUISettings.tsx
-msgid "Open the WebUI when starting the server"
-msgstr "Abrir el WebUI al iniciar el servidor"
-
 #: src/features/chapter/components/cards/ChapterCard.tsx
 #: src/features/manga/components/MangaOptionButton.tsx
 #: src/features/manga/components/MangaOptionButton.tsx
@@ -2485,10 +2481,6 @@ msgstr "Mostrar botón de seguir leyendo"
 msgid "Show entry"
 msgstr "Mostrar entrada"
 
-#: src/features/settings/screens/ServerSettings.tsx
-msgid "Show icon in system tray"
-msgstr "Mostrar el icono en la bandeja del sistema"
-
 #: src/base/components/feedback/EmptyView.tsx
 #: src/features/tracker/components/cards/TrackerMangaCard.tsx
 msgid "Show less"
@@ -2799,10 +2791,6 @@ msgstr "No hay ningún capítulo anterior"
 #: src/features/downloads/components/DeleteChaptersWhileReadingSetting.tsx
 msgid "Third to last read chapter"
 msgstr "Antepenúltimo capítulo leído"
-
-#: src/features/settings/screens/ServerSettings.tsx
-msgid "This icon will be shown on the system that is running the server"
-msgstr "Este icono se mostrará en el sistema que esté ejecutando el servidor"
 
 #: src/features/app-updates/components/VersionInfo.tsx
 msgid "This is the latest version"

@@ -24,7 +24,6 @@ export const SERVER_SETTINGS = gql`
 
         # webUI
         webUIFlavor
-        initialOpenInBrowserEnabled
         webUIInterface
         electronPath
         webUIUpdateCheckInterval
@@ -80,7 +79,6 @@ export const SERVER_SETTINGS = gql`
 
         # misc
         debugLogsEnabled
-        systemTrayEnabled
         maxLogFileSize
         maxLogFiles
         maxLogFolderSize

@@ -2738,7 +2738,6 @@ export type ServerSettingsFragment = {
     socksProxyUsername: string;
     socksProxyPassword: string;
     webUIFlavor: Types.WebUiFlavor;
-    initialOpenInBrowserEnabled: boolean;
     webUIInterface: Types.WebUiInterface;
     electronPath: string;
     webUIUpdateCheckInterval: number;
@@ -2762,7 +2761,6 @@ export type ServerSettingsFragment = {
     jwtTokenExpiry: string;
     jwtRefreshExpiry: string;
     debugLogsEnabled: boolean;
-    systemTrayEnabled: boolean;
     maxLogFileSize: string;
     maxLogFiles: number;
     maxLogFolderSize: string;
@@ -2854,7 +2852,6 @@ export type ResetServerSettingsMutation = {
             socksProxyUsername: string;
             socksProxyPassword: string;
             webUIFlavor: Types.WebUiFlavor;
-            initialOpenInBrowserEnabled: boolean;
             webUIInterface: Types.WebUiInterface;
             electronPath: string;
             webUIUpdateCheckInterval: number;
@@ -2878,7 +2875,6 @@ export type ResetServerSettingsMutation = {
             jwtTokenExpiry: string;
             jwtRefreshExpiry: string;
             debugLogsEnabled: boolean;
-            systemTrayEnabled: boolean;
             maxLogFileSize: string;
             maxLogFiles: number;
             maxLogFolderSize: string;
@@ -2980,7 +2976,6 @@ export type UpdateServerSettingsMutation = {
             socksProxyUsername: string;
             socksProxyPassword: string;
             webUIFlavor: Types.WebUiFlavor;
-            initialOpenInBrowserEnabled: boolean;
             webUIInterface: Types.WebUiInterface;
             electronPath: string;
             webUIUpdateCheckInterval: number;
@@ -3004,7 +2999,6 @@ export type UpdateServerSettingsMutation = {
             jwtTokenExpiry: string;
             jwtRefreshExpiry: string;
             debugLogsEnabled: boolean;
-            systemTrayEnabled: boolean;
             maxLogFileSize: string;
             maxLogFiles: number;
             maxLogFolderSize: string;
@@ -3102,7 +3096,6 @@ export type GetServerSettingsQuery = {
         socksProxyUsername: string;
         socksProxyPassword: string;
         webUIFlavor: Types.WebUiFlavor;
-        initialOpenInBrowserEnabled: boolean;
         webUIInterface: Types.WebUiInterface;
         electronPath: string;
         webUIUpdateCheckInterval: number;
@@ -3126,7 +3119,6 @@ export type GetServerSettingsQuery = {
         jwtTokenExpiry: string;
         jwtRefreshExpiry: string;
         debugLogsEnabled: boolean;
-        systemTrayEnabled: boolean;
         maxLogFileSize: string;
         maxLogFiles: number;
         maxLogFolderSize: string;

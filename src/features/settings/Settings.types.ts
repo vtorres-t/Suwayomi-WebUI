@@ -44,13 +44,7 @@ export type ServerSettings = Omit<GetServerSettingsQuery['settings'], '__typenam
 
 export type WebUISettingsType = Pick<
     ServerSettings,
-    | 'webUIFlavor'
-    | 'initialOpenInBrowserEnabled'
-    | 'webUIInterface'
-    | 'electronPath'
-    | 'webUIUpdateCheckInterval'
-    | 'repoWebUiUrl'
-    | 'repoWebUiType'
+    'webUIFlavor' | 'webUIInterface' | 'electronPath' | 'webUIUpdateCheckInterval' | 'repoWebUiUrl' | 'repoWebUiType'
 >;
 
 export type GlobalUpdateSkipEntriesSettings = Pick<

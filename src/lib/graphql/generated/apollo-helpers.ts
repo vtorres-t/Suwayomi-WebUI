@@ -1205,7 +1205,6 @@ export type PartialSettingsTypeKeySpecifier = (
     | 'flareSolverrUrl'
     | 'globalUpdateInterval'
     | 'gqlDebugLogsEnabled'
-    | 'initialOpenInBrowserEnabled'
     | 'ip'
     | 'jwtAudience'
     | 'jwtRefreshExpiry'
@@ -1257,7 +1256,6 @@ export type PartialSettingsTypeKeySpecifier = (
     | 'syncYomiApiKey'
     | 'syncYomiEnabled'
     | 'syncYomiHost'
-    | 'systemTrayEnabled'
     | 'updateMangas'
     | 'useHikariConnectionPool'
     | 'webUIFlavor'
@@ -1308,7 +1306,6 @@ export type PartialSettingsTypeFieldPolicy = {
     flareSolverrUrl?: FieldPolicy<any> | FieldReadFunction<any>;
     globalUpdateInterval?: FieldPolicy<any> | FieldReadFunction<any>;
     gqlDebugLogsEnabled?: FieldPolicy<any> | FieldReadFunction<any>;
-    initialOpenInBrowserEnabled?: FieldPolicy<any> | FieldReadFunction<any>;
     ip?: FieldPolicy<any> | FieldReadFunction<any>;
     jwtAudience?: FieldPolicy<any> | FieldReadFunction<any>;
     jwtRefreshExpiry?: FieldPolicy<any> | FieldReadFunction<any>;
@@ -1360,7 +1357,6 @@ export type PartialSettingsTypeFieldPolicy = {
     syncYomiApiKey?: FieldPolicy<any> | FieldReadFunction<any>;
     syncYomiEnabled?: FieldPolicy<any> | FieldReadFunction<any>;
     syncYomiHost?: FieldPolicy<any> | FieldReadFunction<any>;
-    systemTrayEnabled?: FieldPolicy<any> | FieldReadFunction<any>;
     updateMangas?: FieldPolicy<any> | FieldReadFunction<any>;
     useHikariConnectionPool?: FieldPolicy<any> | FieldReadFunction<any>;
     webUIFlavor?: FieldPolicy<any> | FieldReadFunction<any>;
@@ -1637,7 +1633,6 @@ export type SettingsKeySpecifier = (
     | 'flareSolverrUrl'
     | 'globalUpdateInterval'
     | 'gqlDebugLogsEnabled'
-    | 'initialOpenInBrowserEnabled'
     | 'ip'
     | 'jwtAudience'
     | 'jwtRefreshExpiry'
@@ -1689,7 +1684,6 @@ export type SettingsKeySpecifier = (
     | 'syncYomiApiKey'
     | 'syncYomiEnabled'
     | 'syncYomiHost'
-    | 'systemTrayEnabled'
     | 'updateMangas'
     | 'useHikariConnectionPool'
     | 'webUIFlavor'
@@ -1740,7 +1734,6 @@ export type SettingsFieldPolicy = {
     flareSolverrUrl?: FieldPolicy<any> | FieldReadFunction<any>;
     globalUpdateInterval?: FieldPolicy<any> | FieldReadFunction<any>;
     gqlDebugLogsEnabled?: FieldPolicy<any> | FieldReadFunction<any>;
-    initialOpenInBrowserEnabled?: FieldPolicy<any> | FieldReadFunction<any>;
     ip?: FieldPolicy<any> | FieldReadFunction<any>;
     jwtAudience?: FieldPolicy<any> | FieldReadFunction<any>;
     jwtRefreshExpiry?: FieldPolicy<any> | FieldReadFunction<any>;
@@ -1792,7 +1785,6 @@ export type SettingsFieldPolicy = {
     syncYomiApiKey?: FieldPolicy<any> | FieldReadFunction<any>;
     syncYomiEnabled?: FieldPolicy<any> | FieldReadFunction<any>;
     syncYomiHost?: FieldPolicy<any> | FieldReadFunction<any>;
-    systemTrayEnabled?: FieldPolicy<any> | FieldReadFunction<any>;
     updateMangas?: FieldPolicy<any> | FieldReadFunction<any>;
     useHikariConnectionPool?: FieldPolicy<any> | FieldReadFunction<any>;
     webUIFlavor?: FieldPolicy<any> | FieldReadFunction<any>;
@@ -1894,7 +1886,6 @@ export type SettingsTypeKeySpecifier = (
     | 'flareSolverrUrl'
     | 'globalUpdateInterval'
     | 'gqlDebugLogsEnabled'
-    | 'initialOpenInBrowserEnabled'
     | 'ip'
     | 'jwtAudience'
     | 'jwtRefreshExpiry'
@@ -1946,7 +1937,6 @@ export type SettingsTypeKeySpecifier = (
     | 'syncYomiApiKey'
     | 'syncYomiEnabled'
     | 'syncYomiHost'
-    | 'systemTrayEnabled'
     | 'updateMangas'
     | 'useHikariConnectionPool'
     | 'webUIFlavor'
@@ -1997,7 +1987,6 @@ export type SettingsTypeFieldPolicy = {
     flareSolverrUrl?: FieldPolicy<any> | FieldReadFunction<any>;
     globalUpdateInterval?: FieldPolicy<any> | FieldReadFunction<any>;
     gqlDebugLogsEnabled?: FieldPolicy<any> | FieldReadFunction<any>;
-    initialOpenInBrowserEnabled?: FieldPolicy<any> | FieldReadFunction<any>;
     ip?: FieldPolicy<any> | FieldReadFunction<any>;
     jwtAudience?: FieldPolicy<any> | FieldReadFunction<any>;
     jwtRefreshExpiry?: FieldPolicy<any> | FieldReadFunction<any>;
@@ -2049,7 +2038,6 @@ export type SettingsTypeFieldPolicy = {
     syncYomiApiKey?: FieldPolicy<any> | FieldReadFunction<any>;
     syncYomiEnabled?: FieldPolicy<any> | FieldReadFunction<any>;
     syncYomiHost?: FieldPolicy<any> | FieldReadFunction<any>;
-    systemTrayEnabled?: FieldPolicy<any> | FieldReadFunction<any>;
     updateMangas?: FieldPolicy<any> | FieldReadFunction<any>;
     useHikariConnectionPool?: FieldPolicy<any> | FieldReadFunction<any>;
     webUIFlavor?: FieldPolicy<any> | FieldReadFunction<any>;

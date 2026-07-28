@@ -847,17 +847,6 @@ export const ServerSettings = () => {
                         onChange={(e) => updateSetting('debugLogsEnabled', e.target.checked)}
                     />
                 </ListItem>
-                <ListItem>
-                    <ListItemText
-                        primary={t`Show icon in system tray`}
-                        secondary={t`This icon will be shown on the system that is running the server`}
-                    />
-                    <Switch
-                        edge="end"
-                        checked={serverSettings.systemTrayEnabled}
-                        onChange={(e) => updateSetting('systemTrayEnabled', e.target.checked)}
-                    />
-                </ListItem>
                 <NumberSetting
                     settingTitle={t`Log file cleanup`}
                     settingValue={getLogFilesCleanupDisplayValue(serverSettings.maxLogFiles)}
