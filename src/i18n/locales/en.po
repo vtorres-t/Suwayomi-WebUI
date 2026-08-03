@@ -1019,7 +1019,6 @@ msgstr "Copied to clipboard"
 #: src/features/manga/components/details/MangaDetails.tsx
 #: src/features/migration/components/MigrationOptionsDialog.tsx
 #: src/features/tracker/components/cards/TrackerActiveCard.tsx
-#: src/features/settings/components/DebugInformation.tsx
 msgid "Copy"
 msgstr "Copy"
 
@@ -1094,10 +1093,6 @@ msgstr "Could not install the extension"
 #: src/features/manga/hooks/useManageMangaLibraryState.tsx
 msgid "Could not load categories"
 msgstr "Could not load categories"
-
-#: src/features/settings/components/DebugInformation.tsx
-msgid "Could not load data"
-msgstr "Could not load data"
 
 #: src/features/settings/screens/Appearance.tsx
 msgid "Could not load language"
@@ -3412,10 +3407,6 @@ msgstr "Settings"
 #: src/features/reader/overlay/navigation/desktop/components/ReaderNavBarDesktopActions.tsx
 msgid "Share"
 msgstr "Share"
-
-#: src/features/settings/components/DebugInformation.tsx
-msgid "Show"
-msgstr "Show"
 
 #: src/features/library/screens/LibrarySettings.tsx
 msgid "Show all duplicated entries in your library"
