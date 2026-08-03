@@ -35,7 +35,7 @@ export const TrackingSettings = () => {
     useAppTitle(t`Tracking`);
 
     const {
-        settings: { updateProgressAfterReading, updateProgressManualMarkRead },
+        settings: { updateProgressAfterReading, updateProgressManualMarkRead, showRelatedForEachManga },
         loading: areMetadataServerSettingsLoading,
         request: { error: metadataServerSettingsError, refetch: refetchServerMetadataSettings },
     } = useMetadataServerSettings();
@@ -100,6 +100,22 @@ export const TrackingSettings = () => {
                         edge="end"
                         checked={updateProgressManualMarkRead}
                         onChange={(e) => updateTrackingSettings('updateProgressManualMarkRead', e.target.checked)}
+                    />
+                </ListItem>
+            </List>
+            <List
+                subheader={
+                    <ListSubheader component="div" id="browse-settings-manga">
+                        {t`Manga`}
+                    </ListSubheader>
+                }
+            >
+                <ListItem>
+                    <ListItemText primary={t`Show related for each manga`} />
+                    <Switch
+                        edge="end"
+                        checked={showRelatedForEachManga}
+                        onChange={() => updateTrackingSettings('showRelatedForEachManga', !showRelatedForEachManga)}
                     />
                 </ListItem>
             </List>

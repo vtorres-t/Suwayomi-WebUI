@@ -57,7 +57,7 @@ export const BrowseSettings = () => {
     };
 
     const {
-        settings: { hideLibraryEntries, showNsfw, showRelatedForEachManga },
+        settings: { hideLibraryEntries, showNsfw },
     } = useMetadataServerSettings();
     const updateMetadataServerSettings = createUpdateMetadataServerSettings<keyof MetadataBrowseSettings>((e) =>
         makeToast(t`Failed to save changes`, 'error', getErrorMessage(e)),
@@ -133,24 +133,6 @@ export const BrowseSettings = () => {
                     }
                     handleChange={(path) => updateSetting('localSourcePath', path)}
                 />
-            </List>
-            <List
-                subheader={
-                    <ListSubheader component="div" id="browse-settings-manga">
-                        {t`Manga`}
-                    </ListSubheader>
-                }
-            >
-                <ListItem>
-                    <ListItemText primary={t`Show related for each manga`} />
-                    <Switch
-                        edge="end"
-                        checked={showRelatedForEachManga}
-                        onChange={() =>
-                            updateMetadataServerSettings('showRelatedForEachManga', !showRelatedForEachManga)
-                        }
-                    />
-                </ListItem>
             </List>
             <List
                 subheader={

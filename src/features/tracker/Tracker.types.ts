@@ -12,6 +12,7 @@ import type { TrackRecordSearchFieldsFragment } from '@/lib/graphql/generated/gr
 export type MetadataTrackingSettings = {
     updateProgressAfterReading: boolean;
     updateProgressManualMarkRead: boolean;
+    showRelatedForEachManga: boolean;
 };
 
 export enum PublishingType {
