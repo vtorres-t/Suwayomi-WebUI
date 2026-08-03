@@ -51,11 +51,19 @@ export const ChaptersToolbarMenu = ({
     const [open, setOpen] = React.useState(false);
 
     const isCurrentlyDescending = useMemo(() => {
-        if (!options) {return true;}
+        if (!options) {
+            return true;
+        }
         const opt = options as any;
-        if (typeof opt.sortDescending === 'boolean') {return opt.sortDescending;}
-        if (opt.sort && typeof opt.sort.descending === 'boolean') {return opt.sort.descending;}
-        if (typeof opt.descending === 'boolean') {return opt.descending;}
+        if (typeof opt.sortDescending === 'boolean') {
+            return opt.sortDescending;
+        }
+        if (opt.sort && typeof opt.sort.descending === 'boolean') {
+            return opt.sort.descending;
+        }
+        if (typeof opt.descending === 'boolean') {
+            return opt.descending;
+        }
         return true;
     }, [options]);
 
