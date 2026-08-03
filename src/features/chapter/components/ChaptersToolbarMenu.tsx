@@ -9,11 +9,12 @@
 import FilterList from '@mui/icons-material/FilterList';
 import IconButton from '@mui/material/IconButton';
 import * as React from 'react';
+import { useMemo } from 'react';
 import PopupState, { bindMenu, bindTrigger } from 'material-ui-popup-state';
 import Menu from '@mui/material/Menu';
 import DownloadIcon from '@mui/icons-material/Download';
 import DoneAllIcon from '@mui/icons-material/DoneAll';
-import { useMemo } from 'react';
+import SwapVertIcon from '@mui/icons-material/SwapVert';
 import { useLingui } from '@lingui/react/macro';
 import { CustomTooltip } from '@/base/components/CustomTooltip.tsx';
 import { ChapterOptions } from '@/features/chapter/components/ChapterOptions.tsx';
@@ -47,8 +48,26 @@ export const ChaptersToolbarMenu = ({
     excludeScanlators,
 }: IProps) => {
     const { t } = useLingui();
-
     const [open, setOpen] = React.useState(false);
+
+    const isCurrentlyDescending = useMemo(() => {
+        if (!options) {return true;}
+        const opt = options as any;
+        if (typeof opt.sortDescending === 'boolean') {return opt.sortDescending;}
+        if (opt.sort && typeof opt.sort.descending === 'boolean') {return opt.sort.descending;}
+        if (typeof opt.descending === 'boolean') {return opt.descending;}
+        return true;
+    }, [options]);
+
+    const handleToggleSortDirection = () => {
+        updateOption(
+            {
+                reverse: true,
+            } as any,
+            {} as any,
+        );
+    };
+
     const isFiltered = isFilterActive(options);
 
     const areAllChaptersRead = useMemo(() => chapters.every(Chapters.isRead), [chapters]);
@@ -56,6 +75,11 @@ export const ChaptersToolbarMenu = ({
 
     return (
         <>
+            <CustomTooltip title={t`Reverse order`}>
+                <IconButton onClick={handleToggleSortDirection} color={isCurrentlyDescending ? 'primary' : 'inherit'}>
+                    <SwapVertIcon />
+                </IconButton>
+            </CustomTooltip>
             <CustomTooltip title={t`Mark all as read`} disabled={areAllChaptersRead}>
                 <IconButton
                     disabled={areAllChaptersRead}

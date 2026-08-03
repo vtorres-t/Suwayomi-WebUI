@@ -4165,3 +4165,7 @@ msgstr "En progreso…"
 #: src/features/settings/components/DebugInformation.tsx
 msgid "Could not load data"
 msgstr "No se pueden cargar datos"
+
+#: src/features/chapter/components/ChaptersToolbarMenu.tsx
+msgid "Reverse order"
+msgstr "Invertir orden"
