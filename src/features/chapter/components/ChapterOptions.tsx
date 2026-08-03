@@ -7,8 +7,11 @@
  */
 
 import type { MessageDescriptor } from '@lingui/core';
+import IconButton from '@mui/material/IconButton';
 import RadioGroup from '@mui/material/RadioGroup';
-import React from 'react';
+import Replay from '@mui/icons-material/Replay';
+import Box from '@mui/material/Box';
+import React, { useMemo } from 'react';
 import { useLingui } from '@lingui/react/macro';
 import { msg } from '@lingui/core/macro';
 import { RadioInput } from '@/base/components/inputs/RadioInput.tsx';
@@ -44,6 +47,24 @@ export const ChapterOptions: React.FC<IProps> = ({
     excludedScanlators,
 }) => {
     const { t } = useLingui();
+    const isAnyFilterActive = useMemo(() => (
+            options.unread !== null ||
+            options.downloaded !== null ||
+            options.bookmarked !== null ||
+            (excludedScanlators && excludedScanlators.length > 0)
+        ), [options.unread, options.downloaded, options.bookmarked, excludedScanlators]);
+
+    const handleClearFilters = (e: React.MouseEvent) => {
+        e.stopPropagation();
+
+        updateOption('unread', null);
+        updateOption('downloaded', null);
+        updateOption('bookmarked', null);
+
+        if (excludedScanlators && excludedScanlators.length > 0) {
+            updateOption('excludedScanlators' as any, [] as any);
+        }
+    };
 
     return (
         <OptionsTabs<'filter' | 'sort' | 'display'>
@@ -51,7 +72,26 @@ export const ChapterOptions: React.FC<IProps> = ({
             onClose={onClose}
             minHeight={150}
             tabs={['filter', 'sort', 'display']}
-            tabTitle={(key) => t(TITLES[key])}
+            tabTitle={(key) => {
+                if (key === 'filter') {
+                    return (
+                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                            <span>{t(TITLES[key])}</span>
+                            <IconButton
+                                size="small"
+                                onClick={handleClearFilters}
+                                disabled={!isAnyFilterActive}
+                                color="warning"
+                                title={t`Clear filters`}
+                                sx={{ p: 0.5 }}
+                            >
+                                <Replay fontSize="small" />
+                            </IconButton>
+                        </Box>
+                    );
+                }
+                return t(TITLES[key]);
+            }}
             tabContent={(key) => {
                 if (key === 'filter') {
                     return (
