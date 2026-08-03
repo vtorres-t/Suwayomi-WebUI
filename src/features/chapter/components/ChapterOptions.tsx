@@ -47,12 +47,14 @@ export const ChapterOptions: React.FC<IProps> = ({
     excludedScanlators,
 }) => {
     const { t } = useLingui();
-    const isAnyFilterActive = useMemo(() => (
+    const isAnyFilterActive = useMemo(
+        () =>
             options.unread !== null ||
             options.downloaded !== null ||
             options.bookmarked !== null ||
-            (excludedScanlators && excludedScanlators.length > 0)
-        ), [options.unread, options.downloaded, options.bookmarked, excludedScanlators]);
+            (excludedScanlators && excludedScanlators.length > 0),
+        [options.unread, options.downloaded, options.bookmarked, excludedScanlators],
+    );
 
     const handleClearFilters = (e: React.MouseEvent) => {
         e.stopPropagation();
