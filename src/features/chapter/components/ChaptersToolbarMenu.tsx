@@ -51,26 +51,20 @@ export const ChaptersToolbarMenu = ({
     const [open, setOpen] = React.useState(false);
 
     const isCurrentlyDescending = useMemo(() => {
-        if (!options) {
-            return true;
-        }
+        if (!options) {return true;}
+
         const opt = options as any;
-        if (typeof opt.sortDescending === 'boolean') {
-            return opt.sortDescending;
+        if (typeof opt.reverse === 'boolean') {
+            return opt.reverse;
         }
-        if (opt.sort && typeof opt.sort.descending === 'boolean') {
-            return opt.sort.descending;
-        }
-        if (typeof opt.descending === 'boolean') {
-            return opt.descending;
-        }
+
         return true;
     }, [options]);
 
     const handleToggleSortDirection = () => {
         updateOption(
             {
-                reverse: true,
+                reverse: !isCurrentlyDescending,
             } as any,
             {} as any,
         );
