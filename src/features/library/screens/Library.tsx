@@ -52,6 +52,7 @@ import { AppRoutes } from '@/base/AppRoute.constants.ts';
 import { SearchParam } from '@/base/Base.types.ts';
 import { STABLE_EMPTY_ARRAY } from '@/base/Base.constants.ts';
 import type { MangaIdInfo } from '@/features/manga/Manga.types.ts';
+import { OffsetComponent } from '@/base/OffsetComponent.tsx';
 
 const TitleWithSizeTag = styled('span')({
     display: 'flex',
@@ -313,38 +314,40 @@ export function Library() {
 
     return (
         <TabsWrapper>
-            <TabsMenu value={activeTab.id} onChange={(e, newTab) => handleTabChange(newTab)}>
-                {tabs.map((tab) => {
-                    const isCurrentTabActive = activeTab.id === tab.id;
-                    const totalCount = tab.mangas?.totalCount ?? 0;
+            <OffsetComponent>
+                <TabsMenu value={activeTab.id} onChange={(e, newTab) => handleTabChange(newTab)}>
+                    {tabs.map((tab) => {
+                        const isCurrentTabActive = activeTab.id === tab.id;
+                        const totalCount = tab.mangas?.totalCount ?? 0;
 
-                    const filtradosCount = isCurrentTabActive ? mangas.length : totalCount;
-                    let labelContent: React.ReactNode;
+                        const filtradosCount = isCurrentTabActive ? mangas.length : totalCount;
+                        let labelContent: React.ReactNode;
 
-                    if (isCurrentTabActive && mangaLoading) {
-                        labelContent = (
-                            <CircularProgress size={12} color="inherit" sx={{ display: 'block', opacity: 0.7 }} />
+                        if (isCurrentTabActive && mangaLoading) {
+                            labelContent = (
+                                <CircularProgress size={12} color="inherit" sx={{ display: 'block', opacity: 0.7 }} />
+                            );
+                        } else {
+                            labelContent =
+                                filtradosCount === totalCount ? `${totalCount}` : `${filtradosCount} / ${totalCount}`;
+                        }
+
+                        return (
+                            <Tab
+                                sx={{ flexGrow: 1, maxWidth: 'unset' }}
+                                key={tab.id}
+                                label={
+                                    <TitleWithSizeTag>
+                                        {tab.name}
+                                        {showTabSize ? <TitleSizeTag label={labelContent} /> : null}
+                                    </TitleWithSizeTag>
+                                }
+                                value={tab.id}
+                            />
                         );
-                    } else {
-                        labelContent =
-                            filtradosCount === totalCount ? `${totalCount}` : `${filtradosCount} / ${totalCount}`;
-                    }
-
-                    return (
-                        <Tab
-                            sx={{ flexGrow: 1, maxWidth: 'unset' }}
-                            key={tab.id}
-                            label={
-                                <TitleWithSizeTag>
-                                    {tab.name}
-                                    {showTabSize ? <TitleSizeTag label={labelContent} /> : null}
-                                </TitleWithSizeTag>
-                            }
-                            value={tab.id}
-                        />
-                    );
-                })}
-            </TabsMenu>
+                    })}
+                </TabsMenu>
+            </OffsetComponent>
             {triggerGlobalSearchButton}
             {tabs.map((tab) => (
                 <TabPanel key={tab.order} index={tab.order} currentIndex={activeTab.order}>

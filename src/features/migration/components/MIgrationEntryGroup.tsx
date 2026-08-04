@@ -11,11 +11,14 @@ import type { ButtonProps } from '@mui/material/Button';
 import Button from '@mui/material/Button';
 import Collapse from '@mui/material/Collapse';
 import Stack from '@mui/material/Stack';
+import type { ReactNode } from 'react';
 import { memo } from 'react';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import { MigrationEntry } from '@/features/migration/components/migration-entry/MigrationEntry.tsx';
 import { MigrationManager } from '@/features/migration/MigrationManager.ts';
+import { OffsetComponentWithContainer } from '@/base/OffsetComponent.tsx';
+import { Virtuoso } from 'react-virtuoso';
 
 export const MigrationEntryGroup = memo(
     ({
@@ -41,36 +44,48 @@ export const MigrationEntryGroup = memo(
 
         return (
             <Stack sx={{ width: '100%', gap: 2 }}>
-                <Button
-                    onClick={() => MigrationManager.setGroupExpandState(status, !isExpanded)}
-                    color={color}
-                    variant="outlined"
-                    startIcon={isExpanded ? <ExpandLessIcon /> : <ExpandMoreIcon />}
-                    size="large"
-                    sx={{
-                        py: 2,
-                        justifyContent: 'center',
-                        '& .MuiButton-startIcon': {
-                            position: 'absolute',
-                            left: (theme) => theme.spacing(4),
-                            margin: 0,
-                        },
-                    }}
+                <OffsetComponentWithContainer
+                    wrapperComponent={Stack}
+                    sx={{ pt: 2, backgroundColor: 'background.default' }}
+                    component={
+                        <Button
+                            onClick={() => MigrationManager.setGroupExpandState(status, !isExpanded)}
+                            color={color}
+                            variant="outlined"
+                            startIcon={isExpanded ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+                            size="large"
+                            sx={{
+                                py: 2,
+                                justifyContent: 'center',
+                                '& .MuiButton-startIcon': {
+                                    position: 'absolute',
+                                    left: (theme) => theme.spacing(4),
+                                    margin: 0,
+                                },
+                            }}
+                        >
+                            {title}
+                        </Button>
+                    }
                 >
-                    {title}
-                </Button>
-                <Collapse in={isExpanded} unmountOnExit>
-                    <Stack sx={{ gap: 1 }}>
-                        {entries.map((entry) => (
-                            <MigrationEntry
-                                key={entry.mangaId}
-                                entry={entry}
-                                isMigrating={isMigrating}
-                                isAborted={isAborted}
-                            />
-                        ))}
-                    </Stack>
-                </Collapse>
+                    <Collapse in={isExpanded} unmountOnExit>
+                        <Virtuoso
+                            useWindowScroll
+                            data={entries}
+                            components={{
+                                List: ({ children, ...props }: { children?: ReactNode }) => (
+                                    <Stack {...props} sx={{ gap: 1 }}>
+                                        {children}
+                                    </Stack>
+                                ),
+                            }}
+                            computeItemKey={(_index, entry) => entry.mangaId}
+                            itemContent={(_index, entry) => (
+                                <MigrationEntry entry={entry} isMigrating={isMigrating} isAborted={isAborted} />
+                            )}
+                        />
+                    </Collapse>
+                </OffsetComponentWithContainer>
             </Stack>
         );
     },

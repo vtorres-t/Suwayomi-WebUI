@@ -29,6 +29,8 @@ import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import Collapse from '@mui/material/Collapse';
 import { STABLE_EMPTY_ARRAY } from '@/base/Base.constants.ts';
 import { useTheme } from '@mui/material/styles';
+import { TypographyMaxLines } from '@/base/components/texts/TypographyMaxLines.tsx';
+import { Virtuoso } from 'react-virtuoso';
 
 export const ChapterUpdateCard = memo(
     ({
@@ -57,7 +59,7 @@ export const ChapterUpdateCard = memo(
                     }}
                 >
                     <ListCardContent sx={{ justifyContent: 'space-between' }}>
-                        <Box sx={{ display: 'flex', flexGrow: 1, gap: 1 }}>
+                        <Box sx={{ display: 'flex', flexGrow: 1, gap: 1, alignItems: 'center' }}>
                             <ChapterCardThumbnail
                                 mangaId={manga.id}
                                 sourceId={manga.sourceId}
@@ -91,10 +93,18 @@ export const ChapterUpdateCard = memo(
                                 }
                             />
                             <Stack>
-                                <ChapterCardMetadata title={manga.title} secondaryText={chapter.name} />
+                                <ChapterCardMetadata
+                                    title={manga.title}
+                                    secondaryText={chapter.scanlator}
+                                    ternaryText={chapter.name}
+                                />
                                 {isGroup && (
                                     <Button
-                                        sx={{ width: 'fit-content', ...theme.typography.caption }}
+                                        sx={{
+                                            maxWidth: 'fit-content',
+                                            justifyContent: 'flex-start',
+                                            ...theme.typography.caption,
+                                        }}
                                         variant="text"
                                         size="small"
                                         endIcon={isExpanded ? <ExpandLessIcon /> : <ExpandMoreIcon />}
@@ -104,10 +114,12 @@ export const ChapterUpdateCard = memo(
                                             setIsExpanded(!isExpanded);
                                         }}
                                     >
-                                        {plural(otherChapters.length, {
-                                            one: 'Show # more chapter',
-                                            other: 'Show # more chapters',
-                                        })}
+                                        <TypographyMaxLines lines={1} variant="caption" sx={{ textAlign: 'start' }}>
+                                            {plural(otherChapters.length, {
+                                                one: 'Show # more chapter',
+                                                other: 'Show # more chapters',
+                                            })}
+                                        </TypographyMaxLines>
                                     </Button>
                                 )}
                             </Stack>
@@ -119,9 +131,13 @@ export const ChapterUpdateCard = memo(
                 </CardActionArea>
                 {isGroup && (
                     <Collapse in={isExpanded} unmountOnExit>
-                        {otherChapters.map((otherChapter) => (
-                            <ChapterUpdateCard key={otherChapter.id} chapter={otherChapter} />
-                        ))}
+                        <Virtuoso
+                            useWindowScroll
+                            overscan={window.innerHeight * 0.5}
+                            data={otherChapters}
+                            computeItemKey={(index) => otherChapters[index].id}
+                            itemContent={(_index, otherChapter) => <ChapterUpdateCard chapter={otherChapter} />}
+                        />
                     </Collapse>
                 )}
             </Card>

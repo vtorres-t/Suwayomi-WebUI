@@ -927,8 +927,28 @@ export type DownloadTypeFieldsFragment = {
     progress: number;
     state: Types.DownloadState;
     tries: number;
-    chapter: { __typename: 'ChapterType'; id: number; name: string; sourceOrder: number; isDownloaded: boolean };
-    manga: { __typename: 'MangaType'; id: number; title: string; downloadCount: number };
+    chapter: {
+        __typename: 'ChapterType';
+        isDownloaded: boolean;
+        id: number;
+        name: string;
+        mangaId: number;
+        scanlator: string | null;
+        realUrl: string | null;
+        sourceOrder: number;
+        chapterNumber: number;
+    };
+    manga: {
+        __typename: 'MangaType';
+        downloadCount: number;
+        id: number;
+        title: string;
+        thumbnailUrl: string | null;
+        thumbnailUrlLastFetched: string | null;
+        inLibrary: boolean;
+        initialized: boolean;
+        sourceId: string;
+    };
 };
 
 export type DownloadStatusFieldsFragment = {
@@ -939,8 +959,28 @@ export type DownloadStatusFieldsFragment = {
         progress: number;
         state: Types.DownloadState;
         tries: number;
-        chapter: { __typename: 'ChapterType'; id: number; name: string; sourceOrder: number; isDownloaded: boolean };
-        manga: { __typename: 'MangaType'; id: number; title: string; downloadCount: number };
+        chapter: {
+            __typename: 'ChapterType';
+            isDownloaded: boolean;
+            id: number;
+            name: string;
+            mangaId: number;
+            scanlator: string | null;
+            realUrl: string | null;
+            sourceOrder: number;
+            chapterNumber: number;
+        };
+        manga: {
+            __typename: 'MangaType';
+            downloadCount: number;
+            id: number;
+            title: string;
+            thumbnailUrl: string | null;
+            thumbnailUrlLastFetched: string | null;
+            inLibrary: boolean;
+            initialized: boolean;
+            sourceId: string;
+        };
     }>;
     directoryStats: { __typename: 'DirectoryStats'; availableSpacePretty: string; folderSizePretty: string };
 };
@@ -960,12 +1000,26 @@ export type DownloadUpdatesFieldsFragment = {
             tries: number;
             chapter: {
                 __typename: 'ChapterType';
+                isDownloaded: boolean;
                 id: number;
                 name: string;
+                mangaId: number;
+                scanlator: string | null;
+                realUrl: string | null;
                 sourceOrder: number;
-                isDownloaded: boolean;
+                chapterNumber: number;
             };
-            manga: { __typename: 'MangaType'; id: number; title: string; downloadCount: number };
+            manga: {
+                __typename: 'MangaType';
+                downloadCount: number;
+                id: number;
+                title: string;
+                thumbnailUrl: string | null;
+                thumbnailUrlLastFetched: string | null;
+                inLibrary: boolean;
+                initialized: boolean;
+                sourceId: string;
+            };
         };
     }>;
 };
@@ -988,12 +1042,26 @@ export type ClearDownloaderMutation = {
                 tries: number;
                 chapter: {
                     __typename: 'ChapterType';
+                    isDownloaded: boolean;
                     id: number;
                     name: string;
+                    mangaId: number;
+                    scanlator: string | null;
+                    realUrl: string | null;
                     sourceOrder: number;
-                    isDownloaded: boolean;
+                    chapterNumber: number;
                 };
-                manga: { __typename: 'MangaType'; id: number; title: string; downloadCount: number };
+                manga: {
+                    __typename: 'MangaType';
+                    downloadCount: number;
+                    id: number;
+                    title: string;
+                    thumbnailUrl: string | null;
+                    thumbnailUrlLastFetched: string | null;
+                    inLibrary: boolean;
+                    initialized: boolean;
+                    sourceId: string;
+                };
             }>;
             directoryStats: { __typename: 'DirectoryStats'; availableSpacePretty: string; folderSizePretty: string };
         };
@@ -1052,12 +1120,26 @@ export type DequeueChapterDownloadMutation = {
                 tries: number;
                 chapter: {
                     __typename: 'ChapterType';
+                    isDownloaded: boolean;
                     id: number;
                     name: string;
+                    mangaId: number;
+                    scanlator: string | null;
+                    realUrl: string | null;
                     sourceOrder: number;
-                    isDownloaded: boolean;
+                    chapterNumber: number;
                 };
-                manga: { __typename: 'MangaType'; id: number; title: string; downloadCount: number };
+                manga: {
+                    __typename: 'MangaType';
+                    downloadCount: number;
+                    id: number;
+                    title: string;
+                    thumbnailUrl: string | null;
+                    thumbnailUrlLastFetched: string | null;
+                    inLibrary: boolean;
+                    initialized: boolean;
+                    sourceId: string;
+                };
             }>;
             directoryStats: { __typename: 'DirectoryStats'; availableSpacePretty: string; folderSizePretty: string };
         };
@@ -1082,12 +1164,26 @@ export type DequeueChapterDownloadsMutation = {
                 tries: number;
                 chapter: {
                     __typename: 'ChapterType';
+                    isDownloaded: boolean;
                     id: number;
                     name: string;
+                    mangaId: number;
+                    scanlator: string | null;
+                    realUrl: string | null;
                     sourceOrder: number;
-                    isDownloaded: boolean;
+                    chapterNumber: number;
                 };
-                manga: { __typename: 'MangaType'; id: number; title: string; downloadCount: number };
+                manga: {
+                    __typename: 'MangaType';
+                    downloadCount: number;
+                    id: number;
+                    title: string;
+                    thumbnailUrl: string | null;
+                    thumbnailUrlLastFetched: string | null;
+                    inLibrary: boolean;
+                    initialized: boolean;
+                    sourceId: string;
+                };
             }>;
             directoryStats: { __typename: 'DirectoryStats'; availableSpacePretty: string; folderSizePretty: string };
         };
@@ -1112,12 +1208,26 @@ export type EnqueueChapterDownloadMutation = {
                 tries: number;
                 chapter: {
                     __typename: 'ChapterType';
+                    isDownloaded: boolean;
                     id: number;
                     name: string;
+                    mangaId: number;
+                    scanlator: string | null;
+                    realUrl: string | null;
                     sourceOrder: number;
-                    isDownloaded: boolean;
+                    chapterNumber: number;
                 };
-                manga: { __typename: 'MangaType'; id: number; title: string; downloadCount: number };
+                manga: {
+                    __typename: 'MangaType';
+                    downloadCount: number;
+                    id: number;
+                    title: string;
+                    thumbnailUrl: string | null;
+                    thumbnailUrlLastFetched: string | null;
+                    inLibrary: boolean;
+                    initialized: boolean;
+                    sourceId: string;
+                };
             }>;
             directoryStats: { __typename: 'DirectoryStats'; availableSpacePretty: string; folderSizePretty: string };
         };
@@ -1142,12 +1252,26 @@ export type EnqueueChapterDownloadsMutation = {
                 tries: number;
                 chapter: {
                     __typename: 'ChapterType';
+                    isDownloaded: boolean;
                     id: number;
                     name: string;
+                    mangaId: number;
+                    scanlator: string | null;
+                    realUrl: string | null;
                     sourceOrder: number;
-                    isDownloaded: boolean;
+                    chapterNumber: number;
                 };
-                manga: { __typename: 'MangaType'; id: number; title: string; downloadCount: number };
+                manga: {
+                    __typename: 'MangaType';
+                    downloadCount: number;
+                    id: number;
+                    title: string;
+                    thumbnailUrl: string | null;
+                    thumbnailUrlLastFetched: string | null;
+                    inLibrary: boolean;
+                    initialized: boolean;
+                    sourceId: string;
+                };
             }>;
             directoryStats: { __typename: 'DirectoryStats'; availableSpacePretty: string; folderSizePretty: string };
         };
@@ -1172,12 +1296,26 @@ export type ReorderChapterDownloadMutation = {
                 tries: number;
                 chapter: {
                     __typename: 'ChapterType';
+                    isDownloaded: boolean;
                     id: number;
                     name: string;
+                    mangaId: number;
+                    scanlator: string | null;
+                    realUrl: string | null;
                     sourceOrder: number;
-                    isDownloaded: boolean;
+                    chapterNumber: number;
                 };
-                manga: { __typename: 'MangaType'; id: number; title: string; downloadCount: number };
+                manga: {
+                    __typename: 'MangaType';
+                    downloadCount: number;
+                    id: number;
+                    title: string;
+                    thumbnailUrl: string | null;
+                    thumbnailUrlLastFetched: string | null;
+                    inLibrary: boolean;
+                    initialized: boolean;
+                    sourceId: string;
+                };
             }>;
             directoryStats: { __typename: 'DirectoryStats'; availableSpacePretty: string; folderSizePretty: string };
         };
@@ -1222,12 +1360,26 @@ export type GetDownloadStatusQuery = {
             tries: number;
             chapter: {
                 __typename: 'ChapterType';
+                isDownloaded: boolean;
                 id: number;
                 name: string;
+                mangaId: number;
+                scanlator: string | null;
+                realUrl: string | null;
                 sourceOrder: number;
-                isDownloaded: boolean;
+                chapterNumber: number;
             };
-            manga: { __typename: 'MangaType'; id: number; title: string; downloadCount: number };
+            manga: {
+                __typename: 'MangaType';
+                downloadCount: number;
+                id: number;
+                title: string;
+                thumbnailUrl: string | null;
+                thumbnailUrlLastFetched: string | null;
+                inLibrary: boolean;
+                initialized: boolean;
+                sourceId: string;
+            };
         }>;
         directoryStats: { __typename: 'DirectoryStats'; availableSpacePretty: string; folderSizePretty: string };
     };
@@ -1254,12 +1406,26 @@ export type DownloadStatusSubscription = {
                 tries: number;
                 chapter: {
                     __typename: 'ChapterType';
+                    isDownloaded: boolean;
                     id: number;
                     name: string;
+                    mangaId: number;
+                    scanlator: string | null;
+                    realUrl: string | null;
                     sourceOrder: number;
-                    isDownloaded: boolean;
+                    chapterNumber: number;
                 };
-                manga: { __typename: 'MangaType'; id: number; title: string; downloadCount: number };
+                manga: {
+                    __typename: 'MangaType';
+                    downloadCount: number;
+                    id: number;
+                    title: string;
+                    thumbnailUrl: string | null;
+                    thumbnailUrlLastFetched: string | null;
+                    inLibrary: boolean;
+                    initialized: boolean;
+                    sourceId: string;
+                };
             };
         }>;
     };
