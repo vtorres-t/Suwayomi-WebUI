@@ -1,11 +1,3 @@
-/*
- * Copyright (C) Contributors to the Suwayomi project
- *
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at https://mozilla.org/MPL/2.0/.
- */
-
 import Button from '@mui/material/Button';
 import List from '@mui/material/List';
 import Stack from '@mui/material/Stack';
@@ -33,7 +25,6 @@ import { DIALOG_PADDING } from '@/features/tracker/Tracker.constants.ts';
 import { useGetOptionForDirection } from '@/features/theme/services/ThemeCreator.ts';
 import { defaultPromiseErrorHandler } from '@/lib/DefaultPromiseErrorHandler.ts';
 import type { MangaIdInfo, MangaTitleInfo } from '@/features/manga/Manga.types.ts';
-
 import { getErrorMessage } from '@/lib/HelperFunctions.ts';
 import { applyStyles } from '@/base/utils/ApplyStyles.ts';
 import type { TrackerIdInfo, TTrackerBind } from '@/features/tracker/Tracker.types.ts';

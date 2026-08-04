@@ -1,11 +1,3 @@
-/*
- * Copyright (C) Contributors to the Suwayomi project
- *
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at https://mozilla.org/MPL/2.0/.
- */
-
 import { useMemo } from 'react';
 import type { ChapterType } from '@/lib/graphql/generated/graphql-base.types.ts';
 import type {
@@ -94,6 +86,7 @@ const sortChapters = <T extends TChapterSort>(chapters: T[], { sortBy, reverse }
 };
 
 type TChapterFilter = ChapterReadInfo & ChapterDownloadInfo & ChapterBookmarkInfo & ChapterScanlatorInfo;
+
 export function filterChapters<Chapters extends TChapterFilter>(
     chapters: Chapters[],
     options: ChapterListFilterOptions,

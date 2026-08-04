@@ -1,17 +1,7 @@
-/*
- * Copyright (C) Contributors to the Suwayomi project
- *
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at https://mozilla.org/MPL/2.0/.
- */
-
 import type { MessageDescriptor } from '@lingui/core';
 import { msg, t } from '@lingui/core/macro';
-
 import type { LanguageObject } from '@/lib/ISOLanguageUtil.ts';
 import { getISOLanguage, getPreferredISOLanguageCodes } from '@/lib/ISOLanguageUtil.ts';
-
 import { i18n } from '@/i18n';
 
 export enum DefaultLanguage {

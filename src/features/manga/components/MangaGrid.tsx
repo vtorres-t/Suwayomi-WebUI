@@ -1,20 +1,12 @@
-/*
- * Copyright (C) Contributors to the Suwayomi project
- *
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at https://mozilla.org/MPL/2.0/.
- */
-
 import React, {
+    type ForwardedRef,
+    type JSX,
+    type Ref,
     useCallback,
     useLayoutEffect,
     useMemo,
     useRef,
     useState,
-    type ForwardedRef,
-    type Ref,
-    type JSX,
 } from 'react';
 import type { GridTypeMap } from '@mui/material/Grid';
 import Grid from '@mui/material/Grid';

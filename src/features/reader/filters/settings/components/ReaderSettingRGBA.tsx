@@ -1,11 +1,3 @@
-/*
- * Copyright (C) Contributors to the Suwayomi project
- *
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at https://mozilla.org/MPL/2.0/.
- */
-
 import type { MessageDescriptor } from '@lingui/core';
 import Stack from '@mui/material/Stack';
 import { useLingui } from '@lingui/react/macro';
@@ -19,7 +11,6 @@ import {
     READER_BLEND_MODE_VALUE_TO_DISPLAY_DATA,
     READER_BLEND_MODE_VALUES,
 } from '@/features/reader/settings/ReaderSettings.constants.tsx';
-
 import { ButtonSelectInput } from '@/base/components/inputs/ButtonSelectInput.tsx';
 
 type RGBAType = Exclude<keyof IReaderSettings['customFilter']['rgba']['value'], 'blendMode'>;

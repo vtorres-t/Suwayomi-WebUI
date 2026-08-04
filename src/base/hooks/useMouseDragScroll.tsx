@@ -1,17 +1,8 @@
-/*
- * Copyright (C) Contributors to the Suwayomi project
- *
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at https://mozilla.org/MPL/2.0/.
- */
-
 /**
  * credit: (06.12.2024 - 00:11)
  *  MobileLikeScroller
  *  https://github.com/utsb-fmm/MobileLikeScroller/blob/main/mobilelikescroller.js
  */
-
 import type { MutableRefObject } from 'react';
 import { useEffect, useRef, useState } from 'react';
 import { ScrollDirection } from '@/base/Base.types.ts';

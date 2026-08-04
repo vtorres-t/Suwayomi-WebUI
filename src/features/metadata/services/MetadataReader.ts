@@ -1,11 +1,3 @@
-/*
- * Copyright (C) Contributors to the Suwayomi project
- *
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at https://mozilla.org/MPL/2.0/.
- */
-
 import type { useEffect } from 'react';
 import { convertValueFromMetadata } from '@/features/metadata/services/MetadataConverter.ts';
 import type {
@@ -16,7 +8,6 @@ import type {
     MetadataHolderType,
 } from '@/features/metadata/Metadata.types.ts';
 import type { MangaIdInfo } from '@/features/manga/Manga.types.ts';
-
 import type { CategoryIdInfo } from '@/features/category/Category.types.ts';
 import { doesMetadataKeyExistIn, getMetadataKey } from '@/features/metadata/Metadata.utils.ts';
 import { MetadataChunker } from '@/features/metadata/services/MetadataChunker.ts';

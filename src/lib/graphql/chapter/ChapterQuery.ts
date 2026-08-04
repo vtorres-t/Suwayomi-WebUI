@@ -1,19 +1,11 @@
-/*
- * Copyright (C) Contributors to the Suwayomi project
- *
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at https://mozilla.org/MPL/2.0/.
- */
-
 import gql from 'graphql-tag';
 import { PAGE_INFO } from '@/lib/graphql/common/Fragments.ts';
 import {
+    CHAPTER_HISTORY_LIST_FIELDS,
     CHAPTER_LIST_FIELDS,
     CHAPTER_READER_FIELDS,
     CHAPTER_STATE_FIELDS,
     CHAPTER_UPDATE_LIST_FIELDS,
-    CHAPTER_HISTORY_LIST_FIELDS,
 } from '@/lib/graphql/chapter/ChapterFragments.ts';
 
 // returns the current chapters from the database

@@ -1,11 +1,3 @@
-/*
- * Copyright (C) Contributors to the Suwayomi project
- *
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at https://mozilla.org/MPL/2.0/.
- */
-
 import type { ReactNode } from 'react';
 import { useMemo } from 'react';
 import Button from '@mui/material/Button';
@@ -46,7 +38,9 @@ export const ValueRotationButton = <Value extends string | number>({
     isDefaultable,
     onDefault,
     defaultIcon,
-}: ValueRotationButtonProps<Value> & { defaultIcon?: ReactNode }) => {
+}: ValueRotationButtonProps<Value> & {
+    defaultIcon?: ReactNode;
+}) => {
     const { t } = useLingui();
 
     const isDefault = value === undefined;

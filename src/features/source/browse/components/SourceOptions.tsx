@@ -1,11 +1,3 @@
-/*
- * Copyright (C) Contributors to the Suwayomi project
- *
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at https://mozilla.org/MPL/2.0/.
- */
-
 import { STABLE_EMPTY_OBJECT } from '@/base/Base.constants.ts';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import Button from '@mui/material/Button';
@@ -33,7 +25,6 @@ import { SortFilter } from '@/features/source/browse/components/filters/SortFilt
 import { TextFilter } from '@/features/source/browse/components/filters/TextFilter.tsx';
 import { TriStateFilter } from '@/features/source/browse/components/filters/TriStateFilter.tsx';
 // this can only cycle once, so should be fine
-
 import { GroupFilter } from '@/features/source/browse/components/filters/GroupFilter.tsx';
 import { SeparatorFilter } from '@/features/source/browse/components/filters/SeparatorFilter.tsx';
 import { StyledFab } from '@/base/components/buttons/StyledFab.tsx';

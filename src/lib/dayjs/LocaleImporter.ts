@@ -1,11 +1,3 @@
-/*
- * Copyright (C) Contributors to the Suwayomi project
- *
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at https://mozilla.org/MPL/2.0/.
- */
-
 import type { DayJsLocale } from '@/lib/dayjs/Locales.ts';
 import { DAYJS_LOCALES } from '@/lib/dayjs/Locales.ts';
 import { DEFAULT_LANGUAGE } from '@/lib/ISOLanguageUtil.ts';

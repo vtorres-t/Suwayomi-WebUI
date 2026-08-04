@@ -1,15 +1,6 @@
-/*
- * Copyright (C) Contributors to the Suwayomi project
- *
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at https://mozilla.org/MPL/2.0/.
- */
-
 import { TrackerUntrackedCard } from '@/features/tracker/components/cards/TrackerUntrackedCard.tsx';
 import { TrackerSearch } from '@/features/tracker/components/TrackerSearch.tsx';
 import { TrackerActiveCard } from '@/features/tracker/components/cards/TrackerActiveCard.tsx';
-
 import type { MangaIdInfo, MangaTitleInfo } from '@/features/manga/Manga.types.ts';
 import type { TTrackerBind, TTrackRecordBind } from '@/features/tracker/Tracker.types.ts';
 

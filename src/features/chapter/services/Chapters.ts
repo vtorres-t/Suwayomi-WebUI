@@ -1,11 +1,3 @@
-/*
- * Copyright (C) Contributors to the Suwayomi project
- *
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at https://mozilla.org/MPL/2.0/.
- */
-
 import type { DocumentNode, MaybeMasked, Unmasked } from '@apollo/client';
 import { useFragment } from '@apollo/client/react';
 import { t } from '@lingui/core/macro';
@@ -17,7 +9,6 @@ import type { ChapterType } from '@/lib/graphql/generated/graphql-base.types.ts'
 import { DownloadState } from '@/lib/graphql/generated/graphql-base.types.ts';
 import { CHAPTER_LIST_FIELDS } from '@/lib/graphql/chapter/ChapterFragments.ts';
 import type { MangaIdInfo } from '@/features/manga/Manga.types.ts';
-
 import type { RouteStateReader } from '@/features/reader/Reader.types.ts';
 import { ReaderResumeMode } from '@/features/reader/Reader.types.ts';
 import { AppRoutes } from '@/base/AppRoute.constants.ts';

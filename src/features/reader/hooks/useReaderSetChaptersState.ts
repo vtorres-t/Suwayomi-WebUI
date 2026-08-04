@@ -1,24 +1,15 @@
-/*
- * Copyright (C) Contributors to the Suwayomi project
- *
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at https://mozilla.org/MPL/2.0/.
- */
-
 import { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Chapters } from '@/features/chapter/services/Chapters.ts';
 import type { requestManager } from '@/lib/requests/RequestManager.ts';
 import type { GetChaptersReaderQuery } from '@/lib/graphql/generated/graphql.ts';
-import type { IReaderSettings, RouteStateReader, ReaderStateChapters } from '@/features/reader/Reader.types.ts';
+import type { IReaderSettings, ReaderStateChapters, RouteStateReader } from '@/features/reader/Reader.types.ts';
 import { filterChapters } from '@/features/chapter/utils/ChapterList.util.tsx';
 import type { ChapterListFilterOptions } from '@/features/chapter/Chapter.types.ts';
 import { getReaderChapterFromCache } from '@/features/reader/Reader.utils.ts';
 import { DirectionOffset } from '@/base/Base.types.ts';
 import { getReaderChaptersStore } from '@/features/reader/stores/ReaderStore.ts';
 import { STABLE_EMPTY_OBJECT } from '@/base/Base.constants.ts';
-
 import { READER_DEFAULT_CHAPTERS_STATE } from '@/features/reader/stores/ReaderChaptersStore.ts';
 import { AppRoutes } from '@/base/AppRoute.constants.ts';
 

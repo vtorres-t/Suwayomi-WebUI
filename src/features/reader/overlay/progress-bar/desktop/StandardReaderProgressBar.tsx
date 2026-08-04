@@ -1,11 +1,3 @@
-/*
- * Copyright (C) Contributors to the Suwayomi project
- *
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at https://mozilla.org/MPL/2.0/.
- */
-
 import { useTheme } from '@mui/material/styles';
 import { memo, useCallback, useState } from 'react';
 import { ReaderProgressBar } from '@/features/reader/overlay/progress-bar/ReaderProgressBar.tsx';
@@ -21,11 +13,11 @@ import { ReaderProgressBarSlotDesktop } from '@/features/reader/overlay/progress
 import { useResizeObserver } from '@/base/hooks/useResizeObserver.tsx';
 import { getProgressBarPosition } from '@/features/reader/settings/ReaderSettings.utils.tsx';
 import {
+    getReaderProgressBarStore,
     useReaderPagesStore,
     useReaderProgressBarStore,
     useReaderScrollbarStore,
     useReaderSettingsStore,
-    getReaderProgressBarStore,
 } from '@/features/reader/stores/ReaderStore.ts';
 
 const BaseStandardReaderProgressBar = ({

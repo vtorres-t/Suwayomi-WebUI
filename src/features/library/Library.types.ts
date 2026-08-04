@@ -1,11 +1,3 @@
-/*
- * Copyright (C) Contributors to the Suwayomi project
- *
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at https://mozilla.org/MPL/2.0/.
- */
-
 import type { MangaStatus } from '@/lib/graphql/generated/graphql-base.types.ts';
 import type { GridLayout } from '@/base/Base.types.ts';
 import type { MangaDescriptionInfo, MangaIdInfo, MangaTitleInfo } from '@/features/manga/Manga.types.ts';

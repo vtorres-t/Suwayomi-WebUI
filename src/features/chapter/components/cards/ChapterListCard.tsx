@@ -1,15 +1,6 @@
-/*
- * Copyright (C) Contributors to the Suwayomi project
- *
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at https://mozilla.org/MPL/2.0/.
- */
-
 import Stack from '@mui/material/Stack';
 import type { ComponentProps } from 'react';
 import { ChapterCard } from '@/features/chapter/components/cards/ChapterCard.tsx';
-
 import { Chapters } from '@/features/chapter/services/Chapters.ts';
 import { applyStyles } from '@/base/utils/ApplyStyles.ts';
 import { MissingChaptersInfoSeparator } from '@/features/chapter/components/MissingChaptersInfoSeparator.tsx';

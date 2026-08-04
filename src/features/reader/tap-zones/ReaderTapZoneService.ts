@@ -1,11 +1,3 @@
-/*
- * Copyright (C) Contributors to the Suwayomi project
- *
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at https://mozilla.org/MPL/2.0/.
- */
-
 import type { CSSProperties } from 'react';
 import type {
     ReaderTapZoneRect,
@@ -18,7 +10,6 @@ import {
     READER_TAP_ZONE_LAYOUTS,
     TAP_ZONE_REGION_TYPE_DATA,
 } from '@/features/reader/tap-zones/ReaderTapZone.constants.ts';
-
 import { i18n } from '@/i18n';
 
 interface InvertMode extends TapZoneInvertMode {

@@ -1,36 +1,26 @@
 /*
- * Copyright (C) Contributors to the Suwayomi project
- *
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at https://mozilla.org/MPL/2.0/.
- */
-
-/*
  * src: https://github.com/webzep/mui-nested-menu/blob/main/packages/mui-nested-menu/src/components/NestedMenuItem.tsx (2024-04-20 01:42)
  *
  * with a few changes to fix a bug on mobile devices where opening the sub menu immediately triggered the on click of the underlying menu item
  */
-
 import { STABLE_EMPTY_OBJECT } from '@/base/Base.constants.ts';
 import type { MenuProps as MuiMenuProps } from '@mui/material/Menu';
 import Menu from '@mui/material/Menu';
 import type { MenuItemProps as MuiMenuItemProps } from '@mui/material/MenuItem';
 import type {
     ElementType,
+    FocusEvent,
     HTMLAttributes,
     KeyboardEvent,
-    FocusEvent,
     MouseEvent,
     ReactNode,
-    RefAttributes,
     Ref,
+    RefAttributes,
 } from 'react';
 import { useRef, useState } from 'react';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import Box from '@mui/material/Box';
-
 import type { OverridableComponent } from '@mui/material/OverridableComponent';
 import type { SvgIconTypeMap } from '@mui/material/SvgIcon';
 import { useMergedRef } from '@mantine/hooks';
