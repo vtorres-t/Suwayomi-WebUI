@@ -758,7 +758,7 @@ export const ServerSettings = () => {
                         secondary={
                             <>
                                 {syncDate && t`Last sync: ${syncDate}`}{' '}
-                                {syncState && t`- State: ${t(SYNC_STATE_TRANSLATION[syncState])}`}
+                                {syncState && t`— State: ${t(SYNC_STATE_TRANSLATION[syncState])}`}
                                 {!!syncStatus?.errorMessage && `\nError: ${syncStatus.errorMessage}`}
                             </>
                         }

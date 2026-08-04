@@ -110,7 +110,7 @@ const BaseReaderOverlayHeaderMobile = ({ isVisible, ref }: MobileHeaderProps & {
                             onClick={() => {
                                 navigator
                                     .share({
-                                        title: `${title} - ${name}`,
+                                        title: `${title} — ${name}`,
                                         text: name,
                                         url: realUrl ?? undefined,
                                     })
@@ -126,7 +126,7 @@ const BaseReaderOverlayHeaderMobile = ({ isVisible, ref }: MobileHeaderProps & {
                             onClick={() => {
                                 navigator
                                     .share({
-                                        title: `${title} - ${name}`,
+                                        title: `${title} — ${name}`,
                                         text: name,
                                         url: realUrl ?? undefined,
                                     })

@@ -7,7 +7,7 @@
  */
 
 import Typography from '@mui/material/Typography';
-import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useLingui } from '@lingui/react/macro';
 import { requestManager } from '@/lib/requests/RequestManager.ts';
 import { LoadingPlaceholder } from '@/base/components/feedback/LoadingPlaceholder.tsx';
@@ -23,34 +23,18 @@ import { getErrorMessage } from '@/lib/HelperFunctions.ts';
 import { ChapterUpdateCard } from '@/features/updates/components/ChapterUpdateCard.tsx';
 import { Chapters } from '@/features/chapter/services/Chapters.ts';
 import { useAppTitleAndAction } from '@/features/navigation-bar/hooks/useAppTitleAndAction.ts';
+import { GROUPED_VIRTUOSO_Z_INDEX } from '@/lib/virtuoso/Virtuoso.constants.ts';
 import { STABLE_EMPTY_ARRAY } from '@/base/Base.constants.ts';
 import mapValues from 'lodash/fp/mapValues';
 import difference from 'lodash/fp/difference';
 import uniqBy from 'lodash/fp/uniqBy';
-import { CustomTooltip } from '@/base/components/CustomTooltip.tsx';
-import IconButton from '@mui/material/IconButton';
+import { OffsetComponentWithContainer } from '@/base/OffsetComponent.tsx';
+import { useElementSize } from '@mantine/hooks';
 
 export const Updates: React.FC = () => {
     const { t } = useLingui();
 
-    const { data: lastUpdateTimestampData } = requestManager.useGetLastGlobalUpdateTimestamp({
-        /**
-         * The {@link UpdateChecker} is responsible for updating the timestamp
-         */
-        fetchPolicy: 'cache-only',
-    });
-    const lastUpdateTimestamp = lastUpdateTimestampData?.lastUpdateTimestamp.timestamp;
-    const date = lastUpdateTimestamp ? dateTimeFormatter.format(+lastUpdateTimestamp) : '-';
-
-    useAppTitleAndAction(
-        t`Updates`,
-        <div>
-            <CustomTooltip title={t`Last update`}>
-                <IconButton color="inherit">{date}</IconButton>
-            </CustomTooltip>
-            <UpdateChecker />
-        </div>,
-    );
+    useAppTitleAndAction(t`Updates`, <UpdateChecker />);
 
     const {
         data: chapterUpdateData,
@@ -131,11 +115,16 @@ export const Updates: React.FC = () => {
         useCallback((index) => firstUnreadUpdatesEntries[index].id, [firstUnreadUpdatesEntries]),
     );
 
-    const lastUpdateTimestampCompRef = useRef<HTMLElement>(null);
-    const [lastUpdateTimestampCompHeight, setLastUpdateTimestampCompHeight] = useState(0);
-    useLayoutEffect(() => {
-        setLastUpdateTimestampCompHeight(lastUpdateTimestampCompRef.current?.clientHeight ?? 0);
-    }, [lastUpdateTimestampCompRef.current]);
+    const { ref: lastUpdateTimestampCompRef, height: lastUpdateTimestampCompHeight } = useElementSize();
+
+    const { data: lastUpdateTimestampData } = requestManager.useGetLastGlobalUpdateTimestamp({
+        /**
+         * The {@link UpdateChecker} is responsible for updating the timestamp
+         */
+        fetchPolicy: 'cache-only',
+    });
+    const lastUpdateTimestamp = lastUpdateTimestampData?.lastUpdateTimestamp.timestamp;
+    const date = lastUpdateTimestamp ? dateTimeFormatter.format(+lastUpdateTimestamp) : '-';
 
     const loadMore = useCallback(() => {
         if (!hasNextPage) {
@@ -170,35 +159,51 @@ export const Updates: React.FC = () => {
     }
 
     return (
-        <StyledGroupedVirtuoso
-            persistKey="updates"
-            heightToSubtract={lastUpdateTimestampCompHeight}
-            components={{
-                Footer: () => (isLoading ? <LoadingPlaceholder usePadding /> : null),
+        <OffsetComponentWithContainer
+            sx={{
+                zIndex: GROUPED_VIRTUOSO_Z_INDEX,
             }}
-            overscan={window.innerHeight * 0.5}
-            endReached={loadMore}
-            groupCounts={firstUnreadUpdatesGroupCounts}
-            groupContent={(index) => (
-                <StyledGroupHeader isFirstItem={index === 0}>
-                    <Typography variant="h5" component="h2">
-                        {firstUnreadUpdatesByGroup[index][VirtuosoUtil.GROUP]}
-                    </Typography>
-                </StyledGroupHeader>
-            )}
-            computeItemKey={computeFirstUnreadUpdateItemKey}
-            itemContent={(index) => (
-                <StyledGroupItemWrapper>
-                    <ChapterUpdateCard
-                        chapter={firstUnreadUpdatesEntries[index]}
-                        otherChapters={
-                            otherUpdatesByMangaByGroup[
-                                getDateString(epochToDate(Number(firstUnreadUpdatesEntries[index].fetchedAt)))
-                            ][firstUnreadUpdatesEntries[index].mangaId]
-                        }
-                    />
-                </StyledGroupItemWrapper>
-            )}
-        />
+            component={
+                <Typography
+                    ref={lastUpdateTimestampCompRef}
+                    sx={{
+                        backgroundColor: 'background.default',
+                        pl: '10px',
+                        paddingTop: (theme) => ({ [theme.breakpoints.up('sm')]: { paddingTop: '6px' } }),
+                    }}
+                >{t`Last update: ${date}`}</Typography>
+            }
+        >
+            <StyledGroupedVirtuoso
+                persistKey="updates"
+                heightToSubtract={lastUpdateTimestampCompHeight}
+                components={{
+                    Footer: () => (isLoading ? <LoadingPlaceholder usePadding /> : null),
+                }}
+                overscan={window.innerHeight * 0.5}
+                endReached={loadMore}
+                groupCounts={firstUnreadUpdatesGroupCounts}
+                groupContent={(index) => (
+                    <StyledGroupHeader isFirstItem={index === 0}>
+                        <Typography variant="h5" component="h2">
+                            {firstUnreadUpdatesByGroup[index][VirtuosoUtil.GROUP]}
+                        </Typography>
+                    </StyledGroupHeader>
+                )}
+                computeItemKey={computeFirstUnreadUpdateItemKey}
+                itemContent={(index) => (
+                    <StyledGroupItemWrapper>
+                        <ChapterUpdateCard
+                            chapter={firstUnreadUpdatesEntries[index]}
+                            otherChapters={
+                                otherUpdatesByMangaByGroup[
+                                    getDateString(epochToDate(Number(firstUnreadUpdatesEntries[index].fetchedAt)))
+                                ][firstUnreadUpdatesEntries[index].mangaId]
+                            }
+                        />
+                    </StyledGroupItemWrapper>
+                )}
+            />
+        </OffsetComponentWithContainer>
     );
 };

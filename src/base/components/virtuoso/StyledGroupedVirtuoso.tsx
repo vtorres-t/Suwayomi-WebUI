@@ -9,29 +9,26 @@
 import type { ContextProp, TopItemListProps } from 'react-virtuoso';
 import type { ComponentProps } from 'react';
 import { useMemo } from 'react';
-import Box from '@mui/material/Box';
 import { useNavBarContext } from '@/features/navigation-bar/NavbarContext.tsx';
 import { GroupedVirtuosoPersisted } from '@/lib/virtuoso/Component/GroupedVirtuosoPersisted.tsx';
+import { OffsetComponent } from '@/base/OffsetComponent.tsx';
 
 const StickyVirtuosoHeaderWithOffset =
-    (topOffset: number) =>
+    () =>
     ({ children, ...args }: TopItemListProps & ContextProp<unknown>) => (
-        <Box {...args} style={{ ...args.style, top: topOffset }}>
+        <OffsetComponent {...args} sx={args.style}>
             {children}
-        </Box>
+        </OffsetComponent>
     );
 
-export const StyledGroupedVirtuoso = ({
+export const StyledGroupedVirtuoso = <ItemData = any, Context = any>({
     heightToSubtract = 0,
     style,
     ...props
-}: ComponentProps<typeof GroupedVirtuosoPersisted> & { heightToSubtract?: number }) => {
+}: ComponentProps<typeof GroupedVirtuosoPersisted<ItemData, Context>> & { heightToSubtract?: number }) => {
     const { appBarHeight, bottomBarHeight } = useNavBarContext();
 
-    const TopItemList = useMemo(
-        () => StickyVirtuosoHeaderWithOffset(appBarHeight + heightToSubtract),
-        [appBarHeight, heightToSubtract],
-    );
+    const TopItemList = useMemo(() => StickyVirtuosoHeaderWithOffset(), []);
 
     return (
         <GroupedVirtuosoPersisted
