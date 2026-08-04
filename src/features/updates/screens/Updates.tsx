@@ -28,13 +28,31 @@ import { STABLE_EMPTY_ARRAY } from '@/base/Base.constants.ts';
 import mapValues from 'lodash/fp/mapValues';
 import difference from 'lodash/fp/difference';
 import uniqBy from 'lodash/fp/uniqBy';
-import { OffsetComponentWithContainer } from '@/base/OffsetComponent.tsx';
-import { useElementSize } from '@mantine/hooks';
+import { OffsetComponent } from '@/base/OffsetComponent.tsx';
+import { CustomTooltip } from '@/base/components/CustomTooltip.tsx';
+import IconButton from '@mui/material/IconButton';
 
 export const Updates: React.FC = () => {
     const { t } = useLingui();
 
-    useAppTitleAndAction(t`Updates`, <UpdateChecker />);
+    const { data: lastUpdateTimestampData } = requestManager.useGetLastGlobalUpdateTimestamp({
+        /**
+         * The {@link UpdateChecker} is responsible for updating the timestamp
+         */
+        fetchPolicy: 'cache-only',
+    });
+    const lastUpdateTimestamp = lastUpdateTimestampData?.lastUpdateTimestamp.timestamp;
+    const date = lastUpdateTimestamp ? dateTimeFormatter.format(+lastUpdateTimestamp) : '-';
+
+    useAppTitleAndAction(
+        t`Updates`,
+        <div>
+            <CustomTooltip title={t`Last update`}>
+                <IconButton color="inherit">{date}</IconButton>
+            </CustomTooltip>
+            <UpdateChecker />
+        </div>,
+    );
 
     const {
         data: chapterUpdateData,
@@ -115,17 +133,6 @@ export const Updates: React.FC = () => {
         useCallback((index) => firstUnreadUpdatesEntries[index].id, [firstUnreadUpdatesEntries]),
     );
 
-    const { ref: lastUpdateTimestampCompRef, height: lastUpdateTimestampCompHeight } = useElementSize();
-
-    const { data: lastUpdateTimestampData } = requestManager.useGetLastGlobalUpdateTimestamp({
-        /**
-         * The {@link UpdateChecker} is responsible for updating the timestamp
-         */
-        fetchPolicy: 'cache-only',
-    });
-    const lastUpdateTimestamp = lastUpdateTimestampData?.lastUpdateTimestamp.timestamp;
-    const date = lastUpdateTimestamp ? dateTimeFormatter.format(+lastUpdateTimestamp) : '-';
-
     const loadMore = useCallback(() => {
         if (!hasNextPage) {
             return;
@@ -159,24 +166,13 @@ export const Updates: React.FC = () => {
     }
 
     return (
-        <OffsetComponentWithContainer
+        <OffsetComponent
             sx={{
                 zIndex: GROUPED_VIRTUOSO_Z_INDEX,
             }}
-            component={
-                <Typography
-                    ref={lastUpdateTimestampCompRef}
-                    sx={{
-                        backgroundColor: 'background.default',
-                        pl: '10px',
-                        paddingTop: (theme) => ({ [theme.breakpoints.up('sm')]: { paddingTop: '6px' } }),
-                    }}
-                >{t`Last update: ${date}`}</Typography>
-            }
         >
             <StyledGroupedVirtuoso
                 persistKey="updates"
-                heightToSubtract={lastUpdateTimestampCompHeight}
                 components={{
                     Footer: () => (isLoading ? <LoadingPlaceholder usePadding /> : null),
                 }}
@@ -204,6 +200,6 @@ export const Updates: React.FC = () => {
                     </StyledGroupItemWrapper>
                 )}
             />
-        </OffsetComponentWithContainer>
+        </OffsetComponent>
     );
 };
