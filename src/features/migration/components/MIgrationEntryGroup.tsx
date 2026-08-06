@@ -12,6 +12,12 @@ import { MigrationManager } from '@/features/migration/MigrationManager.ts';
 import { OffsetComponentWithContainer } from '@/base/OffsetComponent.tsx';
 import { Virtuoso } from 'react-virtuoso';
 
+const VirtuosoListWrapper = memo(({ children, ...props }: { children?: ReactNode }) => (
+    <Stack {...props} sx={{ gap: 1 }}>
+        {children}
+    </Stack>
+));
+
 export const MigrationEntryGroup = memo(
     ({
         status,
@@ -60,20 +66,20 @@ export const MigrationEntryGroup = memo(
                         </Button>
                     }
                 >
-                    <Collapse in={isExpanded} unmountOnExit>
+                    <Collapse in={isExpanded}>
                         <Virtuoso
                             useWindowScroll
-                            data={entries}
+                            totalCount={entries.length}
                             components={{
-                                List: ({ children, ...props }: { children?: ReactNode }) => (
-                                    <Stack {...props} sx={{ gap: 1 }}>
-                                        {children}
-                                    </Stack>
-                                ),
+                                List: VirtuosoListWrapper,
                             }}
-                            computeItemKey={(_index, entry) => entry.mangaId}
-                            itemContent={(_index, entry) => (
-                                <MigrationEntry entry={entry} isMigrating={isMigrating} isAborted={isAborted} />
+                            computeItemKey={(index) => entries[index].mangaId}
+                            itemContent={(index) => (
+                                <MigrationEntry
+                                    entry={entries[index]}
+                                    isMigrating={isMigrating}
+                                    isAborted={isAborted}
+                                />
                             )}
                         />
                     </Collapse>
