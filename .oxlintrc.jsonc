@@ -366,7 +366,8 @@
     // ── No .only in tests ──
     "no-only-tests/no-only-tests": "error",
     // ── License header ──
-    "@tony.ganchev/header/header": "off",
+    "@tony.ganchev/header/header": "off"
+  },
   "settings": {
     "jsx-a11y": {
       "components": {},
