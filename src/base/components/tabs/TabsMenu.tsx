@@ -11,7 +11,7 @@ const StyledTabsMenu = styled(Tabs)(({ theme }) => ({
     borderColor: theme.palette.divider,
 }));
 
-export const TabsMenu = ({ children, sx, ...props }: TabsProps) => (
+export const TabsMenu = ({ children, ...props }: TabsProps) => (
     <StyledTabsMenu
         indicatorColor="primary"
         textColor="primary"

@@ -121,6 +121,7 @@ export const useManageMangaLibraryState = (
                             confirm: {
                                 title: t`Add`,
                             },
+                            autoFocus: 'extra',
                         },
                         onExtra: () =>
                             update().catch(
@@ -147,6 +148,7 @@ export const useManageMangaLibraryState = (
                             confirm: {
                                 title: t`Add`,
                             },
+                            autoFocus: 'extra',
                         },
                         onExtra: () => {},
                     },
