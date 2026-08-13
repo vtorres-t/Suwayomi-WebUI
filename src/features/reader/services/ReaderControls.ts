@@ -16,6 +16,7 @@ import { ReaderService } from '@/features/reader/services/ReaderService.ts';
 import type {
     PageInViewportType,
     ProgressBarPosition,
+    ReaderResumeMode,
     ReaderStatePages,
     ReadingDirection,
 } from '@/features/reader/Reader.types.ts';
@@ -181,8 +182,15 @@ class ReaderControlsClass {
 
     openChapter(
         offset: 'previous' | 'next' | ChapterIdInfo['id'],
-        doTransitionCheck: boolean = true,
-        scrollIntoView: boolean = true,
+        {
+            doTransitionCheck = true,
+            scrollIntoView = true,
+            resumeMode,
+        }: {
+            doTransitionCheck?: boolean;
+            scrollIntoView?: boolean;
+            resumeMode?: ReaderResumeMode;
+        } = {},
     ): void {
         const {
             currentChapter,
@@ -259,10 +267,12 @@ class ReaderControlsClass {
                 }
 
                 ReaderService.navigateToChapter(chapterToOpen, {
-                    resumeMode: getReaderOpenChapterResumeMode(
-                        isSpecificChapterMode || !keepRenderedChapters,
-                        isPreviousChapter,
-                    ),
+                    resumeMode:
+                        resumeMode ??
+                        getReaderOpenChapterResumeMode(
+                            isSpecificChapterMode || !keepRenderedChapters,
+                            isPreviousChapter,
+                        ),
                     updateInitialChapter: !keepRenderedChapters,
                 });
             } catch (error) {
