@@ -1,100 +1,132 @@
-import DeleteIcon from '@mui/icons-material/Delete';
 import DragHandle from '@mui/icons-material/DragHandle';
 import Card from '@mui/material/Card';
 import CardActionArea from '@mui/material/CardActionArea';
-import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
-import { memo, useCallback } from 'react';
+import { memo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useLingui } from '@lingui/react/macro';
 import { CustomTooltip } from '@/base/components/CustomTooltip.tsx';
 import { ChapterDownloadRetryButton } from '@/features/chapter/components/buttons/ChapterDownloadRetryButton.tsx';
-import { DownloadStateIndicator } from '@/base/components/downloads/DownloadStateIndicator.tsx';
 import { ChapterCardMetadata } from '@/features/chapter/components/cards/ChapterCardMetadata.tsx';
 import { MUIUtil } from '@/lib/mui/MUI.util.ts';
 import { ListCardContent } from '@/base/components/lists/cards/ListCardContent.tsx';
 import { AppRoutes } from '@/base/AppRoute.constants.ts';
-import { defaultPromiseErrorHandler } from '@/lib/DefaultPromiseErrorHandler.ts';
-import { getErrorMessage } from '@/lib/HelperFunctions.ts';
-import { makeToast } from '@/base/utils/Toast.ts';
-import { requestManager } from '@/lib/requests/RequestManager.ts';
-import { DownloaderState } from '@/lib/graphql/generated/graphql-base.types.ts';
-import type { ChapterDownloadStatus, ChapterIdInfo } from '@/features/chapter/Chapter.types.ts';
+import type { ChapterDownloadStatus } from '@/features/chapter/Chapter.types.ts';
 import { MediaQuery } from '@/base/utils/MediaQuery.tsx';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
+import MenuItem from '@mui/material/MenuItem';
+import Menu from '@mui/material/Menu';
+import { DownloadStateIndicatorLinear } from '@/base/components/downloads/DownloadStateIndicatorLinear.tsx';
+import Stack from '@mui/material/Stack';
+import Typography from '@mui/material/Typography';
+import { DownloadState } from '@/lib/graphql/generated/graphql-base.types.ts';
+
+interface ActionProps {
+    reorderDownloads: (download: ChapterDownloadStatus, mode: 'top' | 'bottom', series?: boolean) => void;
+    cancelDownloads: (download: ChapterDownloadStatus, series?: boolean) => void;
+}
+
+const ActionMenu = ({
+    open,
+    download,
+    reorderDownloads,
+    cancelDownloads,
+    anchorEl,
+}: {
+    open: boolean;
+    download: ChapterDownloadStatus;
+    anchorEl: Element | null;
+} & ActionProps) => {
+    const { t } = useLingui();
+
+    return (
+        <Menu open={open} anchorEl={anchorEl}>
+            <MenuItem onClick={() => reorderDownloads(download, 'top')}>{t`Move to top`}</MenuItem>
+            <MenuItem onClick={() => reorderDownloads(download, 'top', true)}>{t`Move series to top`}</MenuItem>
+            <MenuItem onClick={() => reorderDownloads(download, 'bottom')}>{t`Move to bottom`}</MenuItem>
+            <MenuItem onClick={() => reorderDownloads(download, 'bottom', true)}>{t`Move series to bottom`}</MenuItem>
+            <MenuItem onClick={() => cancelDownloads(download)}>{t`Cancel`}</MenuItem>
+            <MenuItem onClick={() => cancelDownloads(download, true)}>{t`Cancel all for this series`}</MenuItem>
+        </Menu>
+    );
+};
 
 export const DownloadQueueChapterCard = memo(
-    ({ item, status }: { item: ChapterDownloadStatus; status: DownloaderState }) => {
+    ({ item, reorderDownloads, cancelDownloads }: { item: ChapterDownloadStatus } & ActionProps) => {
         const { t } = useLingui();
         const preventMobileContextMenu = MediaQuery.usePreventMobileContextMenu();
 
-        const handleDelete = useCallback(
-            async (chapter: ChapterIdInfo) => {
-                const isRunning = status === DownloaderState.Started;
+        const [anchorEl, setAnchorEl] = useState<Element | null>(null);
 
-                try {
-                    if (isRunning) {
-                        // required to stop before deleting otherwise the download kept going. Server issue?
-                        await requestManager.stopDownloads().response;
-                    }
-
-                    await Promise.all([
-                        // remove from download queue
-                        requestManager.removeChapterFromDownloadQueue(chapter.id).response,
-                        // delete partial download, should be handle server side?
-                        // bug: The folder and the last image downloaded are not deleted
-                        requestManager.deleteDownloadedChapter(chapter.id).response,
-                    ]);
-                } catch (e) {
-                    makeToast(t`Could not remove the download from the queue.`, 'error', getErrorMessage(e));
-                }
-
-                if (!isRunning) {
-                    return;
-                }
-
-                requestManager
-                    .startDownloads()
-                    .response.catch(defaultPromiseErrorHandler('DownloadQueue::startDownloads'));
-            },
-            [status],
-        );
+        const [actionMenuOpen, setActionMenuOpen] = useState(false);
 
         return (
-            <Box sx={{ p: 1, pb: 0 }}>
-                <Card>
-                    <CardActionArea
-                        component={Link}
-                        to={AppRoutes.manga.path(item.manga.id)}
-                        onContextMenu={preventMobileContextMenu}
-                        sx={MediaQuery.preventMobileContextMenuSx()}
-                    >
-                        <ListCardContent>
-                            <IconButton {...MUIUtil.preventRippleProp()} sx={{ pointerEvents: 'none' }}>
-                                <DragHandle />
+            <Card>
+                <CardActionArea
+                    component={Link}
+                    to={AppRoutes.manga.path(item.manga.id)}
+                    onContextMenu={preventMobileContextMenu}
+                    sx={MediaQuery.preventMobileContextMenuSx()}
+                >
+                    <ListCardContent>
+                        <IconButton {...MUIUtil.preventRippleProp()} sx={{ pointerEvents: 'none' }}>
+                            <DragHandle />
+                        </IconButton>
+                        <Stack
+                            sx={{
+                                flexGrow: 1,
+                                flexShrink: 1,
+                                gap: 1,
+                            }}
+                        >
+                            <Stack sx={{ flexDirection: 'row', alignItems: 'end', flexWrap: 'wrap' }}>
+                                <ChapterCardMetadata
+                                    title={item.manga.title}
+                                    secondaryText={item.chapter.scanlator}
+                                    ternaryText={item.chapter.name}
+                                />
+                                <Typography sx={{ pb: 1, flexGrow: 1, textAlign: 'end' }} variant="caption">
+                                    {(() => {
+                                        if (item.state === DownloadState.Error) {
+                                            return t`Error`;
+                                        }
+
+                                        const isDownloading =
+                                            item.state === DownloadState.Downloading || item.progress >= 0.1;
+                                        if (!isDownloading) {
+                                            return null;
+                                        }
+
+                                        return `${(item.chapter.pageCount * item.progress).toFixed()}/${item.chapter.pageCount}`;
+                                    })()}
+                                </Typography>
+                            </Stack>
+                            <DownloadStateIndicatorLinear chapterId={item.chapter.id} />
+                        </Stack>
+                        <ChapterDownloadRetryButton chapterId={item.chapter.id} />
+                        <CustomTooltip title={t`Delete`}>
+                            <IconButton
+                                ref={setAnchorEl}
+                                {...MUIUtil.preventRippleProp()}
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    e.stopPropagation();
+                                    setActionMenuOpen(!actionMenuOpen);
+                                }}
+                            >
+                                <MoreVertIcon />
+                                <ActionMenu
+                                    open={actionMenuOpen}
+                                    download={item}
+                                    reorderDownloads={reorderDownloads}
+                                    cancelDownloads={cancelDownloads}
+                                    anchorEl={anchorEl}
+                                />
                             </IconButton>
-                            <ChapterCardMetadata
-                                title={item.manga.title}
-                                secondaryText={item.chapter.scanlator}
-                                ternaryText={item.chapter.name}
-                            />
-                            <DownloadStateIndicator chapterId={item.chapter.id} />
-                            <ChapterDownloadRetryButton chapterId={item.chapter.id} />
-                            <CustomTooltip title={t`Delete`}>
-                                <IconButton
-                                    {...MUIUtil.preventRippleProp()}
-                                    onClick={(e) => {
-                                        e.preventDefault();
-                                        e.stopPropagation();
-                                        handleDelete(item.chapter);
-                                    }}
-                                >
-                                    <DeleteIcon />
-                                </IconButton>
-                            </CustomTooltip>
-                        </ListCardContent>
-                    </CardActionArea>
-                </Card>
-            </Box>
+                        </CustomTooltip>
+                    </ListCardContent>
+                </CardActionArea>
+            </Card>
         );
     },
 );

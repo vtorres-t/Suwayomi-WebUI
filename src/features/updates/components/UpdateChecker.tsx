@@ -10,7 +10,7 @@ import { useLingui } from '@lingui/react/macro';
 import { CustomTooltip } from '@/base/components/CustomTooltip.tsx';
 import { requestManager } from '@/lib/requests/RequestManager.ts';
 import { makeToast } from '@/base/utils/Toast.ts';
-import { Progress } from '@/base/components/feedback/Progress.tsx';
+import { CircularProgressWithText } from '@/base/components/feedback/CircularProgressWithText.tsx';
 import { defaultPromiseErrorHandler } from '@/lib/DefaultPromiseErrorHandler.ts';
 import { dateTimeFormatter } from '@/base/utils/DateHelper.ts';
 import { MediaQuery } from '@/base/utils/MediaQuery.tsx';
@@ -106,7 +106,7 @@ export function UpdateChecker({
                                 <>
                                     <ClearIcon sx={{ opacity: Number(isTouchDevice || isHovered) }} />
                                     <Stack sx={{ position: 'absolute' }}>
-                                        <Progress
+                                        <CircularProgressWithText
                                             progress={progress}
                                             showText={!isTouchDevice && !isHovered}
                                             progressProps={{ color: 'inherit' }}

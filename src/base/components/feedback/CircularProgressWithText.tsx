@@ -4,7 +4,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import Typography from '@mui/material/Typography';
 import { STABLE_EMPTY_OBJECT } from '@/base/Base.constants.ts';
 
-export const Progress = ({
+export const CircularProgressWithText = ({
     progress,
     showText = true,
     progressProps = STABLE_EMPTY_OBJECT,

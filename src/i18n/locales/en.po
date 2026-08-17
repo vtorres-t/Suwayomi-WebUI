@@ -121,6 +121,11 @@ msgstr "{0, plural, one {1 searching} other {# searching}}"
 msgid "{0, plural, one {Plus chapter {firstFewUpdatesString}} other {Plus chapters {firstFewUpdatesString}}}"
 msgstr "{0, plural, one {Plus chapter {firstFewUpdatesString}} other {Plus chapters {firstFewUpdatesString}}}"
 
+#. placeholder {0}: reorders.length
+#: src/features/downloads/screens/DownloadQueue.tsx
+msgid "{0, plural, one {Could not reorder download} other {Could not reorder downloads}}"
+msgstr "{0, plural, one {Could not reorder download} other {Could not reorder downloads}}"
+
 #. placeholder {0}: autoScroll.value
 #: src/features/reader/auto-scroll/settings/quick-setting/ReaderNavBarDesktopAutoScroll.tsx
 msgid "{0, plural, one {Second} other {Seconds}}"
@@ -189,6 +194,10 @@ msgstr "{count, plural, one {Could not add the download} other {Could not add do
 msgid "{count, plural, one {Could not bookmark the chapter} other {Could not bookmark chapters}}"
 msgstr "{count, plural, one {Could not bookmark the chapter} other {Could not bookmark chapters}}"
 
+#: src/features/chapter/Chapter.constants.ts
+msgid "{count, plural, one {Could not cancel the download} other {Could not cancel downloads}}"
+msgstr "{count, plural, one {Could not cancel the download} other {Could not cancel downloads}}"
+
 #: src/features/manga/Manga.constants.ts
 msgid "{count, plural, one {Could not change the categories of the manga} other {Could not change the categories of the manga}}"
 msgstr "{count, plural, one {Could not change the categories of the manga} other {Could not change the categories of the manga}}"
@@ -229,6 +238,10 @@ msgstr "{count, plural, one {Could not update the extension} other {Could not up
 msgid "{count, plural, one {Download added} other {# downloads added}}"
 msgstr "{count, plural, one {Download added} other {# downloads added}}"
 
+#: src/features/chapter/Chapter.constants.ts
+msgid "{count, plural, one {Download canceled} other {# downloads canceled}}"
+msgstr "{count, plural, one {Download canceled} other {# downloads canceled}}"
+
 #: src/features/chapter/components/actions/ChaptersDownloadActionMenuItems.tsx
 msgid "{count, plural, one {Next chapter} other {Next # chapters}}"
 msgstr "{count, plural, one {Next chapter} other {Next # chapters}}"
@@ -264,6 +277,10 @@ msgstr ""
 "Current: {currentChapter}} other {There are # missing chapters.\n"
 "Previous: {nextChapter}\n"
 "Current: {currentChapter}}}"
+
+#: src/features/chapter/Chapter.constants.ts
+msgid "{count, plural, one {You are about to cancel one download} other {You are about to cancel # downloads}}"
+msgstr "{count, plural, one {You are about to cancel one download} other {You are about to cancel # downloads}}"
 
 #: src/features/manga/Manga.constants.ts
 msgid "{count, plural, one {You are about to change the category of one entry} other {You are about to change the category of # entries}}"
@@ -320,6 +337,10 @@ msgstr "{extensionStoreCount, plural, one {# extension store} other {# extension
 #: src/features/extension/store/screens/ExtensionStores.tsx
 msgid "{installedExtensionCount, plural, one {# installed} other {# installed}}"
 msgstr "{installedExtensionCount, plural, one {# installed} other {# installed}}"
+
+#: src/features/global-search/screens/SearchAll.tsx
+msgid "{libraryMangaCount, plural, one {# entry in library} other {# entries in library}}"
+msgstr "{libraryMangaCount, plural, one {# entry in library} other {# entries in library}}"
 
 #: src/features/chapter/components/ChapterList.tsx
 #: src/features/chapter/components/MissingChaptersInfoSeparator.tsx
@@ -749,6 +770,7 @@ msgid "Can't migrate an entry to itself"
 msgstr "Can't migrate an entry to itself"
 
 #: src/base/collection/components/SelectableCollectionSelectMode.tsx
+#: src/base/components/downloads/DownloadStateIndicatorCircular.tsx
 #: src/base/components/inputs/LanguageSelect.tsx
 #: src/base/components/modals/ConfirmDialog.tsx
 #: src/base/components/modals/LoginDialog.tsx
@@ -764,6 +786,7 @@ msgstr "Can't migrate an entry to itself"
 #: src/features/category/components/CategoriesInclusionSetting.tsx
 #: src/features/category/components/CategorySelect.tsx
 #: src/features/category/components/CreateOrEditCategoryDialog.tsx
+#: src/features/downloads/components/DownloadQueueChapterCard.tsx
 #: src/features/migration/components/MigrationBulkSearchOptionsDialog.tsx
 #: src/features/migration/components/MigrationOptionsDialog.tsx
 #: src/features/reader/hotkeys/settings/components/RecordHotkey.tsx
@@ -777,6 +800,18 @@ msgstr "Can't migrate an entry to itself"
 #: src/features/tracker/components/cards/TrackerActiveCard.tsx
 msgid "Cancel"
 msgstr "Cancel"
+
+#: src/features/downloads/components/DownloadQueueChapterCard.tsx
+msgid "Cancel all for this series"
+msgstr "Cancel all for this series"
+
+#: src/features/chapter/Chapter.constants.ts
+msgid "Cancel download"
+msgstr "Cancel download"
+
+#: src/features/chapter/Chapter.constants.ts
+msgid "Cancel downloads of selected"
+msgstr "Cancel downloads of selected"
 
 #: src/features/manga/Manga.constants.ts
 #: src/features/tracker/Tracker.constants.ts
@@ -894,6 +929,10 @@ msgstr "Clear"
 #: src/features/settings/screens/ImagesSettings.tsx
 msgid "Clear cache"
 msgstr "Clear cache"
+
+#: src/features/settings/screens/ServerSettings.tsx
+msgid "Clear cookies and cache"
+msgstr "Clear cookies and cache"
 
 #: src/features/settings/screens/ImagesSettings.tsx
 msgid "Cleared the cache"
@@ -1157,10 +1196,6 @@ msgstr "Could not remove extension store \"{name}\""
 msgid "Could not remove non library manga from categories"
 msgstr "Could not remove non library manga from categories"
 
-#: src/features/downloads/components/DownloadQueueChapterCard.tsx
-msgid "Could not remove the download from the queue."
-msgstr "Could not remove the download from the queue."
-
 #: src/features/backup/screens/Backup.tsx
 msgid "Could not restore backup"
 msgstr "Could not restore backup"
@@ -1172,6 +1207,10 @@ msgstr "Could not retry \"{title}\""
 #: src/features/chapter/components/buttons/ChapterDownloadRetryButton.tsx
 msgid "Could not retry failed download."
 msgstr "Could not retry failed download."
+
+#: src/features/downloads/screens/DownloadQueue.tsx
+msgid "Could not retry failed downloads"
+msgstr "Could not retry failed downloads"
 
 #: src/features/settings/screens/Appearance.tsx
 msgid "Could not save changes"
@@ -1547,7 +1586,7 @@ msgstr "Downloaded"
 msgid "Downloaded chapters"
 msgstr "Downloaded chapters"
 
-#: src/base/components/downloads/DownloadStateIndicator.tsx
+#: src/base/components/downloads/DownloadStateIndicatorCircular.tsx
 #: src/features/settings/Settings.constants.ts
 msgid "Downloading"
 msgstr "Downloading"
@@ -1646,8 +1685,9 @@ msgstr "Entry \"{0} ({1}; {sourceTitle} ({2}))\" in invalid state \"{3}\""
 msgid "Entry \"{id}\" not found"
 msgstr "Entry \"{id}\" not found"
 
-#: src/base/components/downloads/DownloadStateIndicator.tsx
+#: src/base/components/downloads/DownloadStateIndicatorCircular.tsx
 #: src/base/components/feedback/SnackbarWithDescription.tsx
+#: src/features/downloads/components/DownloadQueueChapterCard.tsx
 #: src/features/settings/Settings.constants.ts
 msgid "Error"
 msgstr "Error"
@@ -1815,7 +1855,7 @@ msgstr "Filter manga feed to display only chapters you haven’t read yet."
 msgid "Finish date"
 msgstr "Finish date"
 
-#: src/base/components/downloads/DownloadStateIndicator.tsx
+#: src/base/components/downloads/DownloadStateIndicatorCircular.tsx
 #: src/features/tracker/Tracker.constants.ts
 msgid "Finished"
 msgstr "Finished"
@@ -2621,6 +2661,22 @@ msgstr "More"
 msgid "Mountain Sunset"
 msgstr "Mountain Sunset"
 
+#: src/features/downloads/components/DownloadQueueChapterCard.tsx
+msgid "Move series to bottom"
+msgstr "Move series to bottom"
+
+#: src/features/downloads/components/DownloadQueueChapterCard.tsx
+msgid "Move series to top"
+msgstr "Move series to top"
+
+#: src/features/downloads/components/DownloadQueueChapterCard.tsx
+msgid "Move to bottom"
+msgstr "Move to bottom"
+
+#: src/features/downloads/components/DownloadQueueChapterCard.tsx
+msgid "Move to top"
+msgstr "Move to top"
+
 #: src/base/utils/Languages.ts
 #: src/features/extension/Extensions.constants.ts
 msgid "Multi"
@@ -2983,7 +3039,7 @@ msgstr "Pure black dark mode"
 msgid "px"
 msgstr "px"
 
-#: src/base/components/downloads/DownloadStateIndicator.tsx
+#: src/base/components/downloads/DownloadStateIndicatorCircular.tsx
 msgid "Queued"
 msgstr "Queued"
 
@@ -3150,6 +3206,10 @@ msgstr "Resume"
 #: src/features/migration/components/migration-entry/MigrationDestinationEntry.tsx
 msgid "Retry"
 msgstr "Retry"
+
+#: src/features/downloads/screens/DownloadQueue.tsx
+msgid "Retry all"
+msgstr "Retry all"
 
 #: src/features/reader/overlay/navigation/desktop/components/ReaderNavBarDesktopActions.tsx
 msgid "Retry errored pages"
