@@ -8,7 +8,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ### Added
 
-- .
+- (**Download**) Add button to retry all failed downloads
 
 ### Changed
 
@@ -19,6 +19,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - (**Migration**) Show source id for missing source title for source entries
 - (**Library**) Prevent randomizing category sort order everytime category gets opened
 - (**Reader**) Open the first page when going to the previous chapter
+- (**Download**) Group downloads by source
+- (**Download**) Add series bulk actions
+- (**Download**) Make downloads cancelable outside the download queue page
+- (**Global search**) Show count of entries in the library of each source
 
 ### Fixed
 

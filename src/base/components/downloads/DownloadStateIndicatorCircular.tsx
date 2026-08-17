@@ -7,6 +7,11 @@ import { msg } from '@lingui/core/macro';
 import { DownloadState } from '@/lib/graphql/generated/graphql-base.types.ts';
 import { Chapters } from '@/features/chapter/services/Chapters.ts';
 import type { ChapterIdInfo } from '@/features/chapter/Chapter.types.ts';
+import { useHover } from '@mantine/hooks';
+import ClearIcon from '@mui/icons-material/Clear';
+import IconButton from '@mui/material/IconButton';
+import { CustomTooltip } from '@/base/components/CustomTooltip.tsx';
+import { MUIUtil } from '@/lib/mui/MUI.util.ts';
 
 const DOWNLOAD_STATE_TO_TRANSLATION_MAP: { [state in DownloadState]: MessageDescriptor } = {
     DOWNLOADING: msg`Downloading`,
@@ -15,8 +20,16 @@ const DOWNLOAD_STATE_TO_TRANSLATION_MAP: { [state in DownloadState]: MessageDesc
     QUEUED: msg`Queued`,
 } as const;
 
-export const DownloadStateIndicator = ({ chapterId, color }: { chapterId: ChapterIdInfo['id']; color?: string }) => {
+export const DownloadStateIndicatorCircular = ({
+    chapterId,
+    color,
+}: {
+    chapterId: ChapterIdInfo['id'];
+    color?: string;
+}) => {
     const { t } = useLingui();
+
+    const { ref, hovered } = useHover();
 
     const download = Chapters.useDownloadStatusFromCache(chapterId);
 
@@ -32,6 +45,7 @@ export const DownloadStateIndicator = ({ chapterId, color }: { chapterId: Chapte
 
     return (
         <Box
+            ref={ref}
             sx={{
                 position: 'relative',
                 display: 'inline-flex',
@@ -52,7 +66,11 @@ export const DownloadStateIndicator = ({ chapterId, color }: { chapterId: Chapte
                     justifyContent: 'center',
                 }}
             >
-                <Typography variant="caption" component="div" sx={{ color }}>
+                <Typography
+                    variant="caption"
+                    component="div"
+                    sx={{ color, position: 'absolute', opacity: Number(!hovered) }}
+                >
                     <>
                         {isDownloading && progress}
                         {!isDownloading && (
@@ -63,6 +81,21 @@ export const DownloadStateIndicator = ({ chapterId, color }: { chapterId: Chapte
                         )}
                     </>
                 </Typography>
+                <CustomTooltip title={t`Cancel`}>
+                    <IconButton
+                        sx={{ opacity: Number(hovered) }}
+                        color="inherit"
+                        {...MUIUtil.preventRippleProp()}
+                        onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+
+                            Chapters.cancelDownload([chapterId]);
+                        }}
+                    >
+                        <ClearIcon />
+                    </IconButton>
+                </CustomTooltip>
             </Box>
         </Box>
     );

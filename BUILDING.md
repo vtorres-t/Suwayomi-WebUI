@@ -27,7 +27,9 @@ about [Building for Production](https://vitejs.dev/guide/build.html) for more in
 
 Edit .env.template and remove .template
 
-npx -p @graphql-codegen/cli graphql-codegen --config gql_codegen.ts oxfmt .
+npx -p @graphql-codegen/cli graphql-codegen --config gql_codegen.ts
+
+oxfmt .
 
 ### `pnpm tsc`
 
