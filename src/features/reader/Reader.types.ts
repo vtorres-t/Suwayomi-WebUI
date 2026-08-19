@@ -172,6 +172,7 @@ export interface IReaderSettingsGlobal {
     shouldUseInfiniteScroll: boolean;
     shouldShowTransitionPage: boolean;
     safeAreaInset: SafeAreaInset;
+    shouldEnterFullscreen: boolean;
 }
 
 export interface IReaderSettingsManga {
