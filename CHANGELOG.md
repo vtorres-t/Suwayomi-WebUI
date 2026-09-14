@@ -8,22 +8,33 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ### Added
 
+- (**Manga**) Add per-manga notes
 - (**Download**) Add button to retry all failed downloads
 - (**Reader**) Add fullscreen setting (does nothing on iOS)
+- (**Library**) Add `reset` button to library filters
+- (**Library**) Add option to apply `tracker` filter either with `AND` or `OR` logic
+- (**Sync**) Add sync button to the app bar of the library and updates pages
 
 ### Changed
 
 - (**Extension**) Install extension when clicking card of uninstalled extension
+- (**Extension**) Show sources of extension as disabled in case the language itself is disabled. Enabling such a source will enable the language as well
+- (**Extension/Source**) Keep language filter sorting stable while changes are temporary
+- (**Extension/Source**) Additionally, show the english name of a language in the language filter
 - (**Updates/History/Downloads**) Show scanlator of chapter
 - (**Updates**) Improve render performance of the collapsed more updates
 - (**Migration**) Improve render performance of the migration search and execution page
 - (**Migration**) Show source id for missing source title for source entries
 - (**Library**) Prevent randomizing category sort order everytime category gets opened
+- (**Library**) Apply `source/tracker/status` filter using `OR` logic. I.e., show entries that are from any of the included `source/tracker/status`
 - (**Reader**) Open the first page when going to the previous chapter
 - (**Download**) Group downloads by source
 - (**Download**) Add series bulk actions
 - (**Download**) Make downloads cancelable outside the download queue page
 - (**Global search**) Show count of entries in the library of each source
+- (**Manga**) Show description as markdown
+- (**Appearance**) Additionally, show the english name of a language in the language select dropdown
+- (**History**) Show the last read chapter per manga per day
 
 ### Fixed
 

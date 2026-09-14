@@ -5,6 +5,7 @@ import { requestManager } from '@/lib/requests/RequestManager.ts';
 import { LoadingPlaceholder } from '@/base/components/feedback/LoadingPlaceholder.tsx';
 import { EmptyViewAbsoluteCentered } from '@/base/components/feedback/EmptyViewAbsoluteCentered.tsx';
 import { UpdateChecker } from '@/features/updates/components/UpdateChecker.tsx';
+import { SyncButton } from '@/features/sync/components/SyncButton.tsx';
 import { StyledGroupedVirtuoso } from '@/base/components/virtuoso/StyledGroupedVirtuoso.tsx';
 import { StyledGroupHeader } from '@/base/components/virtuoso/StyledGroupHeader.tsx';
 import { StyledGroupItemWrapper } from '@/base/components/virtuoso/StyledGroupItemWrapper.tsx';
@@ -42,6 +43,7 @@ export const Updates: React.FC = () => {
             <CustomTooltip title={t`Last update`}>
                 <IconButton color="inherit">{date}</IconButton>
             </CustomTooltip>
+            <SyncButton />
             <UpdateChecker />
         </div>,
     );

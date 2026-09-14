@@ -24,6 +24,7 @@ import type { I18nResourceCode } from '@/i18n';
 import { i18nResources } from '@/i18n';
 import { toUniqueLanguageCodes } from '@/base/utils/Languages.ts';
 import { assertIsDefined } from '@/base/Asserts.ts';
+import { DEFAULT_CATEGORY_METADATA } from '@/features/category/services/CategoryMetadata.ts';
 
 const MATCH_ARRAY_NUMBERS = /^\[\d+(?:,\d+)*]$/g;
 
@@ -398,6 +399,9 @@ export const APP_METADATA: Record<
     excludedScanlators: {
         convert: convertToObject<string[]>,
     },
+    notes: {
+        convert: convertToString,
+    },
     locale: {
         convert: convertToString,
         toConstrainedValue: (value: string) => {
@@ -513,6 +517,7 @@ export const GLOBAL_METADATA_KEYS: AppMetadataKeys[] = [
     'unread',
     'showChapterNumber',
     'excludedScanlators',
+    'notes',
 ];
 
 /**
@@ -752,6 +757,27 @@ export const METADATA_MIGRATIONS: IMetadataMigration[] = [
                     );
 
                     return JSON.stringify(convertedToValidIsoCodes);
+                },
+            },
+        ],
+    },
+    {
+        values: [
+            {
+                key: 'hasTrackerBinding',
+                oldValue: /^\{.*}$/g,
+                newValue: (hasTrackerBindingValue) => {
+                    const convertedHasTrackerBinding = convertToObject<Record<string, NullAndUndefined<boolean>>>(
+                        hasTrackerBindingValue,
+                        {},
+                    );
+
+                    const migratedHasTrackerBinding = {
+                        ...DEFAULT_CATEGORY_METADATA.hasTrackerBinding,
+                        filters: convertedHasTrackerBinding,
+                    };
+
+                    return JSON.stringify(migratedHasTrackerBinding);
                 },
             },
         ],

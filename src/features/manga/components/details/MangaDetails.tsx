@@ -30,6 +30,7 @@ import type {
     MangaIdInfo,
     MangaInLibraryInfo,
     MangaLocationState,
+    MangaMetaInfo,
     MangaSourceIdInfo,
     MangaStatusInfo,
     MangaThumbnailInfo,
@@ -199,7 +200,8 @@ export const MangaDetails = ({
         MangaGenreInfo &
         MangaThumbnailInfo &
         MangaSourceIdInfo &
-        MangaTrackRecordInfo & {
+        MangaTrackRecordInfo &
+        MangaMetaInfo & {
             source?: Pick<SourceType, 'id' | 'displayName'> | null;
         };
     mode: MangaLocationState['mode'];

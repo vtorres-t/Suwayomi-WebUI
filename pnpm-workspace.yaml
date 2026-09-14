@@ -6,3 +6,5 @@ allowBuilds:
     esbuild: true
     protobufjs: true
     sharp: true
+overrides:
+    '@swc/core': 1.15.11

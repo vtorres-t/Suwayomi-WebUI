@@ -16,6 +16,7 @@ import { translateExtensionLanguage } from '@/features/extension/Extensions.util
 import { languageSortComparator, toUniqueLanguageCodes } from '@/base/utils/Languages.ts';
 import { usePrevious } from '@mantine/hooks';
 import { AwaitableComponent, type AwaitableComponentProps } from 'awaitable-component';
+import { getISOLanguage } from '@/lib/ISOLanguageUtil.ts';
 
 const LanguageSelectDialog = ({
     isVisible,
@@ -41,7 +42,7 @@ const LanguageSelectDialog = ({
     const languagesSortedBySelectState = useMemo(
         () =>
             toUniqueLanguageCodes([
-                ...tmpSelectedLanguages
+                ...selectedLanguages
                     .filter((language) => languages.includes(language))
                     .toSorted(languageSortComparator),
                 ...languages.toSorted(languageSortComparator),
@@ -63,7 +64,7 @@ const LanguageSelectDialog = ({
 
     return (
         <Dialog fullWidth maxWidth="xs" open={isVisible} onClose={onDismiss} onTransitionExited={onExitComplete}>
-            <DialogTitle>{t`Allowed Languages`}</DialogTitle>
+            <DialogTitle>{t`Enabled languages`}</DialogTitle>
             <DialogContent dividers sx={{ padding: 0 }}>
                 <Virtuoso
                     style={{
@@ -76,7 +77,10 @@ const LanguageSelectDialog = ({
                     computeItemKey={(index) => languagesSortedBySelectState[index]}
                     itemContent={(_index, language) => (
                         <ListItem>
-                            <ListItemText primary={translateExtensionLanguage(language)} />
+                            <ListItemText
+                                primary={translateExtensionLanguage(language)}
+                                secondary={getISOLanguage(language)?.name}
+                            />
 
                             <Switch
                                 checked={tmpSelectedLanguages.includes(language)}

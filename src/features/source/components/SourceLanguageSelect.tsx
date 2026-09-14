@@ -26,13 +26,14 @@ import type {
     SourceNameInfo,
 } from '@/features/source/Source.types.ts';
 import { Sources } from '@/features/source/services/Sources';
-import { batchUpdateSourceMetadata, getSourceMetadata } from '@/features/source/services/SourceMetadata.ts';
+import { batchUpdateSourceMetadata } from '@/features/source/services/SourceMetadata.ts';
 import { requestManager } from '@/lib/requests/RequestManager.ts';
 import { ListCardAvatar } from '@/base/components/lists/cards/ListCardAvatar.tsx';
 import { makeToast } from '@/base/utils/Toast.ts';
 import { getErrorMessage } from '@/lib/HelperFunctions.ts';
 import { VirtuosoUtil } from '@/lib/virtuoso/Virtuoso.util.tsx';
 import { AwaitableComponent, type AwaitableComponentProps } from 'awaitable-component';
+import { getISOLanguage } from '@/lib/ISOLanguageUtil.ts';
 
 const SourceLanguageSelectDialog = ({
     isVisible,
@@ -66,17 +67,24 @@ const SourceLanguageSelectDialog = ({
     const languagesSortedBySelectState = useMemo(
         () =>
             toUniqueLanguageCodes([
-                ...tmpSelectedLanguages
+                ...selectedLanguages
                     .filter((language) => languages.includes(language))
                     .toSorted(languageSortComparator),
                 ...languages.toSorted(languageSortComparator),
             ]),
-        [languages, tmpSelectedLanguages],
+        [languages, selectedLanguages],
     );
 
     const flattenedSourcesByLanguages = useMemo(
-        () => languagesSortedBySelectState.flatMap((language) => sourcesByLanguage[language] ?? []),
-        [languagesSortedBySelectState, sourcesByLanguage],
+        () =>
+            languagesSortedBySelectState
+                .filter((language) =>
+                    tmpSelectedLanguages
+                        .filter((selectedLanguage) => languages.includes(selectedLanguage))
+                        .includes(language),
+                )
+                .flatMap((language) => sourcesByLanguage[language] ?? []),
+        [languagesSortedBySelectState, sourcesByLanguage, tmpSelectedLanguages],
     );
 
     const groupCounts = useMemo(
@@ -91,7 +99,7 @@ const SourceLanguageSelectDialog = ({
 
                 return sourcesByLanguage[language].length;
             }),
-        [sourcesByLanguage, languagesSortedBySelectState, languages],
+        [sourcesByLanguage, languagesSortedBySelectState, languages, tmpSelectedLanguages],
     );
 
     const computeItemKey = VirtuosoUtil.useCreateGroupedComputeItemKey(
@@ -113,7 +121,7 @@ const SourceLanguageSelectDialog = ({
 
                     return {
                         sources: [source],
-                        entries: [{ metadataKey: 'isEnabled' as const, value: enabled }],
+                        update: [{ key: 'isEnabled' as const, value: enabled }],
                     };
                 })
                 .filter((entry) => entry !== null),
@@ -130,7 +138,7 @@ const SourceLanguageSelectDialog = ({
 
     return (
         <Dialog fullWidth maxWidth="xs" open={isVisible} onClose={onDismiss} onTransitionExited={onExitComplete}>
-            <DialogTitle>{t`Allowed Languages`}</DialogTitle>
+            <DialogTitle>{t`Enabled languages and sources`}</DialogTitle>
             <DialogContent dividers sx={{ padding: 0 }}>
                 {!languages.length && <Box sx={{ p: 1 }}>{t`No sources installed`}</Box>}
                 <GroupedVirtuoso
@@ -153,7 +161,10 @@ const SourceLanguageSelectDialog = ({
                                     backgroundImage: 'var(--Paper-overlay)',
                                 }}
                             >
-                                <ListItemText primary={translateExtensionLanguage(language)} />
+                                <ListItemText
+                                    primary={translateExtensionLanguage(language)}
+                                    secondary={getISOLanguage(language)?.name}
+                                />
                                 <Switch
                                     checked={isEnabled}
                                     onChange={(e) => handleChange(language, e.target.checked)}
@@ -186,7 +197,8 @@ const SourceLanguageSelectDialog = ({
                                 <ListItemText primary={source.name} />
                                 <Checkbox
                                     checked={
-                                        tmpSourceIdToEnabledState[source.id] ?? getSourceMetadata(source).isEnabled
+                                        tmpSourceIdToEnabledState[source.id] ??
+                                        Sources.isEnabled(source, tmpSelectedLanguages)
                                     }
                                     onChange={(e) =>
                                         setTmpSourceIdToEnabledState({
