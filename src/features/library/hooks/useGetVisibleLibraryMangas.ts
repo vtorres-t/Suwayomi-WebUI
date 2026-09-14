@@ -5,6 +5,7 @@ import type { ChapterType, MangaType, TrackRecordType } from '@/lib/graphql/gene
 import { enhancedCleanup } from '@/base/utils/Strings.ts';
 import { useGetCategoryMetadata } from '@/features/category/services/CategoryMetadata.ts';
 import type { LibraryOptions, LibrarySortMode } from '@/features/library/Library.types.ts';
+import { FilterMode } from '@/features/library/Library.types.ts';
 import type { CategoryIdInfo, CategoryMetadataInfo } from '@/features/category/Category.types.ts';
 import type {
     MangaArtistInfo,
@@ -28,6 +29,7 @@ import { CustomCache } from '@/lib/storage/CustomCache.ts';
 import { STABLE_EMPTY_ARRAY } from '@/base/Base.constants.ts';
 import { Mangas } from '@/features/manga/services/Mangas.ts';
 import isEqual from 'lodash/fp/isEqual';
+import partition from 'lodash/fp/partition';
 
 const triStateFilter = (
     triState: NullAndUndefined<boolean>,
@@ -87,38 +89,52 @@ const querySearchManga = (
     { title, genre: genres, description, artist, author, source, sourceId }: TMangaQueryFilter,
 ): boolean =>
     performSearch([query], [title]) ||
-    performSearch(query?.split(','), genres.map((genre) => enhancedCleanup(genre))) ||
+    performSearch(
+        query?.split(','),
+        genres.map((genre) => enhancedCleanup(genre)),
+    ) ||
     performSearch([query], [description]) ||
     performSearch([query], [artist]) ||
     performSearch([query], [author]) ||
     performSearch([query], [source?.displayName]) ||
     performSearch([query], [sourceId]);
 
-type TMangaTrackerFilter = { trackRecords: { nodes: Pick<TrackRecordType, 'id' | 'trackerId'>[] } };
-const trackerFilter = (trackFilters: LibraryOptions['hasTrackerBinding'], manga: TMangaTrackerFilter): boolean =>
-    Object.entries(trackFilters)
-        .map(([trackFilterId, trackFilterState]) => {
-            const isTrackerBound = manga.trackRecords.nodes.some(
-                (trackRecord) => trackRecord.trackerId === Number(trackFilterId),
-            );
+const listTriStateBooleanFilter = (
+    mode: FilterMode,
+    filters: Record<string, NullAndUndefined<boolean>>,
+    getStatus: (key: string) => boolean,
+): boolean => {
+    const [includedFilters, excludedFilters] = partition(
+        ([_key, filterState]) => !!filterState,
+        Object.entries(filters),
+    );
 
-            return triStateFilter(
-                trackFilterState,
-                () => isTrackerBound,
-                () => !isTrackerBound,
-            );
-        })
-        .every(Boolean);
+    const includedFilterStates = includedFilters.map(([key, filterState]) =>
+        triStateFilterBoolean(filterState, getStatus(key)),
+    );
+    const hasIncludedFilter =
+        !includedFilters.length ||
+        (mode === 'OR' ? includedFilterStates.some(Boolean) : includedFilterStates.every(Boolean));
+    const hasExcludedFilter =
+        !!excludedFilters.length &&
+        excludedFilters
+            .map(([key, filterState]) => triStateFilterBoolean(filterState, getStatus(key)))
+            .some((state) => !state);
+
+    return hasIncludedFilter && !hasExcludedFilter;
+};
+
+type TMangaTrackerFilter = { trackRecords: { nodes: Pick<TrackRecordType, 'id' | 'trackerId'>[] } };
+const trackerFilter = (trackFilter: LibraryOptions['hasTrackerBinding'], manga: TMangaTrackerFilter): boolean =>
+    listTriStateBooleanFilter(trackFilter.mode, trackFilter.filters, (trackFilterId) =>
+        manga.trackRecords.nodes.some((trackRecord) => trackRecord.trackerId === Number(trackFilterId)),
+    );
 
 const statusFilter = (statusFilters: LibraryOptions['hasStatus'], manga: MangaStatusInfo): boolean =>
-    Object.entries(statusFilters)
-        .map(([status, statusFilterState]) => triStateFilterBoolean(statusFilterState, status === manga.status))
-        .every(Boolean);
+    listTriStateBooleanFilter(FilterMode.OR, statusFilters, (status) => status === manga.status);
 
 const sourceFilter = (sourceFilters: LibraryOptions['hasSource'], manga: MangaSourceIdInfo): boolean =>
-    Object.entries(sourceFilters)
-        .map(([sourceId, sourceFilterState]) => triStateFilterBoolean(sourceFilterState, sourceId === manga.sourceId))
-        .every(Boolean);
+    listTriStateBooleanFilter(FilterMode.OR, sourceFilters, (sourceId) => sourceId === manga.sourceId);
 
 type TMangaFilterOptions = Pick<
     LibraryOptions,

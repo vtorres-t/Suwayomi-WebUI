@@ -7,7 +7,12 @@ import { defaultPromiseErrorHandler } from '@/lib/DefaultPromiseErrorHandler.ts'
 import type { ISourceMetadata, SourceIdInfo, SourceMetadataKeys } from '@/features/source/Source.types.ts';
 import { convertFromGqlMeta } from '@/features/metadata/services/MetadataConverter.ts';
 import { getMetadataFrom } from '@/features/metadata/services/MetadataReader.ts';
-import type { AllowedMetadataValueTypes, GqlMetaHolder, Metadata } from '@/features/metadata/Metadata.types.ts';
+import type {
+    AllowedMetadataValueTypes,
+    GqlMetaHolder,
+    Metadata,
+    MetadataBulkParams,
+} from '@/features/metadata/Metadata.types.ts';
 
 const DEFAULT_SOURCE_METADATA: ISourceMetadata = {
     savedSearches: undefined,
@@ -38,10 +43,7 @@ export const useGetSourceMetadata = (metaHolder: SourceIdInfo & GqlMetaHolder): 
     return useMemo(() => metadata, [metaHolder]);
 };
 
-export const updateSourceMetadata = async <
-    MetadataKeys extends SourceMetadataKeys = SourceMetadataKeys,
-    MetadataKey extends MetadataKeys = MetadataKeys,
->(
+export const updateSourceMetadata = async <MetadataKey extends SourceMetadataKeys = SourceMetadataKeys>(
     source: SourceIdInfo & GqlMetaHolder,
     metadataKey: MetadataKey,
     value: ISourceMetadata[MetadataKey],
@@ -50,23 +52,15 @@ export const updateSourceMetadata = async <
         update: [[metadataKey, convertAppMetadataToGqlMetadata({ [metadataKey]: value })[metadataKey]]],
     });
 
-export const batchUpdateSourceMetadata = async <
-    MetadataKeys extends SourceMetadataKeys = SourceMetadataKeys,
-    MetadataKey extends MetadataKeys = MetadataKeys,
->(
-    updates: Array<{
-        sources: (SourceIdInfo & GqlMetaHolder)[];
-        entries: Array<{ metadataKey: MetadataKey; value: ISourceMetadata[MetadataKey] }>;
-    }>,
+export const batchUpdateSourceMetadata = async (
+    updates: MetadataBulkParams<'sources', SourceIdInfo, ISourceMetadata>[],
 ): Promise<void> =>
     requestBatchSourceMetadataUpdate(
-        updates.map(({ sources, entries }) => ({
-            sources,
+        updates.map(({ sources, update, delete: keysToDelete }) => ({
+            sources: sources,
             options: {
-                update: entries.map(({ metadataKey, value }) => [
-                    metadataKey,
-                    convertAppMetadataToGqlMetadata({ [metadataKey]: value })[metadataKey],
-                ]),
+                update: update?.map(({ key, value }) => [key, convertAppMetadataToGqlMetadata({ [key]: value })[key]]),
+                delete: keysToDelete,
             },
         })),
     );

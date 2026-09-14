@@ -1,11 +1,13 @@
 import type { ReactNode } from 'react';
 import { useMemo } from 'react';
+import type { ButtonProps } from '@mui/material/Button';
 import Button from '@mui/material/Button';
 import { useLingui } from '@lingui/react/macro';
 import { CustomTooltip } from '@/base/components/CustomTooltip.tsx';
 import { Superscript } from '@/base/components/texts/Superscript.tsx';
 import type { ValueToDisplayData } from '@/base/Base.types.ts';
 import { getNextRotationValue } from '@/lib/HelperFunctions.ts';
+import { MUIUtil } from '@/lib/mui/MUI.util.ts';
 
 export interface ValueRotationButtonBaseProps<Value extends string | number> {
     tooltip?: string;
@@ -38,8 +40,16 @@ export const ValueRotationButton = <Value extends string | number>({
     isDefaultable,
     onDefault,
     defaultIcon,
+    slots,
 }: ValueRotationButtonProps<Value> & {
     defaultIcon?: ReactNode;
+    slots?: {
+        button?: {
+            base?: ButtonProps;
+            default?: ButtonProps;
+            nonDefault?: ButtonProps;
+        };
+    };
 }) => {
     const { t } = useLingui();
 
@@ -56,11 +66,17 @@ export const ValueRotationButton = <Value extends string | number>({
         <CustomTooltip title={tooltip}>
             {isDefault ? (
                 <Button
-                    onClick={() => setValue(values[0])}
-                    sx={{ justifyContent: 'start', textTransform: 'unset', flexGrow: 1 }}
                     variant="contained"
-                    startIcon={defaultIcon}
                     size="large"
+                    {...slots?.button?.base}
+                    {...slots?.button?.default}
+                    sx={MUIUtil.mergeSx(
+                        { justifyContent: 'start', textTransform: 'unset', flexGrow: 1 },
+                        slots?.button?.base?.sx,
+                        slots?.button?.default?.sx,
+                    )}
+                    onClick={() => setValue(values[0])}
+                    startIcon={defaultIcon}
                 >
                     {defaultValue === undefined ? (
                         t`Default`
@@ -77,6 +93,15 @@ export const ValueRotationButton = <Value extends string | number>({
                 </Button>
             ) : (
                 <Button
+                    variant="contained"
+                    size="large"
+                    {...slots?.button?.base}
+                    {...slots?.button?.nonDefault}
+                    sx={MUIUtil.mergeSx(
+                        { justifyContent: 'start', textTransform: 'unset', flexGrow: 1 },
+                        slots?.button?.base?.sx,
+                        slots?.button?.nonDefault?.sx,
+                    )}
                     onClick={() => {
                         const nextValue = getNextRotationValue(indexOfValue, values, isDefaultable);
 
@@ -87,10 +112,7 @@ export const ValueRotationButton = <Value extends string | number>({
 
                         setValue(nextValue);
                     }}
-                    sx={{ justifyContent: 'start', textTransform: 'unset', flexGrow: 1 }}
-                    variant="contained"
                     startIcon={valueToDisplayData[value].icon}
-                    size="large"
                 >
                     {typeof valueToDisplayData[value].title === 'string'
                         ? valueToDisplayData[value].title

@@ -11,6 +11,7 @@ import {
     TAP_ZONE_REGION_TYPE_DATA,
 } from '@/features/reader/tap-zones/ReaderTapZone.constants.ts';
 import { i18n } from '@/i18n';
+import { t } from '@lingui/core/macro';
 
 interface InvertMode extends TapZoneInvertMode {
     isRTL: boolean;
@@ -101,7 +102,7 @@ export class ReaderTapZoneService {
     ): void {
         regions.forEach(({ type, rect: [rectX, rectY, rectWidth, rectHeight] }) => {
             const { text: translation, color } = TAP_ZONE_REGION_TYPE_DATA[type];
-            const text = i18n._(translation);
+            const text = t(translation);
 
             const x = calcActualValue(rectX, canvasWidth);
             const y = calcActualValue(rectY, canvasHeight);

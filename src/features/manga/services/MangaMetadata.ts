@@ -6,6 +6,7 @@ import type {
     AllowedMetadataValueTypes,
     GqlMetaHolder,
     Metadata,
+    MetadataBulkParams,
     MetadataHolder,
 } from '@/features/metadata/Metadata.types.ts';
 import { convertFromGqlMeta } from '@/features/metadata/services/MetadataConverter.ts';
@@ -17,6 +18,7 @@ import { defaultPromiseErrorHandler } from '@/lib/DefaultPromiseErrorHandler.ts'
 
 const DEFAULT_MANGA_METADATA: MangaMetadata = {
     ...DEFAULT_CHAPTER_OPTIONS,
+    notes: '',
 };
 
 const convertAppMetadataToGqlMetadata = (
@@ -56,10 +58,7 @@ export const useGetMangaMetadata = (
     return useMemo(() => metadata, [metaHolder, defaultMetadata]);
 };
 
-export const updateMangaMetadata = async <
-    MetadataKeys extends MangaMetadataKeys = MangaMetadataKeys,
-    MetadataKey extends MetadataKeys = MetadataKeys,
->(
+export const updateMangaMetadata = async <MetadataKey extends MangaMetadataKeys = MangaMetadataKeys>(
     manga: MangaIdInfo & GqlMetaHolder,
     metadataKey: MetadataKey,
     value: MangaMetadata[MetadataKey],
@@ -68,23 +67,15 @@ export const updateMangaMetadata = async <
         update: [[metadataKey, convertAppMetadataToGqlMetadata({ [metadataKey]: value })[metadataKey]]],
     });
 
-export const batchUpdateMangaMetadata = async <
-    MetadataKeys extends MangaMetadataKeys = MangaMetadataKeys,
-    MetadataKey extends MetadataKeys = MetadataKeys,
->(
-    updates: Array<{
-        mangas: (MangaIdInfo & GqlMetaHolder)[];
-        entries: Array<{ metadataKey: MetadataKey; value: MangaMetadata[MetadataKey] }>;
-    }>,
+export const batchUpdateMangaMetadata = async (
+    updates: MetadataBulkParams<'mangas', MangaIdInfo, MangaMetadata>[],
 ): Promise<void> =>
     requestBatchMangaMetadataUpdate(
-        updates.map(({ mangas, entries }) => ({
+        updates.map(({ mangas, update, delete: keysToDelete }) => ({
             mangas,
             options: {
-                update: entries.map(({ metadataKey, value }) => [
-                    metadataKey,
-                    convertAppMetadataToGqlMetadata({ [metadataKey]: value })[metadataKey],
-                ]),
+                update: update?.map(({ key, value }) => [key, convertAppMetadataToGqlMetadata({ [key]: value })[key]]),
+                delete: keysToDelete,
             },
         })),
     );

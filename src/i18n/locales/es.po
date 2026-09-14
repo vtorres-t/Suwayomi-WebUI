@@ -107,11 +107,6 @@ msgstr "{ttl, plural, one {Eliminar backups mas viejos que # dia} other {Elimina
 msgid "Allow deleting bookmarked chapters"
 msgstr "Permitir la eliminación de los capítulos marcados"
 
-#: src/base/components/inputs/LanguageSelect.tsx
-#: src/features/source/components/SourceLanguageSelect.tsx
-msgid "Allowed Languages"
-msgstr "Idiomas disponibles"
-
 #: src/features/reader/filters/settings/components/ReaderSettingRGBA.tsx
 msgid "Alpha"
 msgstr "Alfa"
@@ -627,10 +622,6 @@ msgstr "No se han podido eliminar todas las descargas de la cola"
 msgid "Could not remove non library manga from categories"
 msgstr "No se pudo eliminar de las categorías el manga que no pertenece a la biblioteca"
 
-#: src/features/downloads/components/DownloadQueueChapterCard.tsx
-msgid "Could not remove the download from the queue."
-msgstr "No se ha podido eliminar la descarga de la cola."
-
 #: src/features/backup/screens/Backup.tsx
 #: src/features/backup/screens/Backup.tsx
 msgid "Could not restore backup"
@@ -1140,10 +1131,6 @@ msgstr ""
 "\n"
 "Después de cambiar este ajuste ve a la página \"Acerca de\" y busca una actualización de webUI e instálala\n"
 ""
-
-#: src/features/settings/screens/Appearance.tsx
-msgid "Feel free to translate the project on"
-msgstr "Puedes traducir el proyecto en"
 
 #: src/features/downloads/components/DeleteChaptersWhileReadingSetting.tsx
 msgid "Fifth to last read chapter"
