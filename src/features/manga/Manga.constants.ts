@@ -219,13 +219,14 @@ const MANGA_TAG_DESCRIPTORS_BY_MANGA_TYPE: Record<MangaType, MessageDescriptor[]
  */
 export const MANGA_TAGS_BY_MANGA_TYPE: Record<MangaType, string[]> = {
     [MangaType.MANGA]: ['Manga', 'מנגה', '만화', '漫画', 'مانجا', 'مانگا', 'Mangá', 'Манга', 'மங்கா-', 'Truyện Nhật'],
-    [MangaType.COMIC]: ['Comic', 'BD', 'קומיקס', 'Komik', '코믹', 'Quadrinho', '美漫'],
+    [MangaType.COMIC]: ['Còmic', 'Comic', 'BD', 'קומיקס', 'Komik', '코믹', 'Quadrinho', '美漫'],
     [MangaType.WEBTOON]: [
         'Webtoon',
         'וובטון',
         '웹툰',
         '网漫',
         '網路漫畫',
+        'Tira llarga',
         'Long Strip',
         'Long strip',
         'רצועה ארוכה',
@@ -246,6 +247,7 @@ export const MANGA_TAGS_BY_MANGA_TYPE: Record<MangaType, string[]> = {
         'מנהווה',
         '만화',
         '韩漫',
+        'Tira llarga',
         'Long Strip',
         'Long strip',
         'רצועה ארוכה',
@@ -264,6 +266,7 @@ export const MANGA_TAGS_BY_MANGA_TYPE: Record<MangaType, string[]> = {
         'מנהואה',
         '만화',
         '国漫',
+        'Tira llarga',
         'Long Strip',
         'Long strip',
         'רצועה ארוכה',
