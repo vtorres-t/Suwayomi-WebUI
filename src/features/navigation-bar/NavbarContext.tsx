@@ -5,6 +5,8 @@ import { useLocalStorage } from '@/base/hooks/useStorage.tsx';
 export const NavBarContext = React.createContext<NavbarContextType>({
     title: 'Suwayomi',
     setTitle: (): void => {},
+    hideTitle: false,
+    setHideTitle: (): void => {},
     appBarHeight: 0,
     setAppBarHeight: (): void => {},
     action: <div />,
@@ -29,6 +31,7 @@ interface IProps {
 
 export function NavBarContextProvider({ children }: IProps) {
     const [title, setTitle] = useState<string | React.ReactNode>('Suwayomi');
+    const [hideTitle, setHideTitle] = useState(false);
     const [action, setAction] = useState<any>(<div />);
     const [appBarHeight, setAppBarHeight] = useState(0);
     const [override, setOverride] = useState<INavbarOverride>({
@@ -52,6 +55,8 @@ export function NavBarContextProvider({ children }: IProps) {
         () => ({
             title,
             setTitle: updateTitle,
+            hideTitle,
+            setHideTitle,
             appBarHeight,
             setAppBarHeight,
             action,
@@ -70,6 +75,8 @@ export function NavBarContextProvider({ children }: IProps) {
         [
             title,
             updateTitle,
+            hideTitle,
+            setHideTitle,
             appBarHeight,
             setAppBarHeight,
             action,
