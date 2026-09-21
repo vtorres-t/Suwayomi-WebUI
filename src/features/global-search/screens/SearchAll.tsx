@@ -341,7 +341,7 @@ export const SearchAll = ({
     useAppTitleAndAction(
         title,
         <>
-            <AppbarSearch isClosable={false} />
+            <AppbarSearch searchHistoryKey="globalSearch" isClosable={false} />
             <SourceLanguageSelect
                 selectedLanguages={shownLangs}
                 setSelectedLanguages={setShownLangs}

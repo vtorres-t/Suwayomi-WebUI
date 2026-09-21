@@ -421,7 +421,7 @@ export function SourceMangas() {
     useAppTitleAndAction(
         source?.displayName ?? t`Source`,
         <>
-            <AppbarSearch />
+            <AppbarSearch searchHistoryKey="source" />
             <SourceGridLayout />
             {source?.isConfigurable && (
                 <CustomTooltip title={t`Settings`}>
