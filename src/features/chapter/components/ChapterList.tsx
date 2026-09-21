@@ -3,7 +3,7 @@ import Stack from '@mui/material/Stack';
 import { styled } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import type { ComponentProps } from 'react';
-import { useCallback, useMemo } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { useLingui } from '@lingui/react/macro';
 import { plural } from '@lingui/core/macro';
 import { requestManager } from '@/lib/requests/RequestManager.ts';
@@ -39,6 +39,7 @@ import { ChapterListCard } from '@/features/chapter/components/cards/ChapterList
 import { VirtuosoPersisted } from '@/lib/virtuoso/Component/VirtuosoPersisted.tsx';
 import { STABLE_EMPTY_ARRAY } from '@/base/Base.constants.ts';
 import { useElementSize } from '@mantine/hooks';
+import { VirtuosoUtil } from '@/lib/virtuoso/Virtuoso.util.tsx';
 
 type ChapterListHeaderProps = {
     scrollbarWidth: number;
@@ -107,12 +108,13 @@ export const ChapterList = ({
 }) => {
     const { t } = useLingui();
     const { appBarHeight } = useNavBarContext();
+    const [virtuosoScrollElement, setVirtuosoScrollElement] = useState<HTMLElement | null | Window>(null);
 
     const isMobileWidth = MediaQuery.useIsBelowWidth('md');
 
     const { ref: chapterListHeaderRef, height: chapterListHeaderHeight } = useElementSize();
 
-    const scrollbarWidth = MediaQuery.useGetScrollbarSize('width');
+    const scrollbarYSize = MediaQuery.useGetScrollbarSize('Y', VirtuosoUtil.getScrollElement(virtuosoScrollElement));
 
     const options = useChapterListOptions(manga);
     const updateOption = updateChapterListOptions(manga, (e) =>
@@ -180,7 +182,7 @@ export const ChapterList = ({
                         alignItems: 'center',
                         justifyContent: 'space-between',
                     }}
-                    scrollbarWidth={scrollbarWidth}
+                    scrollbarWidth={scrollbarYSize}
                 >
                     <Stack>
                         <Typography variant="h5" component="h3">
@@ -224,6 +226,7 @@ export const ChapterList = ({
                 {noChaptersMatchingFilter && <EmptyViewAbsoluteCentered message={t`No chapters matching filter`} />}
 
                 <StyledVirtuoso
+                    scrollerRef={setVirtuosoScrollElement}
                     persistKey={`manga-${manga.id}-chapter-list`}
                     topOffset={appBarHeight + chapterListHeaderHeight}
                     style={{
