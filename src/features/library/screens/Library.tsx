@@ -46,6 +46,7 @@ import { SearchParam } from '@/base/Base.types.ts';
 import { STABLE_EMPTY_ARRAY } from '@/base/Base.constants.ts';
 import type { MangaIdInfo } from '@/features/manga/Manga.types.ts';
 import { OffsetComponent } from '@/base/OffsetComponent.tsx';
+import { MUIUtil } from '@/lib/mui/MUI.util.ts';
 
 const TitleWithSizeTag = styled('span')({
     display: 'flex',
@@ -53,7 +54,7 @@ const TitleWithSizeTag = styled('span')({
 });
 
 const TitleSizeTag = ({ sx, ...props }: ChipProps) => (
-    <Chip {...props} size="small" sx={{ ...sx, marginLeft: '5px' }} />
+    <Chip {...props} size="small" sx={MUIUtil.mergeSx(sx, { marginLeft: '5px' })} />
 );
 
 export function Library() {
@@ -99,6 +100,7 @@ export function Library() {
     const categoryMangas = categoryMangaResponse?.mangas.nodes ?? STABLE_EMPTY_ARRAY;
     const {
         visibleMangas: visibleLibraryMangas,
+        searchSuggestions,
         showFilteredOutMessage,
         filterKey,
     } = useGetVisibleLibraryMangas(categoryMangas as any, activeTab);
@@ -132,8 +134,7 @@ export function Library() {
     );
 
     const mangaIds = useMemo(() => mangas.map((manga) => manga.id), [mangas]);
-    // the unfiltered list, so that a committed search does not shrink the suggestions to its own results
-    const mangaTitles = useMemo(() => categoryMangas.map((manga) => manga.title), [categoryMangas]);
+    const mangaTitles = useMemo(() => searchSuggestions.map((manga) => manga.title), [searchSuggestions]);
 
     const [isSelectModeActive, setIsSelectModeActive] = useState(false);
     const {
@@ -215,7 +216,7 @@ export function Library() {
             {t`Library`}
             {showTabSize && (
                 <TitleSizeTag
-                    sx={{ ...theme.applyStyles('light', { backgroundColor: 'background.paper' }) }}
+                    sx={theme.applyStyles('light', { backgroundColor: 'background.paper' })}
                     label={librarySize}
                 />
             )}

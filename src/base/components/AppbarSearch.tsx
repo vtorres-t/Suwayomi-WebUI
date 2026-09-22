@@ -22,6 +22,10 @@ import { useMetadataServerSettings } from '@/features/settings/services/ServerSe
 import { useSearchHistory } from '@/base/hooks/useSearchHistory.ts';
 import { useNavBarContext } from '@/features/navigation-bar/NavbarContext.tsx';
 import { MediaQuery } from '@/base/utils/MediaQuery.tsx';
+import { useForceUpdate } from '@mantine/hooks';
+import List from '@mui/material/List';
+import { ListSubheader } from '@/base/components/lists/ListSubheader.tsx';
+import Button from '@mui/material/Button';
 
 /** Enough to be worth scrolling through, few enough to not cover the whole screen on mobile. */
 const MAX_SUGGESTIONS = 8;
@@ -52,6 +56,7 @@ export const AppbarSearch: React.FunctionComponent<IProps> = (props) => {
     const { t } = useLingui();
     const { setHideTitle, navBarWidth } = useNavBarContext();
     const scrollbarYSize = MediaQuery.useGetScrollbarSize('Y');
+    const forceUpdate = useForceUpdate();
 
     const [prevLocationKey, setPrevLocationKey] = useState<string>();
     const location = useLocation();
@@ -64,12 +69,16 @@ export const AppbarSearch: React.FunctionComponent<IProps> = (props) => {
     const [liveAutoCompletion, setLiveAutoCompletion] = useState<string>();
 
     const [focused, setFocused] = useState(false);
+    const [hideSuggestions, setHideSuggestions] = useState(false);
 
     const {
         settings: { fuzzySearch: isFuzzySearchEnabled },
     } = useMetadataServerSettings();
 
-    const { history, addToHistory, removeFromHistory } = useSearchHistory(searchHistoryKey, MAX_HISTORY_SUGGESTIONS);
+    const { history, addToHistory, removeFromHistory, clearHistory } = useSearchHistory(
+        searchHistoryKey,
+        MAX_HISTORY_SUGGESTIONS,
+    );
 
     if (prevLocationKey !== location.key) {
         setPrevLocationKey(location.key);
@@ -120,11 +129,13 @@ export const AppbarSearch: React.FunctionComponent<IProps> = (props) => {
         if (normalizedQuery === '') {
             return;
         }
+
         setLiveAutoCompletion(undefined);
         setSearchString(normalizedQuery);
         addToHistory(normalizedQuery);
         setQuery(normalizedQuery);
         updateSearchOpenState(false);
+        setHideSuggestions(true);
     }
 
     const cancelSearch = () => {
@@ -165,6 +176,12 @@ export const AppbarSearch: React.FunctionComponent<IProps> = (props) => {
     );
 
     useEffect(() => {
+        if (isOpen) {
+            requestAnimationFrame(() => {
+                forceUpdate();
+            });
+        }
+
         setHideTitle(isOpen);
         return () => setHideTitle(false);
     }, [isOpen]);
@@ -172,6 +189,7 @@ export const AppbarSearch: React.FunctionComponent<IProps> = (props) => {
     if (isOpen) {
         return (
             <Autocomplete<SearchSuggestion, false, true, true>
+                open={focused && !hideSuggestions}
                 freeSolo
                 disableClearable
                 forcePopupIcon={false}
@@ -200,6 +218,7 @@ export const AppbarSearch: React.FunctionComponent<IProps> = (props) => {
                     // that is kept in sync with the query param
                     if (reason === 'input') {
                         setSearchString(value);
+                        setHideSuggestions(false);
 
                         const tmpNormalizedValue = value.trimStart().toLowerCase();
 
@@ -220,12 +239,30 @@ export const AppbarSearch: React.FunctionComponent<IProps> = (props) => {
                 onChange={(_, value) => {
                     handleChange(typeof value === 'string' ? value : value.label);
                 }}
+                renderGroup={(value) => (
+                    <List
+                        subheader={
+                            value.group && (
+                                <ListSubheader sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                                    {value.group}
+                                    <Button onClick={clearHistory}>{t`Delete all`}</Button>
+                                </ListSubheader>
+                            )
+                        }
+                    >
+                        {value.children}
+                    </List>
+                )}
                 renderOption={({ key, ...optionProps }, option) => (
                     <Box key={key} component="li" sx={{ gap: 1 }} {...optionProps}>
-                        {option.isFromHistory ? <HistoryIcon fontSize="small" /> : <SearchIcon fontSize="small" />}
-                        <TypographyMaxLines sx={{ flexGrow: 1 }}>{option.label}</TypographyMaxLines>
+                        {option.isFromHistory ? <HistoryIcon /> : <SearchIcon />}
+                        <Box sx={{ flexGrow: 1 }}>
+                            <CustomTooltip title={option.label} placement="right">
+                                <TypographyMaxLines sx={{ width: 'fit-content' }}>{option.label}</TypographyMaxLines>
+                            </CustomTooltip>
+                        </Box>
                         {option.isFromHistory && (
-                            <CustomTooltip title={t`Delete`}>
+                            <CustomTooltip title={t`Delete`} placement="auto">
                                 <IconButton
                                     edge="end"
                                     onClick={(e) => {
@@ -233,7 +270,7 @@ export const AppbarSearch: React.FunctionComponent<IProps> = (props) => {
                                         removeFromHistory(option.label);
                                     }}
                                 >
-                                    <CloseIcon fontSize="small" />
+                                    <CloseIcon />
                                 </IconButton>
                             </CustomTooltip>
                         )}
@@ -248,6 +285,8 @@ export const AppbarSearch: React.FunctionComponent<IProps> = (props) => {
                                     display: 'flex',
                                     alignItems: 'center',
                                     height: '100%',
+                                    width: '100%',
+                                    overflow: 'hidden',
                                     color: 'text.secondary',
                                     whiteSpace: 'pre',
                                     pointerEvents: 'none',
@@ -266,21 +305,19 @@ export const AppbarSearch: React.FunctionComponent<IProps> = (props) => {
                             onCancel={cancelSearch}
                             onBlur={handleBlur}
                             inputRef={inputRef}
-                            sx={{
-                                ...theme.applyStyles('light', {
-                                    '& .MuiInput-underline:before': {
-                                        borderBottomColor: 'primary.contrastText', // Default color
-                                    },
-                                    '& .MuiInput-underline:hover:before': {
-                                        borderBottomColor: 'primary.contrastText', // Hover color
-                                    },
-                                    '& .MuiInput-underline:after': {
-                                        borderBottomColor: 'primary.dark', // Focused color
-                                    },
-                                }),
-                            }}
+                            sx={theme.applyStyles('light', {
+                                '& .MuiInput-underline:before': {
+                                    borderBottomColor: 'primary.contrastText', // Default color
+                                },
+                                '& .MuiInput-underline:hover:before': {
+                                    borderBottomColor: 'primary.contrastText', // Hover color
+                                },
+                                '& .MuiInput-underline:after': {
+                                    borderBottomColor: 'primary.dark', // Focused color
+                                },
+                            })}
                             cancelButtonProps={{
-                                sx: { ...theme.applyStyles('light', { color: 'primary.contrastText' }) },
+                                sx: theme.applyStyles('light', { color: 'primary.contrastText' }),
                             }}
                         />
                     </Box>

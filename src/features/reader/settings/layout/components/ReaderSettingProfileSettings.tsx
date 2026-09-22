@@ -1,5 +1,5 @@
 import Stack from '@mui/material/Stack';
-import ListSubheader from '@mui/material/ListSubheader';
+import { ListSubheader } from '@/base/components/lists/ListSubheader.tsx';
 import type { ComponentProps } from 'react';
 import { useMemo } from 'react';
 import Typography from '@mui/material/Typography';

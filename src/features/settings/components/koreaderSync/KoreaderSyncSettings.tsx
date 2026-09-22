@@ -1,5 +1,5 @@
 import List from '@mui/material/List';
-import ListSubheader from '@mui/material/ListSubheader';
+import { ListSubheader } from '@/base/components/lists/ListSubheader.tsx';
 import ListItemText from '@mui/material/ListItemText';
 import ListItemButton from '@mui/material/ListItemButton';
 import { useLingui } from '@lingui/react/macro';
