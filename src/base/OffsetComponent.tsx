@@ -3,6 +3,7 @@ import type { ComponentProps, ComponentType, ReactNode, Ref } from 'react';
 import { createContext, useContext, useMemo } from 'react';
 import type { BoxProps } from '@mui/material/Box';
 import Box from '@mui/material/Box';
+import { MUIUtil } from '@/lib/mui/MUI.util.ts';
 
 const OffestContext = createContext<{
     leftOffset: number;
@@ -65,13 +66,17 @@ export const OffsetComponent = <Props extends { sx?: BoxProps['sx'] } = BoxProps
         <WrapperComponent
             {...(wrapperProps as Props)}
             ref={ref}
-            sx={{
-                position: 'sticky',
-                zIndex: 1,
-                ...wrapperProps.sx,
-                top: topOffset,
-                left: leftOffset,
-            }}
+            sx={MUIUtil.mergeSx(
+                {
+                    position: 'sticky',
+                    zIndex: 1,
+                },
+                wrapperProps.sx,
+                {
+                    top: topOffset,
+                    left: leftOffset,
+                },
+            )}
         >
             {children}
         </WrapperComponent>
