@@ -30,10 +30,12 @@ const OffsetContextProvider = ({
 export const useOffsetComponent = () => useContext(OffestContext);
 
 export const OffsetContainer = ({
+    initial = false,
     topOffset = 0,
     leftOffset = 0,
     children,
 }: {
+    initial?: boolean;
     topOffset?: number;
     leftOffset?: number;
     children?: ReactNode;
@@ -42,8 +44,8 @@ export const OffsetContainer = ({
 
     return (
         <OffsetContextProvider
-            topOffset={topOffset + parentOffset.topOffset}
-            leftOffset={leftOffset + parentOffset.leftOffset}
+            topOffset={initial ? 0 : topOffset + parentOffset.topOffset}
+            leftOffset={initial ? 0 : leftOffset + parentOffset.leftOffset}
         >
             {children}
         </OffsetContextProvider>
