@@ -16,7 +16,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ### Fixed
 
--
+- (**Source**) Fix potential white screen when opening the language/source filter in the browse source page
+- (**Manga**) Fix incorrect markdown parsing of descriptions (e.g., \~text\~ being shown as ~~text~~)
 
 ## [20260929.01] (r3518) - 2026-09-29
 
@@ -86,6 +87,12 @@ Thanks to everyone that contributed to the translation of this project.
 - Russian (by Sazuru)
 - Vietnamese (by Durin)
 - Chinese (Traditional) (by js850604)
+
+### Contributors
+
+Thanks to everyone that contributed to this release
+
+@schroda, @weblate, @cpiber, @Daemonhellz, @Kisnov, @leollo98, @js850604, @kofzhanganguo, @Aryan795, @github-actions[bot], @CyberMageIL, @Sazuru, @Durin-Code, @aitiotekt, @kaiserbh, @dollproxy, @UnknownSkyrimPasserby, @Seanstoppable, @web-flow, @Copilot, @manilkadev3-max, @arifpedia, @NagaYZ
 
 ## [20260726.01] (r3379) - 2026-07-26
 
