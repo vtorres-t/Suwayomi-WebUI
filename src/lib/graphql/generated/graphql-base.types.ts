@@ -2092,7 +2092,6 @@ export type PartialBackupFlagsInput = {
     includeManga?: InputMaybe<Scalars['Boolean']['input']>;
     includeServerSettings?: InputMaybe<Scalars['Boolean']['input']>;
     includeTracking?: InputMaybe<Scalars['Boolean']['input']>;
-    includeUserSettings?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 export type PartialSettingsType = Settings & {
@@ -2250,7 +2249,9 @@ export type PartialSettingsTypeInput = {
     autoBackupIncludeManga?: InputMaybe<Scalars['Boolean']['input']>;
     autoBackupIncludeServerSettings?: InputMaybe<Scalars['Boolean']['input']>;
     autoBackupIncludeTracking?: InputMaybe<Scalars['Boolean']['input']>;
-    autoBackupIncludeUserSettings?: InputMaybe<Scalars['Boolean']['input']>;
+    autoDownloadIgnoreReUploads?: InputMaybe<Scalars['Boolean']['input']>;
+    autoDownloadNewChapters?: InputMaybe<Scalars['Boolean']['input']>;
+    autoDownloadNewChaptersLimit?: InputMaybe<Scalars['Int']['input']>;
     backupInterval?: InputMaybe<Scalars['Int']['input']>;
     backupPath?: InputMaybe<Scalars['String']['input']>;
     backupTTL?: InputMaybe<Scalars['Int']['input']>;
@@ -2264,6 +2265,10 @@ export type PartialSettingsTypeInput = {
     downloadConversions?: InputMaybe<Array<SettingsDownloadConversionTypeInput>>;
     downloadsPath?: InputMaybe<Scalars['String']['input']>;
     electronPath?: InputMaybe<Scalars['String']['input']>;
+    excludeCompleted?: InputMaybe<Scalars['Boolean']['input']>;
+    excludeEntryWithUnreadChapters?: InputMaybe<Scalars['Boolean']['input']>;
+    excludeNotStarted?: InputMaybe<Scalars['Boolean']['input']>;
+    excludeUnreadChapters?: InputMaybe<Scalars['Boolean']['input']>;
     flareSolverrAsResponseFallback?: InputMaybe<Scalars['Boolean']['input']>;
     flareSolverrEnabled?: InputMaybe<Scalars['Boolean']['input']>;
     flareSolverrSessionName?: InputMaybe<Scalars['String']['input']>;
@@ -2275,13 +2280,27 @@ export type PartialSettingsTypeInput = {
     jwtAudience?: InputMaybe<Scalars['String']['input']>;
     jwtRefreshExpiry?: InputMaybe<Scalars['Duration']['input']>;
     jwtTokenExpiry?: InputMaybe<Scalars['Duration']['input']>;
+    koreaderSyncChecksumMethod?: InputMaybe<KoreaderSyncChecksumMethod>;
+    koreaderSyncPercentageTolerance?: InputMaybe<Scalars['Float']['input']>;
+    koreaderSyncStrategyBackward?: InputMaybe<KoreaderSyncConflictStrategy>;
+    koreaderSyncStrategyForward?: InputMaybe<KoreaderSyncConflictStrategy>;
     localSourcePath?: InputMaybe<Scalars['String']['input']>;
     maxDownloadsInParallel?: InputMaybe<Scalars['Int']['input']>;
     maxLogFileSize?: InputMaybe<Scalars['String']['input']>;
     maxLogFiles?: InputMaybe<Scalars['Int']['input']>;
     maxLogFolderSize?: InputMaybe<Scalars['String']['input']>;
     maxSourcesInParallel?: InputMaybe<Scalars['Int']['input']>;
+    opdsCbzMimetype?: InputMaybe<CbzMediaType>;
+    opdsChapterSortOrder?: InputMaybe<SortOrder>;
+    opdsEnablePageReadProgress?: InputMaybe<Scalars['Boolean']['input']>;
+    opdsItemsPerPage?: InputMaybe<Scalars['Int']['input']>;
+    opdsMarkAsReadOnDownload?: InputMaybe<Scalars['Boolean']['input']>;
+    opdsShowOnlyDownloadedChapters?: InputMaybe<Scalars['Boolean']['input']>;
+    opdsShowOnlyUnreadChapters?: InputMaybe<Scalars['Boolean']['input']>;
+    opdsSkipChapterMetadataFeed?: InputMaybe<Scalars['Boolean']['input']>;
+    opdsUseBinaryFileSizes?: InputMaybe<Scalars['Boolean']['input']>;
     port?: InputMaybe<Scalars['Int']['input']>;
+    serveConversions?: InputMaybe<Array<SettingsDownloadConversionTypeInput>>;
     repoServerToken?: InputMaybe<Scalars['String']['input']>;
     repoServerType?: InputMaybe<RepoType>;
     repoServerUrl?: InputMaybe<Scalars['String']['input']>;
@@ -2294,6 +2313,16 @@ export type PartialSettingsTypeInput = {
     socksProxyPort?: InputMaybe<Scalars['String']['input']>;
     socksProxyUsername?: InputMaybe<Scalars['String']['input']>;
     socksProxyVersion?: InputMaybe<Scalars['Int']['input']>;
+    syncDataCategories?: InputMaybe<Scalars['Boolean']['input']>;
+    syncDataChapters?: InputMaybe<Scalars['Boolean']['input']>;
+    syncDataHistory?: InputMaybe<Scalars['Boolean']['input']>;
+    syncDataManga?: InputMaybe<Scalars['Boolean']['input']>;
+    syncDataTracking?: InputMaybe<Scalars['Boolean']['input']>;
+    syncInterval?: InputMaybe<Scalars['Duration']['input']>;
+    syncYomiApiKey?: InputMaybe<Scalars['String']['input']>;
+    syncYomiEnabled?: InputMaybe<Scalars['Boolean']['input']>;
+    syncYomiHost?: InputMaybe<Scalars['String']['input']>;
+    updateMangas?: InputMaybe<Scalars['Boolean']['input']>;
     useHikariConnectionPool?: InputMaybe<Scalars['Boolean']['input']>;
     webUIFlavor?: InputMaybe<WebUiFlavor>;
     webUIInterface?: InputMaybe<WebUiInterface>;
