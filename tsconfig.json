@@ -8,6 +8,7 @@
         "lib": ["ESNEXT", "ES2020", "DOM", "DOM.Iterable"],
         "module": "ESNext",
         "skipLibCheck": true,
+        /* Bundler mode */
         "esModuleInterop": true,
         "allowSyntheticDefaultImports": true,
         "moduleResolution": "bundler",
@@ -16,6 +17,7 @@
         "isolatedModules": true,
         "noEmit": true,
         "jsx": "react-jsx",
+        /* Linting */
         "strict": true,
         "strictNullChecks": true,
         "noUnusedLocals": true,

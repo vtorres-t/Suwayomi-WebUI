@@ -1,3 +1,11 @@
+/*
+ * Copyright (C) Contributors to the Suwayomi project
+ *
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ */
+
 import { ErrorLink } from '@apollo/client/link/error';
 import { SetContextLink } from '@apollo/client/link/context';
 import type { ErrorLike, Observable } from '@apollo/client';
@@ -357,8 +365,8 @@ export class GraphQLClient extends BaseClient<ApolloClient, ApolloClient.Options
         });
     }
 
-    private createUploadLink() {
-        return new UploadHttpLink({ uri: () => this.getBaseUrl() });
+    private createUploadLink(): ApolloLink {
+        return new UploadHttpLink({ uri: () => this.getBaseUrl() }) as unknown as ApolloLink;
     }
 
     private createWSLink() {
@@ -459,7 +467,8 @@ export class GraphQLClient extends BaseClient<ApolloClient, ApolloClient.Options
         });
     }
 
-    public override updateConfig() {}
+    public override updateConfig() {
+    }
 
     public registerSubscription(restart: () => void) {
         this.activeConnectionSubscriptions.set(crypto.randomUUID(), () => restart);

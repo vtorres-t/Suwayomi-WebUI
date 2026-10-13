@@ -1,3 +1,11 @@
+/*
+ * Copyright (C) Contributors to the Suwayomi project
+ *
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ */
+
 import { requestManager } from '@/lib/requests/RequestManager.ts';
 import type { SetChapterMetasItemInput } from '@/lib/graphql/generated/graphql-base.types.ts';
 import type { MangaIdInfo } from '@/features/manga/Manga.types.ts';
@@ -15,22 +23,6 @@ import type {
 import { getMetadataServerSettings } from '@/features/settings/services/ServerSettingsMetadata.ts';
 import { t } from '@lingui/core/macro';
 import { makeToast } from '@/base/utils/Toast.ts';
-
-const performMigrationActions = async (...actionCreators: [boolean | undefined, MigrateActionCreator][]) => {
-    const migrationActions: TupleUnion<keyof MigrateAction> = ['copy', 'cleanup'];
-
-    const actions = actionCreators
-        .filter(([performAction]) => performAction)
-        .map(([, actionCreator]) => actionCreator());
-
-    for (const migrationAction of migrationActions) {
-        // the migration actions (copy, cleanup) are supposed to be run sequentially to ensure that the cleanup
-        // only happens in case the copy succeeded
-
-        // oxlint-disable-next-line no-await-in-loop
-        await Promise.all(actions.flatMap((action) => action[migrationAction]()));
-    }
-};
 
 export class MangaMigration {
     static async migrate(
@@ -59,6 +51,23 @@ export class MangaMigration {
         if (migrateChapters && !mangaToMigrate.chapters) {
             throw new Error('MangaMigration::migrate: missing chapters data');
         }
+
+        // oxlint-disable-next-line unicorn/consistent-function-scoping
+        const performMigrationActions = async (...actionCreators: [boolean | undefined, MigrateActionCreator][]) => {
+            const migrationActions: TupleUnion<keyof MigrateAction> = ['copy', 'cleanup'];
+
+            const actions = actionCreators
+                .filter(([performAction]) => performAction)
+                .map(([, actionCreator]) => actionCreator());
+
+            for (const migrationAction of migrationActions) {
+                // the migration actions (copy, cleanup) are supposed to be run sequentially to ensure that the cleanup
+                // only happens in case the copy succeeded
+
+                // oxlint-disable-next-line no-await-in-loop
+                await Promise.all(actions.flatMap((action) => action[migrationAction]()));
+            }
+        };
 
         await performMigrationActions(
             [

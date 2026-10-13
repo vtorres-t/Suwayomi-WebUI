@@ -58,7 +58,6 @@ export enum BackupRestoreState {
     RestoringManga = 'RESTORING_MANGA',
     RestoringMeta = 'RESTORING_META',
     RestoringSettings = 'RESTORING_SETTINGS',
-    RestoringUserSettings = 'RESTORING_USER_SETTINGS',
     Success = 'SUCCESS',
 }
 
@@ -117,8 +116,6 @@ export type BooleanFilterInput = {
 export type CategoryConditionInput = {
     default?: InputMaybe<Scalars['Boolean']['input']>;
     id?: InputMaybe<Scalars['Int']['input']>;
-    inLibrary?: InputMaybe<Scalars['Boolean']['input']>;
-    isDefaultCategory?: InputMaybe<Scalars['Boolean']['input']>;
     name?: InputMaybe<Scalars['String']['input']>;
     order?: InputMaybe<Scalars['Int']['input']>;
 };
@@ -133,8 +130,6 @@ export type CategoryFilterInput = {
     and?: InputMaybe<Array<CategoryFilterInput>>;
     default?: InputMaybe<BooleanFilterInput>;
     id?: InputMaybe<IntFilterInput>;
-    inLibrary?: InputMaybe<BooleanFilterInput>;
-    isDefaultCategory?: InputMaybe<BooleanFilterInput>;
     name?: InputMaybe<StringFilterInput>;
     not?: InputMaybe<CategoryFilterInput>;
     or?: InputMaybe<Array<CategoryFilterInput>>;
@@ -303,15 +298,10 @@ export type ChapterType = {
     chapterNumber: Scalars['Float']['output'];
     fetchedAt: Scalars['LongString']['output'];
     id: Scalars['Int']['output'];
-    /** @deprecated Use user.isBookmarked instead */
     isBookmarked: Scalars['Boolean']['output'];
-    /** @deprecated Use user.isDownloaded instead */
     isDownloaded: Scalars['Boolean']['output'];
-    /** @deprecated Use user.isRead instead */
     isRead: Scalars['Boolean']['output'];
-    /** @deprecated Use user.lastPageRead instead */
     lastPageRead: Scalars['Int']['output'];
-    /** @deprecated Use user.lastReadAt instead */
     lastReadAt: Scalars['LongString']['output'];
     manga: MangaType;
     mangaId: Scalars['Int']['output'];
@@ -1442,32 +1432,25 @@ export type MangaType = {
     age?: Maybe<Scalars['LongString']['output']>;
     artist?: Maybe<Scalars['String']['output']>;
     author?: Maybe<Scalars['String']['output']>;
-    /** @deprecated Use user.bookmarkCount instead */
     bookmarkCount: Scalars['Int']['output'];
     categories: CategoryNodeList;
     chapters: ChapterNodeList;
     chaptersAge?: Maybe<Scalars['LongString']['output']>;
     chaptersLastFetchedAt?: Maybe<Scalars['LongString']['output']>;
     description?: Maybe<Scalars['String']['output']>;
-    /** @deprecated Use user.downloadCount instead */
     downloadCount: Scalars['Int']['output'];
     downloadSize: Scalars['String']['output'];
-    /** @deprecated Use user.firstUnreadChapter instead */
     firstUnreadChapter?: Maybe<ChapterType>;
     genre: Array<Scalars['String']['output']>;
     hasDuplicateChapters: Scalars['Boolean']['output'];
     highestNumberedChapter?: Maybe<ChapterType>;
     id: Scalars['Int']['output'];
-    /** @deprecated Use user.inLibrary instead */
     inLibrary: Scalars['Boolean']['output'];
-    /** @deprecated Use user.inLibraryAt instead */
     inLibraryAt: Scalars['LongString']['output'];
     initialized: Scalars['Boolean']['output'];
     lastFetchedAt?: Maybe<Scalars['LongString']['output']>;
-    /** @deprecated Use user.lastReadChapter instead */
     lastReadChapter?: Maybe<ChapterType>;
     latestFetchedChapter?: Maybe<ChapterType>;
-    /** @deprecated Use user.latestReadChapter instead */
     latestReadChapter?: Maybe<ChapterType>;
     latestUploadedChapter?: Maybe<ChapterType>;
     meta: Array<MangaMetaType>;
@@ -1479,7 +1462,6 @@ export type MangaType = {
     thumbnailUrlLastFetched?: Maybe<Scalars['LongString']['output']>;
     title: Scalars['String']['output'];
     trackRecords: TrackRecordNodeList;
-    /** @deprecated Use user.unreadCount instead */
     unreadCount: Scalars['Int']['output'];
     updateStrategy: UpdateStrategy;
     url: Scalars['String']['output'];
@@ -2276,10 +2258,12 @@ export type PartialSettingsTypeInput = {
     flareSolverrTimeout?: InputMaybe<Scalars['Int']['input']>;
     flareSolverrUrl?: InputMaybe<Scalars['String']['input']>;
     globalUpdateInterval?: InputMaybe<Scalars['Float']['input']>;
+    initialOpenInBrowserEnabled?: InputMaybe<Scalars['Boolean']['input']>;
     ip?: InputMaybe<Scalars['String']['input']>;
     jwtAudience?: InputMaybe<Scalars['String']['input']>;
     jwtRefreshExpiry?: InputMaybe<Scalars['Duration']['input']>;
     jwtTokenExpiry?: InputMaybe<Scalars['Duration']['input']>;
+    kcefEnabled?: InputMaybe<Scalars['Boolean']['input']>;
     koreaderSyncChecksumMethod?: InputMaybe<KoreaderSyncChecksumMethod>;
     koreaderSyncPercentageTolerance?: InputMaybe<Scalars['Float']['input']>;
     koreaderSyncStrategyBackward?: InputMaybe<KoreaderSyncConflictStrategy>;
@@ -3041,7 +3025,7 @@ export type Settings = {
     jwtAudience?: Maybe<Scalars['String']['output']>;
     jwtRefreshExpiry?: Maybe<Scalars['Duration']['output']>;
     jwtTokenExpiry?: Maybe<Scalars['Duration']['output']>;
-    /** @deprecated Now per-user */
+    kcefEnabled?: Maybe<Scalars['Boolean']['output']>;
     koreaderSyncChecksumMethod?: Maybe<KoreaderSyncChecksumMethod>;
     /** @deprecated Moved to preference store. Is supposed to be random and gets auto generated, replace with MOVE TO PREFERENCES */
     koreaderSyncDeviceId?: Maybe<Scalars['String']['output']>;
@@ -3229,7 +3213,7 @@ export type SettingsType = Settings & {
     jwtAudience: Scalars['String']['output'];
     jwtRefreshExpiry: Scalars['Duration']['output'];
     jwtTokenExpiry: Scalars['Duration']['output'];
-    /** @deprecated Now per-user */
+    kcefEnabled: Scalars['Boolean']['output'];
     koreaderSyncChecksumMethod: KoreaderSyncChecksumMethod;
     /** @deprecated Moved to preference store. Is supposed to be random and gets auto generated, replace with MOVE TO PREFERENCES */
     koreaderSyncDeviceId: Scalars['String']['output'];

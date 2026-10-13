@@ -1,3 +1,11 @@
+/*
+ * Copyright (C) Contributors to the Suwayomi project
+ *
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ */
+
 import Typography from '@mui/material/Typography';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useLingui } from '@lingui/react/macro';
@@ -102,7 +110,7 @@ export const Updates: React.FC = () => {
                             mangaEntries!,
                             firstUnreadEntryByMangaByGroup[
                                 getDateString(epochToDate(Number(mangaEntries![0].fetchedAt)))
-                            ]![mangaEntries![0].mangaId],
+                                ]![mangaEntries![0].mangaId],
                         ),
                     entriesByManga,
                 ),
@@ -188,7 +196,7 @@ export const Updates: React.FC = () => {
                             otherChapters={
                                 otherUpdatesByMangaByGroup[
                                     getDateString(epochToDate(Number(firstUnreadUpdatesEntries[index].fetchedAt)))
-                                ][firstUnreadUpdatesEntries[index].mangaId]
+                                    ][firstUnreadUpdatesEntries[index].mangaId]
                             }
                         />
                     </StyledGroupItemWrapper>

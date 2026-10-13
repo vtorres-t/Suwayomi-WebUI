@@ -327,7 +327,6 @@ export type GetCategoriesSettingsQuery = {
 
 export type GetCategoryMangasQueryVariables = Exact<{
     id: number;
-    inLibrary?: boolean | null | undefined;
 }>;
 
 export type GetCategoryMangasQuery = {
@@ -3106,6 +3105,7 @@ export type ServerSettingsFragment = {
     socksProxyUsername: string;
     socksProxyPassword: string;
     webUIFlavor: Types.WebUiFlavor;
+    initialOpenInBrowserEnabled: boolean;
     webUIInterface: Types.WebUiInterface;
     electronPath: string;
     webUIUpdateCheckInterval: number;
@@ -3168,6 +3168,7 @@ export type ServerSettingsFragment = {
     databaseUsername: string;
     databasePassword: string;
     useHikariConnectionPool: boolean;
+    kcefEnabled: boolean;
     repoWebUiUrl: string;
     repoWebUiType: Types.RepoType;
     repoServerUrl: string;
@@ -3220,6 +3221,7 @@ export type ResetServerSettingsMutation = {
             socksProxyUsername: string;
             socksProxyPassword: string;
             webUIFlavor: Types.WebUiFlavor;
+            initialOpenInBrowserEnabled: boolean;
             webUIInterface: Types.WebUiInterface;
             electronPath: string;
             webUIUpdateCheckInterval: number;
@@ -3282,6 +3284,7 @@ export type ResetServerSettingsMutation = {
             databaseUsername: string;
             databasePassword: string;
             useHikariConnectionPool: boolean;
+            kcefEnabled: boolean;
             repoWebUiUrl: string;
             repoWebUiType: Types.RepoType;
             repoServerUrl: string;
@@ -3344,6 +3347,7 @@ export type UpdateServerSettingsMutation = {
             socksProxyUsername: string;
             socksProxyPassword: string;
             webUIFlavor: Types.WebUiFlavor;
+            initialOpenInBrowserEnabled: boolean;
             webUIInterface: Types.WebUiInterface;
             electronPath: string;
             webUIUpdateCheckInterval: number;
@@ -3406,6 +3410,7 @@ export type UpdateServerSettingsMutation = {
             databaseUsername: string;
             databasePassword: string;
             useHikariConnectionPool: boolean;
+            kcefEnabled: boolean;
             repoWebUiUrl: string;
             repoWebUiType: Types.RepoType;
             repoServerUrl: string;
@@ -3526,6 +3531,7 @@ export type GetServerSettingsQuery = {
         databaseUsername: string;
         databasePassword: string;
         useHikariConnectionPool: boolean;
+        kcefEnabled: boolean;
         repoWebUiUrl: string;
         repoWebUiType: Types.RepoType;
         repoServerUrl: string;
@@ -3645,143 +3651,143 @@ export type SourceBrowseFieldsFragment = {
     filters: Array<
         | { __typename: 'CheckBoxFilter'; name: string; type: 'CheckBoxFilter'; CheckBoxFilterDefault: boolean }
         | {
-              __typename: 'GroupFilter';
-              name: string;
-              type: 'GroupFilter';
-              filters: Array<
-                  | {
-                        __typename: 'CheckBoxFilter';
-                        name: string;
-                        type: 'CheckBoxFilter';
-                        CheckBoxFilterDefault: boolean;
-                    }
-                  | {
-                        __typename: 'GroupFilter';
-                        name: string;
-                        type: 'GroupFilter';
-                        filters: Array<
-                            | {
-                                  __typename: 'CheckBoxFilter';
-                                  name: string;
-                                  type: 'CheckBoxFilter';
-                                  CheckBoxFilterDefault: boolean;
-                              }
-                            | {
-                                  __typename: 'GroupFilter';
-                                  name: string;
-                                  type: 'GroupFilter';
-                                  filters: Array<
-                                      | {
-                                            __typename: 'CheckBoxFilter';
-                                            name: string;
-                                            type: 'CheckBoxFilter';
-                                            CheckBoxFilterDefault: boolean;
-                                        }
-                                      | { __typename: 'GroupFilter' }
-                                      | { __typename: 'HeaderFilter'; name: string; type: 'HeaderFilter' }
-                                      | {
-                                            __typename: 'SelectFilter';
-                                            name: string;
-                                            values: Array<string>;
-                                            type: 'SelectFilter';
-                                            SelectFilterDefault: number;
-                                        }
-                                      | { __typename: 'SeparatorFilter'; name: string; type: 'SeparatorFilter' }
-                                      | {
-                                            __typename: 'SortFilter';
-                                            name: string;
-                                            values: Array<string>;
-                                            type: 'SortFilter';
-                                            SortFilterDefault: {
-                                                __typename: 'SortSelection';
-                                                ascending: boolean;
-                                                index: number;
-                                            } | null;
-                                        }
-                                      | {
-                                            __typename: 'TextFilter';
-                                            name: string;
-                                            type: 'TextFilter';
-                                            TextFilterDefault: string;
-                                        }
-                                      | {
-                                            __typename: 'TriStateFilter';
-                                            name: string;
-                                            type: 'TriStateFilter';
-                                            TriStateFilterDefault: Types.TriState;
-                                        }
-                                  >;
-                              }
-                            | { __typename: 'HeaderFilter'; name: string; type: 'HeaderFilter' }
-                            | {
-                                  __typename: 'SelectFilter';
-                                  name: string;
-                                  values: Array<string>;
-                                  type: 'SelectFilter';
-                                  SelectFilterDefault: number;
-                              }
-                            | { __typename: 'SeparatorFilter'; name: string; type: 'SeparatorFilter' }
-                            | {
-                                  __typename: 'SortFilter';
-                                  name: string;
-                                  values: Array<string>;
-                                  type: 'SortFilter';
-                                  SortFilterDefault: {
-                                      __typename: 'SortSelection';
-                                      ascending: boolean;
-                                      index: number;
-                                  } | null;
-                              }
-                            | { __typename: 'TextFilter'; name: string; type: 'TextFilter'; TextFilterDefault: string }
-                            | {
-                                  __typename: 'TriStateFilter';
-                                  name: string;
-                                  type: 'TriStateFilter';
-                                  TriStateFilterDefault: Types.TriState;
-                              }
-                        >;
-                    }
-                  | { __typename: 'HeaderFilter'; name: string; type: 'HeaderFilter' }
-                  | {
-                        __typename: 'SelectFilter';
-                        name: string;
-                        values: Array<string>;
-                        type: 'SelectFilter';
-                        SelectFilterDefault: number;
-                    }
-                  | { __typename: 'SeparatorFilter'; name: string; type: 'SeparatorFilter' }
-                  | {
-                        __typename: 'SortFilter';
-                        name: string;
-                        values: Array<string>;
-                        type: 'SortFilter';
-                        SortFilterDefault: { __typename: 'SortSelection'; ascending: boolean; index: number } | null;
-                    }
-                  | { __typename: 'TextFilter'; name: string; type: 'TextFilter'; TextFilterDefault: string }
-                  | {
-                        __typename: 'TriStateFilter';
-                        name: string;
-                        type: 'TriStateFilter';
-                        TriStateFilterDefault: Types.TriState;
-                    }
-              >;
-          }
+        __typename: 'GroupFilter';
+        name: string;
+        type: 'GroupFilter';
+        filters: Array<
+            | {
+            __typename: 'CheckBoxFilter';
+            name: string;
+            type: 'CheckBoxFilter';
+            CheckBoxFilterDefault: boolean;
+        }
+            | {
+            __typename: 'GroupFilter';
+            name: string;
+            type: 'GroupFilter';
+            filters: Array<
+                | {
+                __typename: 'CheckBoxFilter';
+                name: string;
+                type: 'CheckBoxFilter';
+                CheckBoxFilterDefault: boolean;
+            }
+                | {
+                __typename: 'GroupFilter';
+                name: string;
+                type: 'GroupFilter';
+                filters: Array<
+                    | {
+                    __typename: 'CheckBoxFilter';
+                    name: string;
+                    type: 'CheckBoxFilter';
+                    CheckBoxFilterDefault: boolean;
+                }
+                    | { __typename: 'GroupFilter' }
+                    | { __typename: 'HeaderFilter'; name: string; type: 'HeaderFilter' }
+                    | {
+                    __typename: 'SelectFilter';
+                    name: string;
+                    values: Array<string>;
+                    type: 'SelectFilter';
+                    SelectFilterDefault: number;
+                }
+                    | { __typename: 'SeparatorFilter'; name: string; type: 'SeparatorFilter' }
+                    | {
+                    __typename: 'SortFilter';
+                    name: string;
+                    values: Array<string>;
+                    type: 'SortFilter';
+                    SortFilterDefault: {
+                        __typename: 'SortSelection';
+                        ascending: boolean;
+                        index: number;
+                    } | null;
+                }
+                    | {
+                    __typename: 'TextFilter';
+                    name: string;
+                    type: 'TextFilter';
+                    TextFilterDefault: string;
+                }
+                    | {
+                    __typename: 'TriStateFilter';
+                    name: string;
+                    type: 'TriStateFilter';
+                    TriStateFilterDefault: Types.TriState;
+                }
+                >;
+            }
+                | { __typename: 'HeaderFilter'; name: string; type: 'HeaderFilter' }
+                | {
+                __typename: 'SelectFilter';
+                name: string;
+                values: Array<string>;
+                type: 'SelectFilter';
+                SelectFilterDefault: number;
+            }
+                | { __typename: 'SeparatorFilter'; name: string; type: 'SeparatorFilter' }
+                | {
+                __typename: 'SortFilter';
+                name: string;
+                values: Array<string>;
+                type: 'SortFilter';
+                SortFilterDefault: {
+                    __typename: 'SortSelection';
+                    ascending: boolean;
+                    index: number;
+                } | null;
+            }
+                | { __typename: 'TextFilter'; name: string; type: 'TextFilter'; TextFilterDefault: string }
+                | {
+                __typename: 'TriStateFilter';
+                name: string;
+                type: 'TriStateFilter';
+                TriStateFilterDefault: Types.TriState;
+            }
+            >;
+        }
+            | { __typename: 'HeaderFilter'; name: string; type: 'HeaderFilter' }
+            | {
+            __typename: 'SelectFilter';
+            name: string;
+            values: Array<string>;
+            type: 'SelectFilter';
+            SelectFilterDefault: number;
+        }
+            | { __typename: 'SeparatorFilter'; name: string; type: 'SeparatorFilter' }
+            | {
+            __typename: 'SortFilter';
+            name: string;
+            values: Array<string>;
+            type: 'SortFilter';
+            SortFilterDefault: { __typename: 'SortSelection'; ascending: boolean; index: number } | null;
+        }
+            | { __typename: 'TextFilter'; name: string; type: 'TextFilter'; TextFilterDefault: string }
+            | {
+            __typename: 'TriStateFilter';
+            name: string;
+            type: 'TriStateFilter';
+            TriStateFilterDefault: Types.TriState;
+        }
+        >;
+    }
         | { __typename: 'HeaderFilter'; name: string; type: 'HeaderFilter' }
         | {
-              __typename: 'SelectFilter';
-              name: string;
-              values: Array<string>;
-              type: 'SelectFilter';
-              SelectFilterDefault: number;
-          }
+        __typename: 'SelectFilter';
+        name: string;
+        values: Array<string>;
+        type: 'SelectFilter';
+        SelectFilterDefault: number;
+    }
         | { __typename: 'SeparatorFilter'; name: string; type: 'SeparatorFilter' }
         | {
-              __typename: 'SortFilter';
-              name: string;
-              values: Array<string>;
-              type: 'SortFilter';
-              SortFilterDefault: { __typename: 'SortSelection'; ascending: boolean; index: number } | null;
-          }
+        __typename: 'SortFilter';
+        name: string;
+        values: Array<string>;
+        type: 'SortFilter';
+        SortFilterDefault: { __typename: 'SortSelection'; ascending: boolean; index: number } | null;
+    }
         | { __typename: 'TextFilter'; name: string; type: 'TextFilter'; TextFilterDefault: string }
         | { __typename: 'TriStateFilter'; name: string; type: 'TriStateFilter'; TriStateFilterDefault: Types.TriState }
     >;
@@ -3796,59 +3802,59 @@ export type SourceSettingFieldsFragment = {
     iconUrl: string;
     preferences: Array<
         | {
-              __typename: 'CheckBoxPreference';
-              summary: string | null;
-              key: string | null;
-              type: 'CheckBoxPreference';
-              CheckBoxCheckBoxCurrentValue: boolean | null;
-              CheckBoxDefault: boolean;
-              CheckBoxTitle: string | null;
-          }
+        __typename: 'CheckBoxPreference';
+        summary: string | null;
+        key: string | null;
+        type: 'CheckBoxPreference';
+        CheckBoxCheckBoxCurrentValue: boolean | null;
+        CheckBoxDefault: boolean;
+        CheckBoxTitle: string | null;
+    }
         | {
-              __typename: 'EditTextPreference';
-              text: string | null;
-              summary: string | null;
-              key: string | null;
-              dialogTitle: string | null;
-              dialogMessage: string | null;
-              type: 'EditTextPreference';
-              EditTextPreferenceCurrentValue: string | null;
-              EditTextPreferenceDefault: string | null;
-              EditTextPreferenceTitle: string | null;
-          }
+        __typename: 'EditTextPreference';
+        text: string | null;
+        summary: string | null;
+        key: string | null;
+        dialogTitle: string | null;
+        dialogMessage: string | null;
+        type: 'EditTextPreference';
+        EditTextPreferenceCurrentValue: string | null;
+        EditTextPreferenceDefault: string | null;
+        EditTextPreferenceTitle: string | null;
+    }
         | {
-              __typename: 'ListPreference';
-              summary: string | null;
-              key: string | null;
-              entryValues: Array<string>;
-              entries: Array<string>;
-              type: 'ListPreference';
-              ListPreferenceCurrentValue: string | null;
-              ListPreferenceDefault: string | null;
-              ListPreferenceTitle: string | null;
-          }
+        __typename: 'ListPreference';
+        summary: string | null;
+        key: string | null;
+        entryValues: Array<string>;
+        entries: Array<string>;
+        type: 'ListPreference';
+        ListPreferenceCurrentValue: string | null;
+        ListPreferenceDefault: string | null;
+        ListPreferenceTitle: string | null;
+    }
         | {
-              __typename: 'MultiSelectListPreference';
-              dialogMessage: string | null;
-              dialogTitle: string | null;
-              summary: string | null;
-              key: string | null;
-              entryValues: Array<string>;
-              entries: Array<string>;
-              type: 'MultiSelectListPreference';
-              MultiSelectListPreferenceTitle: string | null;
-              MultiSelectListPreferenceDefault: Array<string> | null;
-              MultiSelectListPreferenceCurrentValue: Array<string> | null;
-          }
+        __typename: 'MultiSelectListPreference';
+        dialogMessage: string | null;
+        dialogTitle: string | null;
+        summary: string | null;
+        key: string | null;
+        entryValues: Array<string>;
+        entries: Array<string>;
+        type: 'MultiSelectListPreference';
+        MultiSelectListPreferenceTitle: string | null;
+        MultiSelectListPreferenceDefault: Array<string> | null;
+        MultiSelectListPreferenceCurrentValue: Array<string> | null;
+    }
         | {
-              __typename: 'SwitchPreference';
-              summary: string | null;
-              key: string | null;
-              type: 'SwitchPreference';
-              SwitchPreferenceCurrentValue: boolean | null;
-              SwitchPreferenceDefault: boolean;
-              SwitchPreferenceTitle: string | null;
-          }
+        __typename: 'SwitchPreference';
+        summary: string | null;
+        key: string | null;
+        type: 'SwitchPreference';
+        SwitchPreferenceCurrentValue: boolean | null;
+        SwitchPreferenceDefault: boolean;
+        SwitchPreferenceTitle: string | null;
+    }
     >;
 };
 
@@ -3936,59 +3942,59 @@ export type UpdateSourcePreferencesMutation = {
             iconUrl: string;
             preferences: Array<
                 | {
-                      __typename: 'CheckBoxPreference';
-                      summary: string | null;
-                      key: string | null;
-                      type: 'CheckBoxPreference';
-                      CheckBoxCheckBoxCurrentValue: boolean | null;
-                      CheckBoxDefault: boolean;
-                      CheckBoxTitle: string | null;
-                  }
+                __typename: 'CheckBoxPreference';
+                summary: string | null;
+                key: string | null;
+                type: 'CheckBoxPreference';
+                CheckBoxCheckBoxCurrentValue: boolean | null;
+                CheckBoxDefault: boolean;
+                CheckBoxTitle: string | null;
+            }
                 | {
-                      __typename: 'EditTextPreference';
-                      text: string | null;
-                      summary: string | null;
-                      key: string | null;
-                      dialogTitle: string | null;
-                      dialogMessage: string | null;
-                      type: 'EditTextPreference';
-                      EditTextPreferenceCurrentValue: string | null;
-                      EditTextPreferenceDefault: string | null;
-                      EditTextPreferenceTitle: string | null;
-                  }
+                __typename: 'EditTextPreference';
+                text: string | null;
+                summary: string | null;
+                key: string | null;
+                dialogTitle: string | null;
+                dialogMessage: string | null;
+                type: 'EditTextPreference';
+                EditTextPreferenceCurrentValue: string | null;
+                EditTextPreferenceDefault: string | null;
+                EditTextPreferenceTitle: string | null;
+            }
                 | {
-                      __typename: 'ListPreference';
-                      summary: string | null;
-                      key: string | null;
-                      entryValues: Array<string>;
-                      entries: Array<string>;
-                      type: 'ListPreference';
-                      ListPreferenceCurrentValue: string | null;
-                      ListPreferenceDefault: string | null;
-                      ListPreferenceTitle: string | null;
-                  }
+                __typename: 'ListPreference';
+                summary: string | null;
+                key: string | null;
+                entryValues: Array<string>;
+                entries: Array<string>;
+                type: 'ListPreference';
+                ListPreferenceCurrentValue: string | null;
+                ListPreferenceDefault: string | null;
+                ListPreferenceTitle: string | null;
+            }
                 | {
-                      __typename: 'MultiSelectListPreference';
-                      dialogMessage: string | null;
-                      dialogTitle: string | null;
-                      summary: string | null;
-                      key: string | null;
-                      entryValues: Array<string>;
-                      entries: Array<string>;
-                      type: 'MultiSelectListPreference';
-                      MultiSelectListPreferenceTitle: string | null;
-                      MultiSelectListPreferenceDefault: Array<string> | null;
-                      MultiSelectListPreferenceCurrentValue: Array<string> | null;
-                  }
+                __typename: 'MultiSelectListPreference';
+                dialogMessage: string | null;
+                dialogTitle: string | null;
+                summary: string | null;
+                key: string | null;
+                entryValues: Array<string>;
+                entries: Array<string>;
+                type: 'MultiSelectListPreference';
+                MultiSelectListPreferenceTitle: string | null;
+                MultiSelectListPreferenceDefault: Array<string> | null;
+                MultiSelectListPreferenceCurrentValue: Array<string> | null;
+            }
                 | {
-                      __typename: 'SwitchPreference';
-                      summary: string | null;
-                      key: string | null;
-                      type: 'SwitchPreference';
-                      SwitchPreferenceCurrentValue: boolean | null;
-                      SwitchPreferenceDefault: boolean;
-                      SwitchPreferenceTitle: string | null;
-                  }
+                __typename: 'SwitchPreference';
+                summary: string | null;
+                key: string | null;
+                type: 'SwitchPreference';
+                SwitchPreferenceCurrentValue: boolean | null;
+                SwitchPreferenceDefault: boolean;
+                SwitchPreferenceTitle: string | null;
+            }
             >;
         };
     } | null;
@@ -4045,159 +4051,159 @@ export type GetSourceBrowseQuery = {
         filters: Array<
             | { __typename: 'CheckBoxFilter'; name: string; type: 'CheckBoxFilter'; CheckBoxFilterDefault: boolean }
             | {
-                  __typename: 'GroupFilter';
-                  name: string;
-                  type: 'GroupFilter';
-                  filters: Array<
-                      | {
-                            __typename: 'CheckBoxFilter';
-                            name: string;
-                            type: 'CheckBoxFilter';
-                            CheckBoxFilterDefault: boolean;
-                        }
-                      | {
-                            __typename: 'GroupFilter';
-                            name: string;
-                            type: 'GroupFilter';
-                            filters: Array<
-                                | {
-                                      __typename: 'CheckBoxFilter';
-                                      name: string;
-                                      type: 'CheckBoxFilter';
-                                      CheckBoxFilterDefault: boolean;
-                                  }
-                                | {
-                                      __typename: 'GroupFilter';
-                                      name: string;
-                                      type: 'GroupFilter';
-                                      filters: Array<
-                                          | {
-                                                __typename: 'CheckBoxFilter';
-                                                name: string;
-                                                type: 'CheckBoxFilter';
-                                                CheckBoxFilterDefault: boolean;
-                                            }
-                                          | { __typename: 'GroupFilter' }
-                                          | { __typename: 'HeaderFilter'; name: string; type: 'HeaderFilter' }
-                                          | {
-                                                __typename: 'SelectFilter';
-                                                name: string;
-                                                values: Array<string>;
-                                                type: 'SelectFilter';
-                                                SelectFilterDefault: number;
-                                            }
-                                          | { __typename: 'SeparatorFilter'; name: string; type: 'SeparatorFilter' }
-                                          | {
-                                                __typename: 'SortFilter';
-                                                name: string;
-                                                values: Array<string>;
-                                                type: 'SortFilter';
-                                                SortFilterDefault: {
-                                                    __typename: 'SortSelection';
-                                                    ascending: boolean;
-                                                    index: number;
-                                                } | null;
-                                            }
-                                          | {
-                                                __typename: 'TextFilter';
-                                                name: string;
-                                                type: 'TextFilter';
-                                                TextFilterDefault: string;
-                                            }
-                                          | {
-                                                __typename: 'TriStateFilter';
-                                                name: string;
-                                                type: 'TriStateFilter';
-                                                TriStateFilterDefault: Types.TriState;
-                                            }
-                                      >;
-                                  }
-                                | { __typename: 'HeaderFilter'; name: string; type: 'HeaderFilter' }
-                                | {
-                                      __typename: 'SelectFilter';
-                                      name: string;
-                                      values: Array<string>;
-                                      type: 'SelectFilter';
-                                      SelectFilterDefault: number;
-                                  }
-                                | { __typename: 'SeparatorFilter'; name: string; type: 'SeparatorFilter' }
-                                | {
-                                      __typename: 'SortFilter';
-                                      name: string;
-                                      values: Array<string>;
-                                      type: 'SortFilter';
-                                      SortFilterDefault: {
-                                          __typename: 'SortSelection';
-                                          ascending: boolean;
-                                          index: number;
-                                      } | null;
-                                  }
-                                | {
-                                      __typename: 'TextFilter';
-                                      name: string;
-                                      type: 'TextFilter';
-                                      TextFilterDefault: string;
-                                  }
-                                | {
-                                      __typename: 'TriStateFilter';
-                                      name: string;
-                                      type: 'TriStateFilter';
-                                      TriStateFilterDefault: Types.TriState;
-                                  }
-                            >;
-                        }
-                      | { __typename: 'HeaderFilter'; name: string; type: 'HeaderFilter' }
-                      | {
-                            __typename: 'SelectFilter';
-                            name: string;
-                            values: Array<string>;
-                            type: 'SelectFilter';
-                            SelectFilterDefault: number;
-                        }
-                      | { __typename: 'SeparatorFilter'; name: string; type: 'SeparatorFilter' }
-                      | {
-                            __typename: 'SortFilter';
-                            name: string;
-                            values: Array<string>;
-                            type: 'SortFilter';
-                            SortFilterDefault: {
-                                __typename: 'SortSelection';
-                                ascending: boolean;
-                                index: number;
-                            } | null;
-                        }
-                      | { __typename: 'TextFilter'; name: string; type: 'TextFilter'; TextFilterDefault: string }
-                      | {
-                            __typename: 'TriStateFilter';
-                            name: string;
-                            type: 'TriStateFilter';
-                            TriStateFilterDefault: Types.TriState;
-                        }
-                  >;
-              }
+            __typename: 'GroupFilter';
+            name: string;
+            type: 'GroupFilter';
+            filters: Array<
+                | {
+                __typename: 'CheckBoxFilter';
+                name: string;
+                type: 'CheckBoxFilter';
+                CheckBoxFilterDefault: boolean;
+            }
+                | {
+                __typename: 'GroupFilter';
+                name: string;
+                type: 'GroupFilter';
+                filters: Array<
+                    | {
+                    __typename: 'CheckBoxFilter';
+                    name: string;
+                    type: 'CheckBoxFilter';
+                    CheckBoxFilterDefault: boolean;
+                }
+                    | {
+                    __typename: 'GroupFilter';
+                    name: string;
+                    type: 'GroupFilter';
+                    filters: Array<
+                        | {
+                        __typename: 'CheckBoxFilter';
+                        name: string;
+                        type: 'CheckBoxFilter';
+                        CheckBoxFilterDefault: boolean;
+                    }
+                        | { __typename: 'GroupFilter' }
+                        | { __typename: 'HeaderFilter'; name: string; type: 'HeaderFilter' }
+                        | {
+                        __typename: 'SelectFilter';
+                        name: string;
+                        values: Array<string>;
+                        type: 'SelectFilter';
+                        SelectFilterDefault: number;
+                    }
+                        | { __typename: 'SeparatorFilter'; name: string; type: 'SeparatorFilter' }
+                        | {
+                        __typename: 'SortFilter';
+                        name: string;
+                        values: Array<string>;
+                        type: 'SortFilter';
+                        SortFilterDefault: {
+                            __typename: 'SortSelection';
+                            ascending: boolean;
+                            index: number;
+                        } | null;
+                    }
+                        | {
+                        __typename: 'TextFilter';
+                        name: string;
+                        type: 'TextFilter';
+                        TextFilterDefault: string;
+                    }
+                        | {
+                        __typename: 'TriStateFilter';
+                        name: string;
+                        type: 'TriStateFilter';
+                        TriStateFilterDefault: Types.TriState;
+                    }
+                    >;
+                }
+                    | { __typename: 'HeaderFilter'; name: string; type: 'HeaderFilter' }
+                    | {
+                    __typename: 'SelectFilter';
+                    name: string;
+                    values: Array<string>;
+                    type: 'SelectFilter';
+                    SelectFilterDefault: number;
+                }
+                    | { __typename: 'SeparatorFilter'; name: string; type: 'SeparatorFilter' }
+                    | {
+                    __typename: 'SortFilter';
+                    name: string;
+                    values: Array<string>;
+                    type: 'SortFilter';
+                    SortFilterDefault: {
+                        __typename: 'SortSelection';
+                        ascending: boolean;
+                        index: number;
+                    } | null;
+                }
+                    | {
+                    __typename: 'TextFilter';
+                    name: string;
+                    type: 'TextFilter';
+                    TextFilterDefault: string;
+                }
+                    | {
+                    __typename: 'TriStateFilter';
+                    name: string;
+                    type: 'TriStateFilter';
+                    TriStateFilterDefault: Types.TriState;
+                }
+                >;
+            }
+                | { __typename: 'HeaderFilter'; name: string; type: 'HeaderFilter' }
+                | {
+                __typename: 'SelectFilter';
+                name: string;
+                values: Array<string>;
+                type: 'SelectFilter';
+                SelectFilterDefault: number;
+            }
+                | { __typename: 'SeparatorFilter'; name: string; type: 'SeparatorFilter' }
+                | {
+                __typename: 'SortFilter';
+                name: string;
+                values: Array<string>;
+                type: 'SortFilter';
+                SortFilterDefault: {
+                    __typename: 'SortSelection';
+                    ascending: boolean;
+                    index: number;
+                } | null;
+            }
+                | { __typename: 'TextFilter'; name: string; type: 'TextFilter'; TextFilterDefault: string }
+                | {
+                __typename: 'TriStateFilter';
+                name: string;
+                type: 'TriStateFilter';
+                TriStateFilterDefault: Types.TriState;
+            }
+            >;
+        }
             | { __typename: 'HeaderFilter'; name: string; type: 'HeaderFilter' }
             | {
-                  __typename: 'SelectFilter';
-                  name: string;
-                  values: Array<string>;
-                  type: 'SelectFilter';
-                  SelectFilterDefault: number;
-              }
+            __typename: 'SelectFilter';
+            name: string;
+            values: Array<string>;
+            type: 'SelectFilter';
+            SelectFilterDefault: number;
+        }
             | { __typename: 'SeparatorFilter'; name: string; type: 'SeparatorFilter' }
             | {
-                  __typename: 'SortFilter';
-                  name: string;
-                  values: Array<string>;
-                  type: 'SortFilter';
-                  SortFilterDefault: { __typename: 'SortSelection'; ascending: boolean; index: number } | null;
-              }
+            __typename: 'SortFilter';
+            name: string;
+            values: Array<string>;
+            type: 'SortFilter';
+            SortFilterDefault: { __typename: 'SortSelection'; ascending: boolean; index: number } | null;
+        }
             | { __typename: 'TextFilter'; name: string; type: 'TextFilter'; TextFilterDefault: string }
             | {
-                  __typename: 'TriStateFilter';
-                  name: string;
-                  type: 'TriStateFilter';
-                  TriStateFilterDefault: Types.TriState;
-              }
+            __typename: 'TriStateFilter';
+            name: string;
+            type: 'TriStateFilter';
+            TriStateFilterDefault: Types.TriState;
+        }
         >;
     };
 };
@@ -4217,59 +4223,59 @@ export type GetSourceSettingsQuery = {
         iconUrl: string;
         preferences: Array<
             | {
-                  __typename: 'CheckBoxPreference';
-                  summary: string | null;
-                  key: string | null;
-                  type: 'CheckBoxPreference';
-                  CheckBoxCheckBoxCurrentValue: boolean | null;
-                  CheckBoxDefault: boolean;
-                  CheckBoxTitle: string | null;
-              }
+            __typename: 'CheckBoxPreference';
+            summary: string | null;
+            key: string | null;
+            type: 'CheckBoxPreference';
+            CheckBoxCheckBoxCurrentValue: boolean | null;
+            CheckBoxDefault: boolean;
+            CheckBoxTitle: string | null;
+        }
             | {
-                  __typename: 'EditTextPreference';
-                  text: string | null;
-                  summary: string | null;
-                  key: string | null;
-                  dialogTitle: string | null;
-                  dialogMessage: string | null;
-                  type: 'EditTextPreference';
-                  EditTextPreferenceCurrentValue: string | null;
-                  EditTextPreferenceDefault: string | null;
-                  EditTextPreferenceTitle: string | null;
-              }
+            __typename: 'EditTextPreference';
+            text: string | null;
+            summary: string | null;
+            key: string | null;
+            dialogTitle: string | null;
+            dialogMessage: string | null;
+            type: 'EditTextPreference';
+            EditTextPreferenceCurrentValue: string | null;
+            EditTextPreferenceDefault: string | null;
+            EditTextPreferenceTitle: string | null;
+        }
             | {
-                  __typename: 'ListPreference';
-                  summary: string | null;
-                  key: string | null;
-                  entryValues: Array<string>;
-                  entries: Array<string>;
-                  type: 'ListPreference';
-                  ListPreferenceCurrentValue: string | null;
-                  ListPreferenceDefault: string | null;
-                  ListPreferenceTitle: string | null;
-              }
+            __typename: 'ListPreference';
+            summary: string | null;
+            key: string | null;
+            entryValues: Array<string>;
+            entries: Array<string>;
+            type: 'ListPreference';
+            ListPreferenceCurrentValue: string | null;
+            ListPreferenceDefault: string | null;
+            ListPreferenceTitle: string | null;
+        }
             | {
-                  __typename: 'MultiSelectListPreference';
-                  dialogMessage: string | null;
-                  dialogTitle: string | null;
-                  summary: string | null;
-                  key: string | null;
-                  entryValues: Array<string>;
-                  entries: Array<string>;
-                  type: 'MultiSelectListPreference';
-                  MultiSelectListPreferenceTitle: string | null;
-                  MultiSelectListPreferenceDefault: Array<string> | null;
-                  MultiSelectListPreferenceCurrentValue: Array<string> | null;
-              }
+            __typename: 'MultiSelectListPreference';
+            dialogMessage: string | null;
+            dialogTitle: string | null;
+            summary: string | null;
+            key: string | null;
+            entryValues: Array<string>;
+            entries: Array<string>;
+            type: 'MultiSelectListPreference';
+            MultiSelectListPreferenceTitle: string | null;
+            MultiSelectListPreferenceDefault: Array<string> | null;
+            MultiSelectListPreferenceCurrentValue: Array<string> | null;
+        }
             | {
-                  __typename: 'SwitchPreference';
-                  summary: string | null;
-                  key: string | null;
-                  type: 'SwitchPreference';
-                  SwitchPreferenceCurrentValue: boolean | null;
-                  SwitchPreferenceDefault: boolean;
-                  SwitchPreferenceTitle: string | null;
-              }
+            __typename: 'SwitchPreference';
+            summary: string | null;
+            key: string | null;
+            type: 'SwitchPreference';
+            SwitchPreferenceCurrentValue: boolean | null;
+            SwitchPreferenceDefault: boolean;
+            SwitchPreferenceTitle: string | null;
+        }
         >;
     };
 };
@@ -5200,4 +5206,11 @@ export type RefreshAccessTokenMutationVariables = Exact<{
 export type RefreshAccessTokenMutation = {
     __typename: 'Mutation';
     refreshToken: { __typename: 'RefreshTokenPayload'; accessToken: string };
+};
+
+export type WebviewClearCacheCookiesMutationVariables = Exact<{ [key: string]: never }>;
+
+export type WebviewClearCacheCookiesMutation = {
+    __typename: 'Mutation';
+    clearCookiesAndCache: { __typename: 'ClearCookiesAndCachePayload'; clientMutationId: string | null };
 };

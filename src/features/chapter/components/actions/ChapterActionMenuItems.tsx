@@ -1,3 +1,11 @@
+/*
+ * Copyright (C) Contributors to the Suwayomi project
+ *
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ */
+
 import { STABLE_EMPTY_ARRAY, STABLE_EMPTY_OBJECT } from '@/base/Base.constants.ts';
 import CheckBoxOutlineBlank from '@mui/icons-material/CheckBoxOutlineBlank';
 import Delete from '@mui/icons-material/Delete';
@@ -34,6 +42,7 @@ import type {
     ChapterReadInfo,
     ChapterRealUrlInfo,
 } from '@/features/chapter/Chapter.types.ts';
+import { IconWebView } from '@/assets/icons/IconWebView.tsx';
 import { IconBrowser } from '@/assets/icons/IconBrowser.tsx';
 import CancelIcon from '@mui/icons-material/Cancel';
 
@@ -172,15 +181,30 @@ export const ChapterActionMenuItems = ({
                 <MenuItem onClick={handleSelect} Icon={CheckBoxOutlineBlank} title={t`Select`} />
             )}
             {isSingleMode && (
-                <MenuItem
-                    Icon={IconBrowser}
-                    disabled={!chapter!.realUrl}
-                    onClick={() => {
-                        window.open(chapter!.realUrl!, '_blank', 'noopener,noreferrer');
-                        onClose();
-                    }}
-                    title={t`Open in browser`}
-                />
+                <>
+                    <MenuItem
+                        Icon={IconBrowser}
+                        disabled={!chapter!.realUrl}
+                        onClick={() => {
+                            window.open(chapter!.realUrl!, '_blank', 'noopener,noreferrer');
+                            onClose();
+                        }}
+                        title={t`Open in browser`}
+                    />
+                    <MenuItem
+                        Icon={IconWebView}
+                        disabled={!chapter!.realUrl}
+                        onClick={() => {
+                            window.open(
+                                requestManager.getWebviewUrl(chapter!.realUrl!),
+                                '_blank',
+                                'noopener,noreferrer',
+                            );
+                            onClose();
+                        }}
+                        title={t`Open in WebView`}
+                    />
+                </>
             )}
             {shouldShowMenuItem(canBeDownloaded) && (
                 <MenuItem
