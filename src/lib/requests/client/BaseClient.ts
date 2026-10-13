@@ -1,5 +1,5 @@
 import { AppStorage } from '@/lib/storage/AppStorage.ts';
-import type { UserRefreshMutation } from '@/lib/graphql/generated/graphql.ts';
+import type { RefreshAccessTokenMutation } from '@/lib/graphql/generated/graphql.ts';
 import { AuthManager } from '@/features/authentication/AuthManager.ts';
 import type { AbortableApolloMutationResponse } from '@/lib/requests/RequestManager.ts';
 import { SubpathUtil } from '@/lib/utils/SubpathUtil.ts';
@@ -27,7 +27,7 @@ export abstract class BaseClient<Client, ClientConfig, Fetcher> {
 
     public abstract readonly fetcher: Fetcher;
 
-    private static activeTokenRefreshPromise: Promise<UserRefreshMutation | null | undefined> | null = null;
+    private static activeTokenRefreshPromise: Promise<RefreshAccessTokenMutation | null | undefined> | null = null;
 
     private static onTokenRefreshComplete: (() => void) | null = null;
 
@@ -36,7 +36,9 @@ export abstract class BaseClient<Client, ClientConfig, Fetcher> {
     private static rateLimitState = new Map<string, RateLimitInfo>();
 
     protected constructor(
-        protected handleRefreshToken: (refreshToken: string) => AbortableApolloMutationResponse<UserRefreshMutation>,
+        protected handleRefreshToken: (
+            refreshToken: string,
+        ) => AbortableApolloMutationResponse<RefreshAccessTokenMutation>,
     ) {
         const rateLimitState = AppStorage.local.getItemParsed(BaseClient.RATE_LIMIT_STORAGE_KEY, {});
 
@@ -53,8 +55,8 @@ export abstract class BaseClient<Client, ClientConfig, Fetcher> {
     }
 
     protected static async refreshAccessToken(
-        refreshFn: (refreshToken: string) => AbortableApolloMutationResponse<UserRefreshMutation>,
-    ): Promise<UserRefreshMutation | null | undefined> {
+        refreshFn: (refreshToken: string) => AbortableApolloMutationResponse<RefreshAccessTokenMutation>,
+    ): Promise<RefreshAccessTokenMutation | null | undefined> {
         const refreshToken = AuthManager.getRefreshToken();
 
         if (!AuthManager.isAuthInitialized()) {
