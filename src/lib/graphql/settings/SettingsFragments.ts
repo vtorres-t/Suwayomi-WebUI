@@ -135,7 +135,7 @@ export const SERVER_SETTINGS = gql`
 
         # WebView
         kcefEnabled
-        
+
         # Repository
         repoWebUiUrl
         repoWebUiType

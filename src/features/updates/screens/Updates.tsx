@@ -110,7 +110,7 @@ export const Updates: React.FC = () => {
                             mangaEntries!,
                             firstUnreadEntryByMangaByGroup[
                                 getDateString(epochToDate(Number(mangaEntries![0].fetchedAt)))
-                                ]![mangaEntries![0].mangaId],
+                            ]![mangaEntries![0].mangaId],
                         ),
                     entriesByManga,
                 ),
@@ -196,7 +196,7 @@ export const Updates: React.FC = () => {
                             otherChapters={
                                 otherUpdatesByMangaByGroup[
                                     getDateString(epochToDate(Number(firstUnreadUpdatesEntries[index].fetchedAt)))
-                                    ][firstUnreadUpdatesEntries[index].mangaId]
+                                ][firstUnreadUpdatesEntries[index].mangaId]
                             }
                         />
                     </StyledGroupItemWrapper>

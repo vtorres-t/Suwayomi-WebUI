@@ -443,21 +443,21 @@ export type AbortableApolloUseMutationPaginatedResponse<
     (page: number) => Promise<ApolloClient.MutateResult<MaybeMasked<Data>>>,
     (Omit<useMutation.ResultTuple<Data, Variables>[1], 'loading'> &
         AbortableRequest & {
-        size: number;
-        /**
-         * Indicates whether any request is currently active.
-         * In case only "isLoading" is true, it means that it's the initial request
-         */
-        isLoading: boolean;
-        /**
-         * Indicates if a next page is being fetched, which is not part of the initial pages
-         */
-        isLoadingMore: boolean;
-        /**
-         * Indicates if the cached pages are currently getting revalidated
-         */
-        isValidating: boolean;
-    })[],
+            size: number;
+            /**
+             * Indicates whether any request is currently active.
+             * In case only "isLoading" is true, it means that it's the initial request
+             */
+            isLoading: boolean;
+            /**
+             * Indicates if a next page is being fetched, which is not part of the initial pages
+             */
+            isLoadingMore: boolean;
+            /**
+             * Indicates if the cached pages are currently getting revalidated
+             */
+            isValidating: boolean;
+        })[],
 ];
 export type AbortableApolloMutationResponse<Data = any> = {
     response: Promise<ApolloClient.MutateResult<MaybeMasked<Data>>>;
@@ -584,10 +584,8 @@ export class RequestManager {
         const size = page ?? result?.size ?? defaultPage;
         return {
             client: this.graphQLClient.client,
-            abortRequest: () => {
-            },
-            reset: () => {
-            },
+            abortRequest: () => {},
+            reset: () => {},
             called: false,
             data: undefined,
             error: undefined,
@@ -1017,8 +1015,7 @@ export class RequestManager {
         { priority, shouldDecode, disableCors, ignoreQueue }: ImageRequestOptions = {},
     ): Promise<ImageRequest> {
         const imgRequest = new ControlledPromise<string>();
-        imgRequest.promise.catch(() => {
-        });
+        imgRequest.promise.catch(() => {});
 
         const img = new Image();
         const abortRequest = (reason?: any) => {
@@ -1066,8 +1063,7 @@ export class RequestManager {
             response,
             abortRequest: (reason?: any) =>
                 this.abortImageRequest(key, this.getSourceIdFromUrl(url), () => abortRequest(reason)),
-            cleanup: () => {
-            },
+            cleanup: () => {},
             fromCache: !!fromCache,
         };
     }
@@ -1684,38 +1680,38 @@ export class RequestManager {
                 !cachedResult
                     ? result
                     : {
-                        ...cachedResult,
-                        data: !cachedResult?.data?.fetchExtensions?.extensions
-                            ? cachedResult?.data
-                            : {
-                                ...cachedResult.data,
-                                fetchExtensions: {
-                                    ...cachedResult.data.fetchExtensions,
-                                    extensions: cachedResult.data.fetchExtensions.extensions.map(
-                                        (extension) =>
-                                            this.graphQLClient.client.cache.readFragment<
-                                                NonNullable<
-                                                    GetExtensionsFetchMutation['fetchExtensions']
-                                                >['extensions'][0]
-                                            >({
-                                                id: this.graphQLClient.client.cache.identify(extension),
-                                                fragment: EXTENSION_LIST_FIELDS,
-                                            }) ?? extension,
-                                    ),
-                                    extensionStores: cachedResult.data.fetchExtensions.extensionStores.map(
-                                        (store) =>
-                                            this.graphQLClient.client.cache.readFragment<
-                                                NonNullable<
-                                                    GetExtensionsFetchMutation['fetchExtensions']
-                                                >['extensionStores'][0]
-                                            >({
-                                                id: this.graphQLClient.client.cache.identify(store),
-                                                fragment: EXTENSION_STORE_FIELDS,
-                                            }),
-                                    ),
+                          ...cachedResult,
+                          data: !cachedResult?.data?.fetchExtensions?.extensions
+                              ? cachedResult?.data
+                              : {
+                                    ...cachedResult.data,
+                                    fetchExtensions: {
+                                        ...cachedResult.data.fetchExtensions,
+                                        extensions: cachedResult.data.fetchExtensions.extensions.map(
+                                            (extension) =>
+                                                this.graphQLClient.client.cache.readFragment<
+                                                    NonNullable<
+                                                        GetExtensionsFetchMutation['fetchExtensions']
+                                                    >['extensions'][0]
+                                                >({
+                                                    id: this.graphQLClient.client.cache.identify(extension),
+                                                    fragment: EXTENSION_LIST_FIELDS,
+                                                }) ?? extension,
+                                        ),
+                                        extensionStores: cachedResult.data.fetchExtensions.extensionStores.map(
+                                            (store) =>
+                                                this.graphQLClient.client.cache.readFragment<
+                                                    NonNullable<
+                                                        GetExtensionsFetchMutation['fetchExtensions']
+                                                    >['extensionStores'][0]
+                                                >({
+                                                    id: this.graphQLClient.client.cache.identify(store),
+                                                    fragment: EXTENSION_STORE_FIELDS,
+                                                }),
+                                        ),
+                                    },
                                 },
-                            },
-                    },
+                      },
             [this.cache.getFetchTimestampFor(EXTENSION_LIST_CACHE_KEY, undefined), result.loading],
         );
 
@@ -1781,25 +1777,25 @@ export class RequestManager {
                         ...cachedExtensions.data.fetchExtensions,
                         extensions: isExtensionCached
                             ? cachedExtensions.data.fetchExtensions!.extensions.map((extension) => {
-                                const isUpdatedExtension = installedExtension?.pkgName === extension.pkgName;
-                                if (!isUpdatedExtension) {
-                                    return extension;
-                                }
+                                  const isUpdatedExtension = installedExtension?.pkgName === extension.pkgName;
+                                  if (!isUpdatedExtension) {
+                                      return extension;
+                                  }
 
-                                return {
-                                    ...extension,
-                                    ...installedExtension,
-                                    hasUpdate:
-                                        Number(installedExtension?.versionCodeLong ?? -1) <
-                                        Number(extension.versionCodeLong),
-                                };
-                            })
+                                  return {
+                                      ...extension,
+                                      ...installedExtension,
+                                      hasUpdate:
+                                          Number(installedExtension?.versionCodeLong ?? -1) <
+                                          Number(extension.versionCodeLong),
+                                  };
+                              })
                             : [
-                                ...(cachedExtensions.data.fetchExtensions?.extensions ?? []),
-                                installedExtension as NonNullable<
-                                    GetExtensionsFetchMutation['fetchExtensions']
-                                >['extensions'][number],
-                            ],
+                                  ...(cachedExtensions.data.fetchExtensions?.extensions ?? []),
+                                  installedExtension as NonNullable<
+                                      GetExtensionsFetchMutation['fetchExtensions']
+                                  >['extensions'][number],
+                              ],
                         extensionStores: cachedExtensions.data?.fetchExtensions!.extensionStores,
                     },
                 },
@@ -2137,14 +2133,13 @@ export class RequestManager {
         const isRevalidationDoneRef = useRef(false);
         const activeRevalidationRef = useRef<
             | [
-            ForInput: GetSourceMangasFetchMutationVariables,
-            Request: Promise<unknown>,
-            AbortRequest: AbortableRequest['abortRequest'],
-        ]
+                  ForInput: GetSourceMangasFetchMutationVariables,
+                  Request: Promise<unknown>,
+                  AbortRequest: AbortableRequest['abortRequest'],
+              ]
             | null
         >(null);
-        const abortRequestRef = useRef<AbortableRequest['abortRequest']>(() => {
-        });
+        const abortRequestRef = useRef<AbortableRequest['abortRequest']>(() => {});
         const resultRef = useRef<(MutationDataResult & { forInput: string }) | null>(null);
         const result = resultRef.current;
 
