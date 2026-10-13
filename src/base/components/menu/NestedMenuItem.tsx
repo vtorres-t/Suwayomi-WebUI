@@ -1,8 +1,11 @@
 /*
- * src: https://github.com/webzep/mui-nested-menu/blob/main/packages/mui-nested-menu/src/components/NestedMenuItem.tsx (2024-04-20 01:42)
+ * Copyright (C) Contributors to the Suwayomi project
  *
- * with a few changes to fix a bug on mobile devices where opening the sub menu immediately triggered the on click of the underlying menu item
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
+
 import { STABLE_EMPTY_OBJECT } from '@/base/Base.constants.ts';
 import type { MenuProps as MuiMenuProps } from '@mui/material/Menu';
 import Menu from '@mui/material/Menu';
