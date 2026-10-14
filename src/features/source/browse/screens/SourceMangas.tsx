@@ -56,6 +56,7 @@ import { Sources } from '@/features/source/services/Sources.ts';
 import { STABLE_EMPTY_ARRAY, STABLE_EMPTY_OBJECT } from '@/base/Base.constants.ts';
 import { useAppTitleAndAction } from '@/features/navigation-bar/hooks/useAppTitleAndAction.ts';
 import { VirtuosoUtil } from '@/lib/virtuoso/Virtuoso.util.tsx';
+import { IconWebView } from '@/assets/icons/IconWebView.tsx';
 import { MigrationManager } from '@/features/migration/MigrationManager.ts';
 import { ReactRouter } from '@/lib/react-router/ReactRouter.ts';
 import type { FilterChangeInput } from '@/lib/graphql/generated/graphql-base.types.ts';
@@ -431,6 +432,17 @@ export function SourceMangas() {
         <>
             <AppbarSearch searchHistoryKey="source" />
             <SourceGridLayout />
+            <CustomTooltip title={t`Open in WebView`} disabled={!source?.homeUrl}>
+                <IconButton
+                    disabled={!source?.homeUrl}
+                    href={source?.homeUrl ? requestManager.getWebviewUrl(source?.homeUrl) : ''}
+                    rel="noreferrer"
+                    target="_blank"
+                    color="inherit"
+                >
+                    <IconWebView />
+                </IconButton>
+            </CustomTooltip>
             {source?.isConfigurable && (
                 <CustomTooltip title={t`Settings`}>
                     <IconButton

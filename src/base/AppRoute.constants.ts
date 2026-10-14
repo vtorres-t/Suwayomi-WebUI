@@ -7,6 +7,7 @@
  */
 
 import type { MangaIdInfo } from '@/features/manga/Manga.types.ts';
+
 import type { ChapterSourceOrderInfo } from '@/features/chapter/Chapter.types.ts';
 import type { BrowseTab } from '@/features/browse/Browse.types.ts';
 import { SearchParam } from '@/base/Base.types.ts';

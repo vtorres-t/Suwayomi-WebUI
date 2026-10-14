@@ -43,6 +43,7 @@ export const DOWNLOAD_STATUS_FIELDS = gql`
 
     fragment DOWNLOAD_STATUS_FIELDS on DownloadStatus {
         state
+
         queue {
             ...DOWNLOAD_TYPE_FIELDS
         }

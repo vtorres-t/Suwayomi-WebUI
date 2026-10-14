@@ -52,7 +52,9 @@ import type { SourceIdInfo } from '@/features/source/Source.types.ts';
 import { Thumbnail } from '@/features/manga/components/details/Thumbnail.tsx';
 import { DescriptionGenre } from '@/features/manga/components/details/DescriptionGenre.tsx';
 import { SearchLink } from '@/features/manga/components/details/SearchLink.tsx';
+import { requestManager } from '@/lib/requests/RequestManager.ts';
 import { IconBrowser } from '@/assets/icons/IconBrowser.tsx';
+import { IconWebView } from '@/assets/icons/IconWebView.tsx';
 import { MediaQuery } from '@/base/utils/MediaQuery.tsx';
 import { copyToClipboard } from '@/lib/HelperFunctions.ts';
 import { ClipBoardGuard } from '@/base/components/guard/ClipBoardGuard.tsx';
@@ -162,6 +164,19 @@ const OpenSourceButton = ({ url }: { url?: string | null }) => {
                     variant="outlined"
                 >
                     <IconBrowser />
+                </CustomIconButton>
+            </CustomTooltip>
+            <CustomTooltip title={t`Open in WebView`} disabled={!url}>
+                <CustomIconButton
+                    size="medium"
+                    disabled={!url}
+                    component={Link}
+                    href={url ? requestManager.getWebviewUrl(url) : undefined}
+                    target="_blank"
+                    rel="noreferrer"
+                    variant="outlined"
+                >
+                    <IconWebView />
                 </CustomIconButton>
             </CustomTooltip>
         </ButtonGroup>

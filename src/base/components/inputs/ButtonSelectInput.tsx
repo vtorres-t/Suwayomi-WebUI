@@ -9,6 +9,7 @@
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import type { ComponentProps } from 'react';
+
 import { SelectButton } from '@/base/components/buttons/SelectButton.tsx';
 
 export const ButtonSelectInput = <Value extends string | number, MultiValue extends Value | Value[] = Value>({

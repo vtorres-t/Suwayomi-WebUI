@@ -6,6 +6,7 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
+/* oxlint-disable max-classes-per-file */
 import { jsonSaveParse } from '@/lib/HelperFunctions.ts';
 import { SubpathUtil } from '@/lib/utils/SubpathUtil.ts';
 

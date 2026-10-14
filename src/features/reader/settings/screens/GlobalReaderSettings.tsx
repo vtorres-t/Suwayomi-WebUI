@@ -18,15 +18,6 @@ import { ReaderSettingsTabs } from '@/features/reader/settings/components/Reader
 import { getErrorMessage } from '@/lib/HelperFunctions.ts';
 import { useAppTitle } from '@/features/navigation-bar/hooks/useAppTitle.ts';
 
-const updateSetting = <Setting extends keyof IReaderSettings>(
-    key: Setting,
-    value: IReaderSettings[Setting],
-    commit?: boolean,
-    profile?: ReadingMode,
-) => {
-    ReaderService.updateSetting(key, value, commit, true, profile);
-};
-
 export const GlobalReaderSettings = () => {
     const { t } = useLingui();
 
@@ -38,6 +29,16 @@ export const GlobalReaderSettings = () => {
         settings,
         request: { loading, error, refetch },
     } = useDefaultReaderSettingsWithDefaultFlag();
+
+    // oxlint-disable-next-line unicorn/consistent-function-scoping
+    const updateSetting = <Setting extends keyof IReaderSettings>(
+        key: Setting,
+        value: IReaderSettings[Setting],
+        commit?: boolean,
+        profile?: ReadingMode,
+    ) => {
+        ReaderService.updateSetting(key, value, commit, true, profile);
+    };
 
     if (loading) {
         return <LoadingPlaceholder />;
