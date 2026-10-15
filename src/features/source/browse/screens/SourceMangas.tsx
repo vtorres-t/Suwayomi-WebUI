@@ -112,7 +112,9 @@ const useSourceManga = (
     AbortableApolloUseMutationPaginatedResponse<
         GetSourceMangasFetchMutation,
         GetSourceMangasFetchMutationVariables
-    >[1][number] & { filteredOutAllItemsOfFetchedPage: boolean },
+    >[1][number] & {
+        filteredOutAllItemsOfFetchedPage: boolean;
+    },
 ] => {
     let result: AbortableApolloUseMutationPaginatedResponse<
         GetSourceMangasFetchMutation,

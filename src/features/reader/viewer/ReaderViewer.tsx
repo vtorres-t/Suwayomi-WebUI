@@ -261,7 +261,9 @@ const BaseReaderViewer = ({
                 }),
                 ...applyStyles(
                     isContinuousVerticalReadingModeActive && shouldApplyReaderWidth(readerWidth, pageScaleMode),
-                    { alignItems: 'center' },
+                    {
+                        alignItems: 'center',
+                    },
                 ),
                 ...applyStyles(!isContinuousVerticalReadingModeActive, {
                     ...applyStyles(themeDirection === 'ltr', {

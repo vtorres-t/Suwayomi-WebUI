@@ -89,7 +89,9 @@ const convertSettingsToMetadata = (
 export const DEFAULT_READER_SETTINGS_WITH_DEFAULT_FLAG = convertToSettingsWithDefaultFlag(
     'global',
     DEFAULT_READER_SETTINGS,
-    { meta: convertSettingsToMetadata(DEFAULT_READER_SETTINGS) as Metadata },
+    {
+        meta: convertSettingsToMetadata(DEFAULT_READER_SETTINGS) as Metadata,
+    },
 );
 
 export const getReaderSettings = (

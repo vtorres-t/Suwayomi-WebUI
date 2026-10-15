@@ -88,7 +88,9 @@ export function Library() {
 
     const librarySizeResponse = requestManager.useGetMangas<GetMangasCountQuery, GetMangasCountQueryVariables>(
         GET_MANGAS_COUNT,
-        { condition: { inLibrary: true } },
+        {
+            condition: { inLibrary: true },
+        },
     );
 
     const librarySize = librarySizeResponse.data?.mangas.totalCount ?? 0;

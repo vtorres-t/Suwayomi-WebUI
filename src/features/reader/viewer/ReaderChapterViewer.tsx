@@ -398,7 +398,9 @@ const BaseReaderChapterViewer = ({
                 }),
                 ...applyStyles(
                     isContinuousVerticalReadingMode(readingMode) && shouldApplyReaderWidth(readerWidth, pageScaleMode),
-                    { alignItems: 'center' },
+                    {
+                        alignItems: 'center',
+                    },
                 ),
                 ...applyStyles(readingMode === ReadingMode.CONTINUOUS_HORIZONTAL, {
                     ...applyStyles(themeDirection === 'ltr', {

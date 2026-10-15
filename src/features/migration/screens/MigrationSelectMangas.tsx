@@ -65,7 +65,9 @@ export const MigrationSelectMangas = () => {
     } = requestManager.useGetSource<GetSourceMigratableQuery, GetSourceMigratableQueryVariables>(
         GET_SOURCE_MIGRATABLE,
         sourceId ?? '',
-        { skip: !sourceIds },
+        {
+            skip: !sourceIds,
+        },
     );
 
     const {
