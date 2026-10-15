@@ -14,11 +14,11 @@ import { useMergedRef } from '@mantine/hooks';
 import { VirtuosoUtil } from '@/lib/virtuoso/Virtuoso.util.tsx';
 
 export const VirtuosoGridPersisted = <ItemData = any, Context = any>({
-                                                                         ref: passedRef,
-                                                                         persistKey,
-                                                                         ...props
-                                                                     }: ComponentProps<typeof VirtuosoGrid<ItemData, Context>> & {
-    persistKey: string
+    ref: passedRef,
+    persistKey,
+    ...props
+}: ComponentProps<typeof VirtuosoGrid<ItemData, Context>> & {
+    persistKey: string;
 }) => {
     const { state, persistState } = VirtuosoUtil.usePersistState<GridStateSnapshot>(persistKey);
 

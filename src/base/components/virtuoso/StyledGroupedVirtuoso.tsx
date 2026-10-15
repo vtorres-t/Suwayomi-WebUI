@@ -15,18 +15,18 @@ import { OffsetComponent } from '@/base/OffsetComponent.tsx';
 
 const StickyVirtuosoHeaderWithOffset =
     () =>
-        ({ children, style, ...args }: TopItemListProps & ContextProp<unknown>) => (
-            <OffsetComponent {...args} sx={style}>
-                {children}
-            </OffsetComponent>
-        );
+    ({ children, style, ...args }: TopItemListProps & ContextProp<unknown>) => (
+        <OffsetComponent {...args} sx={style}>
+            {children}
+        </OffsetComponent>
+    );
 
 export const StyledGroupedVirtuoso = <ItemData = any, Context = any>({
-                                                                         heightToSubtract = 0,
-                                                                         style,
-                                                                         ...props
-                                                                     }: ComponentProps<typeof GroupedVirtuosoPersisted<ItemData, Context>> & {
-    heightToSubtract?: number
+    heightToSubtract = 0,
+    style,
+    ...props
+}: ComponentProps<typeof GroupedVirtuosoPersisted<ItemData, Context>> & {
+    heightToSubtract?: number;
 }) => {
     const { appBarHeight, bottomBarHeight } = useNavBarContext();
 

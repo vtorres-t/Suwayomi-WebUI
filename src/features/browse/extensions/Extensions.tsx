@@ -55,14 +55,14 @@ const LANGUAGE = 0;
 const EXTENSIONS = 1;
 
 const GroupHeader = ({
-                         groupName,
-                         isFirstItem,
-                         groupExtensionIds,
-                         isUpdateGroup,
-                         updatingExtensionIds,
-                         setUpdatingExtensionIds,
-                         handleExtensionUpdate,
-                     }: {
+    groupName,
+    isFirstItem,
+    groupExtensionIds,
+    isUpdateGroup,
+    updatingExtensionIds,
+    setUpdatingExtensionIds,
+    handleExtensionUpdate,
+}: {
     groupName: string;
     isFirstItem: boolean;
     groupExtensionIds: TExtension['pkgName'][];
@@ -191,9 +191,9 @@ export function Extensions({ tabsMenuHeight }: { tabsMenuHeight: number }) {
         requestManager
             .installExternalExtension(file)
             .response.then(() => {
-            handleExtensionUpdate();
-            makeToast(t`Extension installed`, 'success');
-        })
+                handleExtensionUpdate();
+                makeToast(t`Extension installed`, 'success');
+            })
             .catch((e) => makeToast(t`Could not install the extension`, 'error', getErrorMessage(e)));
     };
 

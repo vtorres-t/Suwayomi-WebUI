@@ -45,8 +45,7 @@ export const useMouseDragScroll = (
         const element = ref?.current;
 
         if (!element) {
-            return () => {
-            };
+            return () => {};
         }
 
         const isRTL = () => {

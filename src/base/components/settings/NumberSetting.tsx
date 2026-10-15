@@ -52,24 +52,24 @@ type PropsWithSlider = Omit<BaseProps, 'defaultValue' | 'minValue' | 'maxValue' 
 type Props = BaseProps | PropsWithSlider;
 
 export const NumberSetting = ({
-                                  settingTitle,
-                                  settingValue,
-                                  settingIcon,
-                                  dialogDescription,
-                                  dialogDisclaimer,
-                                  value,
-                                  defaultValue,
-                                  minValue,
-                                  maxValue,
-                                  stepSize,
-                                  dialogTitle = settingTitle,
-                                  valueUnit,
-                                  handleUpdate,
-                                  showSlider,
-                                  disabled = false,
-                                  handleLiveUpdate,
-                                  listItemTextSx: sx,
-                              }: Props) => {
+    settingTitle,
+    settingValue,
+    settingIcon,
+    dialogDescription,
+    dialogDisclaimer,
+    value,
+    defaultValue,
+    minValue,
+    maxValue,
+    stepSize,
+    dialogTitle = settingTitle,
+    valueUnit,
+    handleUpdate,
+    showSlider,
+    disabled = false,
+    handleLiveUpdate,
+    listItemTextSx: sx,
+}: Props) => {
     const { t } = useLingui();
 
     const [isDialogOpen, setIsDialogOpen] = useState(false);

@@ -16,15 +16,15 @@ import { isContinuousReadingMode } from '@/features/reader/settings/ReaderSettin
 import type { SelectButtonDefaultableProps } from '@/base/components/buttons/SelectButton.tsx';
 
 export const ReaderSettingPageGap = ({
-                                         pageGap,
-                                         readingMode,
-                                         isDefaultable,
-                                         onDefault,
-                                         updateSetting,
-                                     }: Pick<IReaderSettingsWithDefaultFlag, 'pageGap' | 'readingMode'> &
+    pageGap,
+    readingMode,
+    isDefaultable,
+    onDefault,
+    updateSetting,
+}: Pick<IReaderSettingsWithDefaultFlag, 'pageGap' | 'readingMode'> &
     Pick<SelectButtonDefaultableProps<IReaderSettings['pageGap']>, 'isDefaultable' | 'onDefault'> & {
-    updateSetting: (gap: number, commit: boolean) => void;
-}) => {
+        updateSetting: (gap: number, commit: boolean) => void;
+    }) => {
     const { t } = useLingui();
 
     const isChangeable = readingMode.value !== ReadingMode.WEBTOON && isContinuousReadingMode(readingMode.value);

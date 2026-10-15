@@ -32,7 +32,8 @@ export interface IRestClient {
 
 export class RestClient
     extends BaseClient<typeof fetch, RequestInit, (url: string, data: any) => Promise<Response>>
-    implements IRestClient {
+    implements IRestClient
+{
     protected client!: typeof fetch;
 
     private config: RequestInit = {

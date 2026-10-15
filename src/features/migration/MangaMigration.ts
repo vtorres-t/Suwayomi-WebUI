@@ -219,29 +219,29 @@ export class MangaMigration {
                 [
                     readChapters.length && requestManager.updateChapters(readChapters, { isRead: true }).response,
                     bookmarkedChapters.length &&
-                    requestManager.updateChapters(bookmarkedChapters, { isBookmarked: true }).response,
+                        requestManager.updateChapters(bookmarkedChapters, { isBookmarked: true }).response,
                     chapterUpdateItems.length &&
-                    requestManager.updateChapterMeta({
-                        preUpdateDeleteInput: {
-                            items: [
-                                {
-                                    chapterIds: chapterPreDeleteIds,
-                                    prefixes: ALL_APP_METADATA_KEY_PREFIXES,
-                                },
-                            ],
-                        },
-                        updateInput: { items: chapterUpdateItems },
-                    }).response,
+                        requestManager.updateChapterMeta({
+                            preUpdateDeleteInput: {
+                                items: [
+                                    {
+                                        chapterIds: chapterPreDeleteIds,
+                                        prefixes: ALL_APP_METADATA_KEY_PREFIXES,
+                                    },
+                                ],
+                            },
+                            updateInput: { items: chapterUpdateItems },
+                        }).response,
                 ].filter((promise) => !!promise),
             cleanup: () =>
                 mode === 'migrate'
                     ? [
-                        deleteChapters
-                            ? requestManager.deleteDownloadedChapters(
-                                Chapters.getIds(Chapters.getDownloaded(chaptersToMigrate)),
-                            ).response
-                            : Promise.resolve(),
-                    ]
+                          deleteChapters
+                              ? requestManager.deleteDownloadedChapters(
+                                    Chapters.getIds(Chapters.getDownloaded(chaptersToMigrate)),
+                                ).response
+                              : Promise.resolve(),
+                      ]
                     : [],
         };
     }
@@ -273,8 +273,8 @@ export class MangaMigration {
             cleanup: () =>
                 mode === 'migrate'
                     ? (mangaToMigrate.trackRecords?.nodes.map(
-                        (trackRecord) => requestManager.unbindTracker(trackRecord.id).response,
-                    ) ?? [])
+                          (trackRecord) => requestManager.unbindTracker(trackRecord.id).response,
+                      ) ?? [])
                     : [],
         };
     }
@@ -300,38 +300,38 @@ export class MangaMigration {
                         updateManga: { inLibrary: true },
                         updateMangaCategories: migrateCategories
                             ? {
-                                addToCategories: mangaToMigrateFrom.categories?.nodes.map((category) => category.id),
-                            }
+                                  addToCategories: mangaToMigrateFrom.categories?.nodes.map((category) => category.id),
+                              }
                             : undefined,
                     }).response,
                     mangaMeta?.length &&
-                    requestManager.updateMangaMeta({
-                        preUpdateDeleteInput: {
-                            items: [
-                                {
-                                    mangaIds: [mangaToMigrateTo.id],
-                                    prefixes: ALL_APP_METADATA_KEY_PREFIXES,
-                                },
-                            ],
-                        },
-                        updateInput: {
-                            items: [
-                                {
-                                    mangaIds: [mangaToMigrateTo.id],
-                                    metas: mangaMeta.map(({ key, value }) => ({ key, value })),
-                                },
-                            ],
-                        },
-                    }).response,
+                        requestManager.updateMangaMeta({
+                            preUpdateDeleteInput: {
+                                items: [
+                                    {
+                                        mangaIds: [mangaToMigrateTo.id],
+                                        prefixes: ALL_APP_METADATA_KEY_PREFIXES,
+                                    },
+                                ],
+                            },
+                            updateInput: {
+                                items: [
+                                    {
+                                        mangaIds: [mangaToMigrateTo.id],
+                                        metas: mangaMeta.map(({ key, value }) => ({ key, value })),
+                                    },
+                                ],
+                            },
+                        }).response,
                 ].filter((promise) => !!promise),
             cleanup: () =>
                 mode === 'migrate'
                     ? [
-                        requestManager.updateManga(mangaToMigrateFrom.id, {
-                            updateManga: { inLibrary: false },
-                            updateMangaCategories: removeMangaFromCategories ? { clearCategories: true } : undefined,
-                        }).response,
-                    ]
+                          requestManager.updateManga(mangaToMigrateFrom.id, {
+                              updateManga: { inLibrary: false },
+                              updateMangaCategories: removeMangaFromCategories ? { clearCategories: true } : undefined,
+                          }).response,
+                      ]
                     : [],
         };
     }

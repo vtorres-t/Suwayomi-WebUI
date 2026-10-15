@@ -95,18 +95,18 @@ export const useReaderSetChaptersState = (
                 isCurrentChapterReady: hasCurrentChapterChanged ? false : prevState.isCurrentChapterReady,
                 visibleChapters: hasInitialChapterChanged
                     ? {
-                        ...READER_DEFAULT_CHAPTERS_STATE.chapters.visibleChapters,
-                        lastLeadingChapterSourceOrder:
-                            newInitialChapter?.sourceOrder ??
-                            READER_DEFAULT_CHAPTERS_STATE.chapters.visibleChapters.lastLeadingChapterSourceOrder,
-                        lastTrailingChapterSourceOrder:
-                            newInitialChapter?.sourceOrder ??
-                            READER_DEFAULT_CHAPTERS_STATE.chapters.visibleChapters.lastTrailingChapterSourceOrder,
-                        isLeadingChapterPreloadMode: false,
-                        isTrailingChapterPreloadMode: false,
-                        // do not set "scrollIntoView" to "true" for the initial render
-                        scrollIntoView: !!prevState.initialChapter,
-                    }
+                          ...READER_DEFAULT_CHAPTERS_STATE.chapters.visibleChapters,
+                          lastLeadingChapterSourceOrder:
+                              newInitialChapter?.sourceOrder ??
+                              READER_DEFAULT_CHAPTERS_STATE.chapters.visibleChapters.lastLeadingChapterSourceOrder,
+                          lastTrailingChapterSourceOrder:
+                              newInitialChapter?.sourceOrder ??
+                              READER_DEFAULT_CHAPTERS_STATE.chapters.visibleChapters.lastTrailingChapterSourceOrder,
+                          isLeadingChapterPreloadMode: false,
+                          isTrailingChapterPreloadMode: false,
+                          // do not set "scrollIntoView" to "true" for the initial render
+                          scrollIntoView: !!prevState.initialChapter,
+                      }
                     : prevState.visibleChapters,
             };
         });

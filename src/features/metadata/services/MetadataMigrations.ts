@@ -297,9 +297,17 @@ const commitMigratedMetadata = (
 
     useEffectFn(() => {
         (async () => {
-            const itemMigrationKey = `${type}_${type === 'global' ? '' : (metadataHolder as {
-                id: any
-            } | undefined)?.id}`;
+            const itemMigrationKey = `${type}_${
+                type === 'global'
+                    ? ''
+                    : (
+                          metadataHolder as
+                              | {
+                                    id: any;
+                                }
+                              | undefined
+                      )?.id
+            }`;
 
             const commitMigration = !commitedMigrations.has(itemMigrationKey);
             if (!commitMigration) {

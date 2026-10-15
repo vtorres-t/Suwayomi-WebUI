@@ -117,8 +117,7 @@ export const SpinnerImage = ({ ref, ...props }: SpinnerImageProps) => {
         const finalShouldLoad = shouldLoad || isRetry;
 
         if (showMissingImageIcon || !finalShouldLoad || isLoadedAndSrcUnchanged) {
-            return () => {
-            };
+            return () => {};
         }
 
         let isAborted = false;
@@ -164,8 +163,7 @@ export const SpinnerImage = ({ ref, ...props }: SpinnerImageProps) => {
             }
         };
 
-        fetchImage().catch(() => {
-        });
+        fetchImage().catch(() => {});
 
         return () => {
             abortRequest();

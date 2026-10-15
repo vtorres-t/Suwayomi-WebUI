@@ -12,32 +12,23 @@ import { useLocalStorage } from '@/base/hooks/useStorage.tsx';
 
 export const NavBarContext = React.createContext<NavbarContextType>({
     title: 'Suwayomi',
-    setTitle: (): void => {
-    },
+    setTitle: (): void => {},
     hideTitle: false,
-    setHideTitle: (): void => {
-    },
+    setHideTitle: (): void => {},
     appBarHeight: 0,
-    setAppBarHeight: (): void => {
-    },
+    setAppBarHeight: (): void => {},
     action: <div />,
-    setAction: (): void => {
-    },
+    setAction: (): void => {},
     override: { status: false, value: <div /> },
-    setOverride: (): void => {
-    },
+    setOverride: (): void => {},
     isCollapsed: false,
-    setIsCollapsed: (): void => {
-    },
+    setIsCollapsed: (): void => {},
     navBarWidth: 0,
-    setNavBarWidth: (): void => {
-    },
+    setNavBarWidth: (): void => {},
     readerNavBarWidth: 0,
-    setReaderNavBarWidth: (): void => {
-    },
+    setReaderNavBarWidth: (): void => {},
     bottomBarHeight: 0,
-    setBottomBarHeight: (): void => {
-    },
+    setBottomBarHeight: (): void => {},
 });
 
 export const useNavBarContext = () => useContext(NavBarContext);

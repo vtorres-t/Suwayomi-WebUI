@@ -32,9 +32,9 @@ const RGBA_TYPE_TO_TRANSLATION: Record<RGBAType, MessageDescriptor> = {
 };
 
 export const ReaderSettingRGBA = ({
-                                      rgba,
-                                      updateSetting,
-                                  }: Pick<IReaderSettings['customFilter'], 'rgba'> & {
+    rgba,
+    updateSetting,
+}: Pick<IReaderSettings['customFilter'], 'rgba'> & {
     updateSetting: <Filter extends keyof IReaderSettings['customFilter']>(
         filter: Filter,
         value: IReaderSettings['customFilter'][Filter],

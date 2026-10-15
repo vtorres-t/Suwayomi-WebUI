@@ -92,18 +92,18 @@ type DefaultGridProps = Omit<MangaCardProps, 'manga' | 'selected'> & {
 };
 
 const HorizontalGrid = ({
-                            isLoading,
-                            mangas,
-                            inLibraryIndicator,
-                            GridItemContainer,
-                            gridLayout,
-                            isSelectModeActive,
-                            selectedMangaIds,
-                            handleSelection,
-                            mode,
-                            ref,
-                            onMigrateSelect,
-                        }: DefaultGridProps) => (
+    isLoading,
+    mangas,
+    inLibraryIndicator,
+    GridItemContainer,
+    gridLayout,
+    isSelectModeActive,
+    selectedMangaIds,
+    handleSelection,
+    mode,
+    ref,
+    onMigrateSelect,
+}: DefaultGridProps) => (
     <Grid
         ref={ref}
         container
@@ -139,20 +139,20 @@ const HorizontalGrid = ({
 export const MANGA_GRID_SNAPSHOT_KEY = 'MangaGrid-snapshot-location';
 
 const VerticalGrid = ({
-                          isLoading,
-                          mangas,
-                          inLibraryIndicator,
-                          GridItemContainer,
-                          gridLayout,
-                          hasNextPage,
-                          loadMore,
-                          isSelectModeActive,
-                          selectedMangaIds,
-                          handleSelection,
-                          mode,
-                          ref,
-                          onMigrateSelect,
-                      }: DefaultGridProps & {
+    isLoading,
+    mangas,
+    inLibraryIndicator,
+    GridItemContainer,
+    gridLayout,
+    hasNextPage,
+    loadMore,
+    isSelectModeActive,
+    selectedMangaIds,
+    handleSelection,
+    mode,
+    ref,
+    onMigrateSelect,
+}: DefaultGridProps & {
     hasNextPage: boolean;
     loadMore: () => void;
 }) => (
@@ -197,7 +197,8 @@ const VerticalGrid = ({
 );
 
 export interface IMangaGridProps
-    extends Omit<DefaultGridProps, 'GridItemContainer'>,
+    extends
+        Omit<DefaultGridProps, 'GridItemContainer'>,
         Partial<React.ComponentProps<typeof EmptyViewAbsoluteCentered>> {
     hasNextPage: boolean;
     loadMore: () => void;
@@ -207,24 +208,24 @@ export interface IMangaGridProps
 }
 
 export const MangaGrid: React.FC<IMangaGridProps> = ({
-                                                         mangas,
-                                                         isLoading,
-                                                         message,
-                                                         messageExtra,
-                                                         hasNextPage,
-                                                         loadMore,
-                                                         gridLayout,
-                                                         horizontal,
-                                                         noFaces,
-                                                         inLibraryIndicator,
-                                                         isSelectModeActive,
-                                                         selectedMangaIds,
-                                                         handleSelection,
-                                                         mode,
-                                                         retry,
-                                                         gridWrapperProps,
-                                                         onMigrateSelect,
-                                                     }) => {
+    mangas,
+    isLoading,
+    message,
+    messageExtra,
+    hasNextPage,
+    loadMore,
+    gridLayout,
+    horizontal,
+    noFaces,
+    inLibraryIndicator,
+    isSelectModeActive,
+    selectedMangaIds,
+    handleSelection,
+    mode,
+    retry,
+    gridWrapperProps,
+    onMigrateSelect,
+}) => {
     const { t } = useLingui();
 
     const { navBarWidth } = useNavBarContext();
@@ -246,8 +247,7 @@ export const MangaGrid: React.FC<IMangaGridProps> = ({
     // always show vertical scrollbar to prevent https://github.com/Suwayomi/Suwayomi-WebUI/issues/758
     useLayoutEffect(() => {
         if (horizontal) {
-            return () => {
-            };
+            return () => {};
         }
 
         // in case "overflow" is currently set to "hidden" that (most likely) means that a MUI modal is open and locks the scrollbar

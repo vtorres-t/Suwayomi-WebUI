@@ -17,13 +17,13 @@ import { ButtonSelectInput } from '@/base/components/inputs/ButtonSelectInput.ts
 import type { SelectButtonDefaultableProps } from '@/base/components/buttons/SelectButton.tsx';
 
 export const ReaderSettingReadingMode = ({
-                                             readingMode,
-                                             setReadingMode,
-                                             ...buttonSelectInputProps
-                                         }: Pick<IReaderSettingsWithDefaultFlag, 'readingMode'> &
+    readingMode,
+    setReadingMode,
+    ...buttonSelectInputProps
+}: Pick<IReaderSettingsWithDefaultFlag, 'readingMode'> &
     Pick<SelectButtonDefaultableProps<ReadingMode>, 'isDefaultable' | 'onDefault'> & {
-    setReadingMode: (mode: ReadingMode) => void;
-}) => {
+        setReadingMode: (mode: ReadingMode) => void;
+    }) => {
     const { t } = useLingui();
 
     return (

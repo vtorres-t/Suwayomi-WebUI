@@ -17,11 +17,11 @@ import { AppRoutes } from '@/base/AppRoute.constants.ts';
 
 export const ReaderNavBarDesktopMetadata = memo(
     ({
-         mangaId,
-         mangaTitle,
-         chapterTitle,
-         scanlator,
-     }: {
+        mangaId,
+        mangaTitle,
+        chapterTitle,
+        scanlator,
+    }: {
         mangaId: number;
         mangaTitle: string;
         chapterTitle: string;

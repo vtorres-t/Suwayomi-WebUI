@@ -20,8 +20,8 @@ import type { ServerSettings } from '@/features/settings/Settings.types.ts';
 import { GLOBAL_UPDATE_INTERVAL } from '@/features/settings/Settings.constants.ts';
 
 export const GlobalUpdateSettingsInterval = ({
-                                                 globalUpdateInterval,
-                                             }: {
+    globalUpdateInterval,
+}: {
     globalUpdateInterval: ServerSettings['globalUpdateInterval'];
 }) => {
     const { t } = useLingui();

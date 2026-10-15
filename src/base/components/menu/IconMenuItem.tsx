@@ -35,14 +35,14 @@ type IconMenuItemProps = {
 };
 
 export const IconMenuItem = ({
-                                 MenuItemProps,
-                                 className,
-                                 label,
-                                 LeftIcon,
-                                 renderLabel,
-                                 RightIcon,
-                                 ...props
-                             }: IconMenuItemProps) => (
+    MenuItemProps,
+    className,
+    label,
+    LeftIcon,
+    renderLabel,
+    RightIcon,
+    ...props
+}: IconMenuItemProps) => (
     <MenuItem {...MenuItemProps} className={className} {...props}>
         {LeftIcon && (
             <ListItemIcon>

@@ -78,5 +78,5 @@ export const createUpdateSourceMetadata =
         source: SourceIdInfo & GqlMetaHolder,
         handleError: (error: any) => void = defaultPromiseErrorHandler('createUpdateSourceMetadata'),
     ): ((...args: OmitFirst<Parameters<typeof updateSourceMetadata<Settings>>>) => Promise<void>) =>
-        (metadataKey, value) =>
-            updateSourceMetadata(source, metadataKey, value).catch(handleError);
+    (metadataKey, value) =>
+        updateSourceMetadata(source, metadataKey, value).catch(handleError);

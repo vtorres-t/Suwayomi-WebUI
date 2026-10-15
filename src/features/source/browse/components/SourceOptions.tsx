@@ -154,15 +154,15 @@ export function Options({ sourceFilter, positions, updateFilterValue, update }: 
 }
 
 export function SourceOptions({
-                                  savedSearches = STABLE_EMPTY_OBJECT,
-                                  selectSavedSearch,
-                                  updateSavedSearches,
-                                  sourceFilter,
-                                  updateFilterValue,
-                                  resetFilterValue,
-                                  setTriggerUpdate,
-                                  update,
-                              }: IFilters1) {
+    savedSearches = STABLE_EMPTY_OBJECT,
+    selectSavedSearch,
+    updateSavedSearches,
+    sourceFilter,
+    updateFilterValue,
+    resetFilterValue,
+    setTriggerUpdate,
+    update,
+}: IFilters1) {
     const { t } = useLingui();
     const [FilterOptions, setFilterOptions] = useState(false);
     const [newSavedSearch, setNewSavedSearch] = useState('');

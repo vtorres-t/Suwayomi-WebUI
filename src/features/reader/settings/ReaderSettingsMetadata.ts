@@ -244,5 +244,5 @@ export const createUpdateReaderSettings =
         handleError: (error: any) => void = defaultPromiseErrorHandler('createUpdateReaderSettings'),
         profile?: ReadingMode,
     ): ((...args: OmitFirst<Parameters<typeof updateReaderSettings<Settings>>>) => Promise<void>) =>
-        (setting, value, isGlobal) =>
-            updateReaderSettings(manga, setting, value, isGlobal, profile).catch(handleError);
+    (setting, value, isGlobal) =>
+        updateReaderSettings(manga, setting, value, isGlobal, profile).catch(handleError);

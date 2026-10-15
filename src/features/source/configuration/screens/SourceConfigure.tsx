@@ -61,11 +61,11 @@ export function SourceConfigure() {
 
     const updateValue =
         (position: number): PreferenceProps['updateValue'] =>
-            (type, value) => {
-                requestManager
-                    .setSourcePreferences(sourceId, { position, [type]: value })
-                    .response.catch((e) => makeToast(t`Failed to save changes`, 'error', getErrorMessage(e)));
-            };
+        (type, value) => {
+            requestManager
+                .setSourcePreferences(sourceId, { position, [type]: value })
+                .response.catch((e) => makeToast(t`Failed to save changes`, 'error', getErrorMessage(e)));
+        };
 
     if (loading) {
         return <LoadingPlaceholder />;

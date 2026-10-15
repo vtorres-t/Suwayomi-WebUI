@@ -17,13 +17,13 @@ import type { SelectButtonDefaultableProps } from '@/base/components/buttons/Sel
 import { SelectButton } from '@/base/components/buttons/SelectButton.tsx';
 
 export const ReaderNavBarDesktopReadingDirection = ({
-                                                        readingDirection,
-                                                        setReadingDirection,
-                                                        ...buttonSelectInputProps
-                                                    }: Pick<IReaderSettingsWithDefaultFlag, 'readingDirection'> &
+    readingDirection,
+    setReadingDirection,
+    ...buttonSelectInputProps
+}: Pick<IReaderSettingsWithDefaultFlag, 'readingDirection'> &
     Pick<SelectButtonDefaultableProps<ReadingDirection>, 'isDefaultable' | 'onDefault'> & {
-    setReadingDirection: (readingDirection: ReadingDirection) => void;
-}) => {
+        setReadingDirection: (readingDirection: ReadingDirection) => void;
+    }) => {
     const { t } = useLingui();
 
     return (

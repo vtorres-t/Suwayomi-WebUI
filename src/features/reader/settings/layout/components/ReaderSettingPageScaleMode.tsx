@@ -21,13 +21,13 @@ import { ButtonSelectInput } from '@/base/components/inputs/ButtonSelectInput.ts
 import type { SelectButtonDefaultableProps } from '@/base/components/buttons/SelectButton.tsx';
 
 export const ReaderSettingPageScaleMode = ({
-                                               pageScaleMode,
-                                               setPageScaleMode,
-                                               ...buttonSelectInputProps
-                                           }: Pick<IReaderSettingsWithDefaultFlag, 'pageScaleMode'> &
+    pageScaleMode,
+    setPageScaleMode,
+    ...buttonSelectInputProps
+}: Pick<IReaderSettingsWithDefaultFlag, 'pageScaleMode'> &
     Pick<SelectButtonDefaultableProps<ReadingDirection>, 'isDefaultable' | 'onDefault'> & {
-    setPageScaleMode: (mode: IReaderSettings['pageScaleMode']) => void;
-}) => {
+        setPageScaleMode: (mode: IReaderSettings['pageScaleMode']) => void;
+    }) => {
     const { t } = useLingui();
 
     return (

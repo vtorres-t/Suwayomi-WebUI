@@ -30,9 +30,7 @@ import {
     shouldApplyReaderWidth,
 } from '@/features/reader/settings/ReaderSettings.utils.tsx';
 import { createHandleReaderPageLoadError, createUpdateReaderPageLoadState } from '@/features/reader/Reader.utils.ts';
-import {
-    useReaderConvertPagesForReadingMode
-} from '@/features/reader/viewer/hooks/useReaderConvertPagesForReadingMode.ts';
+import { useReaderConvertPagesForReadingMode } from '@/features/reader/viewer/hooks/useReaderConvertPagesForReadingMode.ts';
 import { ReaderTransitionPage } from '@/features/reader/viewer/components/ReaderTransitionPage.tsx';
 import { applyStyles } from '@/base/utils/ApplyStyles.ts';
 import { requestManager } from '@/lib/requests/RequestManager.ts';
@@ -41,9 +39,7 @@ import { useReaderSetPagesState } from '@/features/reader/viewer/hooks/useReader
 import { EmptyViewAbsoluteCentered } from '@/base/components/feedback/EmptyViewAbsoluteCentered.tsx';
 import { getErrorMessage, noOp } from '@/lib/HelperFunctions.ts';
 import { LoadingPlaceholder } from '@/base/components/feedback/LoadingPlaceholder.tsx';
-import {
-    ReaderInfiniteScrollUpdateChapter
-} from '@/features/reader/infinite-scroll/ReaderInfiniteScrollUpdateChapter.tsx';
+import { ReaderInfiniteScrollUpdateChapter } from '@/features/reader/infinite-scroll/ReaderInfiniteScrollUpdateChapter.tsx';
 import { useResizeObserver } from '@/base/hooks/useResizeObserver.tsx';
 import type { ChapterIdInfo } from '@/features/chapter/Chapter.types.ts';
 import { READER_DEFAULT_PAGES_STATE } from '@/features/reader/stores/ReaderPagesStore.ts';
@@ -51,69 +47,69 @@ import { READER_DEFAULT_PAGES_STATE } from '@/features/reader/stores/ReaderPages
 import { getReaderChaptersStore, getReaderPagesStore } from '@/features/reader/stores/ReaderStore.ts';
 
 const BaseReaderChapterViewer = ({
-                                     currentPageIndex,
-                                     updateCurrentPageIndex,
-                                     transitionPageMode,
-                                     retryFailedPagesKeyPrefix,
-                                     readingMode,
-                                     readerWidth,
-                                     safeAreaInset,
-                                     pageScaleMode,
-                                     shouldOffsetDoubleSpreads,
-                                     readingDirection,
-                                     imagePreLoadAmount,
-                                     pageGap,
-                                     chapterId,
-                                     previousChapterId,
-                                     nextChapterId,
-                                     isPreviousChapterVisible,
-                                     isNextChapterVisible,
-                                     lastPageRead,
-                                     isInitialChapter,
-                                     isCurrentChapter,
-                                     isPreviousChapter,
-                                     isNextChapter,
-                                     isLeadingChapter,
-                                     isTrailingChapter,
-                                     isPreloadMode,
-                                     imageRefs: globalImageRefs,
-                                     scrollIntoView,
-                                     resumeMode,
-                                     customFilter,
-                                     shouldStretchPage,
-                                     readerNavBarWidth,
-                                     onSizeChange,
-                                     minWidth,
-                                     minHeight,
-                                     scrollElement,
-                                     currentChapterRemainingPages,
-                                 }: Pick<ReaderStatePages, 'currentPageIndex' | 'transitionPageMode' | 'retryFailedPagesKeyPrefix'> &
+    currentPageIndex,
+    updateCurrentPageIndex,
+    transitionPageMode,
+    retryFailedPagesKeyPrefix,
+    readingMode,
+    readerWidth,
+    safeAreaInset,
+    pageScaleMode,
+    shouldOffsetDoubleSpreads,
+    readingDirection,
+    imagePreLoadAmount,
+    pageGap,
+    chapterId,
+    previousChapterId,
+    nextChapterId,
+    isPreviousChapterVisible,
+    isNextChapterVisible,
+    lastPageRead,
+    isInitialChapter,
+    isCurrentChapter,
+    isPreviousChapter,
+    isNextChapter,
+    isLeadingChapter,
+    isTrailingChapter,
+    isPreloadMode,
+    imageRefs: globalImageRefs,
+    scrollIntoView,
+    resumeMode,
+    customFilter,
+    shouldStretchPage,
+    readerNavBarWidth,
+    onSizeChange,
+    minWidth,
+    minHeight,
+    scrollElement,
+    currentChapterRemainingPages,
+}: Pick<ReaderStatePages, 'currentPageIndex' | 'transitionPageMode' | 'retryFailedPagesKeyPrefix'> &
     Omit<ReaderPagerProps, 'pages' | 'totalPages' | 'pageLoadStates' | 'handleAsInitialRender' | 'resumeMode'> &
     Pick<
         IReaderSettings,
         'readingMode' | 'shouldOffsetDoubleSpreads' | 'readingDirection' | 'readerWidth' | 'pageScaleMode'
     > & {
-    updateCurrentPageIndex: ReturnType<typeof ReaderControls.useUpdateCurrentPageIndex>;
-    chapterId: ChapterIdInfo['id'];
-    previousChapterId?: ChapterIdInfo['id'];
-    nextChapterId?: ChapterIdInfo['id'];
-    isPreviousChapterVisible: boolean;
-    isNextChapterVisible: boolean;
-    lastPageRead: number;
-    isInitialChapter: boolean;
-    isCurrentChapter: boolean;
-    isPreviousChapter: boolean;
-    isNextChapter: boolean;
-    isLeadingChapter: boolean;
-    isTrailingChapter: boolean;
-    imageRefs: MutableRefObject<(HTMLElement | null)[]>;
-    scrollIntoView: boolean;
-    resumeMode: ReaderResumeMode;
-    onSizeChange: (width: number, height: number, chapterId: ChapterIdInfo['id']) => void;
-    minWidth: number;
-    minHeight: number;
-    scrollElement: HTMLElement | null;
-}) => {
+        updateCurrentPageIndex: ReturnType<typeof ReaderControls.useUpdateCurrentPageIndex>;
+        chapterId: ChapterIdInfo['id'];
+        previousChapterId?: ChapterIdInfo['id'];
+        nextChapterId?: ChapterIdInfo['id'];
+        isPreviousChapterVisible: boolean;
+        isNextChapterVisible: boolean;
+        lastPageRead: number;
+        isInitialChapter: boolean;
+        isCurrentChapter: boolean;
+        isPreviousChapter: boolean;
+        isNextChapter: boolean;
+        isLeadingChapter: boolean;
+        isTrailingChapter: boolean;
+        imageRefs: MutableRefObject<(HTMLElement | null)[]>;
+        scrollIntoView: boolean;
+        resumeMode: ReaderResumeMode;
+        onSizeChange: (width: number, height: number, chapterId: ChapterIdInfo['id']) => void;
+        minWidth: number;
+        minHeight: number;
+        scrollElement: HTMLElement | null;
+    }) => {
     const { t } = useLingui();
     const { direction: themeDirection } = useTheme();
 
@@ -244,7 +240,7 @@ const BaseReaderChapterViewer = ({
         ),
     );
 
-    const updateState = <T, >(
+    const updateState = <T,>(
         value: T,
         setLocalState: (value: T) => void,
         setGlobalState: (value: T) => void,

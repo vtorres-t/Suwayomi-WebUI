@@ -276,8 +276,7 @@ export const useReaderInfiniteScrollUpdateChapter = (
             isChapterToOpenVisible ||
             chapterToOpenId === undefined
         ) {
-            return () => {
-            };
+            return () => {};
         }
 
         const onScroll = () => {

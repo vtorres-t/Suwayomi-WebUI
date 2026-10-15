@@ -21,8 +21,7 @@ const getKey = (key: string): string => {
 };
 
 export class Storage {
-    constructor(private readonly storage: typeof window.localStorage) {
-    }
+    constructor(private readonly storage: typeof window.localStorage) {}
 
     parseValue<T>(value: string | null, defaultValue: T): T {
         if (value === null) {

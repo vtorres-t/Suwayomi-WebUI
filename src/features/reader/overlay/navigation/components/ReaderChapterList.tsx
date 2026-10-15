@@ -13,15 +13,14 @@ import type { ReaderStateChapters } from '@/features/reader/Reader.types.ts';
 import { ChapterListCard } from '@/features/chapter/components/cards/ChapterListCard.tsx';
 import type { ChapterIdInfo } from '@/features/chapter/Chapter.types.ts';
 
-const onSelectNoop = () => {
-};
+const onSelectNoop = () => {};
 
 export const ReaderChapterList = ({
-                                      currentChapterId,
-                                      chapters,
-                                      style,
-                                  }: {
-    currentChapterId: ChapterIdInfo['id'] | undefined
+    currentChapterId,
+    chapters,
+    style,
+}: {
+    currentChapterId: ChapterIdInfo['id'] | undefined;
 } & Pick<ReaderStateChapters, 'chapters'> &
     Pick<VirtuosoProps<any, any>, 'style'>) => {
     const currentChapterIndex = useMemo(() => {
