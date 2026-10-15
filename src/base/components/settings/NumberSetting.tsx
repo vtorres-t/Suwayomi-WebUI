@@ -1,3 +1,11 @@
+/*
+ * Copyright (C) Contributors to the Suwayomi project
+ *
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ */
+
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
@@ -44,24 +52,24 @@ type PropsWithSlider = Omit<BaseProps, 'defaultValue' | 'minValue' | 'maxValue' 
 type Props = BaseProps | PropsWithSlider;
 
 export const NumberSetting = ({
-    settingTitle,
-    settingValue,
-    settingIcon,
-    dialogDescription,
-    dialogDisclaimer,
-    value,
-    defaultValue,
-    minValue,
-    maxValue,
-    stepSize,
-    dialogTitle = settingTitle,
-    valueUnit,
-    handleUpdate,
-    showSlider,
-    disabled = false,
-    handleLiveUpdate,
-    listItemTextSx: sx,
-}: Props) => {
+                                  settingTitle,
+                                  settingValue,
+                                  settingIcon,
+                                  dialogDescription,
+                                  dialogDisclaimer,
+                                  value,
+                                  defaultValue,
+                                  minValue,
+                                  maxValue,
+                                  stepSize,
+                                  dialogTitle = settingTitle,
+                                  valueUnit,
+                                  handleUpdate,
+                                  showSlider,
+                                  disabled = false,
+                                  handleLiveUpdate,
+                                  listItemTextSx: sx,
+                              }: Props) => {
     const { t } = useLingui();
 
     const [isDialogOpen, setIsDialogOpen] = useState(false);

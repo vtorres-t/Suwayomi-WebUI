@@ -1,3 +1,11 @@
+/*
+ * Copyright (C) Contributors to the Suwayomi project
+ *
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ */
+
 import IconButton from '@mui/material/IconButton';
 import SkipPreviousIcon from '@mui/icons-material/SkipPrevious';
 import SkipNextIcon from '@mui/icons-material/SkipNext';
@@ -15,9 +23,13 @@ import {
 } from '@/features/reader/overlay/progress-bar/ReaderProgressBar.utils.tsx';
 import { getOptionForDirection } from '@/features/theme/services/ThemeCreator.ts';
 import { ProgressBarPosition, ReaderResumeMode } from '@/features/reader/Reader.types.ts';
-import { ReaderProgressBarDirectionWrapper } from '@/features/reader/overlay/progress-bar/components/ReaderProgressBarDirectionWrapper.tsx';
+import {
+    ReaderProgressBarDirectionWrapper
+} from '@/features/reader/overlay/progress-bar/components/ReaderProgressBarDirectionWrapper.tsx';
 import { withPropsFrom } from '@/base/hoc/withPropsFrom.tsx';
-import { ReaderProgressBarSlotMobile } from '@/features/reader/overlay/progress-bar/mobile/components/ReaderProgressBarSlotMobile.tsx';
+import {
+    ReaderProgressBarSlotMobile
+} from '@/features/reader/overlay/progress-bar/mobile/components/ReaderProgressBarSlotMobile.tsx';
 import { applyStyles } from '@/base/utils/ApplyStyles.ts';
 import { useResizeObserver } from '@/base/hooks/useResizeObserver.tsx';
 import { getProgressBarPosition } from '@/features/reader/settings/ReaderSettings.utils.tsx';
@@ -41,10 +53,10 @@ const PROGRESS_BAR_POSITION_TO_SLIDE_DIRECTION: Record<ProgressBarPosition, Slid
 };
 
 const BaseMobileReaderProgressBar = ({
-    direction: readerDirection,
-    topOffset = 0,
-    bottomOffset = 0,
-}: {
+                                         direction: readerDirection,
+                                         topOffset = 0,
+                                         bottomOffset = 0,
+                                     }: {
     direction: ReturnType<typeof ReaderService.useGetThemeDirection>;
     topOffset?: number;
     bottomOffset?: number;

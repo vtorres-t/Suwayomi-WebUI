@@ -1,3 +1,11 @@
+/*
+ * Copyright (C) Contributors to the Suwayomi project
+ *
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ */
+
 import type { ForwardedRef } from 'react';
 import { memo, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import Stack from '@mui/material/Stack';
@@ -19,9 +27,13 @@ import { applyStyles } from '@/base/utils/ApplyStyles.ts';
 import { withPropsFrom } from '@/base/hoc/withPropsFrom.tsx';
 import { useReaderAutoScroll } from '@/features/reader/auto-scroll/hooks/useReaderAutoScroll.ts';
 import { useReaderHideOverlayOnUserScroll } from '@/features/reader/overlay/hooks/useReaderHideOverlayOnUserScroll.ts';
-import { useReaderHorizontalModeRevampScrolling } from '@/features/reader/viewer/hooks/useReaderHorizontalModeRevampScrolling.ts';
+import {
+    useReaderHorizontalModeRevampScrolling
+} from '@/features/reader/viewer/hooks/useReaderHorizontalModeRevampScrolling.ts';
 import { useReaderHideCursorOnInactivity } from '@/features/reader/viewer/hooks/useReaderHideCursorOnInactivity.ts';
-import { useReaderScrollToStartOnPageChange } from '@/features/reader/viewer/hooks/useReaderScrollToStartOnPageChange.ts';
+import {
+    useReaderScrollToStartOnPageChange
+} from '@/features/reader/viewer/hooks/useReaderScrollToStartOnPageChange.ts';
 import { useReaderHandlePageSelection } from '@/features/reader/viewer/hooks/useReaderHandlePageSelection.ts';
 import { ReaderChapterViewer } from '@/features/reader/viewer/ReaderChapterViewer.tsx';
 import {
@@ -33,6 +45,7 @@ import { coerceIn, noOp } from '@/lib/HelperFunctions.ts';
 import { useNavBarContext } from '@/features/navigation-bar/NavbarContext.tsx';
 import type { NavbarContextType } from '@/features/navigation-bar/NavigationBar.types.ts';
 import { useReaderPreserveScrollPosition } from '@/features/reader/viewer/hooks/useReaderPreserveScrollPosition.ts';
+
 import type { ChapterIdInfo } from '@/features/chapter/Chapter.types.ts';
 import {
     getReaderAutoScrollStore,
@@ -54,10 +67,10 @@ const READING_MODE_TO_IN_VIEWPORT_TYPE: Record<ReadingMode, PageInViewportType> 
 };
 
 const BaseReaderViewer = ({
-    readerNavBarWidth,
-    updateCurrentPageIndex,
-    ref,
-}: Pick<NavbarContextType, 'readerNavBarWidth'> & {
+                              readerNavBarWidth,
+                              updateCurrentPageIndex,
+                              ref,
+                          }: Pick<NavbarContextType, 'readerNavBarWidth'> & {
     updateCurrentPageIndex: ReturnType<typeof ReaderControls.useUpdateCurrentPageIndex>;
     ref?: ForwardedRef<HTMLDivElement | null>;
 }) => {
@@ -309,15 +322,15 @@ const BaseReaderViewer = ({
 
                 const currentChapterCurrentPageIndex = isAdjacentChapterToCurrentChapter
                     ? getReaderChapterViewerCurrentPageIndex(
-                          currentPageIndex,
-                          currentChapter,
-                          currentChapter,
-                          true,
-                          isCurrentChapterReady,
-                          initialChapter.sourceOrder > currentChapter.sourceOrder,
-                          initialChapter.sourceOrder < currentChapter.sourceOrder,
-                          visibleChapters,
-                      )
+                        currentPageIndex,
+                        currentChapter,
+                        currentChapter,
+                        true,
+                        isCurrentChapterReady,
+                        initialChapter.sourceOrder > currentChapter.sourceOrder,
+                        initialChapter.sourceOrder < currentChapter.sourceOrder,
+                        visibleChapters,
+                    )
                     : -1;
                 const currentChapterCurrentPagesIndex = isAdjacentChapterToCurrentChapter
                     ? getPage(currentChapterCurrentPageIndex, pages).pagesIndex

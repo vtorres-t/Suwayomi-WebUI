@@ -1,3 +1,11 @@
+/*
+ * Copyright (C) Contributors to the Suwayomi project
+ *
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ */
+
 import { STABLE_EMPTY_OBJECT } from '@/base/Base.constants.ts';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import Button from '@mui/material/Button';
@@ -146,15 +154,15 @@ export function Options({ sourceFilter, positions, updateFilterValue, update }: 
 }
 
 export function SourceOptions({
-    savedSearches = STABLE_EMPTY_OBJECT,
-    selectSavedSearch,
-    updateSavedSearches,
-    sourceFilter,
-    updateFilterValue,
-    resetFilterValue,
-    setTriggerUpdate,
-    update,
-}: IFilters1) {
+                                  savedSearches = STABLE_EMPTY_OBJECT,
+                                  selectSavedSearch,
+                                  updateSavedSearches,
+                                  sourceFilter,
+                                  updateFilterValue,
+                                  resetFilterValue,
+                                  setTriggerUpdate,
+                                  update,
+                              }: IFilters1) {
     const { t } = useLingui();
     const [FilterOptions, setFilterOptions] = useState(false);
     const [newSavedSearch, setNewSavedSearch] = useState('');

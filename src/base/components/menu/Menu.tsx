@@ -1,15 +1,23 @@
+/*
+ * Copyright (C) Contributors to the Suwayomi project
+ *
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ */
+
 import type { MenuProps } from '@mui/material/Menu';
 import MuiMenu from '@mui/material/Menu';
 import { type JSX, useState } from 'react';
 
 export const Menu = ({
-    children,
-    onClose,
-    ...props
-}: Omit<MenuProps, 'children' | 'onClose'> &
+                         children,
+                         onClose,
+                         ...props
+                     }: Omit<MenuProps, 'children' | 'onClose'> &
     Required<Pick<MenuProps, 'onClose'>> & {
-        children: (onClose: () => void, setHideMenu: (hide: boolean) => void) => JSX.Element | JSX.Element[];
-    }) => {
+    children: (onClose: () => void, setHideMenu: (hide: boolean) => void) => JSX.Element | JSX.Element[];
+}) => {
     const [shouldHideMenu, setShouldHideMenu] = useState(false);
 
     return (

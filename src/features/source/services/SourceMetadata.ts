@@ -1,3 +1,11 @@
+/*
+ * Copyright (C) Contributors to the Suwayomi project
+ *
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ */
+
 import { useEffect, useMemo } from 'react';
 import {
     requestBatchSourceMetadataUpdate,
@@ -70,5 +78,5 @@ export const createUpdateSourceMetadata =
         source: SourceIdInfo & GqlMetaHolder,
         handleError: (error: any) => void = defaultPromiseErrorHandler('createUpdateSourceMetadata'),
     ): ((...args: OmitFirst<Parameters<typeof updateSourceMetadata<Settings>>>) => Promise<void>) =>
-    (metadataKey, value) =>
-        updateSourceMetadata(source, metadataKey, value).catch(handleError);
+        (metadataKey, value) =>
+            updateSourceMetadata(source, metadataKey, value).catch(handleError);

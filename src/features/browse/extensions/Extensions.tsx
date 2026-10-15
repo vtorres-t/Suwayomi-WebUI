@@ -1,3 +1,11 @@
+/*
+ * Copyright (C) Contributors to the Suwayomi project
+ *
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ */
+
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { fromEvent } from 'file-selector';
 import IconButton from '@mui/material/IconButton';
@@ -47,14 +55,14 @@ const LANGUAGE = 0;
 const EXTENSIONS = 1;
 
 const GroupHeader = ({
-    groupName,
-    isFirstItem,
-    groupExtensionIds,
-    isUpdateGroup,
-    updatingExtensionIds,
-    setUpdatingExtensionIds,
-    handleExtensionUpdate,
-}: {
+                         groupName,
+                         isFirstItem,
+                         groupExtensionIds,
+                         isUpdateGroup,
+                         updatingExtensionIds,
+                         setUpdatingExtensionIds,
+                         handleExtensionUpdate,
+                     }: {
     groupName: string;
     isFirstItem: boolean;
     groupExtensionIds: TExtension['pkgName'][];
@@ -183,9 +191,9 @@ export function Extensions({ tabsMenuHeight }: { tabsMenuHeight: number }) {
         requestManager
             .installExternalExtension(file)
             .response.then(() => {
-                handleExtensionUpdate();
-                makeToast(t`Extension installed`, 'success');
-            })
+            handleExtensionUpdate();
+            makeToast(t`Extension installed`, 'success');
+        })
             .catch((e) => makeToast(t`Could not install the extension`, 'error', getErrorMessage(e)));
     };
 

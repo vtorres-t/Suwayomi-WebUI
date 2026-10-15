@@ -1,3 +1,11 @@
+/*
+ * Copyright (C) Contributors to the Suwayomi project
+ *
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ */
+
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
@@ -22,11 +30,11 @@ import { TextSettingDialog } from '@/base/components/settings/text/TextSettingDi
 import { makeToast } from '@/base/utils/Toast.ts';
 
 const MutableListItem = ({
-    handleDelete,
-    mutable = true,
-    deletable = true,
-    ...textSettingProps
-}: Omit<TextSettingProps, 'isPassword' | 'disabled'> & {
+                             handleDelete,
+                             mutable = true,
+                             deletable = true,
+                             ...textSettingProps
+                         }: Omit<TextSettingProps, 'isPassword' | 'disabled'> & {
     handleDelete: () => void;
     mutable?: boolean;
     deletable?: boolean;
@@ -55,7 +63,7 @@ type MutableListSettingProps = Pick<TextSettingProps, 'settingName' | 'placehold
     valueInfos?: (
         | [value: string]
         | [value: string, Pick<React.ComponentProps<typeof MutableListItem>, 'mutable' | 'deletable'>]
-    )[];
+        )[];
     description?: string;
     dialogDisclaimer?: JSX.Element | string;
     addItemButtonTitle?: string;
@@ -69,17 +77,17 @@ const getValues = (valueInfos: MutableListSettingProps['valueInfos']): string[] 
     valueInfos?.map((valueInfo) => valueInfo[0]) ?? [];
 
 export const MutableListSetting = ({
-    settingName,
-    description,
-    dialogDisclaimer,
-    valueInfos,
-    handleChange,
-    addItemButtonTitle,
-    placeholder,
-    allowDuplicates = false,
-    validateItem = () => true,
-    invalidItemError,
-}: MutableListSettingProps) => {
+                                       settingName,
+                                       description,
+                                       dialogDisclaimer,
+                                       valueInfos,
+                                       handleChange,
+                                       addItemButtonTitle,
+                                       placeholder,
+                                       allowDuplicates = false,
+                                       validateItem = () => true,
+                                       invalidItemError,
+                                   }: MutableListSettingProps) => {
     const { t } = useLingui();
 
     const values = getValues(valueInfos);

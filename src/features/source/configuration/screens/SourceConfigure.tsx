@@ -1,3 +1,11 @@
+/*
+ * Copyright (C) Contributors to the Suwayomi project
+ *
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ */
+
 import { createElement } from 'react';
 import { useParams } from 'react-router-dom';
 import List from '@mui/material/List';
@@ -53,11 +61,11 @@ export function SourceConfigure() {
 
     const updateValue =
         (position: number): PreferenceProps['updateValue'] =>
-        (type, value) => {
-            requestManager
-                .setSourcePreferences(sourceId, { position, [type]: value })
-                .response.catch((e) => makeToast(t`Failed to save changes`, 'error', getErrorMessage(e)));
-        };
+            (type, value) => {
+                requestManager
+                    .setSourcePreferences(sourceId, { position, [type]: value })
+                    .response.catch((e) => makeToast(t`Failed to save changes`, 'error', getErrorMessage(e)));
+            };
 
     if (loading) {
         return <LoadingPlaceholder />;

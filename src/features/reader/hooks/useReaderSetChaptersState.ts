@@ -1,3 +1,11 @@
+/*
+ * Copyright (C) Contributors to the Suwayomi project
+ *
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ */
+
 import { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Chapters } from '@/features/chapter/services/Chapters.ts';
@@ -10,6 +18,7 @@ import { getReaderChapterFromCache } from '@/features/reader/Reader.utils.ts';
 import { DirectionOffset } from '@/base/Base.types.ts';
 import { getReaderChaptersStore } from '@/features/reader/stores/ReaderStore.ts';
 import { STABLE_EMPTY_OBJECT } from '@/base/Base.constants.ts';
+
 import { READER_DEFAULT_CHAPTERS_STATE } from '@/features/reader/stores/ReaderChaptersStore.ts';
 import { AppRoutes } from '@/base/AppRoute.constants.ts';
 
@@ -86,18 +95,18 @@ export const useReaderSetChaptersState = (
                 isCurrentChapterReady: hasCurrentChapterChanged ? false : prevState.isCurrentChapterReady,
                 visibleChapters: hasInitialChapterChanged
                     ? {
-                          ...READER_DEFAULT_CHAPTERS_STATE.chapters.visibleChapters,
-                          lastLeadingChapterSourceOrder:
-                              newInitialChapter?.sourceOrder ??
-                              READER_DEFAULT_CHAPTERS_STATE.chapters.visibleChapters.lastLeadingChapterSourceOrder,
-                          lastTrailingChapterSourceOrder:
-                              newInitialChapter?.sourceOrder ??
-                              READER_DEFAULT_CHAPTERS_STATE.chapters.visibleChapters.lastTrailingChapterSourceOrder,
-                          isLeadingChapterPreloadMode: false,
-                          isTrailingChapterPreloadMode: false,
-                          // do not set "scrollIntoView" to "true" for the initial render
-                          scrollIntoView: !!prevState.initialChapter,
-                      }
+                        ...READER_DEFAULT_CHAPTERS_STATE.chapters.visibleChapters,
+                        lastLeadingChapterSourceOrder:
+                            newInitialChapter?.sourceOrder ??
+                            READER_DEFAULT_CHAPTERS_STATE.chapters.visibleChapters.lastLeadingChapterSourceOrder,
+                        lastTrailingChapterSourceOrder:
+                            newInitialChapter?.sourceOrder ??
+                            READER_DEFAULT_CHAPTERS_STATE.chapters.visibleChapters.lastTrailingChapterSourceOrder,
+                        isLeadingChapterPreloadMode: false,
+                        isTrailingChapterPreloadMode: false,
+                        // do not set "scrollIntoView" to "true" for the initial render
+                        scrollIntoView: !!prevState.initialChapter,
+                    }
                     : prevState.visibleChapters,
             };
         });

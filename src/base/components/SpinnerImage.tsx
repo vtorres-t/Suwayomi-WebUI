@@ -1,3 +1,11 @@
+/*
+ * Copyright (C) Contributors to the Suwayomi project
+ *
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ */
+
 import type { Ref } from 'react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { STABLE_EMPTY_OBJECT } from '@/base/Base.constants.ts';
@@ -109,7 +117,8 @@ export const SpinnerImage = ({ ref, ...props }: SpinnerImageProps) => {
         const finalShouldLoad = shouldLoad || isRetry;
 
         if (showMissingImageIcon || !finalShouldLoad || isLoadedAndSrcUnchanged) {
-            return () => {};
+            return () => {
+            };
         }
 
         let isAborted = false;
@@ -155,7 +164,8 @@ export const SpinnerImage = ({ ref, ...props }: SpinnerImageProps) => {
             }
         };
 
-        fetchImage().catch(() => {});
+        fetchImage().catch(() => {
+        });
 
         return () => {
             abortRequest();
