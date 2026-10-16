@@ -58,7 +58,6 @@ export enum BackupRestoreState {
     RestoringManga = 'RESTORING_MANGA',
     RestoringMeta = 'RESTORING_META',
     RestoringSettings = 'RESTORING_SETTINGS',
-    RestoringUserSettings = 'RESTORING_USER_SETTINGS',
     Success = 'SUCCESS',
 }
 
@@ -117,8 +116,6 @@ export type BooleanFilterInput = {
 export type CategoryConditionInput = {
     default?: InputMaybe<Scalars['Boolean']['input']>;
     id?: InputMaybe<Scalars['Int']['input']>;
-    inLibrary?: InputMaybe<Scalars['Boolean']['input']>;
-    isDefaultCategory?: InputMaybe<Scalars['Boolean']['input']>;
     name?: InputMaybe<Scalars['String']['input']>;
     order?: InputMaybe<Scalars['Int']['input']>;
 };
@@ -133,8 +130,6 @@ export type CategoryFilterInput = {
     and?: InputMaybe<Array<CategoryFilterInput>>;
     default?: InputMaybe<BooleanFilterInput>;
     id?: InputMaybe<IntFilterInput>;
-    inLibrary?: InputMaybe<BooleanFilterInput>;
-    isDefaultCategory?: InputMaybe<BooleanFilterInput>;
     name?: InputMaybe<StringFilterInput>;
     not?: InputMaybe<CategoryFilterInput>;
     or?: InputMaybe<Array<CategoryFilterInput>>;
@@ -190,10 +185,6 @@ export type CategoryType = {
     meta: Array<CategoryMetaType>;
     name: Scalars['String']['output'];
     order: Scalars['Int']['output'];
-};
-
-export type CategoryTypeMangasArgs = {
-    inLibrary?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 export type CategoryUpdateType = {
@@ -323,17 +314,6 @@ export type ChapterType = {
     sourceOrder: Scalars['Int']['output'];
     uploadDate: Scalars['LongString']['output'];
     url: Scalars['String']['output'];
-    user: ChapterUserType;
-};
-
-export type ChapterUserType = {
-    __typename?: 'ChapterUserType';
-    chapterId: Scalars['Int']['output'];
-    isBookmarked: Scalars['Boolean']['output'];
-    isDownloaded: Scalars['Boolean']['output'];
-    isRead: Scalars['Boolean']['output'];
-    lastPageRead: Scalars['Int']['output'];
-    lastReadAt: Scalars['LongString']['output'];
 };
 
 export type CheckBoxFilter = {
@@ -448,30 +428,6 @@ export type CreateCategoryPayload = {
     __typename?: 'CreateCategoryPayload';
     category: CategoryType;
     clientMutationId?: Maybe<Scalars['String']['output']>;
-};
-
-export type CreateRecoveryCodeInput = {
-    clientMutationId?: InputMaybe<Scalars['String']['input']>;
-    userId: Scalars['Int']['input'];
-};
-
-export type CreateRecoveryCodePayload = {
-    __typename?: 'CreateRecoveryCodePayload';
-    clientMutationId?: Maybe<Scalars['String']['output']>;
-    code: Scalars['String']['output'];
-    expiresAt: Scalars['LongString']['output'];
-};
-
-export type CreateRegistrationCodeInput = {
-    clientMutationId?: InputMaybe<Scalars['String']['input']>;
-    permissions?: InputMaybe<Array<UserPermission>>;
-};
-
-export type CreateRegistrationCodePayload = {
-    __typename?: 'CreateRegistrationCodePayload';
-    clientMutationId?: Maybe<Scalars['String']['output']>;
-    code: Scalars['String']['output'];
-    expiresAt: Scalars['LongString']['output'];
 };
 
 export enum DatabaseType {
@@ -1483,30 +1439,12 @@ export type MangaType = {
     unreadCount: Scalars['Int']['output'];
     updateStrategy: UpdateStrategy;
     url: Scalars['String']['output'];
-    user: MangaUserType;
-};
-
-export type MangaTypeDownloadSizeArgs = {
-    mangaId: Scalars['Int']['input'];
 };
 
 export type MangaUpdateType = {
     __typename?: 'MangaUpdateType';
     manga: MangaType;
     status: MangaJobStatus;
-};
-
-export type MangaUserType = {
-    __typename?: 'MangaUserType';
-    bookmarkCount: Scalars['Int']['output'];
-    downloadCount: Scalars['Int']['output'];
-    firstUnreadChapter?: Maybe<ChapterType>;
-    inLibrary: Scalars['Boolean']['output'];
-    inLibraryAt: Scalars['LongString']['output'];
-    lastReadChapter?: Maybe<ChapterType>;
-    latestReadChapter?: Maybe<ChapterType>;
-    mangaId: Scalars['Int']['output'];
-    unreadCount: Scalars['Int']['output'];
 };
 
 export type MetaConditionInput = {
@@ -1574,10 +1512,6 @@ export type Mutation = {
     connectKoSyncAccount: KoSyncConnectPayload;
     createBackup: CreateBackupPayload;
     createCategory?: Maybe<CreateCategoryPayload>;
-    /** Issues a one-time recovery code bound to CreateRecoveryCodeInput.userId. */
-    createRecoveryCode: CreateRecoveryCodePayload;
-    /** Issues a one-time registration code. */
-    createRegistrationCode: CreateRegistrationCodePayload;
     deleteCategory?: Maybe<DeleteCategoryPayload>;
     deleteCategoryMeta?: Maybe<DeleteCategoryMetaPayload>;
     deleteCategoryMetas?: Maybe<DeleteCategoryMetasPayload>;
@@ -1612,21 +1546,13 @@ export type Mutation = {
     logoutTracker: LogoutTrackerPayload;
     pullKoSyncProgress?: Maybe<PullKoSyncProgressPayload>;
     pushKoSyncProgress?: Maybe<PushKoSyncProgressPayload>;
-    /** Redeems a recovery code with a self-chosen new password. */
-    redeemRecoveryCode: RedeemRecoveryCodePayload;
-    /** Redeems a registration code with a username and a self-chosen password. */
-    redeemRegistrationCode: RedeemRegistrationCodePayload;
     refreshToken: RefreshTokenPayload;
-    register: RegisterPayload;
     removeExtensionStore?: Maybe<RemoveExtensionStorePayload>;
     reorderChapterDownload?: Maybe<ReorderChapterDownloadPayload>;
     reorderChapterDownloads?: Maybe<ReorderChapterDownloadPayload>;
     resetSettings: ResetSettingsPayload;
-    resetUserSettings: ResetUserSettingsPayload;
     resetWebUIUpdateStatus?: Maybe<WebUiUpdateStatus>;
     restoreBackup: RestoreBackupPayload;
-    /** Revokes an outstanding user code. */
-    revokeUserCode: RevokeUserCodePayload;
     setCategoryMeta?: Maybe<SetCategoryMetaPayload>;
     setCategoryMetas?: Maybe<SetCategoryMetasPayload>;
     setChapterMeta?: Maybe<SetChapterMetaPayload>;
@@ -1635,11 +1561,9 @@ export type Mutation = {
     setGlobalMetas?: Maybe<SetGlobalMetasPayload>;
     setMangaMeta?: Maybe<SetMangaMetaPayload>;
     setMangaMetas?: Maybe<SetMangaMetasPayload>;
-    setPassword: SetPasswordPayload;
     setSettings: SetSettingsPayload;
     setSourceMeta?: Maybe<SetSourceMetaPayload>;
     setSourceMetas?: Maybe<SetSourceMetasPayload>;
-    setUserSettings: SetUserSettingsPayload;
     startDownloader?: Maybe<StartDownloaderPayload>;
     startSync: StartSyncPayload;
     stopDownloader?: Maybe<StopDownloaderPayload>;
@@ -1662,7 +1586,6 @@ export type Mutation = {
     updateSourcePreference?: Maybe<UpdateSourcePreferencePayload>;
     updateStop: UpdateStopPayload;
     updateTrack: UpdateTrackPayload;
-    updateUser: UpdateUserPayload;
     updateWebUI?: Maybe<WebUiUpdatePayload>;
 };
 
@@ -1700,14 +1623,6 @@ export type MutationCreateBackupArgs = {
 
 export type MutationCreateCategoryArgs = {
     input: CreateCategoryInput;
-};
-
-export type MutationCreateRecoveryCodeArgs = {
-    input: CreateRecoveryCodeInput;
-};
-
-export type MutationCreateRegistrationCodeArgs = {
-    input: CreateRegistrationCodeInput;
 };
 
 export type MutationDeleteCategoryArgs = {
@@ -1838,20 +1753,8 @@ export type MutationPushKoSyncProgressArgs = {
     input: PushKoSyncProgressInput;
 };
 
-export type MutationRedeemRecoveryCodeArgs = {
-    input: RedeemRecoveryCodeInput;
-};
-
-export type MutationRedeemRegistrationCodeArgs = {
-    input: RedeemRegistrationCodeInput;
-};
-
 export type MutationRefreshTokenArgs = {
     input: RefreshTokenInput;
-};
-
-export type MutationRegisterArgs = {
-    input: RegisterInput;
 };
 
 export type MutationRemoveExtensionStoreArgs = {
@@ -1870,16 +1773,8 @@ export type MutationResetSettingsArgs = {
     input: ResetSettingsInput;
 };
 
-export type MutationResetUserSettingsArgs = {
-    input: ResetUserSettingsInput;
-};
-
 export type MutationRestoreBackupArgs = {
     input: RestoreBackupInput;
-};
-
-export type MutationRevokeUserCodeArgs = {
-    input: RevokeUserCodeInput;
 };
 
 export type MutationSetCategoryMetaArgs = {
@@ -1914,10 +1809,6 @@ export type MutationSetMangaMetasArgs = {
     input: SetMangaMetasInput;
 };
 
-export type MutationSetPasswordArgs = {
-    input: SetPasswordInput;
-};
-
 export type MutationSetSettingsArgs = {
     input: SetSettingsInput;
 };
@@ -1928,10 +1819,6 @@ export type MutationSetSourceMetaArgs = {
 
 export type MutationSetSourceMetasArgs = {
     input: SetSourceMetasInput;
-};
-
-export type MutationSetUserSettingsArgs = {
-    input: SetUserSettingsInput;
 };
 
 export type MutationStartDownloaderArgs = {
@@ -2022,10 +1909,6 @@ export type MutationUpdateTrackArgs = {
     input: UpdateTrackInput;
 };
 
-export type MutationUpdateUserArgs = {
-    input: UpdateUserInput;
-};
-
 export type MutationUpdateWebUiArgs = {
     input: WebUiUpdateInput;
 };
@@ -2035,7 +1918,6 @@ export type Node =
     | CategoryType
     | ChapterMetaType
     | ChapterType
-    | ChapterUserType
     | DownloadType
     | DownloadUpdate
     | ExtensionStoreType
@@ -2043,16 +1925,12 @@ export type Node =
     | GlobalMetaType
     | MangaMetaType
     | MangaType
-    | MangaUserType
     | PartialSettingsType
-    | PartialUserSettingsType
     | SettingsType
     | SourceMetaType
     | SourceType
     | TrackRecordType
-    | TrackerType
-    | UserSettingsType
-    | UserType;
+    | TrackerType;
 
 export type NodeList = {
     /** A list of edges which contains the [T] and cursor to aid in pagination. */
@@ -2106,7 +1984,6 @@ export type PartialSettingsType = Settings & {
     autoBackupIncludeManga?: Maybe<Scalars['Boolean']['output']>;
     autoBackupIncludeServerSettings?: Maybe<Scalars['Boolean']['output']>;
     autoBackupIncludeTracking?: Maybe<Scalars['Boolean']['output']>;
-    autoBackupIncludeUserSettings?: Maybe<Scalars['Boolean']['output']>;
     /** @deprecated Replaced with autoDownloadNewChaptersLimit, replace with autoDownloadNewChaptersLimit */
     autoDownloadAheadLimit?: Maybe<Scalars['Int']['output']>;
     /** @deprecated Now per-user */
@@ -2329,89 +2206,6 @@ export type PartialSettingsTypeInput = {
     webUIUpdateCheckInterval?: InputMaybe<Scalars['Float']['input']>;
 };
 
-export type PartialUserSettingsType = UserSettings & {
-    __typename?: 'PartialUserSettingsType';
-    autoDownloadIgnoreReUploads?: Maybe<Scalars['Boolean']['output']>;
-    autoDownloadNewChapters?: Maybe<Scalars['Boolean']['output']>;
-    autoDownloadNewChaptersLimit?: Maybe<Scalars['Int']['output']>;
-    excludeCompleted?: Maybe<Scalars['Boolean']['output']>;
-    excludeEntryWithUnreadChapters?: Maybe<Scalars['Boolean']['output']>;
-    excludeNotStarted?: Maybe<Scalars['Boolean']['output']>;
-    excludeUnreadChapters?: Maybe<Scalars['Boolean']['output']>;
-    koreaderSyncChecksumMethod?: Maybe<KoreaderSyncChecksumMethod>;
-    koreaderSyncPercentageTolerance?: Maybe<Scalars['Float']['output']>;
-    koreaderSyncStrategyBackward?: Maybe<KoreaderSyncConflictStrategy>;
-    koreaderSyncStrategyForward?: Maybe<KoreaderSyncConflictStrategy>;
-    opdsCbzMimetype?: Maybe<CbzMediaType>;
-    opdsChapterSortOrder?: Maybe<SortOrder>;
-    opdsEnablePageReadProgress?: Maybe<Scalars['Boolean']['output']>;
-    opdsItemsPerPage?: Maybe<Scalars['Int']['output']>;
-    opdsMarkAsReadOnDownload?: Maybe<Scalars['Boolean']['output']>;
-    opdsShowOnlyDownloadedChapters?: Maybe<Scalars['Boolean']['output']>;
-    opdsShowOnlyUnreadChapters?: Maybe<Scalars['Boolean']['output']>;
-    opdsSkipChapterMetadataFeed?: Maybe<Scalars['Boolean']['output']>;
-    opdsUseBinaryFileSizes?: Maybe<Scalars['Boolean']['output']>;
-    serveConversions?: Maybe<Array<SettingsDownloadConversionType>>;
-    syncDataCategories?: Maybe<Scalars['Boolean']['output']>;
-    syncDataChapters?: Maybe<Scalars['Boolean']['output']>;
-    syncDataHistory?: Maybe<Scalars['Boolean']['output']>;
-    syncDataManga?: Maybe<Scalars['Boolean']['output']>;
-    syncDataTracking?: Maybe<Scalars['Boolean']['output']>;
-    syncInterval?: Maybe<Scalars['Duration']['output']>;
-    syncYomiApiKey?: Maybe<Scalars['String']['output']>;
-    syncYomiEnabled?: Maybe<Scalars['Boolean']['output']>;
-    syncYomiHost?: Maybe<Scalars['String']['output']>;
-    updateMangas?: Maybe<Scalars['Boolean']['output']>;
-};
-
-export type PartialUserSettingsTypeInput = {
-    autoDownloadIgnoreReUploads?: InputMaybe<Scalars['Boolean']['input']>;
-    autoDownloadNewChapters?: InputMaybe<Scalars['Boolean']['input']>;
-    autoDownloadNewChaptersLimit?: InputMaybe<Scalars['Int']['input']>;
-    excludeCompleted?: InputMaybe<Scalars['Boolean']['input']>;
-    excludeEntryWithUnreadChapters?: InputMaybe<Scalars['Boolean']['input']>;
-    excludeNotStarted?: InputMaybe<Scalars['Boolean']['input']>;
-    excludeUnreadChapters?: InputMaybe<Scalars['Boolean']['input']>;
-    koreaderSyncChecksumMethod?: InputMaybe<KoreaderSyncChecksumMethod>;
-    koreaderSyncPercentageTolerance?: InputMaybe<Scalars['Float']['input']>;
-    koreaderSyncStrategyBackward?: InputMaybe<KoreaderSyncConflictStrategy>;
-    koreaderSyncStrategyForward?: InputMaybe<KoreaderSyncConflictStrategy>;
-    opdsCbzMimetype?: InputMaybe<CbzMediaType>;
-    opdsChapterSortOrder?: InputMaybe<SortOrder>;
-    opdsEnablePageReadProgress?: InputMaybe<Scalars['Boolean']['input']>;
-    opdsItemsPerPage?: InputMaybe<Scalars['Int']['input']>;
-    opdsMarkAsReadOnDownload?: InputMaybe<Scalars['Boolean']['input']>;
-    opdsShowOnlyDownloadedChapters?: InputMaybe<Scalars['Boolean']['input']>;
-    opdsShowOnlyUnreadChapters?: InputMaybe<Scalars['Boolean']['input']>;
-    opdsSkipChapterMetadataFeed?: InputMaybe<Scalars['Boolean']['input']>;
-    opdsUseBinaryFileSizes?: InputMaybe<Scalars['Boolean']['input']>;
-    serveConversions?: InputMaybe<Array<SettingsDownloadConversionTypeInput>>;
-    syncDataCategories?: InputMaybe<Scalars['Boolean']['input']>;
-    syncDataChapters?: InputMaybe<Scalars['Boolean']['input']>;
-    syncDataHistory?: InputMaybe<Scalars['Boolean']['input']>;
-    syncDataManga?: InputMaybe<Scalars['Boolean']['input']>;
-    syncDataTracking?: InputMaybe<Scalars['Boolean']['input']>;
-    syncInterval?: InputMaybe<Scalars['Duration']['input']>;
-    syncYomiApiKey?: InputMaybe<Scalars['String']['input']>;
-    syncYomiEnabled?: InputMaybe<Scalars['Boolean']['input']>;
-    syncYomiHost?: InputMaybe<Scalars['String']['input']>;
-    updateMangas?: InputMaybe<Scalars['Boolean']['input']>;
-};
-
-export type PermissionsFilterInput = {
-    distinctFrom?: InputMaybe<UserPermission>;
-    distinctFromAll?: InputMaybe<Array<UserPermission>>;
-    distinctFromAny?: InputMaybe<Array<UserPermission>>;
-    equalTo?: InputMaybe<UserPermission>;
-    in?: InputMaybe<Array<UserPermission>>;
-    isNull?: InputMaybe<Scalars['Boolean']['input']>;
-    notDistinctFrom?: InputMaybe<UserPermission>;
-    notEqualTo?: InputMaybe<UserPermission>;
-    notEqualToAll?: InputMaybe<Array<UserPermission>>;
-    notEqualToAny?: InputMaybe<Array<UserPermission>>;
-    notIn?: InputMaybe<Array<UserPermission>>;
-};
-
 export type PlatformInfo = {
     __typename?: 'PlatformInfo';
     arch: Scalars['String']['output'];
@@ -2487,11 +2281,6 @@ export type Query = {
     trackers: TrackerNodeList;
     /** @deprecated Replaced with libraryUpdateStatus, replace with libraryUpdateStatus */
     updateStatus: UpdateStatus;
-    user: UserType;
-    /** Outstanding (unconsumed, unexpired) user codes. */
-    userCodes: Array<UserCodeType>;
-    userSettings: UserSettingsType;
-    users: UserNodeList;
     validateBackup: ValidateBackupResult;
 };
 
@@ -2641,56 +2430,8 @@ export type QueryTrackersArgs = {
     order?: InputMaybe<Array<TrackerOrderInput>>;
 };
 
-export type QueryUserArgs = {
-    id?: InputMaybe<Scalars['Int']['input']>;
-};
-
-export type QueryUserCodesArgs = {
-    forUserId?: InputMaybe<Scalars['Int']['input']>;
-};
-
-export type QueryUsersArgs = {
-    after?: InputMaybe<Scalars['Cursor']['input']>;
-    before?: InputMaybe<Scalars['Cursor']['input']>;
-    condition?: InputMaybe<UserConditionInput>;
-    filter?: InputMaybe<UserFilterInput>;
-    first?: InputMaybe<Scalars['Int']['input']>;
-    last?: InputMaybe<Scalars['Int']['input']>;
-    offset?: InputMaybe<Scalars['Int']['input']>;
-    order?: InputMaybe<Array<UserOrderInput>>;
-};
-
 export type QueryValidateBackupArgs = {
     input: ValidateBackupInput;
-};
-
-export type RedeemRecoveryCodeInput = {
-    clientMutationId?: InputMaybe<Scalars['String']['input']>;
-    code: Scalars['String']['input'];
-    newPassword: Scalars['String']['input'];
-};
-
-export type RedeemRecoveryCodePayload = {
-    __typename?: 'RedeemRecoveryCodePayload';
-    accessToken: Scalars['String']['output'];
-    clientMutationId?: Maybe<Scalars['String']['output']>;
-    refreshToken: Scalars['String']['output'];
-    user: UserType;
-};
-
-export type RedeemRegistrationCodeInput = {
-    clientMutationId?: InputMaybe<Scalars['String']['input']>;
-    code: Scalars['String']['input'];
-    password: Scalars['String']['input'];
-    username: Scalars['String']['input'];
-};
-
-export type RedeemRegistrationCodePayload = {
-    __typename?: 'RedeemRegistrationCodePayload';
-    accessToken: Scalars['String']['output'];
-    clientMutationId?: Maybe<Scalars['String']['output']>;
-    refreshToken: Scalars['String']['output'];
-    user: UserType;
 };
 
 export type RefreshTokenInput = {
@@ -2701,18 +2442,6 @@ export type RefreshTokenInput = {
 export type RefreshTokenPayload = {
     __typename?: 'RefreshTokenPayload';
     accessToken: Scalars['String']['output'];
-    clientMutationId?: Maybe<Scalars['String']['output']>;
-};
-
-export type RegisterInput = {
-    clientMutationId?: InputMaybe<Scalars['String']['input']>;
-    password: Scalars['String']['input'];
-    userPermissions?: InputMaybe<Array<UserPermission>>;
-    username: Scalars['String']['input'];
-};
-
-export type RegisterPayload = {
-    __typename?: 'RegisterPayload';
     clientMutationId?: Maybe<Scalars['String']['output']>;
 };
 
@@ -2759,16 +2488,6 @@ export type ResetSettingsPayload = {
     settings: SettingsType;
 };
 
-export type ResetUserSettingsInput = {
-    clientMutationId?: InputMaybe<Scalars['String']['input']>;
-};
-
-export type ResetUserSettingsPayload = {
-    __typename?: 'ResetUserSettingsPayload';
-    clientMutationId?: Maybe<Scalars['String']['output']>;
-    userSettings: UserSettingsType;
-};
-
 export type RestoreBackupInput = {
     backup: Scalars['Upload']['input'];
     clientMutationId?: InputMaybe<Scalars['String']['input']>;
@@ -2780,16 +2499,6 @@ export type RestoreBackupPayload = {
     clientMutationId?: Maybe<Scalars['String']['output']>;
     id: Scalars['String']['output'];
     status?: Maybe<BackupRestoreStatus>;
-};
-
-export type RevokeUserCodeInput = {
-    clientMutationId?: InputMaybe<Scalars['String']['input']>;
-    id: Scalars['Int']['input'];
-};
-
-export type RevokeUserCodePayload = {
-    __typename?: 'RevokeUserCodePayload';
-    clientMutationId?: Maybe<Scalars['String']['output']>;
 };
 
 export type SearchTrackerInput = {
@@ -2920,17 +2629,6 @@ export type SetMangaMetasPayload = {
     metas: Array<MangaMetaType>;
 };
 
-export type SetPasswordInput = {
-    clientMutationId?: InputMaybe<Scalars['String']['input']>;
-    newPassword: Scalars['String']['input'];
-    oldPassword: Scalars['String']['input'];
-};
-
-export type SetPasswordPayload = {
-    __typename?: 'SetPasswordPayload';
-    clientMutationId?: Maybe<Scalars['String']['output']>;
-};
-
 export type SetSettingsInput = {
     clientMutationId?: InputMaybe<Scalars['String']['input']>;
     settings: PartialSettingsTypeInput;
@@ -2970,17 +2668,6 @@ export type SetSourceMetasPayload = {
     sources: Array<SourceType>;
 };
 
-export type SetUserSettingsInput = {
-    clientMutationId?: InputMaybe<Scalars['String']['input']>;
-    userSettings: PartialUserSettingsTypeInput;
-};
-
-export type SetUserSettingsPayload = {
-    __typename?: 'SetUserSettingsPayload';
-    clientMutationId?: Maybe<Scalars['String']['output']>;
-    userSettings: UserSettingsType;
-};
-
 export type Settings = {
     authMode?: Maybe<AuthMode>;
     authPassword?: Maybe<Scalars['String']['output']>;
@@ -2992,7 +2679,6 @@ export type Settings = {
     autoBackupIncludeManga?: Maybe<Scalars['Boolean']['output']>;
     autoBackupIncludeServerSettings?: Maybe<Scalars['Boolean']['output']>;
     autoBackupIncludeTracking?: Maybe<Scalars['Boolean']['output']>;
-    autoBackupIncludeUserSettings?: Maybe<Scalars['Boolean']['output']>;
     /** @deprecated Replaced with autoDownloadNewChaptersLimit, replace with autoDownloadNewChaptersLimit */
     autoDownloadAheadLimit?: Maybe<Scalars['Int']['output']>;
     /** @deprecated Now per-user */
@@ -3180,7 +2866,6 @@ export type SettingsType = Settings & {
     autoBackupIncludeManga: Scalars['Boolean']['output'];
     autoBackupIncludeServerSettings: Scalars['Boolean']['output'];
     autoBackupIncludeTracking: Scalars['Boolean']['output'];
-    autoBackupIncludeUserSettings: Scalars['Boolean']['output'];
     /** @deprecated Replaced with autoDownloadNewChaptersLimit, replace with autoDownloadNewChaptersLimit */
     autoDownloadAheadLimit: Scalars['Int']['output'];
     /** @deprecated Now per-user */
@@ -4084,19 +3769,6 @@ export type UpdateTrackPayload = {
     trackRecord?: Maybe<TrackRecordType>;
 };
 
-export type UpdateUserInput = {
-    clientMutationId?: InputMaybe<Scalars['String']['input']>;
-    permissions?: InputMaybe<Array<UserPermission>>;
-    role?: InputMaybe<UserRole>;
-    userId: Scalars['Int']['input'];
-};
-
-export type UpdateUserPayload = {
-    __typename?: 'UpdateUserPayload';
-    clientMutationId?: Maybe<Scalars['String']['output']>;
-    user: UserType;
-};
-
 export type UpdaterJobsInfoType = {
     __typename?: 'UpdaterJobsInfoType';
     finishedJobs: Scalars['Int']['output'];
@@ -4115,159 +3787,6 @@ export type UpdaterUpdates = {
     mangaUpdates: Array<MangaUpdateType>;
     /** Indicates whether updates have been omitted based on the "maxUpdates" subscription variable. In case updates have been omitted, the "updateStatus" query should be re-fetched. */
     omittedUpdates: Scalars['Boolean']['output'];
-};
-
-export enum UserCodePurpose {
-    Recovery = 'RECOVERY',
-    Registration = 'REGISTRATION',
-}
-
-export type UserCodeType = {
-    __typename?: 'UserCodeType';
-    createdAt: Scalars['LongString']['output'];
-    createdBy: UserType;
-    expiresAt: Scalars['LongString']['output'];
-    id: Scalars['Int']['output'];
-    permissions?: Maybe<Array<UserPermission>>;
-    purpose: UserCodePurpose;
-    user?: Maybe<UserType>;
-};
-
-export type UserConditionInput = {
-    id?: InputMaybe<Scalars['Int']['input']>;
-    permission?: InputMaybe<UserPermission>;
-    role?: InputMaybe<Scalars['String']['input']>;
-    username?: InputMaybe<Scalars['String']['input']>;
-};
-
-export type UserEdge = Edge & {
-    __typename?: 'UserEdge';
-    cursor: Scalars['Cursor']['output'];
-    node: UserType;
-};
-
-export type UserFilterInput = {
-    and?: InputMaybe<Array<UserFilterInput>>;
-    id?: InputMaybe<IntFilterInput>;
-    not?: InputMaybe<UserFilterInput>;
-    or?: InputMaybe<Array<UserFilterInput>>;
-    permission?: InputMaybe<PermissionsFilterInput>;
-    role?: InputMaybe<StringFilterInput>;
-    username?: InputMaybe<StringFilterInput>;
-};
-
-export type UserNodeList = NodeList & {
-    __typename?: 'UserNodeList';
-    edges: Array<UserEdge>;
-    nodes: Array<UserType>;
-    pageInfo: PageInfo;
-    totalCount: Scalars['Int']['output'];
-};
-
-export enum UserOrderBy {
-    Id = 'ID',
-    Username = 'USERNAME',
-}
-
-export type UserOrderInput = {
-    by: UserOrderBy;
-    byType?: InputMaybe<SortOrder>;
-};
-
-export enum UserPermission {
-    AccessNsfw = 'ACCESS_NSFW',
-    DownloadChapters = 'DOWNLOAD_CHAPTERS',
-    InstallExtensions = 'INSTALL_EXTENSIONS',
-    InstallExternalExtensions = 'INSTALL_EXTERNAL_EXTENSIONS',
-    ManageCache = 'MANAGE_CACHE',
-    ManageExtensionStores = 'MANAGE_EXTENSION_STORES',
-    ManageSettings = 'MANAGE_SETTINGS',
-    ManageSourcePreferences = 'MANAGE_SOURCE_PREFERENCES',
-    ManageUsers = 'MANAGE_USERS',
-    UninstallExtensions = 'UNINSTALL_EXTENSIONS',
-}
-
-export enum UserRole {
-    Admin = 'ADMIN',
-    User = 'USER',
-    Visitor = 'VISITOR',
-}
-
-export type UserSettings = {
-    autoDownloadIgnoreReUploads?: Maybe<Scalars['Boolean']['output']>;
-    autoDownloadNewChapters?: Maybe<Scalars['Boolean']['output']>;
-    autoDownloadNewChaptersLimit?: Maybe<Scalars['Int']['output']>;
-    excludeCompleted?: Maybe<Scalars['Boolean']['output']>;
-    excludeEntryWithUnreadChapters?: Maybe<Scalars['Boolean']['output']>;
-    excludeNotStarted?: Maybe<Scalars['Boolean']['output']>;
-    excludeUnreadChapters?: Maybe<Scalars['Boolean']['output']>;
-    koreaderSyncChecksumMethod?: Maybe<KoreaderSyncChecksumMethod>;
-    koreaderSyncPercentageTolerance?: Maybe<Scalars['Float']['output']>;
-    koreaderSyncStrategyBackward?: Maybe<KoreaderSyncConflictStrategy>;
-    koreaderSyncStrategyForward?: Maybe<KoreaderSyncConflictStrategy>;
-    opdsCbzMimetype?: Maybe<CbzMediaType>;
-    opdsChapterSortOrder?: Maybe<SortOrder>;
-    opdsEnablePageReadProgress?: Maybe<Scalars['Boolean']['output']>;
-    opdsItemsPerPage?: Maybe<Scalars['Int']['output']>;
-    opdsMarkAsReadOnDownload?: Maybe<Scalars['Boolean']['output']>;
-    opdsShowOnlyDownloadedChapters?: Maybe<Scalars['Boolean']['output']>;
-    opdsShowOnlyUnreadChapters?: Maybe<Scalars['Boolean']['output']>;
-    opdsSkipChapterMetadataFeed?: Maybe<Scalars['Boolean']['output']>;
-    opdsUseBinaryFileSizes?: Maybe<Scalars['Boolean']['output']>;
-    serveConversions?: Maybe<Array<SettingsDownloadConversion>>;
-    syncDataCategories?: Maybe<Scalars['Boolean']['output']>;
-    syncDataChapters?: Maybe<Scalars['Boolean']['output']>;
-    syncDataHistory?: Maybe<Scalars['Boolean']['output']>;
-    syncDataManga?: Maybe<Scalars['Boolean']['output']>;
-    syncDataTracking?: Maybe<Scalars['Boolean']['output']>;
-    syncInterval?: Maybe<Scalars['Duration']['output']>;
-    syncYomiApiKey?: Maybe<Scalars['String']['output']>;
-    syncYomiEnabled?: Maybe<Scalars['Boolean']['output']>;
-    syncYomiHost?: Maybe<Scalars['String']['output']>;
-    updateMangas?: Maybe<Scalars['Boolean']['output']>;
-};
-
-export type UserSettingsType = UserSettings & {
-    __typename?: 'UserSettingsType';
-    autoDownloadIgnoreReUploads: Scalars['Boolean']['output'];
-    autoDownloadNewChapters: Scalars['Boolean']['output'];
-    autoDownloadNewChaptersLimit: Scalars['Int']['output'];
-    excludeCompleted: Scalars['Boolean']['output'];
-    excludeEntryWithUnreadChapters: Scalars['Boolean']['output'];
-    excludeNotStarted: Scalars['Boolean']['output'];
-    excludeUnreadChapters: Scalars['Boolean']['output'];
-    koreaderSyncChecksumMethod: KoreaderSyncChecksumMethod;
-    koreaderSyncPercentageTolerance: Scalars['Float']['output'];
-    koreaderSyncStrategyBackward: KoreaderSyncConflictStrategy;
-    koreaderSyncStrategyForward: KoreaderSyncConflictStrategy;
-    opdsCbzMimetype: CbzMediaType;
-    opdsChapterSortOrder: SortOrder;
-    opdsEnablePageReadProgress: Scalars['Boolean']['output'];
-    opdsItemsPerPage: Scalars['Int']['output'];
-    opdsMarkAsReadOnDownload: Scalars['Boolean']['output'];
-    opdsShowOnlyDownloadedChapters: Scalars['Boolean']['output'];
-    opdsShowOnlyUnreadChapters: Scalars['Boolean']['output'];
-    opdsSkipChapterMetadataFeed: Scalars['Boolean']['output'];
-    opdsUseBinaryFileSizes: Scalars['Boolean']['output'];
-    serveConversions: Array<SettingsDownloadConversionType>;
-    syncDataCategories: Scalars['Boolean']['output'];
-    syncDataChapters: Scalars['Boolean']['output'];
-    syncDataHistory: Scalars['Boolean']['output'];
-    syncDataManga: Scalars['Boolean']['output'];
-    syncDataTracking: Scalars['Boolean']['output'];
-    syncInterval: Scalars['Duration']['output'];
-    syncYomiApiKey: Scalars['String']['output'];
-    syncYomiEnabled: Scalars['Boolean']['output'];
-    syncYomiHost: Scalars['String']['output'];
-    updateMangas: Scalars['Boolean']['output'];
-};
-
-export type UserType = {
-    __typename?: 'UserType';
-    id: Scalars['Int']['output'];
-    permissions: Array<UserPermission>;
-    roles: Array<UserRole>;
-    username: Scalars['String']['output'];
 };
 
 export type ValidateBackupInput = {

@@ -327,7 +327,6 @@ export type GetCategoriesSettingsQuery = {
 
 export type GetCategoryMangasQueryVariables = Exact<{
     id: number;
-    inLibrary?: boolean | null | undefined;
 }>;
 
 export type GetCategoryMangasQuery = {
