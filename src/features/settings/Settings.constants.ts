@@ -58,6 +58,8 @@ export const SERVER_SETTINGS_METADATA_DEFAULT: MetadataServerSettings = {
     showReadChaptersBadge: true,
     showTotalChaptersBadge: true,
     gridLayout: GridLayout.Compact,
+    notifyNewChapters: false,
+    notifyNewChaptersLastNotifiedAt: 0,
 
     // client
     devices: [DEFAULT_DEVICE],
