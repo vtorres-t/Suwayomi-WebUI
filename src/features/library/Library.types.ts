@@ -22,6 +22,9 @@ export type MetadataLibrarySettings = {
     showTotalChaptersBadge: boolean;
     showReadChaptersBadge: boolean;
     gridLayout: GridLayout;
+    /** the notification permission is granted per browser, thus, this only takes effect where it was granted */
+    notifyNewChapters: boolean;
+    notifyNewChaptersLastNotifiedAt: number;
 };
 export type LibrarySortMode =
     | 'unreadChapters'
