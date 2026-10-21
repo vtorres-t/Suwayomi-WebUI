@@ -18,7 +18,7 @@
         "updateDeps": "tsx tools/scripts/updateDependencies.ts",
         "gql:codegen-base": "graphql-codegen --config gql_codegen.ts",
         "gql:codegen-formatter": "tsx tools/scripts/codegenFormatter.ts",
-        "gql:codegen": "pnpm gql:codegen-base && pnpm gql:codegen-formatter",
+        "gql:codegen": "pnpm gql:codegen-base && pnpm gql:codegen-formatter && pnpm format",
         "dayjs:gen-locales-array": "tsx tools/scripts/dayjs/generateDayJsLocales.ts",
         "dayjs:gen-locales-import": "tsx tools/scripts/dayjs/generateDayJsLocalesImport.ts",
         "dayjs:gen-locales": "pnpm dayjs:gen-locales-array && pnpm dayjs:gen-locales-import",
@@ -127,13 +127,13 @@
         "vite-plugin-pwa": "1.3.0",
         "workbox-build": "7.4.1",
         "workbox-window": "7.4.1",
-        "yargs": "18.0.0"
+        "yargs": "18.1.0"
     },
     "resolutions": {
         "@swc/core": "1.15.11"
     },
     "engines": {
-        "node": ">=24"
+        "node": ">=24.20.0"
     },
     "packageManager": "pnpm@11.5.2"
 }

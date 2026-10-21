@@ -718,6 +718,12 @@ export const ServerSettings = () => {
                     disabled={isH2Database}
                     isPassword
                 />
+                <TextSetting
+                    settingName={t`Schema`}
+                    value={serverSettings.databaseSchema}
+                    handleChange={(schema) => updateSetting('databaseSchema', schema)}
+                    disabled={isH2Database}
+                />
                 <ListItem>
                     <ListItemText
                         primary={t`Hikari connection pool`}
@@ -729,6 +735,28 @@ export const ServerSettings = () => {
                         onChange={(e) => updateSetting('useHikariConnectionPool', e.target.checked)}
                     />
                 </ListItem>
+                <NumberSetting
+                    settingTitle={t`Hikari max pool size`}
+                    settingValue={serverSettings.hikariMaxPoolSize.toString()}
+                    dialogDescription={
+                        <Trans>
+                            The maximum number of actual connections to the database; see{' '}
+                            <Link
+                                href="https://github.com/brettwooldridge/HikariCP/wiki/About-Pool-Sizing"
+                                target="_blank"
+                                rel="noreferrer"
+                            >
+                                HikariCP: About-Pool-Sizing
+                            </Link>
+                        </Trans>
+                    }
+                    value={serverSettings.hikariMaxPoolSize}
+                    defaultValue={6}
+                    minValue={1}
+                    valueUnit={t`Connection`}
+                    handleUpdate={(value) => updateSetting('hikariMaxPoolSize', value)}
+                    disabled={!serverSettings.useHikariConnectionPool}
+                />
             </List>
             <List
                 subheader={
