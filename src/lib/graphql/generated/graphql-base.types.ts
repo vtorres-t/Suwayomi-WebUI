@@ -294,15 +294,10 @@ export type ChapterType = {
     chapterNumber: Scalars['Float']['output'];
     fetchedAt: Scalars['LongString']['output'];
     id: Scalars['Int']['output'];
-    /** @deprecated Use user.isBookmarked instead */
     isBookmarked: Scalars['Boolean']['output'];
-    /** @deprecated Use user.isDownloaded instead */
     isDownloaded: Scalars['Boolean']['output'];
-    /** @deprecated Use user.isRead instead */
     isRead: Scalars['Boolean']['output'];
-    /** @deprecated Use user.lastPageRead instead */
     lastPageRead: Scalars['Int']['output'];
-    /** @deprecated Use user.lastReadAt instead */
     lastReadAt: Scalars['LongString']['output'];
     manga: MangaType;
     mangaId: Scalars['Int']['output'];
@@ -1414,16 +1409,12 @@ export type MangaType = {
     hasDuplicateChapters: Scalars['Boolean']['output'];
     highestNumberedChapter?: Maybe<ChapterType>;
     id: Scalars['Int']['output'];
-    /** @deprecated Use user.inLibrary instead */
     inLibrary: Scalars['Boolean']['output'];
-    /** @deprecated Use user.inLibraryAt instead */
     inLibraryAt: Scalars['LongString']['output'];
     initialized: Scalars['Boolean']['output'];
     lastFetchedAt?: Maybe<Scalars['LongString']['output']>;
-    /** @deprecated Use user.lastReadChapter instead */
     lastReadChapter?: Maybe<ChapterType>;
     latestFetchedChapter?: Maybe<ChapterType>;
-    /** @deprecated Use user.latestReadChapter instead */
     latestReadChapter?: Maybe<ChapterType>;
     latestUploadedChapter?: Maybe<ChapterType>;
     meta: Array<MangaMetaType>;
@@ -1435,7 +1426,6 @@ export type MangaType = {
     thumbnailUrlLastFetched?: Maybe<Scalars['LongString']['output']>;
     title: Scalars['String']['output'];
     trackRecords: TrackRecordNodeList;
-    /** @deprecated Use user.unreadCount instead */
     unreadCount: Scalars['Int']['output'];
     updateStrategy: UpdateStrategy;
     url: Scalars['String']['output'];
@@ -1986,11 +1976,8 @@ export type PartialSettingsType = Settings & {
     autoBackupIncludeTracking?: Maybe<Scalars['Boolean']['output']>;
     /** @deprecated Replaced with autoDownloadNewChaptersLimit, replace with autoDownloadNewChaptersLimit */
     autoDownloadAheadLimit?: Maybe<Scalars['Int']['output']>;
-    /** @deprecated Now per-user */
     autoDownloadIgnoreReUploads?: Maybe<Scalars['Boolean']['output']>;
-    /** @deprecated Now per-user */
     autoDownloadNewChapters?: Maybe<Scalars['Boolean']['output']>;
-    /** @deprecated Now per-user */
     autoDownloadNewChaptersLimit?: Maybe<Scalars['Int']['output']>;
     backupInterval?: Maybe<Scalars['Int']['output']>;
     backupPath?: Maybe<Scalars['String']['output']>;
@@ -2003,6 +1990,7 @@ export type PartialSettingsType = Settings & {
     /** @deprecated Removed - prefer authUsername, replace with authUsername */
     basicAuthUsername?: Maybe<Scalars['String']['output']>;
     databasePassword?: Maybe<Scalars['String']['output']>;
+    databaseSchema?: Maybe<Scalars['String']['output']>;
     databaseType?: Maybe<DatabaseType>;
     databaseUrl?: Maybe<Scalars['String']['output']>;
     databaseUsername?: Maybe<Scalars['String']['output']>;
@@ -2011,13 +1999,9 @@ export type PartialSettingsType = Settings & {
     downloadConversions?: Maybe<Array<SettingsDownloadConversionType>>;
     downloadsPath?: Maybe<Scalars['String']['output']>;
     electronPath?: Maybe<Scalars['String']['output']>;
-    /** @deprecated Now per-user */
     excludeCompleted?: Maybe<Scalars['Boolean']['output']>;
-    /** @deprecated Now per-user */
     excludeEntryWithUnreadChapters?: Maybe<Scalars['Boolean']['output']>;
-    /** @deprecated Now per-user */
     excludeNotStarted?: Maybe<Scalars['Boolean']['output']>;
-    /** @deprecated Now per-user */
     excludeUnreadChapters?: Maybe<Scalars['Boolean']['output']>;
     flareSolverrAsResponseFallback?: Maybe<Scalars['Boolean']['output']>;
     flareSolverrEnabled?: Maybe<Scalars['Boolean']['output']>;
@@ -2028,23 +2012,20 @@ export type PartialSettingsType = Settings & {
     globalUpdateInterval?: Maybe<Scalars['Float']['output']>;
     /** @deprecated Removed - does not do anything */
     gqlDebugLogsEnabled?: Maybe<Scalars['Boolean']['output']>;
+    hikariMaxPoolSize?: Maybe<Scalars['Int']['output']>;
     ip?: Maybe<Scalars['String']['output']>;
     jwtAudience?: Maybe<Scalars['String']['output']>;
     jwtRefreshExpiry?: Maybe<Scalars['Duration']['output']>;
     jwtTokenExpiry?: Maybe<Scalars['Duration']['output']>;
-    /** @deprecated Now per-user */
     koreaderSyncChecksumMethod?: Maybe<KoreaderSyncChecksumMethod>;
     /** @deprecated Moved to preference store. Is supposed to be random and gets auto generated, replace with MOVE TO PREFERENCES */
     koreaderSyncDeviceId?: Maybe<Scalars['String']['output']>;
-    /** @deprecated Now per-user */
     koreaderSyncPercentageTolerance?: Maybe<Scalars['Float']['output']>;
     /** @deprecated Moved to preference store. User is supposed to use a login/logout mutation, replace with MOVE TO PREFERENCES */
     koreaderSyncServerUrl?: Maybe<Scalars['String']['output']>;
     /** @deprecated Replaced with koreaderSyncStrategyForward and koreaderSyncStrategyBackward, replace with koreaderSyncStrategyForward, koreaderSyncStrategyBackward */
     koreaderSyncStrategy?: Maybe<KoreaderSyncLegacyStrategy>;
-    /** @deprecated Now per-user */
     koreaderSyncStrategyBackward?: Maybe<KoreaderSyncConflictStrategy>;
-    /** @deprecated Now per-user */
     koreaderSyncStrategyForward?: Maybe<KoreaderSyncConflictStrategy>;
     /** @deprecated Moved to preference store. User is supposed to use a login/logout mutation, replace with MOVE TO PREFERENCES */
     koreaderSyncUserkey?: Maybe<Scalars['String']['output']>;
@@ -2056,23 +2037,14 @@ export type PartialSettingsType = Settings & {
     maxLogFiles?: Maybe<Scalars['Int']['output']>;
     maxLogFolderSize?: Maybe<Scalars['String']['output']>;
     maxSourcesInParallel?: Maybe<Scalars['Int']['output']>;
-    /** @deprecated Now per-user */
     opdsCbzMimetype?: Maybe<CbzMediaType>;
-    /** @deprecated Now per-user */
     opdsChapterSortOrder?: Maybe<SortOrder>;
-    /** @deprecated Now per-user */
     opdsEnablePageReadProgress?: Maybe<Scalars['Boolean']['output']>;
-    /** @deprecated Now per-user */
     opdsItemsPerPage?: Maybe<Scalars['Int']['output']>;
-    /** @deprecated Now per-user */
     opdsMarkAsReadOnDownload?: Maybe<Scalars['Boolean']['output']>;
-    /** @deprecated Now per-user */
     opdsShowOnlyDownloadedChapters?: Maybe<Scalars['Boolean']['output']>;
-    /** @deprecated Now per-user */
     opdsShowOnlyUnreadChapters?: Maybe<Scalars['Boolean']['output']>;
-    /** @deprecated Now per-user */
     opdsSkipChapterMetadataFeed?: Maybe<Scalars['Boolean']['output']>;
-    /** @deprecated Now per-user */
     opdsUseBinaryFileSizes?: Maybe<Scalars['Boolean']['output']>;
     port?: Maybe<Scalars['Int']['output']>;
     repoServerToken?: Maybe<Scalars['String']['output']>;
@@ -2089,23 +2061,14 @@ export type PartialSettingsType = Settings & {
     socksProxyPort?: Maybe<Scalars['String']['output']>;
     socksProxyUsername?: Maybe<Scalars['String']['output']>;
     socksProxyVersion?: Maybe<Scalars['Int']['output']>;
-    /** @deprecated Now per-user */
     syncDataCategories?: Maybe<Scalars['Boolean']['output']>;
-    /** @deprecated Now per-user */
     syncDataChapters?: Maybe<Scalars['Boolean']['output']>;
-    /** @deprecated Now per-user */
     syncDataHistory?: Maybe<Scalars['Boolean']['output']>;
-    /** @deprecated Now per-user */
     syncDataManga?: Maybe<Scalars['Boolean']['output']>;
-    /** @deprecated Now per-user */
     syncDataTracking?: Maybe<Scalars['Boolean']['output']>;
-    /** @deprecated Now per-user */
     syncInterval?: Maybe<Scalars['Duration']['output']>;
-    /** @deprecated Now per-user */
     syncYomiApiKey?: Maybe<Scalars['String']['output']>;
-    /** @deprecated Now per-user */
     syncYomiEnabled?: Maybe<Scalars['Boolean']['output']>;
-    /** @deprecated Now per-user */
     syncYomiHost?: Maybe<Scalars['String']['output']>;
     /** @deprecated Now per-user */
     updateMangas?: Maybe<Scalars['Boolean']['output']>;
@@ -2134,6 +2097,7 @@ export type PartialSettingsTypeInput = {
     backupTTL?: InputMaybe<Scalars['Int']['input']>;
     backupTime?: InputMaybe<Scalars['String']['input']>;
     databasePassword?: InputMaybe<Scalars['String']['input']>;
+    databaseSchema?: InputMaybe<Scalars['String']['input']>;
     databaseType?: InputMaybe<DatabaseType>;
     databaseUrl?: InputMaybe<Scalars['String']['input']>;
     databaseUsername?: InputMaybe<Scalars['String']['input']>;
@@ -2153,6 +2117,7 @@ export type PartialSettingsTypeInput = {
     flareSolverrTimeout?: InputMaybe<Scalars['Int']['input']>;
     flareSolverrUrl?: InputMaybe<Scalars['String']['input']>;
     globalUpdateInterval?: InputMaybe<Scalars['Float']['input']>;
+    hikariMaxPoolSize?: InputMaybe<Scalars['Int']['input']>;
     ip?: InputMaybe<Scalars['String']['input']>;
     jwtAudience?: InputMaybe<Scalars['String']['input']>;
     jwtRefreshExpiry?: InputMaybe<Scalars['Duration']['input']>;
@@ -2681,11 +2646,8 @@ export type Settings = {
     autoBackupIncludeTracking?: Maybe<Scalars['Boolean']['output']>;
     /** @deprecated Replaced with autoDownloadNewChaptersLimit, replace with autoDownloadNewChaptersLimit */
     autoDownloadAheadLimit?: Maybe<Scalars['Int']['output']>;
-    /** @deprecated Now per-user */
     autoDownloadIgnoreReUploads?: Maybe<Scalars['Boolean']['output']>;
-    /** @deprecated Now per-user */
     autoDownloadNewChapters?: Maybe<Scalars['Boolean']['output']>;
-    /** @deprecated Now per-user */
     autoDownloadNewChaptersLimit?: Maybe<Scalars['Int']['output']>;
     backupInterval?: Maybe<Scalars['Int']['output']>;
     backupPath?: Maybe<Scalars['String']['output']>;
@@ -2698,6 +2660,7 @@ export type Settings = {
     /** @deprecated Removed - prefer authUsername, replace with authUsername */
     basicAuthUsername?: Maybe<Scalars['String']['output']>;
     databasePassword?: Maybe<Scalars['String']['output']>;
+    databaseSchema?: Maybe<Scalars['String']['output']>;
     databaseType?: Maybe<DatabaseType>;
     databaseUrl?: Maybe<Scalars['String']['output']>;
     databaseUsername?: Maybe<Scalars['String']['output']>;
@@ -2706,13 +2669,9 @@ export type Settings = {
     downloadConversions?: Maybe<Array<SettingsDownloadConversion>>;
     downloadsPath?: Maybe<Scalars['String']['output']>;
     electronPath?: Maybe<Scalars['String']['output']>;
-    /** @deprecated Now per-user */
     excludeCompleted?: Maybe<Scalars['Boolean']['output']>;
-    /** @deprecated Now per-user */
     excludeEntryWithUnreadChapters?: Maybe<Scalars['Boolean']['output']>;
-    /** @deprecated Now per-user */
     excludeNotStarted?: Maybe<Scalars['Boolean']['output']>;
-    /** @deprecated Now per-user */
     excludeUnreadChapters?: Maybe<Scalars['Boolean']['output']>;
     flareSolverrAsResponseFallback?: Maybe<Scalars['Boolean']['output']>;
     flareSolverrEnabled?: Maybe<Scalars['Boolean']['output']>;
@@ -2723,23 +2682,20 @@ export type Settings = {
     globalUpdateInterval?: Maybe<Scalars['Float']['output']>;
     /** @deprecated Removed - does not do anything */
     gqlDebugLogsEnabled?: Maybe<Scalars['Boolean']['output']>;
+    hikariMaxPoolSize?: Maybe<Scalars['Int']['output']>;
     ip?: Maybe<Scalars['String']['output']>;
     jwtAudience?: Maybe<Scalars['String']['output']>;
     jwtRefreshExpiry?: Maybe<Scalars['Duration']['output']>;
     jwtTokenExpiry?: Maybe<Scalars['Duration']['output']>;
-    /** @deprecated Now per-user */
     koreaderSyncChecksumMethod?: Maybe<KoreaderSyncChecksumMethod>;
     /** @deprecated Moved to preference store. Is supposed to be random and gets auto generated, replace with MOVE TO PREFERENCES */
     koreaderSyncDeviceId?: Maybe<Scalars['String']['output']>;
-    /** @deprecated Now per-user */
     koreaderSyncPercentageTolerance?: Maybe<Scalars['Float']['output']>;
     /** @deprecated Moved to preference store. User is supposed to use a login/logout mutation, replace with MOVE TO PREFERENCES */
     koreaderSyncServerUrl?: Maybe<Scalars['String']['output']>;
     /** @deprecated Replaced with koreaderSyncStrategyForward and koreaderSyncStrategyBackward, replace with koreaderSyncStrategyForward, koreaderSyncStrategyBackward */
     koreaderSyncStrategy?: Maybe<KoreaderSyncLegacyStrategy>;
-    /** @deprecated Now per-user */
     koreaderSyncStrategyBackward?: Maybe<KoreaderSyncConflictStrategy>;
-    /** @deprecated Now per-user */
     koreaderSyncStrategyForward?: Maybe<KoreaderSyncConflictStrategy>;
     /** @deprecated Moved to preference store. User is supposed to use a login/logout mutation, replace with MOVE TO PREFERENCES */
     koreaderSyncUserkey?: Maybe<Scalars['String']['output']>;
@@ -2751,23 +2707,14 @@ export type Settings = {
     maxLogFiles?: Maybe<Scalars['Int']['output']>;
     maxLogFolderSize?: Maybe<Scalars['String']['output']>;
     maxSourcesInParallel?: Maybe<Scalars['Int']['output']>;
-    /** @deprecated Now per-user */
     opdsCbzMimetype?: Maybe<CbzMediaType>;
-    /** @deprecated Now per-user */
     opdsChapterSortOrder?: Maybe<SortOrder>;
-    /** @deprecated Now per-user */
     opdsEnablePageReadProgress?: Maybe<Scalars['Boolean']['output']>;
-    /** @deprecated Now per-user */
     opdsItemsPerPage?: Maybe<Scalars['Int']['output']>;
-    /** @deprecated Now per-user */
     opdsMarkAsReadOnDownload?: Maybe<Scalars['Boolean']['output']>;
-    /** @deprecated Now per-user */
     opdsShowOnlyDownloadedChapters?: Maybe<Scalars['Boolean']['output']>;
-    /** @deprecated Now per-user */
     opdsShowOnlyUnreadChapters?: Maybe<Scalars['Boolean']['output']>;
-    /** @deprecated Now per-user */
     opdsSkipChapterMetadataFeed?: Maybe<Scalars['Boolean']['output']>;
-    /** @deprecated Now per-user */
     opdsUseBinaryFileSizes?: Maybe<Scalars['Boolean']['output']>;
     port?: Maybe<Scalars['Int']['output']>;
     repoServerToken?: Maybe<Scalars['String']['output']>;
@@ -2776,7 +2723,6 @@ export type Settings = {
     repoWebUiToken?: Maybe<Scalars['String']['output']>;
     repoWebUiType?: Maybe<RepoType>;
     repoWebUiUrl?: Maybe<Scalars['String']['output']>;
-    /** @deprecated Now per-user */
     serveConversions?: Maybe<Array<SettingsDownloadConversion>>;
     socksProxyEnabled?: Maybe<Scalars['Boolean']['output']>;
     socksProxyHost?: Maybe<Scalars['String']['output']>;
@@ -2784,25 +2730,15 @@ export type Settings = {
     socksProxyPort?: Maybe<Scalars['String']['output']>;
     socksProxyUsername?: Maybe<Scalars['String']['output']>;
     socksProxyVersion?: Maybe<Scalars['Int']['output']>;
-    /** @deprecated Now per-user */
     syncDataCategories?: Maybe<Scalars['Boolean']['output']>;
-    /** @deprecated Now per-user */
     syncDataChapters?: Maybe<Scalars['Boolean']['output']>;
-    /** @deprecated Now per-user */
     syncDataHistory?: Maybe<Scalars['Boolean']['output']>;
-    /** @deprecated Now per-user */
     syncDataManga?: Maybe<Scalars['Boolean']['output']>;
-    /** @deprecated Now per-user */
     syncDataTracking?: Maybe<Scalars['Boolean']['output']>;
-    /** @deprecated Now per-user */
     syncInterval?: Maybe<Scalars['Duration']['output']>;
-    /** @deprecated Now per-user */
     syncYomiApiKey?: Maybe<Scalars['String']['output']>;
-    /** @deprecated Now per-user */
     syncYomiEnabled?: Maybe<Scalars['Boolean']['output']>;
-    /** @deprecated Now per-user */
     syncYomiHost?: Maybe<Scalars['String']['output']>;
-    /** @deprecated Now per-user */
     updateMangas?: Maybe<Scalars['Boolean']['output']>;
     useHikariConnectionPool?: Maybe<Scalars['Boolean']['output']>;
     webUIFlavor?: Maybe<WebUiFlavor>;
@@ -2868,11 +2804,8 @@ export type SettingsType = Settings & {
     autoBackupIncludeTracking: Scalars['Boolean']['output'];
     /** @deprecated Replaced with autoDownloadNewChaptersLimit, replace with autoDownloadNewChaptersLimit */
     autoDownloadAheadLimit: Scalars['Int']['output'];
-    /** @deprecated Now per-user */
     autoDownloadIgnoreReUploads: Scalars['Boolean']['output'];
-    /** @deprecated Now per-user */
     autoDownloadNewChapters: Scalars['Boolean']['output'];
-    /** @deprecated Now per-user */
     autoDownloadNewChaptersLimit: Scalars['Int']['output'];
     backupInterval: Scalars['Int']['output'];
     backupPath: Scalars['String']['output'];
@@ -2885,6 +2818,7 @@ export type SettingsType = Settings & {
     /** @deprecated Removed - prefer authUsername, replace with authUsername */
     basicAuthUsername: Scalars['String']['output'];
     databasePassword: Scalars['String']['output'];
+    databaseSchema: Scalars['String']['output'];
     databaseType: DatabaseType;
     databaseUrl: Scalars['String']['output'];
     databaseUsername: Scalars['String']['output'];
@@ -2893,13 +2827,9 @@ export type SettingsType = Settings & {
     downloadConversions: Array<SettingsDownloadConversionType>;
     downloadsPath: Scalars['String']['output'];
     electronPath: Scalars['String']['output'];
-    /** @deprecated Now per-user */
     excludeCompleted: Scalars['Boolean']['output'];
-    /** @deprecated Now per-user */
     excludeEntryWithUnreadChapters: Scalars['Boolean']['output'];
-    /** @deprecated Now per-user */
     excludeNotStarted: Scalars['Boolean']['output'];
-    /** @deprecated Now per-user */
     excludeUnreadChapters: Scalars['Boolean']['output'];
     flareSolverrAsResponseFallback: Scalars['Boolean']['output'];
     flareSolverrEnabled: Scalars['Boolean']['output'];
@@ -2910,23 +2840,20 @@ export type SettingsType = Settings & {
     globalUpdateInterval: Scalars['Float']['output'];
     /** @deprecated Removed - does not do anything */
     gqlDebugLogsEnabled: Scalars['Boolean']['output'];
+    hikariMaxPoolSize: Scalars['Int']['output'];
     ip: Scalars['String']['output'];
     jwtAudience: Scalars['String']['output'];
     jwtRefreshExpiry: Scalars['Duration']['output'];
     jwtTokenExpiry: Scalars['Duration']['output'];
-    /** @deprecated Now per-user */
     koreaderSyncChecksumMethod: KoreaderSyncChecksumMethod;
     /** @deprecated Moved to preference store. Is supposed to be random and gets auto generated, replace with MOVE TO PREFERENCES */
     koreaderSyncDeviceId: Scalars['String']['output'];
-    /** @deprecated Now per-user */
     koreaderSyncPercentageTolerance: Scalars['Float']['output'];
     /** @deprecated Moved to preference store. User is supposed to use a login/logout mutation, replace with MOVE TO PREFERENCES */
     koreaderSyncServerUrl: Scalars['String']['output'];
     /** @deprecated Replaced with koreaderSyncStrategyForward and koreaderSyncStrategyBackward, replace with koreaderSyncStrategyForward, koreaderSyncStrategyBackward */
     koreaderSyncStrategy: KoreaderSyncLegacyStrategy;
-    /** @deprecated Now per-user */
     koreaderSyncStrategyBackward: KoreaderSyncConflictStrategy;
-    /** @deprecated Now per-user */
     koreaderSyncStrategyForward: KoreaderSyncConflictStrategy;
     /** @deprecated Moved to preference store. User is supposed to use a login/logout mutation, replace with MOVE TO PREFERENCES */
     koreaderSyncUserkey: Scalars['String']['output'];
@@ -2938,23 +2865,14 @@ export type SettingsType = Settings & {
     maxLogFiles: Scalars['Int']['output'];
     maxLogFolderSize: Scalars['String']['output'];
     maxSourcesInParallel: Scalars['Int']['output'];
-    /** @deprecated Now per-user */
     opdsCbzMimetype: CbzMediaType;
-    /** @deprecated Now per-user */
     opdsChapterSortOrder: SortOrder;
-    /** @deprecated Now per-user */
     opdsEnablePageReadProgress: Scalars['Boolean']['output'];
-    /** @deprecated Now per-user */
     opdsItemsPerPage: Scalars['Int']['output'];
-    /** @deprecated Now per-user */
     opdsMarkAsReadOnDownload: Scalars['Boolean']['output'];
-    /** @deprecated Now per-user */
     opdsShowOnlyDownloadedChapters: Scalars['Boolean']['output'];
-    /** @deprecated Now per-user */
     opdsShowOnlyUnreadChapters: Scalars['Boolean']['output'];
-    /** @deprecated Now per-user */
     opdsSkipChapterMetadataFeed: Scalars['Boolean']['output'];
-    /** @deprecated Now per-user */
     opdsUseBinaryFileSizes: Scalars['Boolean']['output'];
     port: Scalars['Int']['output'];
     repoServerToken: Scalars['String']['output'];
@@ -2963,7 +2881,6 @@ export type SettingsType = Settings & {
     repoWebUiToken: Scalars['String']['output'];
     repoWebUiType: RepoType;
     repoWebUiUrl: Scalars['String']['output'];
-    /** @deprecated Now per-user */
     serveConversions: Array<SettingsDownloadConversionType>;
     socksProxyEnabled: Scalars['Boolean']['output'];
     socksProxyHost: Scalars['String']['output'];
@@ -2971,25 +2888,15 @@ export type SettingsType = Settings & {
     socksProxyPort: Scalars['String']['output'];
     socksProxyUsername: Scalars['String']['output'];
     socksProxyVersion: Scalars['Int']['output'];
-    /** @deprecated Now per-user */
     syncDataCategories: Scalars['Boolean']['output'];
-    /** @deprecated Now per-user */
     syncDataChapters: Scalars['Boolean']['output'];
-    /** @deprecated Now per-user */
     syncDataHistory: Scalars['Boolean']['output'];
-    /** @deprecated Now per-user */
     syncDataManga: Scalars['Boolean']['output'];
-    /** @deprecated Now per-user */
     syncDataTracking: Scalars['Boolean']['output'];
-    /** @deprecated Now per-user */
     syncInterval: Scalars['Duration']['output'];
-    /** @deprecated Now per-user */
     syncYomiApiKey: Scalars['String']['output'];
-    /** @deprecated Now per-user */
     syncYomiEnabled: Scalars['Boolean']['output'];
-    /** @deprecated Now per-user */
     syncYomiHost: Scalars['String']['output'];
-    /** @deprecated Now per-user */
     updateMangas: Scalars['Boolean']['output'];
     useHikariConnectionPool: Scalars['Boolean']['output'];
     webUIFlavor: WebUiFlavor;

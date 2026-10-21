@@ -3166,7 +3166,9 @@ export type ServerSettingsFragment = {
     databaseUrl: string;
     databaseUsername: string;
     databasePassword: string;
+    databaseSchema: string;
     useHikariConnectionPool: boolean;
+    hikariMaxPoolSize: number;
     repoWebUiUrl: string;
     repoWebUiType: Types.RepoType;
     repoServerUrl: string;
@@ -3280,7 +3282,9 @@ export type ResetServerSettingsMutation = {
             databaseUrl: string;
             databaseUsername: string;
             databasePassword: string;
+            databaseSchema: string;
             useHikariConnectionPool: boolean;
+            hikariMaxPoolSize: number;
             repoWebUiUrl: string;
             repoWebUiType: Types.RepoType;
             repoServerUrl: string;
@@ -3404,7 +3408,9 @@ export type UpdateServerSettingsMutation = {
             databaseUrl: string;
             databaseUsername: string;
             databasePassword: string;
+            databaseSchema: string;
             useHikariConnectionPool: boolean;
+            hikariMaxPoolSize: number;
             repoWebUiUrl: string;
             repoWebUiType: Types.RepoType;
             repoServerUrl: string;
@@ -3524,7 +3530,9 @@ export type GetServerSettingsQuery = {
         databaseUrl: string;
         databaseUsername: string;
         databasePassword: string;
+        databaseSchema: string;
         useHikariConnectionPool: boolean;
+        hikariMaxPoolSize: number;
         repoWebUiUrl: string;
         repoWebUiType: Types.RepoType;
         repoServerUrl: string;
