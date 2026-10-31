@@ -133,6 +133,9 @@ export const SERVER_SETTINGS = gql`
         databaseSchema
         useHikariConnectionPool
         hikariMaxPoolSize
+        
+        # WebView
+        kcefEnabled
 
         # Repository
         repoWebUiUrl

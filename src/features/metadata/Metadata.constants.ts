@@ -351,6 +351,9 @@ export const APP_METADATA: Record<
     shouldWakeLockScreen: {
         convert: convertToBoolean,
     },
+    shouldCropBorders: {
+        convert: convertToBoolean,
+    },
     hideHistory: {
         convert: convertToBoolean,
     },
