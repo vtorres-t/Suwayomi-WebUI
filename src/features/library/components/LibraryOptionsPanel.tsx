@@ -30,12 +30,6 @@ import {
     createUpdateCategoryMetadata,
     useGetCategoryMetadata,
 } from '@/features/category/services/CategoryMetadata.ts';
-import { makeToast } from '@/base/utils/Toast.ts';
-import {
-    createUpdateMetadataServerSettings,
-    updateMetadataServerSettings,
-    useMetadataServerSettings,
-} from '@/features/settings/services/ServerSettingsMetadata.ts';
 import { FilterMode, type LibrarySortMode } from '@/features/library/Library.types.ts';
 import type { CategoryMetadataInfo, ICategoryMetadata } from '@/features/category/Category.types.ts';
 import { MANGA_STATUS_TO_TRANSLATION } from '@/features/manga/Manga.constants.ts';
@@ -47,6 +41,12 @@ import Replay from '@mui/icons-material/Replay';
 import { Sources } from '@/features/source/services/Sources';
 import Stack from '@mui/material/Stack';
 import { ValueRotationButton } from '@/base/components/buttons/ValueRotationButton.tsx';
+import {
+    createUpdateMetadataServerSettings,
+    updateMetadataServerSettings,
+    useMetadataServerSettings,
+} from '@/features/settings/services/ServerSettingsMetadata.ts';
+import { Notifications } from '@/base/notification/Notifications.ts';
 
 const TITLES: { [key in 'filter' | 'sort' | 'display']: MessageDescriptor } = {
     filter: msg`Filter`,
@@ -176,7 +176,7 @@ export const LibraryOptionsPanel = ({
 
     const categoryLibraryOptions = useGetCategoryMetadata(category);
     const updateCategoryLibraryOptions = createUpdateCategoryMetadata(category, (e) =>
-        makeToast(t`Failed to save changes`, 'error', getErrorMessage(e)),
+        Notifications.error(t`Failed to save changes`, getErrorMessage(e)),
     );
 
     const {
@@ -190,7 +190,7 @@ export const LibraryOptionsPanel = ({
         },
     } = useMetadataServerSettings();
     const setSettingValue = createUpdateMetadataServerSettings((e) =>
-        makeToast(t`Could not save the default search settings to the server`, 'error', getErrorMessage(e)),
+        Notifications.error(t`Could not save the default search settings to the server`, getErrorMessage(e)),
     );
 
     const resetFilters = (
@@ -210,7 +210,7 @@ export const LibraryOptionsPanel = ({
                 categories: [category],
                 delete: deleteKeys,
             },
-        ]).catch((e) => makeToast(t`Could not reset filters`, 'error', getErrorMessage(e)));
+        ]).catch((e) => Notifications.error(t`Could not reset filters`, getErrorMessage(e)));
     };
 
     const isAnyFilterActive =

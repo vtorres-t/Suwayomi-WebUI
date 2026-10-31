@@ -6,8 +6,6 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-import { makeToast } from '@/base/utils/Toast.ts';
-
 /**
  * The notification API is not available in every browser, e.g. Safari on iOS does not provide it,
  * and browsers only expose it in a secure context (https or localhost)
@@ -26,14 +24,14 @@ const getServiceWorker = async (): Promise<ServiceWorkerRegistration | undefined
     }
 };
 
-export class Notifications {
+export class DeviceNotifications {
     /** "undefined" in case the browser does not support notifications */
     static getPermission(): NotificationPermission | undefined {
         return getApi()?.permission;
     }
 
     static isPermissionGranted(): boolean {
-        return Notifications.getPermission() === 'granted';
+        return DeviceNotifications.getPermission() === 'granted';
     }
 
     /** Has to be called from a user gesture, otherwise browsers reject the request */
@@ -53,11 +51,6 @@ export class Notifications {
 
     /** Shows a toast while the app is in use, and a notification of the browser otherwise */
     static async show(title: string, { onClick, ...options }: NotificationOptions & { onClick?: () => void } = {}) {
-        if (document.visibilityState === 'visible' && document.hasFocus()) {
-            makeToast(title, 'info', options.body);
-            return;
-        }
-
         const api = getApi();
 
         if (api?.permission !== 'granted') {

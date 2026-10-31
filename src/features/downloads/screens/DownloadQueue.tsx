@@ -19,12 +19,11 @@ import { useWindowEvent } from '@mantine/hooks';
 import { useLingui } from '@lingui/react/macro';
 import { CustomTooltip } from '@/base/components/CustomTooltip.tsx';
 import { requestManager } from '@/lib/requests/RequestManager.ts';
-import { makeToast } from '@/base/utils/Toast.ts';
 import { EmptyViewAbsoluteCentered } from '@/base/components/feedback/EmptyViewAbsoluteCentered.tsx';
 import { LoadingPlaceholder } from '@/base/components/feedback/LoadingPlaceholder.tsx';
 import { defaultPromiseErrorHandler } from '@/lib/DefaultPromiseErrorHandler.ts';
 import type { ChapterDownloadReorderInput } from '@/lib/graphql/generated/graphql-base.types.ts';
-import { DownloadState, DownloaderState } from '@/lib/graphql/generated/graphql-base.types.ts';
+import { DownloaderState, DownloadState } from '@/lib/graphql/generated/graphql-base.types.ts';
 import { coerceIn, getErrorMessage } from '@/lib/HelperFunctions.ts';
 import { DndSortableItem } from '@/lib/dnd-kit/DndSortableItem.tsx';
 import { DndKitUtil } from '@/lib/dnd-kit/DndKitUtil.ts';
@@ -45,7 +44,8 @@ import { DownloadGroupHeader } from '@/features/downloads/components/DownloadGro
 import { plural } from '@lingui/core/macro';
 import { Chapters } from '@/features/chapter/services/Chapters.ts';
 import Refresh from '@mui/icons-material/Refresh';
-import { useOffsetComponent } from '@/base/OffsetComponent.tsx';
+import { useOffsetComponent } from '@/base/components/OffsetComponent.tsx';
+import { Notifications } from '@/base/notification/Notifications.ts';
 
 export const DownloadQueue: React.FC = () => {
     const { t } = useLingui();
@@ -111,7 +111,7 @@ export const DownloadQueue: React.FC = () => {
         try {
             await Chapters.download(failedDownloadChapterIds);
         } catch (e) {
-            makeToast(t`Could not retry failed downloads`, 'error', getErrorMessage(e));
+            Notifications.error(t`Could not retry failed downloads`, getErrorMessage(e));
         }
     };
 
@@ -119,7 +119,7 @@ export const DownloadQueue: React.FC = () => {
         try {
             await requestManager.clearDownloads().response;
         } catch (e) {
-            makeToast(t`Could not remove all downloads from the queue`, 'error', getErrorMessage(e));
+            Notifications.error(t`Could not remove all downloads from the queue`, getErrorMessage(e));
         }
     };
 
@@ -140,12 +140,11 @@ export const DownloadQueue: React.FC = () => {
         }
 
         return reorderDownloadsMutation({ variables: { input: { reorders } } }).catch((e) => {
-            makeToast(
+            Notifications.error(
                 plural(reorders.length, {
                     one: 'Could not reorder download',
                     other: 'Could not reorder downloads',
                 }),
-                'error',
                 getErrorMessage(e),
             );
         });

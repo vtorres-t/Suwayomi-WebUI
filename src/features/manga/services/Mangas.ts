@@ -19,7 +19,6 @@ import type {
     MangaBaseFieldsFragment,
 } from '@/lib/graphql/generated/graphql.ts';
 import { Chapters } from '@/features/chapter/services/Chapters.ts';
-import { makeToast } from '@/base/utils/Toast.ts';
 import { getMetadataServerSettings } from '@/features/settings/services/ServerSettingsMetadata.ts';
 import { GET_MANGA_META, GET_MANGAS_BASE } from '@/lib/graphql/manga/MangaQuery.ts';
 import { MANGA_BASE_FIELDS, MANGA_MIGRATION_FIELDS } from '@/lib/graphql/manga/MangaFragments.ts';
@@ -63,6 +62,7 @@ import { filterChapters } from '@/features/chapter/utils/ChapterList.util.tsx';
 import mapValues from 'lodash/fp/mapValues';
 import { getMangaMetadata } from '@/features/manga/services/MangaMetadata.ts';
 import { SubpathUtil } from '@/lib/utils/SubpathUtil.ts';
+import { Notifications } from '@/base/notification/Notifications.ts';
 
 const I18N_PLURAL = 9999;
 
@@ -423,7 +423,7 @@ export class Mangas {
 
     static async migrate(mangaIds: MangaIdInfo['id'][]): Promise<void> {
         if (MigrationManager.isActive()) {
-            makeToast(t`A migration is already in progress`, 'error');
+            Notifications.error(t`A migration is already in progress`);
             return;
         }
 
@@ -486,16 +486,14 @@ export class Mangas {
                 return;
             }
 
-            makeToast(
+            Notifications.success(
                 /* lingui-extract-ignore */
                 i18n.t({ ...MANGA_ACTION_TO_TRANSLATION[action].success, values: { count: itemCount } }),
-                'success',
             );
         } catch (e) {
-            makeToast(
+            Notifications.error(
                 /* lingui-extract-ignore */
                 i18n.t({ ...MANGA_ACTION_TO_TRANSLATION[action].error, values: { count: itemCount } }),
-                'error',
                 getErrorMessage(e),
             );
             throw e;

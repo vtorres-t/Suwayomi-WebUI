@@ -9,7 +9,6 @@
 import type { DocumentNode, MaybeMasked, Unmasked } from '@apollo/client';
 import { useFragment } from '@apollo/client/react';
 import { t } from '@lingui/core/macro';
-import { makeToast } from '@/base/utils/Toast.ts';
 import { requestManager } from '@/lib/requests/RequestManager.ts';
 import { getMetadataServerSettings } from '@/features/settings/services/ServerSettingsMetadata.ts';
 import type { ChapterListFieldsFragment, DownloadTypeFieldsFragment } from '@/lib/graphql/generated/graphql.ts';
@@ -20,7 +19,7 @@ import type { MangaIdInfo } from '@/features/manga/Manga.types.ts';
 import type { RouteStateReader } from '@/features/reader/Reader.types.ts';
 import { ReaderResumeMode } from '@/features/reader/Reader.types.ts';
 import { AppRoutes } from '@/base/AppRoute.constants.ts';
-import { getErrorMessage } from '@/lib/HelperFunctions.ts';
+import { coerceIn, getErrorMessage } from '@/lib/HelperFunctions.ts';
 import { DOWNLOAD_TYPE_FIELDS } from '@/lib/graphql/download/DownloadFragments.ts';
 import { epochToDate, getDateString } from '@/base/utils/DateHelper.ts';
 import {
@@ -34,12 +33,14 @@ import type {
     ChapterIdInfo,
     ChapterNumberInfo,
     ChapterReadInfo,
+    ChapterReadProgressInfo,
     ChapterScanlatorInfo,
 } from '@/features/chapter/Chapter.types.ts';
 import { assertIsDefined } from '@/base/Asserts.ts';
 import { DirectionOffset } from '@/base/Base.types.ts';
 import { Confirmation } from '@/base/AppAwaitableComponent.ts';
 import { i18n } from '@/i18n';
+import { Notifications } from '@/base/notification/Notifications.ts';
 
 export class Chapters {
     static getIds(chapters: { id: number }[]): number[] {
@@ -154,6 +155,14 @@ export class Chapters {
 
     static getNonBookmarked<Chapter extends ChapterBookmarkInfo>(chapters: Chapter[]): Chapter[] {
         return chapters.filter((chapter) => !Chapters.isBookmarked(chapter));
+    }
+
+    static isPartiallyRead<Chapter extends ChapterReadProgressInfo>(chapter: Chapter): boolean {
+        return !Chapters.isRead(chapter) && chapter.lastPageRead > 0;
+    }
+
+    static getPartiallyRead<Chapter extends ChapterReadProgressInfo>(chapters: Chapter[]): Chapter[] {
+        return chapters.filter(Chapters.isPartiallyRead);
     }
 
     static isRead({ isRead }: ChapterReadInfo): boolean {
@@ -297,16 +306,15 @@ export class Chapters {
             }
 
             await fnToExecute();
-            makeToast(
+            Notifications.success(
                 /* lingui-extract-ignore */
                 i18n.t({ ...CHAPTER_ACTION_TO_TRANSLATION[action].success, values: { count: itemCount } }),
                 'success',
             );
         } catch (e) {
-            makeToast(
+            Notifications.error(
                 /* lingui-extract-ignore */
                 i18n.t({ ...CHAPTER_ACTION_TO_TRANSLATION[action].error, values: { count: itemCount } }),
-                'error',
                 getErrorMessage(e),
             );
             throw e;
@@ -495,5 +503,16 @@ export class Chapters {
                 chapters.map((chapter) => chapter.scanlator).filter((scanlator) => typeof scanlator === 'string'),
             ),
         ];
+    }
+
+    static getProgressString<Chapter extends ChapterReadProgressInfo>(chapter: Chapter): string {
+        if (!Chapters.isPartiallyRead(chapter)) {
+            return '';
+        }
+
+        const page = coerceIn(chapter.lastPageRead, 0, chapter.pageCount > 0 ? chapter.pageCount - 1 : undefined) + 1;
+        const readProgress = chapter.pageCount > 0 ? t`Page: ${page}/${chapter.pageCount}` : t`Page: ${page}`;
+
+        return readProgress;
     }
 }

@@ -16,15 +16,15 @@ import type {
     SubscriptionObservable,
     TypedDocumentNode,
 } from '@apollo/client/core';
-import { CombinedGraphQLErrors, Observable } from '@apollo/client/core';
-import { useMutation, useQuery, useSubscription } from '@apollo/client/react';
-import type { Reference } from '@apollo/client/utilities';
-import { useEffect, useMemo, useRef, useState } from 'react';
-import { d } from 'koration';
-import type { IRestClient } from '@/lib/requests/client/RestClient.ts';
-import { RestClient } from '@/lib/requests/client/RestClient.ts';
-import { GraphQLClient } from '@/lib/requests/client/GraphQLClient.ts';
-import { BaseClient } from '@/lib/requests/client/BaseClient.ts';
+import {CombinedGraphQLErrors, Observable} from '@apollo/client/core';
+import {useMutation, useQuery, useSubscription} from '@apollo/client/react';
+import type {Reference} from '@apollo/client/utilities';
+import {useEffect, useMemo, useRef, useState} from 'react';
+import {d} from 'koration';
+import type {IRestClient} from '@/lib/requests/client/RestClient.ts';
+import {RestClient} from '@/lib/requests/client/RestClient.ts';
+import {GraphQLClient} from '@/lib/requests/client/GraphQLClient.ts';
+import {BaseClient} from '@/lib/requests/client/BaseClient.ts';
 import type {
     AddExtensionStoreMutation,
     AddExtensionStoreMutationVariables,
@@ -204,6 +204,8 @@ import type {
     ValidateBackupQueryVariables,
     WebuiUpdateSubscription,
     WebuiUpdateSubscriptionVariables,
+    WebviewClearCacheCookiesMutation,
+    WebviewClearCacheCookiesMutationVariables,
 } from '@/lib/graphql/generated/graphql.ts';
 import type {
     CreateBackupInput,
@@ -238,22 +240,22 @@ import {
     MangaJobStatus,
     SortOrder,
 } from '@/lib/graphql/generated/graphql-base.types.ts';
-import { GET_GLOBAL_METADATAS } from '@/lib/graphql/metadata/GlobalMetadataQuery.ts';
-import { UPDATE_GLOBAL_METADATA } from '@/lib/graphql/metadata/GlobalMetadataMutation.ts';
+import {GET_GLOBAL_METADATAS} from '@/lib/graphql/metadata/GlobalMetadataQuery.ts';
+import {UPDATE_GLOBAL_METADATA} from '@/lib/graphql/metadata/GlobalMetadataMutation.ts';
 import {
     CHECK_FOR_SERVER_UPDATES,
     CHECK_FOR_WEBUI_UPDATE,
     GET_ABOUT,
     GET_WEBUI_UPDATE_STATUS,
 } from '@/lib/graphql/server/ServerInfoQuery.ts';
-import { GET_EXTENSION, GET_EXTENSIONS } from '@/lib/graphql/extension/ExtensionQuery.ts';
+import {GET_EXTENSION, GET_EXTENSIONS} from '@/lib/graphql/extension/ExtensionQuery.ts';
 import {
     GET_EXTENSIONS_FETCH,
     INSTALL_EXTERNAL_EXTENSION,
     UPDATE_EXTENSION,
     UPDATE_EXTENSIONS,
 } from '@/lib/graphql/extension/ExtensionMutation.ts';
-import { GET_MIGRATABLE_SOURCES, GET_SOURCES_LIST } from '@/lib/graphql/source/SourceQuery.ts';
+import {GET_MIGRATABLE_SOURCES, GET_SOURCES_LIST} from '@/lib/graphql/source/SourceQuery.ts';
 import {
     GET_MANGA_TO_MIGRATE_TO_FETCH,
     REFRESH_MANGA,
@@ -263,7 +265,7 @@ import {
     UPDATE_MANGAS,
     UPDATE_MANGAS_CATEGORIES,
 } from '@/lib/graphql/manga/MangaMutation.ts';
-import { GET_MANGA_TO_MIGRATE, GET_MANGA_TRACK_RECORDS, GET_MANGAS_LIBRARY } from '@/lib/graphql/manga/MangaQuery.ts';
+import {GET_MANGA_TO_MIGRATE, GET_MANGA_TRACK_RECORDS, GET_MANGAS_LIBRARY} from '@/lib/graphql/manga/MangaQuery.ts';
 import {
     GET_CATEGORIES_BASE,
     GET_CATEGORIES_LIBRARY,
@@ -306,23 +308,23 @@ import {
     UPDATE_CATEGORY_METADATA,
     UPDATE_CATEGORY_ORDER,
 } from '@/lib/graphql/category/CategoryMutation.ts';
-import { STOP_UPDATER, UPDATE_LIBRARY } from '@/lib/graphql/updater/UpdaterMutation.ts';
-import { GET_LAST_UPDATE_TIMESTAMP, GET_UPDATE_STATUS } from '@/lib/graphql/updater/UpdaterQuery.ts';
-import { CustomCache } from '@/lib/storage/CustomCache.ts';
-import { CREATE_BACKUP, RESTORE_BACKUP } from '@/lib/graphql/backup/BackupMutation.ts';
-import { GET_RESTORE_STATUS, VALIDATE_BACKUP } from '@/lib/graphql/backup/BackupQuery.ts';
-import { DOWNLOAD_STATUS_SUBSCRIPTION } from '@/lib/graphql/download/DownloaderSubscription.ts';
-import { UPDATER_SUBSCRIPTION } from '@/lib/graphql/updater/UpdaterSubscription.ts';
-import { GET_SERVER_SETTINGS } from '@/lib/graphql/settings/SettingsQuery.ts';
-import { UPDATE_SERVER_SETTINGS } from '@/lib/graphql/settings/SettingsMutation.ts';
-import { CLEAR_SERVER_CACHE } from '@/lib/graphql/image/ImageMutation.ts';
-import { RESET_WEBUI_UPDATE_STATUS, UPDATE_WEBUI } from '@/lib/graphql/server/ServerInfoMutation.ts';
-import { WEBUI_UPDATE_SUBSCRIPTION } from '@/lib/graphql/server/ServerInfoSubscription.ts';
-import { GET_DOWNLOAD_STATUS } from '@/lib/graphql/download/DownloaderQuery.ts';
-import { defaultPromiseErrorHandler } from '@/lib/DefaultPromiseErrorHandler.ts';
-import type { QueuePriority } from '@/lib/Queue.ts';
-import { SourceAwareQueue } from '@/lib/SourceAwareQueue.ts';
-import { GET_MANGA_RELATED, TRACKER_SEARCH } from '@/lib/graphql/tracker/TrackerQuery.ts';
+import {STOP_UPDATER, UPDATE_LIBRARY} from '@/lib/graphql/updater/UpdaterMutation.ts';
+import {GET_LAST_UPDATE_TIMESTAMP, GET_UPDATE_STATUS} from '@/lib/graphql/updater/UpdaterQuery.ts';
+import {CustomCache} from '@/lib/storage/CustomCache.ts';
+import {CREATE_BACKUP, RESTORE_BACKUP} from '@/lib/graphql/backup/BackupMutation.ts';
+import {GET_RESTORE_STATUS, VALIDATE_BACKUP} from '@/lib/graphql/backup/BackupQuery.ts';
+import {DOWNLOAD_STATUS_SUBSCRIPTION} from '@/lib/graphql/download/DownloaderSubscription.ts';
+import {UPDATER_SUBSCRIPTION} from '@/lib/graphql/updater/UpdaterSubscription.ts';
+import {GET_SERVER_SETTINGS} from '@/lib/graphql/settings/SettingsQuery.ts';
+import {UPDATE_SERVER_SETTINGS} from '@/lib/graphql/settings/SettingsMutation.ts';
+import {CLEAR_SERVER_CACHE} from '@/lib/graphql/image/ImageMutation.ts';
+import {RESET_WEBUI_UPDATE_STATUS, UPDATE_WEBUI} from '@/lib/graphql/server/ServerInfoMutation.ts';
+import {WEBUI_UPDATE_SUBSCRIPTION} from '@/lib/graphql/server/ServerInfoSubscription.ts';
+import {GET_DOWNLOAD_STATUS} from '@/lib/graphql/download/DownloaderQuery.ts';
+import {defaultPromiseErrorHandler} from '@/lib/DefaultPromiseErrorHandler.ts';
+import type {QueuePriority} from '@/lib/Queue.ts';
+import {SourceAwareQueue} from '@/lib/SourceAwareQueue.ts';
+import {GET_MANGA_RELATED, TRACKER_SEARCH} from '@/lib/graphql/tracker/TrackerQuery.ts';
 import {
     TRACK_BIND_TRACK_RECORD,
     TRACKER_BIND,
@@ -333,32 +335,33 @@ import {
     TRACKER_UNBIND,
     TRACKER_UPDATE_BIND,
 } from '@/lib/graphql/tracker/TrackerMutation.ts';
-import { ControlledPromise } from '@/lib/ControlledPromise.ts';
-import { DOWNLOAD_STATUS_FIELDS } from '@/lib/graphql/download/DownloadFragments.ts';
-import { EXTENSION_LIST_FIELDS } from '@/lib/graphql/extension/ExtensionFragments.ts';
-import { MANGA_BASE_FIELDS, MANGA_META_FIELDS } from '@/lib/graphql/manga/MangaFragments.ts';
-import { GLOBAL_METADATA } from '@/lib/graphql/common/Fragments.ts';
-import { CATEGORY_META_FIELDS } from '@/lib/graphql/category/CategoryFragments.ts';
-import { SOURCE_META_FIELDS } from '@/lib/graphql/source/SourceFragments.ts';
-import { CHAPTER_META_FIELDS } from '@/lib/graphql/chapter/ChapterFragments.ts';
-import type { MetadataMigrationSettings } from '@/features/migration/Migration.types.ts';
-import type { MangaIdInfo } from '@/features/manga/Manga.types.ts';
-import { updateMetadataList } from '@/features/metadata/services/MetadataApolloCacheHandler.ts';
-import { USER_LOGIN, REFRESH_ACCESS_TOKEN } from '@/lib/graphql/user/UserMutation.ts';
-import { AuthManager } from '@/features/authentication/AuthManager.ts';
-import { useLocalStorage } from '@/base/hooks/useStorage.tsx';
-import { KO_SYNC_LOGIN, KO_SYNC_LOGOUT } from '@/lib/graphql/koreader/KoreaderSyncMutation.ts';
-import { GET_KO_SYNC_STATUS } from '@/lib/graphql/koreader/KoreaderSyncQuery.ts';
-import { ImageCache } from '@/lib/service-worker/ImageCache.ts';
-import { Sources } from '@/features/source/services/Sources.ts';
+import {ControlledPromise} from '@/lib/ControlledPromise.ts';
+import {DOWNLOAD_STATUS_FIELDS} from '@/lib/graphql/download/DownloadFragments.ts';
+import {EXTENSION_LIST_FIELDS} from '@/lib/graphql/extension/ExtensionFragments.ts';
+import {MANGA_BASE_FIELDS, MANGA_META_FIELDS} from '@/lib/graphql/manga/MangaFragments.ts';
+import {GLOBAL_METADATA} from '@/lib/graphql/common/Fragments.ts';
+import {CATEGORY_META_FIELDS} from '@/lib/graphql/category/CategoryFragments.ts';
+import {SOURCE_META_FIELDS} from '@/lib/graphql/source/SourceFragments.ts';
+import {CHAPTER_META_FIELDS} from '@/lib/graphql/chapter/ChapterFragments.ts';
+import type {MetadataMigrationSettings} from '@/features/migration/Migration.types.ts';
+import type {MangaIdInfo} from '@/features/manga/Manga.types.ts';
+import {updateMetadataList} from '@/features/metadata/services/MetadataApolloCacheHandler.ts';
+import {REFRESH_ACCESS_TOKEN, USER_LOGIN} from '@/lib/graphql/user/UserMutation.ts';
+import {AuthManager} from '@/features/authentication/AuthManager.ts';
+import {useLocalStorage} from '@/base/hooks/useStorage.tsx';
+import {KO_SYNC_LOGIN, KO_SYNC_LOGOUT} from '@/lib/graphql/koreader/KoreaderSyncMutation.ts';
+import {GET_KO_SYNC_STATUS} from '@/lib/graphql/koreader/KoreaderSyncQuery.ts';
+import {ImageCache} from '@/lib/service-worker/ImageCache.ts';
+import {Sources} from '@/features/source/services/Sources.ts';
 import uniqBy from 'lodash/fp/uniqBy';
-import { EXTENSION_STORE_FIELDS } from '@/lib/graphql/extension/store/ExtensionStoreFragments.ts';
-import { ADD_EXTENSION_STORE, REMOVE_EXTENSION_STORE } from '@/lib/graphql/extension/store/ExtensionStoreMutation.ts';
-import { assertIsDefined } from '@/base/Asserts.ts';
-import { GET_EXTENSION_STORE, GET_EXTENSION_STORES } from '@/lib/graphql/extension/store/ExtensionStoreQuery.ts';
-import { SYNC_SUBSCRIPTION } from '@/lib/graphql/sync/SyncSubscription.ts';
-import { START_SYNC } from '@/lib/graphql/sync/SyncMutation.ts';
-import { GET_SYNC_STATUS } from '@/lib/graphql/sync/SyncQuery.ts';
+import {EXTENSION_STORE_FIELDS} from '@/lib/graphql/extension/store/ExtensionStoreFragments.ts';
+import {ADD_EXTENSION_STORE, REMOVE_EXTENSION_STORE} from '@/lib/graphql/extension/store/ExtensionStoreMutation.ts';
+import {assertIsDefined} from '@/base/Asserts.ts';
+import {GET_EXTENSION_STORE, GET_EXTENSION_STORES} from '@/lib/graphql/extension/store/ExtensionStoreQuery.ts';
+import {SYNC_SUBSCRIPTION} from '@/lib/graphql/sync/SyncSubscription.ts';
+import {START_SYNC} from '@/lib/graphql/sync/SyncMutation.ts';
+import {GET_SYNC_STATUS} from '@/lib/graphql/sync/SyncQuery.ts';
+import {WEBVIEW_CLEAR_CACHE_COOKIES} from '@/lib/graphql/web-view/WebViewMutation.ts';
 
 enum GQLMethod {
     QUERY = 'QUERY',
@@ -440,21 +443,21 @@ export type AbortableApolloUseMutationPaginatedResponse<
     (page: number) => Promise<ApolloClient.MutateResult<MaybeMasked<Data>>>,
     (Omit<useMutation.ResultTuple<Data, Variables>[1], 'loading'> &
         AbortableRequest & {
-            size: number;
-            /**
-             * Indicates whether any request is currently active.
-             * In case only "isLoading" is true, it means that it's the initial request
-             */
-            isLoading: boolean;
-            /**
-             * Indicates if a next page is being fetched, which is not part of the initial pages
-             */
-            isLoadingMore: boolean;
-            /**
-             * Indicates if the cached pages are currently getting revalidated
-             */
-            isValidating: boolean;
-        })[],
+        size: number;
+        /**
+         * Indicates whether any request is currently active.
+         * In case only "isLoading" is true, it means that it's the initial request
+         */
+        isLoading: boolean;
+        /**
+         * Indicates if a next page is being fetched, which is not part of the initial pages
+         */
+        isLoadingMore: boolean;
+        /**
+         * Indicates if the cached pages are currently getting revalidated
+         */
+        isValidating: boolean;
+    })[],
 ];
 export type AbortableApolloMutationResponse<Data = any> = {
     response: Promise<ApolloClient.MutateResult<MaybeMasked<Data>>>;
@@ -565,7 +568,7 @@ export class RequestManager {
             }
         };
 
-        return { signal: abortController.signal, abortRequest };
+        return {signal: abortController.signal, abortRequest};
     }
 
     private createPaginatedResult<Result extends AbortableApolloUseMutationPaginatedResponse[1][number]>(
@@ -577,8 +580,10 @@ export class RequestManager {
         const size = page ?? result?.size ?? defaultPage;
         return {
             client: this.graphQLClient.client,
-            abortRequest: () => {},
-            reset: () => {},
+            abortRequest: () => {
+            },
+            reset: () => {
+            },
             called: false,
             data: undefined,
             error: undefined,
@@ -618,13 +623,13 @@ export class RequestManager {
             return;
         }
 
-        const { response: revalidationRequest } = this.doRequest<Data, Variables>(
+        const {response: revalidationRequest} = this.doRequest<Data, Variables>(
             GQLMethod.MUTATION,
             GET_SOURCE_MANGAS_FETCH,
             getVariablesFor(pageToRevalidate),
             {
                 ...options,
-                context: { fetchOptions: { signal } },
+                context: {fetchOptions: {signal}},
             } as MutationOptions<Data, Variables>,
         );
 
@@ -750,9 +755,9 @@ export class RequestManager {
             called: true,
         };
 
-        let response: ApolloClient.MutateResult<MaybeMasked<Data>> = { data: undefined };
+        let response: ApolloClient.MutateResult<MaybeMasked<Data>> = {data: undefined};
         try {
-            const { signal, abortRequest } = this.createAbortController();
+            const {signal, abortRequest} = this.createAbortController();
             setAbortRequest(abortRequest);
 
             const isRefetch = newPage === [...cachedPages][cachedPages.size - 1];
@@ -767,18 +772,18 @@ export class RequestManager {
 
             setResult({
                 ...getResultIdInfo(),
-                ...createPaginatedResult({ isLoading: true, abortRequest, size: newPage, called: true }),
+                ...createPaginatedResult({isLoading: true, abortRequest, size: newPage, called: true}),
             });
 
             if (newPage !== 1 && cachedPages.size) {
                 await revalidate(newPage, abortRequest, signal);
             }
 
-            const { response: request } = this.doRequest<Data, Variables>(
+            const {response: request} = this.doRequest<Data, Variables>(
                 GQLMethod.MUTATION,
                 documentNode,
                 getVariablesFor(newPage),
-                { ...options, context: { fetchOptions: { signal } } } as MutationOptions<Data, Variables>,
+                {...options, context: {fetchOptions: {signal}}} as MutationOptions<Data, Variables>,
             );
 
             response = await request;
@@ -908,7 +913,7 @@ export class RequestManager {
             if (shouldRevalidateData) {
                 setRevalidationDone(true);
 
-                const { signal, abortRequest } = this.createAbortController();
+                const {signal, abortRequest} = this.createAbortController();
                 revalidate(Math.max(...cachedPages), abortRequest, signal);
             }
         }, [isMountedRef.current, isRevalidationDone]);
@@ -1005,10 +1010,11 @@ export class RequestManager {
 
     private async fetchImageViaTag(
         url: string,
-        { priority, shouldDecode, disableCors, ignoreQueue }: ImageRequestOptions = {},
+        {priority, shouldDecode, disableCors, ignoreQueue}: ImageRequestOptions = {},
     ): Promise<ImageRequest> {
         const imgRequest = new ControlledPromise<string>();
-        imgRequest.promise.catch(() => {});
+        imgRequest.promise.catch(() => {
+        });
 
         const img = new Image();
         const abortRequest = (reason?: any) => {
@@ -1056,7 +1062,8 @@ export class RequestManager {
             response,
             abortRequest: (reason?: any) =>
                 this.abortImageRequest(key, this.getSourceIdFromUrl(url), () => abortRequest(reason)),
-            cleanup: () => {},
+            cleanup: () => {
+            },
             fromCache: !!fromCache,
         };
     }
@@ -1076,10 +1083,10 @@ export class RequestManager {
      */
     private async fetchImageViaFetchApi(
         url: string,
-        { priority, shouldDecode, disableCors, ignoreQueue }: ImageRequestOptions = {},
+        {priority, shouldDecode, disableCors, ignoreQueue}: ImageRequestOptions = {},
     ): Promise<ImageRequest> {
         let objectUrl: string = '';
-        const { abortRequest, signal } = this.createAbortController();
+        const {abortRequest, signal} = this.createAbortController();
 
         const {
             key,
@@ -1142,10 +1149,10 @@ export class RequestManager {
         const shouldDecode = finalOptions.shouldDecode && navigator.userAgent.toLowerCase().includes('firefox');
 
         if (finalOptions.useFetchApi) {
-            return this.fetchImageViaFetchApi(url, { ...finalOptions, shouldDecode });
+            return this.fetchImageViaFetchApi(url, {...finalOptions, shouldDecode});
         }
 
-        return this.fetchImageViaTag(url, { ...finalOptions, shouldDecode });
+        return this.fetchImageViaTag(url, {...finalOptions, shouldDecode});
     }
 
     private doRequest<Data, Variables extends OperationVariables = OperationVariables>(
@@ -1208,10 +1215,10 @@ export class RequestManager {
         | AbortableApolloMutationResponse<Data>
         | useSubscription.Result<Data>
         | SubscriptionObservable<ApolloClient.SubscribeResult<MaybeMasked<Data>>> {
-        const { signal, abortRequest } = this.createAbortController();
+        const {signal, abortRequest} = this.createAbortController();
         switch (method) {
             case GQLMethod.QUERY: {
-                const { addAbortSignal: addSignal, ...queryOptions } = (options ?? {}) as QueryOptions<Variables, Data>;
+                const {addAbortSignal: addSignal, ...queryOptions} = (options ?? {}) as QueryOptions<Variables, Data>;
                 return {
                     response: this.graphQLClient.client.query({
                         query: operation,
@@ -1229,7 +1236,7 @@ export class RequestManager {
                 };
             }
             case GQLMethod.USE_QUERY: {
-                const { addAbortSignal: addSignal, ...queryHookOptions } = (options ?? {}) as QueryHookOptions<
+                const {addAbortSignal: addSignal, ...queryHookOptions} = (options ?? {}) as QueryHookOptions<
                     Data,
                     Variables
                 >;
@@ -1250,7 +1257,7 @@ export class RequestManager {
                 } as AbortableApolloUseQueryResponse<Data, Variables>;
             }
             case GQLMethod.USE_MUTATION: {
-                const { addAbortSignal: addSignal, ...mutationHookOptions } = (options ?? {}) as MutationHookOptions<
+                const {addAbortSignal: addSignal, ...mutationHookOptions} = (options ?? {}) as MutationHookOptions<
                     Data,
                     Variables
                 >;
@@ -1267,10 +1274,10 @@ export class RequestManager {
                     },
                 });
 
-                return [mutationResult[0], { ...mutationResult[1], abortRequest }];
+                return [mutationResult[0], {...mutationResult[1], abortRequest}];
             }
             case GQLMethod.MUTATION: {
-                const { addAbortSignal: addSignal, ...mutationOptions } = (options ?? {}) as MutationOptions<
+                const {addAbortSignal: addSignal, ...mutationOptions} = (options ?? {}) as MutationOptions<
                     Data,
                     Variables
                 >;
@@ -1331,10 +1338,10 @@ export class RequestManager {
 
     public updateGlobalMeta(
         {
-            preUpdateDeleteInput = { keys: [] },
-            updateInput = { metas: [] },
-            postUpdateDeleteInput = { keys: [] },
-            migrateInput = { metas: [] },
+            preUpdateDeleteInput = {keys: []},
+            updateInput = {metas: []},
+            postUpdateDeleteInput = {keys: []},
+            migrateInput = {metas: []},
         }: {
             preUpdateDeleteInput?: DeleteGlobalMetasInput;
             updateInput?: SetGlobalMetasInput;
@@ -1393,18 +1400,18 @@ export class RequestManager {
                         })),
                     },
                 },
-                update(cache, { data }) {
+                update(cache, {data}) {
                     preUpdateDeleteInput?.keys?.forEach((key) => {
-                        cache.evict({ id: cache.identify({ __typename: 'GlobalMetaType', key }) });
+                        cache.evict({id: cache.identify({__typename: 'GlobalMetaType', key})});
                     });
 
                     postUpdateDeleteInput?.keys?.forEach((key) => {
-                        cache.evict({ id: cache.identify({ __typename: 'GlobalMetaType', key }) });
+                        cache.evict({id: cache.identify({__typename: 'GlobalMetaType', key})});
                     });
 
                     cache.modify({
                         fields: {
-                            metas(existingMetas, { readField }) {
+                            metas(existingMetas, {readField}) {
                                 if (!existingMetas) {
                                     return existingMetas;
                                 }
@@ -1477,7 +1484,7 @@ export class RequestManager {
         indexUrl: string,
         options?: QueryHookOptions<GetExtensionStoreQuery, GetExtensionStoreQueryVariables>,
     ): AbortableApolloUseQueryResponse<GetExtensionStoreQuery, GetExtensionStoreQueryVariables> {
-        return this.doRequest(GQLMethod.USE_QUERY, GET_EXTENSION_STORE, { indexUrl }, options);
+        return this.doRequest(GQLMethod.USE_QUERY, GET_EXTENSION_STORE, {indexUrl}, options);
     }
 
     public useGetExtensionStores(
@@ -1508,12 +1515,12 @@ export class RequestManager {
 
             assertIsDefined(variables);
 
-            const { indexUrl } = variables.input;
+            const {indexUrl} = variables.input;
 
             return mutate({
                 update: (cache) => {
                     cache.updateQuery<GetExtensionStoresQuery, GetExtensionStoresQueryVariables>(
-                        { query: GET_EXTENSION_STORES },
+                        {query: GET_EXTENSION_STORES},
                         (data) => ({
                             ...data!,
                             extensionStores: {
@@ -1537,7 +1544,7 @@ export class RequestManager {
                             contactWebsite: '',
                             contactDiscord: null,
                             extensionListUrl: null,
-                            extensions: { __typename: 'ExtensionNodeList', totalCount: 0 },
+                            extensions: {__typename: 'ExtensionNodeList', totalCount: 0},
                         },
                     },
                 },
@@ -1552,7 +1559,7 @@ export class RequestManager {
         pkgName: string,
         options?: QueryHookOptions<GetExtensionQuery, GetExtensionQueryVariables>,
     ): AbortableApolloUseQueryResponse<GetExtensionQuery, GetExtensionQueryVariables> {
-        return this.doRequest(GQLMethod.USE_QUERY, GET_EXTENSION, { pkgName }, options);
+        return this.doRequest(GQLMethod.USE_QUERY, GET_EXTENSION, {pkgName}, options);
     }
 
     public useGetExtensionList(
@@ -1571,13 +1578,13 @@ export class RequestManager {
             {
                 ...options,
                 refetchQueries: [GET_EXTENSIONS],
-                update(cache, { data: mutationData }) {
+                update(cache, {data: mutationData}) {
                     if (!mutationData?.fetchExtensions?.extensions) {
                         return;
                     }
 
                     cache.updateQuery<GetExtensionsQuery, GetExtensionsQueryVariables>(
-                        { query: GET_EXTENSIONS },
+                        {query: GET_EXTENSIONS},
                         () => ({
                             __typename: 'Query',
                             extensions: {
@@ -1619,13 +1626,13 @@ export class RequestManager {
             {
                 ...options,
                 refetchQueries: [GET_EXTENSIONS],
-                update(cache, { data: mutationData }) {
+                update(cache, {data: mutationData}) {
                     if (!mutationData?.fetchExtensions?.extensions) {
                         return;
                     }
 
                     cache.updateQuery<GetExtensionsQuery, GetExtensionsQueryVariables>(
-                        { query: GET_EXTENSIONS },
+                        {query: GET_EXTENSIONS},
                         () => ({
                             __typename: 'Query',
                             extensions: {
@@ -1673,38 +1680,38 @@ export class RequestManager {
                 !cachedResult
                     ? result
                     : {
-                          ...cachedResult,
-                          data: !cachedResult?.data?.fetchExtensions?.extensions
-                              ? cachedResult?.data
-                              : {
-                                    ...cachedResult.data,
-                                    fetchExtensions: {
-                                        ...cachedResult.data.fetchExtensions,
-                                        extensions: cachedResult.data.fetchExtensions.extensions.map(
-                                            (extension) =>
-                                                this.graphQLClient.client.cache.readFragment<
-                                                    NonNullable<
-                                                        GetExtensionsFetchMutation['fetchExtensions']
-                                                    >['extensions'][0]
-                                                >({
-                                                    id: this.graphQLClient.client.cache.identify(extension),
-                                                    fragment: EXTENSION_LIST_FIELDS,
-                                                }) ?? extension,
-                                        ),
-                                        extensionStores: cachedResult.data.fetchExtensions.extensionStores.map(
-                                            (store) =>
-                                                this.graphQLClient.client.cache.readFragment<
-                                                    NonNullable<
-                                                        GetExtensionsFetchMutation['fetchExtensions']
-                                                    >['extensionStores'][0]
-                                                >({
-                                                    id: this.graphQLClient.client.cache.identify(store),
-                                                    fragment: EXTENSION_STORE_FIELDS,
-                                                }),
-                                        ),
-                                    },
+                        ...cachedResult,
+                        data: !cachedResult?.data?.fetchExtensions?.extensions
+                            ? cachedResult?.data
+                            : {
+                                ...cachedResult.data,
+                                fetchExtensions: {
+                                    ...cachedResult.data.fetchExtensions,
+                                    extensions: cachedResult.data.fetchExtensions.extensions.map(
+                                        (extension) =>
+                                            this.graphQLClient.client.cache.readFragment<
+                                                NonNullable<
+                                                    GetExtensionsFetchMutation['fetchExtensions']
+                                                >['extensions'][0]
+                                            >({
+                                                id: this.graphQLClient.client.cache.identify(extension),
+                                                fragment: EXTENSION_LIST_FIELDS,
+                                            }) ?? extension,
+                                    ),
+                                    extensionStores: cachedResult.data.fetchExtensions.extensionStores.map(
+                                        (store) =>
+                                            this.graphQLClient.client.cache.readFragment<
+                                                NonNullable<
+                                                    GetExtensionsFetchMutation['fetchExtensions']
+                                                >['extensionStores'][0]
+                                            >({
+                                                id: this.graphQLClient.client.cache.identify(store),
+                                                fragment: EXTENSION_STORE_FIELDS,
+                                            }),
+                                    ),
                                 },
-                      },
+                            },
+                    },
             [this.cache.getFetchTimestampFor(EXTENSION_LIST_CACHE_KEY, undefined), result.loading],
         );
 
@@ -1729,8 +1736,8 @@ export class RequestManager {
         const result = this.doRequest<InstallExternalExtensionMutation, InstallExternalExtensionMutationVariables>(
             GQLMethod.MUTATION,
             INSTALL_EXTERNAL_EXTENSION,
-            { file: extensionFile },
-            { refetchQueries: [GET_EXTENSIONS], ...options },
+            {file: extensionFile},
+            {refetchQueries: [GET_EXTENSIONS], ...options},
         );
 
         result.response.then((response) => {
@@ -1738,7 +1745,7 @@ export class RequestManager {
                 return;
             }
 
-            this.graphQLClient.client.cache.evict({ fieldName: 'sources' });
+            this.graphQLClient.client.cache.evict({fieldName: 'sources'});
             const cachedExtensions = this.cache.getResponseFor<useMutation.Result<GetExtensionsFetchMutation>>(
                 EXTENSION_LIST_CACHE_KEY,
                 undefined,
@@ -1770,25 +1777,25 @@ export class RequestManager {
                         ...cachedExtensions.data.fetchExtensions,
                         extensions: isExtensionCached
                             ? cachedExtensions.data.fetchExtensions!.extensions.map((extension) => {
-                                  const isUpdatedExtension = installedExtension?.pkgName === extension.pkgName;
-                                  if (!isUpdatedExtension) {
-                                      return extension;
-                                  }
+                                const isUpdatedExtension = installedExtension?.pkgName === extension.pkgName;
+                                if (!isUpdatedExtension) {
+                                    return extension;
+                                }
 
-                                  return {
-                                      ...extension,
-                                      ...installedExtension,
-                                      hasUpdate:
-                                          Number(installedExtension?.versionCodeLong ?? -1) <
-                                          Number(extension.versionCodeLong),
-                                  };
-                              })
+                                return {
+                                    ...extension,
+                                    ...installedExtension,
+                                    hasUpdate:
+                                        Number(installedExtension?.versionCodeLong ?? -1) <
+                                        Number(extension.versionCodeLong),
+                                };
+                            })
                             : [
-                                  ...(cachedExtensions.data.fetchExtensions?.extensions ?? []),
-                                  installedExtension as NonNullable<
-                                      GetExtensionsFetchMutation['fetchExtensions']
-                                  >['extensions'][number],
-                              ],
+                                ...(cachedExtensions.data.fetchExtensions?.extensions ?? []),
+                                installedExtension as NonNullable<
+                                    GetExtensionsFetchMutation['fetchExtensions']
+                                >['extensions'][number],
+                            ],
                         extensionStores: cachedExtensions.data?.fetchExtensions!.extensionStores,
                     },
                 },
@@ -1802,13 +1809,13 @@ export class RequestManager {
 
     public updateExtension(
         id: string,
-        { isObsolete = false, ...patch }: UpdateExtensionPatchInput & { isObsolete?: boolean },
+        {isObsolete = false, ...patch}: UpdateExtensionPatchInput & { isObsolete?: boolean },
         options?: MutationOptions<UpdateExtensionMutation, UpdateExtensionMutationVariables>,
     ): AbortableApolloMutationResponse<UpdateExtensionMutation> {
         const result = this.doRequest<UpdateExtensionMutation, UpdateExtensionMutationVariables>(
             GQLMethod.MUTATION,
             UPDATE_EXTENSION,
-            { input: { id, patch } },
+            {input: {id, patch}},
             options,
         );
 
@@ -1817,7 +1824,7 @@ export class RequestManager {
                 return;
             }
 
-            this.graphQLClient.client.cache.evict({ fieldName: 'sources' });
+            this.graphQLClient.client.cache.evict({fieldName: 'sources'});
             const cachedExtensions = this.cache.getResponseFor<useMutation.Result<GetExtensionsFetchMutation>>(
                 EXTENSION_LIST_CACHE_KEY,
                 undefined,
@@ -1868,13 +1875,13 @@ export class RequestManager {
 
     public updateExtensions(
         ids: string[],
-        { isObsolete = false, ...patch }: UpdateExtensionPatchInput & { isObsolete?: boolean },
+        {isObsolete = false, ...patch}: UpdateExtensionPatchInput & { isObsolete?: boolean },
         options?: MutationOptions<UpdateExtensionsMutation, UpdateExtensionsMutationVariables>,
     ): AbortableApolloMutationResponse<UpdateExtensionsMutation> {
         const result = this.doRequest<UpdateExtensionsMutation, UpdateExtensionsMutationVariables>(
             GQLMethod.MUTATION,
             UPDATE_EXTENSIONS,
-            { input: { ids, patch } },
+            {input: {ids, patch}},
             options,
         );
 
@@ -1883,7 +1890,7 @@ export class RequestManager {
                 return;
             }
 
-            this.graphQLClient.client.cache.evict({ fieldName: 'sources' });
+            this.graphQLClient.client.cache.evict({fieldName: 'sources'});
             const cachedExtensions = this.cache.getResponseFor<useMutation.Result<GetExtensionsFetchMutation>>(
                 EXTENSION_LIST_CACHE_KEY,
                 undefined,
@@ -1949,15 +1956,15 @@ export class RequestManager {
         id: string,
         options?: QueryHookOptions<Data, Variables>,
     ): AbortableApolloUseQueryResponse<Data, Variables> {
-        return this.doRequest(GQLMethod.USE_QUERY, document, { id } as unknown as Variables, options);
+        return this.doRequest(GQLMethod.USE_QUERY, document, {id} as unknown as Variables, options);
     }
 
     public updateSourceMeta(
         {
-            preUpdateDeleteInput = { items: [] },
-            updateInput = { items: [] },
-            postUpdateDeleteInput = { items: [] },
-            migrateInput = { items: [] },
+            preUpdateDeleteInput = {items: []},
+            updateInput = {items: []},
+            postUpdateDeleteInput = {items: []},
+            migrateInput = {items: []},
         }: {
             preUpdateDeleteInput?: DeleteSourceMetasInput;
             updateInput?: SetSourceMetasInput;
@@ -2039,12 +2046,12 @@ export class RequestManager {
                         ),
                     },
                 },
-                update(cache, { data }) {
+                update(cache, {data}) {
                     preUpdateDeleteInput?.items.forEach((item) =>
                         item.sourceIds.forEach((sourceId) =>
                             item.keys?.forEach((key) => {
                                 cache.evict({
-                                    id: cache.identify({ __typename: 'SourceMetaType', sourceId, key }),
+                                    id: cache.identify({__typename: 'SourceMetaType', sourceId, key}),
                                 });
                             }),
                         ),
@@ -2054,7 +2061,7 @@ export class RequestManager {
                         item.sourceIds.forEach((sourceId) =>
                             item.keys?.forEach((key) => {
                                 cache.evict({
-                                    id: cache.identify({ __typename: 'SourceMetaType', sourceId, key }),
+                                    id: cache.identify({__typename: 'SourceMetaType', sourceId, key}),
                                 });
                             }),
                         ),
@@ -2071,9 +2078,9 @@ export class RequestManager {
 
                     sourceIds.forEach((sourceId) => {
                         cache.modify({
-                            id: cache.identify({ __typename: 'SourceType', id: sourceId }),
+                            id: cache.identify({__typename: 'SourceType', id: sourceId}),
                             fields: {
-                                meta(existingMetas, { readField }) {
+                                meta(existingMetas, {readField}) {
                                     const updatedMeta = [
                                         ...(data?.updatedMeta?.metas.filter((meta) => meta.sourceId === sourceId) ??
                                             []),
@@ -2126,13 +2133,14 @@ export class RequestManager {
         const isRevalidationDoneRef = useRef(false);
         const activeRevalidationRef = useRef<
             | [
-                  ForInput: GetSourceMangasFetchMutationVariables,
-                  Request: Promise<unknown>,
-                  AbortRequest: AbortableRequest['abortRequest'],
-              ]
+            ForInput: GetSourceMangasFetchMutationVariables,
+            Request: Promise<unknown>,
+            AbortRequest: AbortableRequest['abortRequest'],
+        ]
             | null
         >(null);
-        const abortRequestRef = useRef<AbortableRequest['abortRequest']>(() => {});
+        const abortRequestRef = useRef<AbortableRequest['abortRequest']>(() => {
+        });
         const resultRef = useRef<(MutationDataResult & { forInput: string }) | null>(null);
         const result = resultRef.current;
 
@@ -2166,7 +2174,7 @@ export class RequestManager {
         paginatedResult.abortRequest = abortRequestRef.current;
 
         // make sure that the result is always for the current input
-        resultRef.current = { forInput: JSON.stringify(getVariablesFor(0)), ...paginatedResult };
+        resultRef.current = {forInput: JSON.stringify(getVariablesFor(0)), ...paginatedResult};
 
         const hasCachedResult = !!this.cache.getResponseFor(CACHE_RESULTS_KEY, getVariablesFor(nextPage));
 
@@ -2223,7 +2231,7 @@ export class RequestManager {
                 (abortRequest) => {
                     abortRequestRef.current = abortRequest;
                 },
-                () => ({ forType: input.type, forQuery: input.query }),
+                () => ({forType: input.type, forQuery: input.query}),
                 createPaginatedResult,
                 setResult,
                 revalidate,
@@ -2306,7 +2314,7 @@ export class RequestManager {
         GetSourceMangasFetchMutationVariables
     > {
         return this.useGetSourceMangas(
-            { type: FetchSourceMangaType.Popular, source: sourceId, page: 1 },
+            {type: FetchSourceMangaType.Popular, source: sourceId, page: 1},
             initialPages,
             options,
         );
@@ -2321,7 +2329,7 @@ export class RequestManager {
         GetSourceMangasFetchMutationVariables
     > {
         return this.useGetSourceMangas(
-            { type: FetchSourceMangaType.Latest, source: sourceId, page: 1 },
+            {type: FetchSourceMangaType.Latest, source: sourceId, page: 1},
             initialPages,
             options,
         );
@@ -2332,7 +2340,7 @@ export class RequestManager {
         change: SourcePreferenceChangeInput,
         options?: MutationOptions<UpdateSourcePreferencesMutation, UpdateSourcePreferencesMutationVariables>,
     ): AbortableApolloMutationResponse<UpdateSourcePreferencesMutation> {
-        return this.doRequest(GQLMethod.MUTATION, UPDATE_SOURCE_PREFERENCES, { input: { source, change } }, options);
+        return this.doRequest(GQLMethod.MUTATION, UPDATE_SOURCE_PREFERENCES, {input: {source, change}}, options);
     }
 
     public useSourceSearch(
@@ -2346,7 +2354,7 @@ export class RequestManager {
         GetSourceMangasFetchMutationVariables
     > {
         return this.useGetSourceMangas(
-            { type: FetchSourceMangaType.Search, source, query, filters, page: 1 },
+            {type: FetchSourceMangaType.Search, source, query, filters, page: 1},
             initialPages,
             options,
         );
@@ -2357,7 +2365,7 @@ export class RequestManager {
         mangaId: number | string,
         options?: QueryHookOptions<Data, Variables>,
     ): AbortableApolloUseQueryResponse<Data, Variables> {
-        return this.doRequest(GQLMethod.USE_QUERY, document, { id: Number(mangaId) } as unknown as Variables, options);
+        return this.doRequest(GQLMethod.USE_QUERY, document, {id: Number(mangaId)} as unknown as Variables, options);
     }
 
     public getManga<Data, Variables extends OperationVariables = OperationVariables>(
@@ -2365,7 +2373,7 @@ export class RequestManager {
         mangaId: number | string,
         options?: QueryOptions<Variables, Data>,
     ): AbortabaleApolloQueryResponse<Data> {
-        return this.doRequest(GQLMethod.QUERY, document, { id: Number(mangaId) } as unknown as Variables, options);
+        return this.doRequest(GQLMethod.QUERY, document, {id: Number(mangaId)} as unknown as Variables, options);
     }
 
     public getMangaToMigrate(
@@ -2414,7 +2422,7 @@ export class RequestManager {
                 fetchManga,
                 fetchChapters,
             },
-            { refetchQueries: [GET_CHAPTERS_MANGA, GET_CHAPTERS_READER], ...options },
+            {refetchQueries: [GET_CHAPTERS_MANGA, GET_CHAPTERS_READER], ...options},
         );
     }
 
@@ -2475,12 +2483,12 @@ export class RequestManager {
 
                             for (const [id, value] of Object.entries(data)) {
                                 if ((value as any).__typename === 'CategoryType') {
-                                    cache.evict({ id });
+                                    cache.evict({id});
                                 }
                             }
 
-                            cache.evict({ fieldName: 'categories' });
-                            cache.evict({ fieldName: 'mangas' });
+                            cache.evict({fieldName: 'categories'});
+                            cache.evict({fieldName: 'mangas'});
                         },
                     });
                 },
@@ -2498,7 +2506,7 @@ export class RequestManager {
         const response = this.doRequest(
             GQLMethod.MUTATION,
             UPDATE_MANGAS_CATEGORIES,
-            { input: { ids: mangaIds, patch } },
+            {input: {ids: mangaIds, patch}},
             options,
         );
 
@@ -2509,12 +2517,12 @@ export class RequestManager {
 
                     for (const [id, value] of Object.entries(data)) {
                         if ((value as any).__typename === 'CategoryType') {
-                            cache.evict({ id });
+                            cache.evict({id});
                         }
                     }
 
-                    cache.evict({ fieldName: 'categories' });
-                    cache.evict({ fieldName: 'mangas' });
+                    cache.evict({fieldName: 'categories'});
+                    cache.evict({fieldName: 'mangas'});
                 },
             });
         });
@@ -2531,8 +2539,8 @@ export class RequestManager {
             GQLMethod.MUTATION,
             UPDATE_MANGA,
             {
-                input: { id, patch: patch.updateManga },
-                updateCategoryInput: { id, patch: patch.updateMangaCategories ?? {} },
+                input: {id, patch: patch.updateManga},
+                updateCategoryInput: {id, patch: patch.updateMangaCategories ?? {}},
                 updateCategories: !!patch.updateMangaCategories,
             },
             options,
@@ -2541,9 +2549,9 @@ export class RequestManager {
         result.response.then(() => {
             this.graphQLClient.client.refetchQueries({
                 updateCache(cache) {
-                    cache.evict({ fieldName: 'categories' });
-                    cache.evict({ fieldName: 'category' });
-                    cache.evict({ fieldName: 'mangas' });
+                    cache.evict({fieldName: 'categories'});
+                    cache.evict({fieldName: 'category'});
+                    cache.evict({fieldName: 'mangas'});
                 },
             });
         });
@@ -2560,8 +2568,8 @@ export class RequestManager {
             GQLMethod.MUTATION,
             UPDATE_MANGAS,
             {
-                input: { ids, patch: patch.updateMangas },
-                updateCategoryInput: { ids, patch: patch.updateMangasCategories ?? {} },
+                input: {ids, patch: patch.updateMangas},
+                updateCategoryInput: {ids, patch: patch.updateMangasCategories ?? {}},
                 updateCategories: !!patch.updateMangasCategories,
             },
             options,
@@ -2570,9 +2578,9 @@ export class RequestManager {
         result.response.then(() => {
             this.graphQLClient.client.refetchQueries({
                 updateCache(cache) {
-                    cache.evict({ fieldName: 'categories' });
-                    cache.evict({ fieldName: 'category' });
-                    cache.evict({ fieldName: 'mangas' });
+                    cache.evict({fieldName: 'categories'});
+                    cache.evict({fieldName: 'category'});
+                    cache.evict({fieldName: 'mangas'});
                 },
             });
         });
@@ -2582,10 +2590,10 @@ export class RequestManager {
 
     public updateMangaMeta(
         {
-            preUpdateDeleteInput = { items: [] },
-            updateInput = { items: [] },
-            postUpdateDeleteInput = { items: [] },
-            migrateInput = { items: [] },
+            preUpdateDeleteInput = {items: []},
+            updateInput = {items: []},
+            postUpdateDeleteInput = {items: []},
+            migrateInput = {items: []},
         }: {
             preUpdateDeleteInput?: DeleteMangaMetasInput;
             updateInput?: SetMangaMetasInput;
@@ -2667,12 +2675,12 @@ export class RequestManager {
                         ),
                     },
                 },
-                update(cache, { data }) {
+                update(cache, {data}) {
                     preUpdateDeleteInput?.items.forEach((item) =>
                         item.mangaIds.forEach((mangaId) =>
                             item.keys?.forEach((key) => {
                                 cache.evict({
-                                    id: cache.identify({ __typename: 'MangaMetaType', mangaId, key }),
+                                    id: cache.identify({__typename: 'MangaMetaType', mangaId, key}),
                                 });
                             }),
                         ),
@@ -2682,7 +2690,7 @@ export class RequestManager {
                         item.mangaIds.forEach((mangaId) =>
                             item.keys?.forEach((key) => {
                                 cache.evict({
-                                    id: cache.identify({ __typename: 'MangaMetaType', mangaId, key }),
+                                    id: cache.identify({__typename: 'MangaMetaType', mangaId, key}),
                                 });
                             }),
                         ),
@@ -2699,9 +2707,9 @@ export class RequestManager {
 
                     mangaIds.forEach((mangaId) => {
                         cache.modify({
-                            id: cache.identify({ __typename: 'MangaType', id: mangaId }),
+                            id: cache.identify({__typename: 'MangaType', id: mangaId}),
                             fields: {
-                                meta(existingMetas, { readField }) {
+                                meta(existingMetas, {readField}) {
                                     const updatedMeta = [
                                         ...(data?.updatedMeta?.metas.filter((meta) => meta.mangaId === mangaId) ?? []),
                                         ...(data?.migrationMeta?.metas.filter((meta) => meta.mangaId === mangaId) ??
@@ -2748,8 +2756,8 @@ export class RequestManager {
         return this.useGetChapters(
             document,
             {
-                condition: { mangaId: Number(mangaId) },
-                order: [{ by: ChapterOrderBy.SourceOrder, byType: SortOrder.Desc }],
+                condition: {mangaId: Number(mangaId)},
+                order: [{by: ChapterOrderBy.SourceOrder, byType: SortOrder.Desc}],
             } satisfies GetChaptersMangaQueryVariables as unknown as Variables,
             options,
         );
@@ -2770,7 +2778,7 @@ export class RequestManager {
 
         const chapterResponse = this.useGetChapters<GetChaptersMangaQuery, GetChaptersMangaQueryVariables>(
             GET_CHAPTERS_MANGA,
-            { condition: { mangaId: Number(mangaId), sourceOrder: Number(chapterIndex) } },
+            {condition: {mangaId: Number(mangaId), sourceOrder: Number(chapterIndex)}},
             options,
         );
 
@@ -2794,7 +2802,7 @@ export class RequestManager {
             GQLMethod.USE_MUTATION,
             GET_CHAPTER_PAGES_FETCH,
             {
-                input: { chapterId: Number(chapterId) },
+                input: {chapterId: Number(chapterId)},
             },
             options,
         );
@@ -2807,7 +2815,7 @@ export class RequestManager {
         return this.doRequest<DeleteDownloadedChapterMutation, DeleteDownloadedChapterMutationVariables>(
             GQLMethod.MUTATION,
             DELETE_DOWNLOADED_CHAPTER,
-            { input: { id } },
+            {input: {id}},
             options,
         );
     }
@@ -2819,7 +2827,7 @@ export class RequestManager {
         return this.doRequest<DeleteDownloadedChaptersMutation, DeleteDownloadedChaptersMutationVariables>(
             GQLMethod.MUTATION,
             DELETE_DOWNLOADED_CHAPTERS,
-            { input: { ids } },
+            {input: {ids}},
             options,
         );
     }
@@ -2832,13 +2840,13 @@ export class RequestManager {
         },
         options?: MutationOptions<UpdateChapterMutation, UpdateChapterMutationVariables>,
     ): AbortableApolloMutationResponse<UpdateChapterMutation> {
-        const { chapterIdToDelete = -1, trackProgressMangaId = -1, ...updatePatch } = patch;
+        const {chapterIdToDelete = -1, trackProgressMangaId = -1, ...updatePatch} = patch;
 
         return this.doRequest<UpdateChapterMutation, UpdateChapterMutationVariables>(
             GQLMethod.MUTATION,
             UPDATE_CHAPTER,
             {
-                input: { id, patch: updatePatch },
+                input: {id, patch: updatePatch},
                 getBookmarked: patch.isBookmarked != null,
                 getRead: patch.isRead != null,
                 getLastPageRead: patch.lastPageRead != null,
@@ -2853,10 +2861,10 @@ export class RequestManager {
 
     public updateChapterMeta(
         {
-            preUpdateDeleteInput = { items: [] },
-            updateInput = { items: [] },
-            postUpdateDeleteInput = { items: [] },
-            migrateInput = { items: [] },
+            preUpdateDeleteInput = {items: []},
+            updateInput = {items: []},
+            postUpdateDeleteInput = {items: []},
+            migrateInput = {items: []},
         }: {
             preUpdateDeleteInput?: DeleteChapterMetasInput;
             updateInput?: SetChapterMetasInput;
@@ -2938,12 +2946,12 @@ export class RequestManager {
                         ),
                     },
                 },
-                update(cache, { data }) {
+                update(cache, {data}) {
                     preUpdateDeleteInput?.items.forEach((item) =>
                         item.chapterIds.forEach((chapterId) =>
                             item.keys?.forEach((key) => {
                                 cache.evict({
-                                    id: cache.identify({ __typename: 'ChapterMetaType', chapterId, key }),
+                                    id: cache.identify({__typename: 'ChapterMetaType', chapterId, key}),
                                 });
                             }),
                         ),
@@ -2953,7 +2961,7 @@ export class RequestManager {
                         item.chapterIds.forEach((chapterId) =>
                             item.keys?.forEach((key) => {
                                 cache.evict({
-                                    id: cache.identify({ __typename: 'ChapterMetaType', chapterId, key }),
+                                    id: cache.identify({__typename: 'ChapterMetaType', chapterId, key}),
                                 });
                             }),
                         ),
@@ -2970,9 +2978,9 @@ export class RequestManager {
 
                     chapterIds.forEach((chapterId) => {
                         cache.modify({
-                            id: cache.identify({ __typename: 'ChapterType', id: chapterId }),
+                            id: cache.identify({__typename: 'ChapterType', id: chapterId}),
                             fields: {
-                                meta(existingMetas, { readField }) {
+                                meta(existingMetas, {readField}) {
                                     const updatedMeta = [
                                         ...(data?.updatedMeta?.metas.filter((meta) => meta.chapterId === chapterId) ??
                                             []),
@@ -3008,13 +3016,13 @@ export class RequestManager {
         patch: UpdateChapterPatchInput & { chapterIdsToDelete?: number[]; trackProgressMangaId?: MangaIdInfo['id'] },
         options?: MutationOptions<UpdateChaptersMutation, UpdateChaptersMutationVariables>,
     ): AbortableApolloMutationResponse<UpdateChaptersMutation> {
-        const { chapterIdsToDelete = [], trackProgressMangaId = -1, ...updatePatch } = patch;
+        const {chapterIdsToDelete = [], trackProgressMangaId = -1, ...updatePatch} = patch;
 
         return this.doRequest<UpdateChaptersMutation, UpdateChaptersMutationVariables>(
             GQLMethod.MUTATION,
             UPDATE_CHAPTERS,
             {
-                input: { ids, patch: updatePatch },
+                input: {ids, patch: updatePatch},
                 getBookmarked: patch.isBookmarked != null,
                 getRead: patch.isRead != null,
                 getLastPageRead: patch.lastPageRead != null,
@@ -3035,7 +3043,7 @@ export class RequestManager {
             GQLMethod.USE_QUERY,
             document,
             {
-                order: [{ by: CategoryOrderBy.Order }],
+                order: [{by: CategoryOrderBy.Order}],
             } satisfies GetCategoriesSettingsQueryVariables as unknown as Variables,
             options,
         );
@@ -3049,7 +3057,7 @@ export class RequestManager {
             GQLMethod.QUERY,
             document,
             {
-                order: [{ by: CategoryOrderBy.Order }],
+                order: [{by: CategoryOrderBy.Order}],
             } satisfies GetCategoriesSettingsQueryVariables as unknown as Variables,
             options,
         );
@@ -3062,8 +3070,8 @@ export class RequestManager {
         return this.doRequest<CreateCategoryMutation, CreateCategoryMutationVariables>(
             GQLMethod.MUTATION,
             CREATE_CATEGORY,
-            { input },
-            { refetchQueries: [GET_CATEGORIES_BASE, GET_CATEGORIES_LIBRARY, GET_CATEGORIES_SETTINGS], ...options },
+            {input},
+            {refetchQueries: [GET_CATEGORIES_BASE, GET_CATEGORIES_LIBRARY, GET_CATEGORIES_SETTINGS], ...options},
         );
     }
 
@@ -3074,7 +3082,7 @@ export class RequestManager {
             GQLMethod.USE_MUTATION,
             UPDATE_CATEGORY_ORDER,
             undefined,
-            { refetchQueries: [GET_CATEGORIES_BASE, GET_CATEGORIES_LIBRARY], ...options },
+            {refetchQueries: [GET_CATEGORIES_BASE, GET_CATEGORIES_LIBRARY], ...options},
         );
 
         const wrappedMutate = (mutateOptions: Parameters<typeof mutate>[0]) => {
@@ -3084,7 +3092,7 @@ export class RequestManager {
                 GetCategoriesSettingsQueryVariables
             >({
                 query: GET_CATEGORIES_SETTINGS,
-                variables: { order: [{ by: CategoryOrderBy.Order }] },
+                variables: {order: [{by: CategoryOrderBy.Order}]},
             })?.categories.nodes;
 
             if (!variables) {
@@ -3096,7 +3104,7 @@ export class RequestManager {
             }
 
             const movedIndex = cachedCategories.findIndex((category) => category.id === variables.id);
-            const newData = [...cachedCategories.map((category) => ({ ...category }))];
+            const newData = [...cachedCategories.map((category) => ({...category}))];
             const [removed] = newData.splice(movedIndex, 1);
             newData.splice(variables.position, 0, removed);
             removed.order = variables.position;
@@ -3106,9 +3114,9 @@ export class RequestManager {
                 update: (cache) => {
                     cache.updateQuery<GetCategoriesSettingsQuery, GetCategoriesSettingsQueryVariables>(
                         {
-                            id: cache.identify({ __typename: 'CategoryNodeList' }),
+                            id: cache.identify({__typename: 'CategoryNodeList'}),
                             query: GET_CATEGORIES_SETTINGS,
-                            variables: { order: [{ by: CategoryOrderBy.Order }] },
+                            variables: {order: [{by: CategoryOrderBy.Order}]},
                         },
                         (data) => ({
                             ...data!,
@@ -3142,7 +3150,7 @@ export class RequestManager {
             GET_MANGAS_LIBRARY,
             {
                 filter: {
-                    inLibrary: { equalTo: true },
+                    inLibrary: {equalTo: true},
                     categoryId: {
                         isNull: isDefault,
                         in: isDefault ? undefined : [id],
@@ -3160,14 +3168,14 @@ export class RequestManager {
         const result = this.doRequest<DeleteCategoryMutation, DeleteCategoryMutationVariables>(
             GQLMethod.MUTATION,
             DELETE_CATEGORY,
-            { input: { categoryId } },
+            {input: {categoryId}},
             options,
         );
 
         result.response.then(() => {
             this.graphQLClient.client.refetchQueries({
                 updateCache(cache) {
-                    cache.evict({ id: cache.identify({ __typename: 'CategoryType', id: categoryId.toString() }) });
+                    cache.evict({id: cache.identify({__typename: 'CategoryType', id: categoryId.toString()})});
                 },
             });
         });
@@ -3184,7 +3192,7 @@ export class RequestManager {
             GQLMethod.MUTATION,
             UPDATE_CATEGORY,
             {
-                input: { id, patch },
+                input: {id, patch},
                 getIncludeInUpdate: patch.includeInUpdate != null,
                 getIncludeInDownload: patch.includeInDownload != null,
                 getDefault: patch.default != null,
@@ -3196,10 +3204,10 @@ export class RequestManager {
 
     public updateCategoryMeta(
         {
-            preUpdateDeleteInput = { items: [] },
-            updateInput = { items: [] },
-            postUpdateDeleteInput = { items: [] },
-            migrateInput = { items: [] },
+            preUpdateDeleteInput = {items: []},
+            updateInput = {items: []},
+            postUpdateDeleteInput = {items: []},
+            migrateInput = {items: []},
         }: {
             preUpdateDeleteInput?: DeleteCategoryMetasInput;
             updateInput?: SetCategoryMetasInput;
@@ -3281,12 +3289,12 @@ export class RequestManager {
                         ),
                     },
                 },
-                update(cache, { data }) {
+                update(cache, {data}) {
                     preUpdateDeleteInput?.items.forEach((item) =>
                         item.categoryIds.forEach((categoryId) =>
                             item.keys?.forEach((key) => {
                                 cache.evict({
-                                    id: cache.identify({ __typename: 'CategoryMetaType', categoryId, key }),
+                                    id: cache.identify({__typename: 'CategoryMetaType', categoryId, key}),
                                 });
                             }),
                         ),
@@ -3296,7 +3304,7 @@ export class RequestManager {
                         item.categoryIds.forEach((categoryId) =>
                             item.keys?.forEach((key) => {
                                 cache.evict({
-                                    id: cache.identify({ __typename: 'CategoryMetaType', categoryId, key }),
+                                    id: cache.identify({__typename: 'CategoryMetaType', categoryId, key}),
                                 });
                             }),
                         ),
@@ -3313,9 +3321,9 @@ export class RequestManager {
 
                     categoryIds.forEach((categoryId) => {
                         cache.modify({
-                            id: cache.identify({ __typename: 'CategoryType', id: categoryId }),
+                            id: cache.identify({__typename: 'CategoryType', id: categoryId}),
                             fields: {
-                                meta(existingMetas, { readField }) {
+                                meta(existingMetas, {readField}) {
                                     const updatedMeta = [
                                         ...(data?.updatedMeta?.metas.filter((meta) => meta.categoryId === categoryId) ??
                                             []),
@@ -3347,7 +3355,7 @@ export class RequestManager {
         return this.doRequest<CreateBackupMutation, CreateBackupMutationVariables>(
             GQLMethod.MUTATION,
             CREATE_BACKUP,
-            { input },
+            {input},
             {
                 ...options,
             },
@@ -3372,14 +3380,14 @@ export class RequestManager {
         file: File,
         options?: QueryOptions<ValidateBackupQueryVariables, ValidateBackupQuery>,
     ): AbortabaleApolloQueryResponse<ValidateBackupQuery> {
-        return this.doRequest(GQLMethod.QUERY, VALIDATE_BACKUP, { backup: file }, options);
+        return this.doRequest(GQLMethod.QUERY, VALIDATE_BACKUP, {backup: file}, options);
     }
 
     public useGetBackupRestoreStatus(
         id: string,
         options?: QueryHookOptions<GetRestoreStatusQuery, GetRestoreStatusQueryVariables>,
     ): AbortableApolloUseQueryResponse<GetRestoreStatusQuery, GetRestoreStatusQueryVariables> {
-        return this.doRequest(GQLMethod.USE_QUERY, GET_RESTORE_STATUS, { id }, options);
+        return this.doRequest(GQLMethod.USE_QUERY, GET_RESTORE_STATUS, {id}, options);
     }
 
     public startDownloads(
@@ -3422,7 +3430,7 @@ export class RequestManager {
         return this.doRequest<EnqueueChapterDownloadMutation, EnqueueChapterDownloadMutationVariables>(
             GQLMethod.MUTATION,
             ENQUEUE_CHAPTER_DOWNLOAD,
-            { input: { id } },
+            {input: {id}},
             options,
         );
     }
@@ -3434,7 +3442,7 @@ export class RequestManager {
         return this.doRequest<DequeueChapterDownloadMutation, DequeueChapterDownloadMutationVariables>(
             GQLMethod.MUTATION,
             DEQUEUE_CHAPTER_DOWNLOAD,
-            { input: { id } },
+            {input: {id}},
             options,
         );
     }
@@ -3463,7 +3471,7 @@ export class RequestManager {
             }
 
             const movedIndex = cachedDownloadStatus.queue.findIndex(
-                ({ chapter }) => chapter.id === variables.chapterId,
+                ({chapter}) => chapter.id === variables.chapterId,
             );
             const chapterDownload = cachedDownloadStatus.queue[movedIndex];
             const queueWithoutChapterDownload = cachedDownloadStatus.queue.toSpliced(movedIndex, 1);
@@ -3510,14 +3518,14 @@ export class RequestManager {
                 throw new Error('useReorderChapterInDownloadQueue: there are no cached results');
             }
 
-            const movedChapterIds = new Set(variables.reorders.map(({ chapterId }) => chapterId));
+            const movedChapterIds = new Set(variables.reorders.map(({chapterId}) => chapterId));
 
             const movedChapters = variables.reorders
-                .map(({ chapterId }) => cachedDownloadStatus.queue.find(({ chapter }) => chapter.id === chapterId))
+                .map(({chapterId}) => cachedDownloadStatus.queue.find(({chapter}) => chapter.id === chapterId))
                 .filter((download) => download != null);
 
             const queueWithoutMovedChapters = cachedDownloadStatus.queue.filter(
-                ({ chapter }) => !movedChapterIds.has(chapter.id),
+                ({chapter}) => !movedChapterIds.has(chapter.id),
             );
 
             const updatedQueue = variables.reorders.reduce(
@@ -3550,7 +3558,7 @@ export class RequestManager {
         return this.doRequest<EnqueueChapterDownloadsMutation, EnqueueChapterDownloadsMutationVariables>(
             GQLMethod.MUTATION,
             ENQUEUE_CHAPTER_DOWNLOADS,
-            { input: { ids } },
+            {input: {ids}},
             options,
         );
     }
@@ -3562,7 +3570,7 @@ export class RequestManager {
         return this.doRequest<DequeueChapterDownloadsMutation, DequeueChapterDownloadsMutationVariables>(
             GQLMethod.MUTATION,
             DEQUEUE_CHAPTER_DOWNLOADS,
-            { input: { ids } },
+            {input: {ids}},
             options,
         );
     }
@@ -3580,10 +3588,10 @@ export class RequestManager {
         const result = this.useGetChapters<GetChaptersUpdatesQuery, GetChaptersUpdatesQueryVariables>(
             GET_CHAPTERS_UPDATES,
             {
-                filter: { inLibrary: { equalTo: true } },
+                filter: {inLibrary: {equalTo: true}},
                 order: [
-                    { by: ChapterOrderBy.FetchedAt, byType: SortOrder.Desc },
-                    { by: ChapterOrderBy.SourceOrder, byType: SortOrder.Desc },
+                    {by: ChapterOrderBy.FetchedAt, byType: SortOrder.Desc},
+                    {by: ChapterOrderBy.SourceOrder, byType: SortOrder.Desc},
                 ],
                 first: initialPages * PAGE_SIZE + lastOffset,
             },
@@ -3596,7 +3604,7 @@ export class RequestManager {
                     uniqBy('mangaId', result.data?.chapters.nodes).forEach((chapter) => {
                         Object.keys((cache as InMemoryCache).extract().ROOT_QUERY as object)
                             .filter((key) => key.includes('chapters') && key.includes(`mangaId":${chapter.mangaId}`))
-                            .forEach((key) => cache.evict({ fieldName: key }));
+                            .forEach((key) => cache.evict({fieldName: key}));
                     });
                 },
             });
@@ -3609,7 +3617,7 @@ export class RequestManager {
                 this.cache.cacheResponse(CACHE_KEY, undefined, fetchMoreOptions.variables?.offset);
                 return result.fetchMore({
                     ...fetchMoreOptions,
-                    variables: { first: PAGE_SIZE, ...fetchMoreOptions.variables },
+                    variables: {first: PAGE_SIZE, ...fetchMoreOptions.variables},
                 });
             },
         } as typeof result;
@@ -3628,10 +3636,10 @@ export class RequestManager {
         const result = this.useGetChapters<GetChaptersHistoryQuery, GetChaptersHistoryQueryVariables>(
             GET_CHAPTERS_HISTORY,
             {
-                filter: { lastReadAt: { isNull: false, notEqualToAll: ['0'] } },
+                filter: {lastReadAt: {isNull: false, notEqualToAll: ['0']}},
                 order: [
-                    { by: ChapterOrderBy.LastReadAt, byType: SortOrder.Desc },
-                    { by: ChapterOrderBy.SourceOrder, byType: SortOrder.Desc },
+                    {by: ChapterOrderBy.LastReadAt, byType: SortOrder.Desc},
+                    {by: ChapterOrderBy.SourceOrder, byType: SortOrder.Desc},
                 ],
                 first: initialPages * PAGE_SIZE + lastOffset,
             },
@@ -3645,7 +3653,7 @@ export class RequestManager {
                 this.cache.cacheResponse(CACHE_KEY, undefined, fetchMoreOptions.variables?.offset);
                 return result.fetchMore({
                     ...fetchMoreOptions,
-                    variables: { first: PAGE_SIZE, ...fetchMoreOptions.variables },
+                    variables: {first: PAGE_SIZE, ...fetchMoreOptions.variables},
                 });
             },
         } as typeof result;
@@ -3655,7 +3663,7 @@ export class RequestManager {
         categories?: number[],
         options?: MutationOptions<UpdateLibraryMutation, UpdateLibraryMutationVariables>,
     ): AbortableApolloMutationResponse<UpdateLibraryMutation> {
-        return this.doRequest(GQLMethod.MUTATION, UPDATE_LIBRARY, { input: { categories } }, options);
+        return this.doRequest(GQLMethod.MUTATION, UPDATE_LIBRARY, {input: {categories}}, options);
     }
 
     public resetGlobalUpdate(
@@ -3693,7 +3701,7 @@ export class RequestManager {
         const observable = this.doRequest<DownloadStatusSubscription, DownloadStatusSubscriptionVariables>(
             GQLMethod.SUBSCRIPTION,
             DOWNLOAD_STATUS_SUBSCRIPTION,
-            { input: {} },
+            {input: {}},
             options,
         );
 
@@ -3702,7 +3710,7 @@ export class RequestManager {
                 next: (result) => {
                     const downloadChanged = result.data?.downloadStatusChanged;
 
-                    const { cache } = this.graphQLClient.client;
+                    const {cache} = this.graphQLClient.client;
 
                     if (downloadChanged?.state) {
                         cache.modify({
@@ -3792,7 +3800,7 @@ export class RequestManager {
         const observable = this.doRequest<UpdaterSubscription, UpdaterSubscriptionVariables>(
             GQLMethod.SUBSCRIPTION,
             UPDATER_SUBSCRIPTION,
-            { input: {} },
+            {input: {}},
             options,
         );
 
@@ -3810,7 +3818,7 @@ export class RequestManager {
                                 .filter(
                                     (key) => key.includes('chapters') && key.includes(`mangaId":${update.manga.id}`),
                                 )
-                                .forEach((key) => cache.evict({ fieldName: key })),
+                                .forEach((key) => cache.evict({fieldName: key})),
                         );
 
                     subscriber.next(result);
@@ -3865,7 +3873,7 @@ export class RequestManager {
     public useClearServerCache(
         options?: MutationHookOptions<ClearServerCacheMutation, ClearServerCacheMutationVariables>,
     ): AbortableApolloUseMutationResponse<ClearServerCacheMutation, ClearServerCacheMutationVariables> {
-        return this.doRequest(GQLMethod.USE_MUTATION, CLEAR_SERVER_CACHE, { input: {} }, options);
+        return this.doRequest(GQLMethod.USE_MUTATION, CLEAR_SERVER_CACHE, {input: {}}, options);
     }
 
     public webUIUpdateSubscription(
@@ -3903,7 +3911,7 @@ export class RequestManager {
         trackerId: TrackerLogoutMutationVariables['trackerId'],
         options?: MutationOptions<TrackerLogoutMutation, TrackerLogoutMutationVariables>,
     ): AbortableApolloMutationResponse<TrackerLogoutMutation> {
-        return this.doRequest(GQLMethod.MUTATION, TRACKER_LOGOUT, { trackerId }, options);
+        return this.doRequest(GQLMethod.MUTATION, TRACKER_LOGOUT, {trackerId}, options);
     }
 
     public loginToTrackerOauth(
@@ -3911,7 +3919,7 @@ export class RequestManager {
         callbackUrl: string,
         options?: MutationOptions<TrackerLoginOauthMutation, TrackerLoginOauthMutationVariables>,
     ): AbortableApolloMutationResponse<TrackerLoginOauthMutation> {
-        return this.doRequest(GQLMethod.MUTATION, TRACKER_LOGIN_OAUTH, { input: { trackerId, callbackUrl } }, options);
+        return this.doRequest(GQLMethod.MUTATION, TRACKER_LOGIN_OAUTH, {input: {trackerId, callbackUrl}}, options);
     }
 
     public loginTrackerCredentials(
@@ -3923,7 +3931,7 @@ export class RequestManager {
         return this.doRequest(
             GQLMethod.MUTATION,
             TRACKER_LOGIN_CREDENTIALS,
-            { input: { trackerId, username, password } },
+            {input: {trackerId, username, password}},
             options,
         );
     }
@@ -3933,14 +3941,14 @@ export class RequestManager {
         query: string,
         options?: QueryHookOptions<TrackerSearchQuery, TrackerSearchQueryVariables>,
     ): AbortableApolloUseQueryResponse<TrackerSearchQuery, TrackerSearchQueryVariables> {
-        return this.doRequest(GQLMethod.USE_QUERY, TRACKER_SEARCH, { trackerId, query }, options);
+        return this.doRequest(GQLMethod.USE_QUERY, TRACKER_SEARCH, {trackerId, query}, options);
     }
 
     public useGetMangaRelated(
         mangaId: number,
         options?: QueryHookOptions<GetMangaRelatedQuery, GetMangaRelatedQueryVariables>,
     ): AbortableApolloUseQueryResponse<GetMangaRelatedQuery, GetMangaRelatedQueryVariables> {
-        return this.doRequest(GQLMethod.USE_QUERY, GET_MANGA_RELATED, { mangaId }, options);
+        return this.doRequest(GQLMethod.USE_QUERY, GET_MANGA_RELATED, {mangaId}, options);
     }
 
     /**
@@ -3949,7 +3957,7 @@ export class RequestManager {
      * (which remote id is used), so it has to be invalidated whenever a binding changes.
      */
     private evictMangaRelated(): void {
-        this.graphQLClient.client.cache.evict({ fieldName: 'mangaRelated' });
+        this.graphQLClient.client.cache.evict({fieldName: 'mangaRelated'});
         this.graphQLClient.client.cache.gc();
     }
 
@@ -3972,7 +3980,7 @@ export class RequestManager {
         return this.doRequest<TrackerBindMutation, TrackerBindMutationVariables>(
             GQLMethod.MUTATION,
             TRACKER_BIND,
-            { input: { mangaId, remoteId, trackerId, private: asPrivate } },
+            {input: {mangaId, remoteId, trackerId, private: asPrivate}},
             {
                 update: () => this.evictMangaRelated(),
                 ...options,
@@ -3988,7 +3996,7 @@ export class RequestManager {
         return this.doRequest(
             GQLMethod.MUTATION,
             TRACK_BIND_TRACK_RECORD,
-            { input: { mangaId, trackRecordId } },
+            {input: {mangaId, trackRecordId}},
             options,
         );
     }
@@ -4001,7 +4009,7 @@ export class RequestManager {
         return this.doRequest<TrackerUnbindMutation, TrackerUnbindMutationVariables>(
             GQLMethod.MUTATION,
             TRACKER_UNBIND,
-            { input: { recordId, deleteRemoteTrack } },
+            {input: {recordId, deleteRemoteTrack}},
             {
                 refetchQueries: [GET_MANGA_TRACK_RECORDS],
                 update: () => this.evictMangaRelated(),
@@ -4015,7 +4023,7 @@ export class RequestManager {
         patch: Omit<UpdateTrackInput, 'clientMutationId' | 'recordId'>,
         options?: MutationOptions<TrackerUpdateBindMutation, TrackerUpdateBindMutationVariables>,
     ): AbortableApolloMutationResponse<TrackerUpdateBindMutation> {
-        return this.doRequest(GQLMethod.MUTATION, TRACKER_UPDATE_BIND, { input: { ...patch, recordId: id } }, options);
+        return this.doRequest(GQLMethod.MUTATION, TRACKER_UPDATE_BIND, {input: {...patch, recordId: id}}, options);
     }
 
     public fetchTrackBind(
@@ -4025,7 +4033,7 @@ export class RequestManager {
         return this.doRequest<TrackerFetchBindMutation, TrackerFetchBindMutationVariables>(
             GQLMethod.MUTATION,
             TRACKER_FETCH_BIND,
-            { recordId },
+            {recordId},
             options,
         );
     }
@@ -4096,9 +4104,15 @@ export class RequestManager {
         return this.doRequest<RefreshAccessTokenMutation, RefreshAccessTokenMutationVariables>(
             GQLMethod.MUTATION,
             REFRESH_ACCESS_TOKEN,
-            { refreshToken: refreshToken ?? undefined },
+            {refreshToken: refreshToken ?? undefined},
             options,
         );
+    }
+
+    public useClearWebViewCookiesCache(
+        options?: MutationOptions<WebviewClearCacheCookiesMutation, WebviewClearCacheCookiesMutationVariables>,
+    ): AbortableApolloUseMutationResponse<WebviewClearCacheCookiesMutation, WebuiUpdateSubscriptionVariables> {
+        return this.doRequest(GQLMethod.USE_MUTATION, WEBVIEW_CLEAR_CACHE_COOKIES, {}, options);
     }
 }
 
