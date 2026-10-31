@@ -4040,6 +4040,10 @@ msgstr "Arrastra para priorizar"
 msgid "Enable auto background color in continuous reading mode"
 msgstr "Activar el color de fondo automático en modo de lectura continua"
 
+#: src/features/settings/screens/ServerSettings.tsx
+msgid "Enable the WebView via CEF (Chromium)"
+msgstr "Permitir el WebView a través de CEF (Chromium)"
+
 #. placeholder {0}: entry.mangaTitle
 #. placeholder {1}: entry.mangaId
 #. placeholder {2}: entry.sourceId

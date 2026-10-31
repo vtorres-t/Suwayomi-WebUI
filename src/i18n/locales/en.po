@@ -968,6 +968,10 @@ msgstr "Clear notes"
 msgid "Cleared the cache"
 msgstr "Cleared the cache"
 
+#: src/features/settings/screens/ServerSettings.tsx
+msgid "Cleared WebView cookies and cache"
+msgstr "Cleared WebView cookies and cache"
+
 #: src/features/reader/hotkeys/settings/ReaderHotkeysSettings.tsx
 msgid "Click key to remove binding"
 msgstr "Click key to remove binding"
@@ -1122,6 +1126,10 @@ msgstr "Could not check for updates"
 #: src/features/settings/screens/ImagesSettings.tsx
 msgid "Could not clear the cache"
 msgstr "Could not clear the cache"
+
+#: src/features/settings/screens/ServerSettings.tsx
+msgid "Could not clear WebView cookies and cache"
+msgstr "Could not clear WebView cookies and cache"
 
 #: src/lib/HelperFunctions.ts
 msgid "Could not copy to clipboard"
@@ -1715,6 +1723,10 @@ msgstr "Enable debug logs"
 #: src/features/settings/screens/ServerSettings.tsx
 msgid "Enable page read progress"
 msgstr "Enable page read progress"
+
+#: src/features/settings/screens/ServerSettings.tsx
+msgid "Enable the WebView via CEF (Chromium)"
+msgstr "Enable the WebView via CEF (Chromium)"
 
 #: src/base/components/inputs/LanguageSelect.tsx
 msgid "Enabled languages"
@@ -4377,6 +4389,10 @@ msgstr "WebUI version {0} available for download"
 #: src/features/app-updates/components/WebUIUpdateChecker.tsx
 msgid "WebUI was updated to version {newVersion}"
 msgstr "WebUI was updated to version {newVersion}"
+
+#: src/features/settings/screens/ServerSettings.tsx
+msgid "WebView"
+msgstr "WebView"
 
 #: src/features/settings/Settings.constants.ts
 msgid "Weekly"
