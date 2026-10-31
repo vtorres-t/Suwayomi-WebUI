@@ -6,30 +6,30 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-import {useMemo} from 'react';
+import { useMemo } from 'react';
 import Link from '@mui/material/Link';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import Switch from '@mui/material/Switch';
-import {d} from 'koration';
-import {Trans, useLingui} from '@lingui/react/macro';
-import {plural, t as translate} from '@lingui/core/macro';
-import {requestManager} from '@/lib/requests/RequestManager.ts';
-import {TextSetting} from '@/base/components/settings/text/TextSetting.tsx';
-import {NumberSetting} from '@/base/components/settings/NumberSetting.tsx';
-import {SelectSetting} from '@/base/components/settings/SelectSetting.tsx';
-import {LoadingPlaceholder} from '@/base/components/feedback/LoadingPlaceholder.tsx';
-import {EmptyViewAbsoluteCentered} from '@/base/components/feedback/EmptyViewAbsoluteCentered.tsx';
-import {defaultPromiseErrorHandler} from '@/lib/DefaultPromiseErrorHandler.ts';
+import { d } from 'koration';
+import { Trans, useLingui } from '@lingui/react/macro';
+import { plural, t as translate } from '@lingui/core/macro';
+import { requestManager } from '@/lib/requests/RequestManager.ts';
+import { TextSetting } from '@/base/components/settings/text/TextSetting.tsx';
+import { NumberSetting } from '@/base/components/settings/NumberSetting.tsx';
+import { SelectSetting } from '@/base/components/settings/SelectSetting.tsx';
+import { LoadingPlaceholder } from '@/base/components/feedback/LoadingPlaceholder.tsx';
+import { EmptyViewAbsoluteCentered } from '@/base/components/feedback/EmptyViewAbsoluteCentered.tsx';
+import { defaultPromiseErrorHandler } from '@/lib/DefaultPromiseErrorHandler.ts';
 import {
     createUpdateMetadataServerSettings,
     useMetadataServerSettings,
 } from '@/features/settings/services/ServerSettingsMetadata.ts';
-import type {MetadataUpdateSettings} from '@/features/app-updates/AppUpdateChecker.types.ts';
-import {getErrorMessage} from '@/lib/HelperFunctions.ts';
-import {useAppTitle} from '@/features/navigation-bar/hooks/useAppTitle.ts';
-import type {PartialSettingsTypeInput} from '@/lib/graphql/generated/graphql-base.types.ts';
+import type { MetadataUpdateSettings } from '@/features/app-updates/AppUpdateChecker.types.ts';
+import { getErrorMessage } from '@/lib/HelperFunctions.ts';
+import { useAppTitle } from '@/features/navigation-bar/hooks/useAppTitle.ts';
+import type { PartialSettingsTypeInput } from '@/lib/graphql/generated/graphql-base.types.ts';
 import {
     AuthMode,
     CbzMediaType,
@@ -51,20 +51,20 @@ import {
     SYNC_START_RESULT_TRANSLATION,
     SYNC_STATE_TRANSLATION,
 } from '@/features/settings/Settings.constants.ts';
-import {ServerAddressSetting} from '@/features/settings/components/ServerAddressSetting.tsx';
-import {AuthManager} from '@/features/authentication/AuthManager.ts';
-import type {ServerSettings as ServerSettingsType} from '@/features/settings/Settings.types.ts';
-import {KoreaderSyncSettings} from '@/features/settings/components/koreaderSync/KoreaderSyncSettings.tsx';
-import {Confirmation} from '@/base/AppAwaitableComponent.ts';
-import {BackupFlagInclusionDialog} from '@/features/backup/component/BackupFlagInclusionDialog.tsx';
+import { ServerAddressSetting } from '@/features/settings/components/ServerAddressSetting.tsx';
+import { AuthManager } from '@/features/authentication/AuthManager.ts';
+import type { ServerSettings as ServerSettingsType } from '@/features/settings/Settings.types.ts';
+import { KoreaderSyncSettings } from '@/features/settings/components/koreaderSync/KoreaderSyncSettings.tsx';
+import { Confirmation } from '@/base/AppAwaitableComponent.ts';
+import { BackupFlagInclusionDialog } from '@/features/backup/component/BackupFlagInclusionDialog.tsx';
 import ListItemButton from '@mui/material/ListItemButton';
-import {AwaitableComponent} from 'awaitable-component';
-import {convertToAutoBackupFlags, getAutoBackupFlagsInfo} from '@/features/backup/Backup.utils.ts';
-import type {BackupFlagInclusionState} from '@/features/backup/Backup.types.ts';
-import {getDateString} from '@/base/utils/DateHelper.ts';
-import {ListSubheader} from '@/base/components/lists/ListSubheader.tsx';
-import {Notifications} from '@/base/notification/Notifications.ts';
-import {BasicAuthDeprecationReminder} from '@/base/notification/BasicAuthDeprecationReminder.ts';
+import { AwaitableComponent } from 'awaitable-component';
+import { convertToAutoBackupFlags, getAutoBackupFlagsInfo } from '@/features/backup/Backup.utils.ts';
+import type { BackupFlagInclusionState } from '@/features/backup/Backup.types.ts';
+import { getDateString } from '@/base/utils/DateHelper.ts';
+import { ListSubheader } from '@/base/components/lists/ListSubheader.tsx';
+import { Notifications } from '@/base/notification/Notifications.ts';
+import { BasicAuthDeprecationReminder } from '@/base/notification/BasicAuthDeprecationReminder.ts';
 
 const convertSyncDataToBackupFlags = (settings: ServerSettingsType): BackupFlagInclusionState => ({
     includeManga: settings.syncDataManga,
@@ -96,15 +96,15 @@ const getLogFilesCleanupDisplayValue = (ttl: number): string => {
 };
 
 export const ServerSettings = () => {
-    const {t} = useLingui();
+    const { t } = useLingui();
 
     useAppTitle(t`Server`);
 
     const syncStatusRequest = requestManager.useGetSyncStatus();
     const {
-        settings: {serverInformAvailableUpdate, serverInformVersionUpdated},
+        settings: { serverInformAvailableUpdate, serverInformVersionUpdated },
         loading: areMetadataServerSettingsLoading,
-        request: {error: metadataServerSettingsError, refetch: refetchServerMetadataSettings},
+        request: { error: metadataServerSettingsError, refetch: refetchServerMetadataSettings },
     } = useMetadataServerSettings();
     const updateMetadataServerSettings = createUpdateMetadataServerSettings<
         keyof Pick<MetadataUpdateSettings, 'serverInformAvailableUpdate' | 'serverInformVersionUpdated'>
@@ -127,7 +127,7 @@ export const ServerSettings = () => {
         onCompletion?: (success: boolean) => void,
     ) => {
         try {
-            await mutateSettings({variables: {input: {settings: {[setting]: value}}}});
+            await mutateSettings({ variables: { input: { settings: { [setting]: value } } } });
             onCompletion?.(true);
         } catch (e) {
             Notifications.error(t`Failed to save changes`, getErrorMessage(e));
@@ -136,7 +136,7 @@ export const ServerSettings = () => {
     };
     const updateSettings = async (settings: PartialSettingsTypeInput, onCompletion?: (success: boolean) => void) => {
         try {
-            await mutateSettings({variables: {input: {settings}}});
+            await mutateSettings({ variables: { input: { settings } } });
             onCompletion?.(true);
         } catch (e) {
             Notifications.error(t`Failed to save changes`, getErrorMessage(e));
@@ -153,7 +153,7 @@ export const ServerSettings = () => {
                     </ListSubheader>
                 }
             >
-                <ServerAddressSetting/>
+                <ServerAddressSetting />
                 <ListItem>
                     <ListItemText
                         primary={t`Inform about version update`}
@@ -186,7 +186,7 @@ export const ServerSettings = () => {
         return (
             <>
                 {localSettings}
-                <LoadingPlaceholder/>
+                <LoadingPlaceholder />
             </>
         );
     }
@@ -245,7 +245,7 @@ export const ServerSettings = () => {
     const isSyncing = !!syncState && ![SyncState.Success, SyncState.Error].includes(syncState);
 
     return (
-        <List sx={{pt: 0}}>
+        <List sx={{ pt: 0 }}>
             {localSettings}
             <List
                 subheader={
@@ -277,7 +277,7 @@ export const ServerSettings = () => {
                 }
             >
                 <ListItem>
-                    <ListItemText primary={t`Use SOCKS proxy`}/>
+                    <ListItemText primary={t`Use SOCKS proxy`} />
                     <Switch
                         edge="end"
                         checked={serverSettings.socksProxyEnabled}
@@ -288,8 +288,8 @@ export const ServerSettings = () => {
                     settingName={t`SOCKS version`}
                     value={serverSettings.socksProxyVersion}
                     values={[
-                        [4, {text: '4'}],
-                        [5, {text: '5'}],
+                        [4, { text: '4' }],
+                        [5, { text: '5' }],
                     ]}
                     handleChange={(socksProxyVersion) => updateSetting('socksProxyVersion', socksProxyVersion)}
                 />
@@ -448,7 +448,7 @@ export const ServerSettings = () => {
                                             <u>
                                                 <b>run</b>
                                             </u>
-                                            .<br/>
+                                            .<br />
                                             See{' '}
                                             <Link
                                                 href="https://github.com/FlareSolverr/FlareSolverr?tab=readme-ov-file#installation"
@@ -458,8 +458,8 @@ export const ServerSettings = () => {
                                                 FlareSolverr
                                             </Link>{' '}
                                             for information on how to set it up
-                                            <br/>
-                                            <br/>
+                                            <br />
+                                            <br />
                                             If it is{' '}
                                             <u>
                                                 <b>not</b>
@@ -774,7 +774,7 @@ export const ServerSettings = () => {
                 }
             >
                 <ListItem>
-                    <ListItemText primary={t`WebView`} secondary={t`Enable the WebView via CEF (Chromium)`}/>
+                    <ListItemText primary={t`WebView`} secondary={t`Enable the WebView via CEF (Chromium)`} />
                     <Switch
                         edge="end"
                         checked={serverSettings.kcefEnabled}
@@ -791,7 +791,7 @@ export const ServerSettings = () => {
                     }
                     disabled={clearWebViewCookiesCache[1].loading}
                 >
-                    <ListItemText primary={t`Clear cookies and cache`}/>
+                    <ListItemText primary={t`Clear cookies and cache`} />
                 </ListItemButton>
             </List>
             <List
@@ -807,12 +807,12 @@ export const ServerSettings = () => {
                         requestManager
                             .startSync()
                             .response.then((response) => {
-                            const startResult = response.data?.startSync.result;
+                                const startResult = response.data?.startSync.result;
 
-                            Notifications.show(t(SYNC_START_RESULT_TRANSLATION[startResult!]), {
-                                variant: startResult === StartSyncResult.Success ? 'success' : 'error',
-                            });
-                        })
+                                Notifications.show(t(SYNC_START_RESULT_TRANSLATION[startResult!]), {
+                                    variant: startResult === StartSyncResult.Success ? 'success' : 'error',
+                                });
+                            })
                             .catch((e) => Notifications.error(t`Could not start sync`, getErrorMessage(e)))
                     }
                 >
@@ -851,7 +851,7 @@ export const ServerSettings = () => {
                             </>
                         }
                         slotProps={{
-                            secondary: {sx: {display: 'flex', flexDirection: 'column'}},
+                            secondary: { sx: { display: 'flex', flexDirection: 'column' } },
                         }}
                     />
                 </ListItemButton>
@@ -875,7 +875,7 @@ export const ServerSettings = () => {
                     }
                 >
                     <ListItem>
-                        <ListItemText primary={t`SyncYomi enabled`}/>
+                        <ListItemText primary={t`SyncYomi enabled`} />
                         <Switch
                             edge="end"
                             checked={serverSettings.syncYomiEnabled}
@@ -903,7 +903,7 @@ export const ServerSettings = () => {
                 }
             >
                 <ListItem>
-                    <ListItemText primary={t`Enable debug logs`}/>
+                    <ListItemText primary={t`Enable debug logs`} />
                     <Switch
                         edge="end"
                         checked={serverSettings.debugLogsEnabled}

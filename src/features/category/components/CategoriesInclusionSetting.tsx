@@ -6,25 +6,25 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-import {useState} from 'react';
+import { useState } from 'react';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
-import {useLingui} from '@lingui/react/macro';
-import {requestManager} from '@/lib/requests/RequestManager.ts';
+import { useLingui } from '@lingui/react/macro';
+import { requestManager } from '@/lib/requests/RequestManager.ts';
 import {
     CategorySelectionDialog,
     type CategorySelectionResult,
 } from '@/features/category/components/CategorySelectionDialog';
-import {getCategoryUpdateInfo} from '@/features/category/components/CategoryInclusion.utils';
+import { getCategoryUpdateInfo } from '@/features/category/components/CategoryInclusion.utils';
 import type {
     CategoryDownloadInclusionInfo,
     CategoryIdInfo,
     CategoryNameInfo,
     CategoryUpdateInclusionInfo,
 } from '@/features/category/Category.types.ts';
-import {getErrorMessage} from '@/lib/HelperFunctions.ts';
-import {IncludeOrExclude} from '@/lib/graphql/generated/graphql-base.types.ts';
-import {Notifications} from '@/base/notification/Notifications.ts';
+import { getErrorMessage } from '@/lib/HelperFunctions.ts';
+import { IncludeOrExclude } from '@/lib/graphql/generated/graphql-base.types.ts';
+import { Notifications } from '@/base/notification/Notifications.ts';
 
 type CategoryType = CategoryIdInfo & CategoryNameInfo & CategoryUpdateInclusionInfo & CategoryDownloadInclusionInfo;
 type CategoryIncludeField = keyof Pick<CategoryType, 'includeInUpdate' | 'includeInDownload'>;
@@ -36,11 +36,11 @@ export type CategoriesInclusionSettingProps = {
 };
 
 export const CategoriesInclusionSetting = ({
-                                               categories,
-                                               includeField,
-                                               dialogText,
-                                           }: CategoriesInclusionSettingProps) => {
-    const {t} = useLingui();
+    categories,
+    includeField,
+    dialogText,
+}: CategoriesInclusionSettingProps) => {
+    const { t } = useLingui();
     const [isDialogOpen, setIsDialogOpen] = useState(false);
 
     const unsetCategories = categories.filter(
@@ -67,7 +67,7 @@ export const CategoriesInclusionSetting = ({
     );
 
     const updateCategory = (category: CategoryType) =>
-        requestManager.updateCategory(category.id, {[includeField]: category[includeField]}).response;
+        requestManager.updateCategory(category.id, { [includeField]: category[includeField] }).response;
 
     const handleSaveCategories = async (result: CategorySelectionResult) => {
         const categoriesToUpdate = result.allCategories.filter((category: CategoryType) => {
@@ -100,7 +100,7 @@ export const CategoriesInclusionSetting = ({
                         </>
                     }
                     slotProps={{
-                        secondary: {sx: {display: 'flex', flexDirection: 'column'}},
+                        secondary: { sx: { display: 'flex', flexDirection: 'column' } },
                     }}
                 />
             </ListItemButton>

@@ -23,32 +23,32 @@ import MenuItem from '@mui/material/MenuItem';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import PopupState, {bindDialog, bindMenu, bindTrigger} from 'material-ui-popup-state';
-import {useMemo, useState} from 'react';
+import PopupState, { bindDialog, bindMenu, bindTrigger } from 'material-ui-popup-state';
+import { useMemo, useState } from 'react';
 import Badge from '@mui/material/Badge';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
-import {useLingui} from '@lingui/react/macro';
+import { useLingui } from '@lingui/react/macro';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
-import {CustomTooltip} from '@/base/components/CustomTooltip.tsx';
-import {requestManager} from '@/lib/requests/RequestManager.ts';
-import {Trackers} from '@/features/tracker/services/Trackers.ts';
-import {ListPreference} from '@/features/source/configuration/components/ListPreference.tsx';
-import {NumberSetting} from '@/base/components/settings/NumberSetting.tsx';
-import {DateSetting} from '@/base/components/settings/DateSetting.tsx';
-import {Menu} from '@/base/components/menu/Menu.tsx';
-import {CARD_STYLING, UNSET_DATE} from '@/features/tracker/Tracker.constants.ts';
-import {TypographyMaxLines} from '@/base/components/texts/TypographyMaxLines.tsx';
-import type {SelectSettingValue} from '@/base/components/settings/SelectSetting.tsx';
-import {SelectSetting} from '@/base/components/settings/SelectSetting.tsx';
-import {CheckboxInput} from '@/base/components/inputs/CheckboxInput.tsx';
-import type {TrackRecordType} from '@/lib/graphql/generated/graphql-base.types.ts';
-import {getErrorMessage} from '@/lib/HelperFunctions.ts';
-import type {TTrackerBind, TTrackRecordBind} from '@/features/tracker/Tracker.types.ts';
-import {AvatarSpinner} from '@/base/components/AvatarSpinner.tsx';
-import {defaultPromiseErrorHandler} from '@/lib/DefaultPromiseErrorHandler.ts';
-import {Notifications} from '@/base/notification/Notifications.ts';
+import { CustomTooltip } from '@/base/components/CustomTooltip.tsx';
+import { requestManager } from '@/lib/requests/RequestManager.ts';
+import { Trackers } from '@/features/tracker/services/Trackers.ts';
+import { ListPreference } from '@/features/source/configuration/components/ListPreference.tsx';
+import { NumberSetting } from '@/base/components/settings/NumberSetting.tsx';
+import { DateSetting } from '@/base/components/settings/DateSetting.tsx';
+import { Menu } from '@/base/components/menu/Menu.tsx';
+import { CARD_STYLING, UNSET_DATE } from '@/features/tracker/Tracker.constants.ts';
+import { TypographyMaxLines } from '@/base/components/texts/TypographyMaxLines.tsx';
+import type { SelectSettingValue } from '@/base/components/settings/SelectSetting.tsx';
+import { SelectSetting } from '@/base/components/settings/SelectSetting.tsx';
+import { CheckboxInput } from '@/base/components/inputs/CheckboxInput.tsx';
+import type { TrackRecordType } from '@/lib/graphql/generated/graphql-base.types.ts';
+import { getErrorMessage } from '@/lib/HelperFunctions.ts';
+import type { TTrackerBind, TTrackRecordBind } from '@/features/tracker/Tracker.types.ts';
+import { AvatarSpinner } from '@/base/components/AvatarSpinner.tsx';
+import { defaultPromiseErrorHandler } from '@/lib/DefaultPromiseErrorHandler.ts';
+import { Notifications } from '@/base/notification/Notifications.ts';
 
-const TrackerActiveLink = ({children, url}: { children: React.ReactNode; url: string }) => (
+const TrackerActiveLink = ({ children, url }: { children: React.ReactNode; url: string }) => (
     <Link href={url} rel="noreferrer" target="_blank" underline="none" color="inherit">
         {children}
     </Link>
@@ -56,17 +56,17 @@ const TrackerActiveLink = ({children, url}: { children: React.ReactNode; url: st
 
 type TTrackerActive = Pick<TTrackerBind, 'id' | 'name' | 'icon' | 'supportsTrackDeletion' | 'supportsPrivateTracking'>;
 const TrackerActiveRemoveBind = ({
-                                     trackerRecordId,
-                                     tracker,
-                                     onClick,
-                                     onClose,
-                                 }: {
+    trackerRecordId,
+    tracker,
+    onClick,
+    onClose,
+}: {
     trackerRecordId: TrackRecordType['id'];
     tracker: TTrackerActive;
     onClick: () => void;
     onClose: () => void;
 }) => {
-    const {t} = useLingui();
+    const { t } = useLingui();
 
     const [removeRemoteTracking, setRemoveRemoteTracking] = useState(false);
 
@@ -140,17 +140,17 @@ const TrackerActiveRemoveBind = ({
 };
 
 const TrackerUpdatePrivateStatus = ({
-                                        trackRecordId,
-                                        isPrivate,
-                                        closeMenu,
-                                        supportsPrivateTracking,
-                                    }: {
+    trackRecordId,
+    isPrivate,
+    closeMenu,
+    supportsPrivateTracking,
+}: {
     trackRecordId: TrackRecordType['id'];
     isPrivate: boolean;
     closeMenu: () => void;
     supportsPrivateTracking: TTrackerActive['supportsPrivateTracking'];
 }) => {
-    const {t} = useLingui();
+    const { t } = useLingui();
 
     if (!supportsPrivateTracking) {
         return null;
@@ -160,7 +160,7 @@ const TrackerUpdatePrivateStatus = ({
         <MenuItem
             onClick={() => {
                 requestManager
-                    .updateTrackerBind(trackRecordId, {private: !isPrivate})
+                    .updateTrackerBind(trackRecordId, { private: !isPrivate })
                     .response.catch((e) => Notifications.error(t`Failed to save changes`, getErrorMessage(e)));
                 closeMenu();
             }}
@@ -172,15 +172,15 @@ const TrackerUpdatePrivateStatus = ({
 
 type TTrackRecordActive = Pick<TTrackRecordBind, 'id' | 'remoteUrl' | 'title' | 'private'>;
 const TrackerActiveHeader = ({
-                                 trackRecord,
-                                 tracker,
-                                 openSearch,
-                             }: {
+    trackRecord,
+    tracker,
+    openSearch,
+}: {
     trackRecord: TTrackRecordActive;
     tracker: TTrackerActive;
     openSearch: () => void;
 }) => {
-    const {t} = useLingui();
+    const { t } = useLingui();
 
     const copyTitle = async () => {
         try {
@@ -202,8 +202,8 @@ const TrackerActiveHeader = ({
             <Badge
                 badgeContent={
                     trackRecord.private ? (
-                        <Stack sx={{p: '2px 6px', backgroundColor: 'primary.main', borderRadius: 100}}>
-                            <VisibilityOffIcon fontSize="small" sx={{color: 'primary.contrastText'}}/>
+                        <Stack sx={{ p: '2px 6px', backgroundColor: 'primary.main', borderRadius: 100 }}>
+                            <VisibilityOffIcon fontSize="small" sx={{ color: 'primary.contrastText' }} />
                         </Stack>
                     ) : null
                 }
@@ -215,7 +215,7 @@ const TrackerActiveHeader = ({
                         slots={{
                             avatarProps: {
                                 variant: 'rounded',
-                                sx: {width: 64, height: 64},
+                                sx: { width: 64, height: 64 },
                             },
                             spinnerImageProps: {
                                 ignoreQueue: true,
@@ -224,18 +224,18 @@ const TrackerActiveHeader = ({
                     />
                 </TrackerActiveLink>
             </Badge>
-            <ListItemButton sx={{flexGrow: 1}} onClick={openSearch}>
+            <ListItemButton sx={{ flexGrow: 1 }} onClick={openSearch}>
                 <CustomTooltip title={trackRecord.title}>
-                    <TypographyMaxLines sx={{flexGrow: 1}} lines={1}>
+                    <TypographyMaxLines sx={{ flexGrow: 1 }} lines={1}>
                         {trackRecord.title}
                     </TypographyMaxLines>
                 </CustomTooltip>
             </ListItemButton>
-            <Stack sx={{justifyContent: 'center', direction: 'row', alignItems: 'center'}}>
+            <Stack sx={{ justifyContent: 'center', direction: 'row', alignItems: 'center' }}>
                 {!!navigator.clipboard && (
                     <CustomTooltip title={t`Copy`}>
                         <IconButton onClick={copyTitle} color="inherit">
-                            <ContentCopyIcon fontSize="small"/>
+                            <ContentCopyIcon fontSize="small" />
                         </IconButton>
                     </CustomTooltip>
                 )}
@@ -244,7 +244,7 @@ const TrackerActiveHeader = ({
                     {(popupState) => (
                         <>
                             <IconButton {...bindTrigger(popupState)}>
-                                <MoreVertIcon/>
+                                <MoreVertIcon />
                             </IconButton>
                             <Menu {...bindMenu(popupState)} id={`tracker-active-menu-${tracker.id}`}>
                                 {(onClose, setHideMenu) => [
@@ -278,8 +278,8 @@ const TrackerActiveHeader = ({
     );
 };
 
-const TrackerActiveCardInfoRow = ({children}: { children: React.ReactNode }) => (
-    <Stack direction="row" sx={{textAlignLast: 'center'}}>
+const TrackerActiveCardInfoRow = ({ children }: { children: React.ReactNode }) => (
+    <Stack direction="row" sx={{ textAlignLast: 'center' }}>
         {children}
     </Stack>
 );
@@ -287,15 +287,15 @@ const TrackerActiveCardInfoRow = ({children}: { children: React.ReactNode }) => 
 const isUnsetScore = (score: string | number): boolean => !Math.trunc(Number(score));
 
 export const TrackerActiveCard = ({
-                                      trackRecord,
-                                      tracker,
-                                      onClick,
-                                  }: {
+    trackRecord,
+    tracker,
+    onClick,
+}: {
     trackRecord: TTrackRecordBind;
     tracker: TTrackerBind;
     onClick: () => void;
 }) => {
-    const {t} = useLingui();
+    const { t } = useLingui();
 
     const isScoreUnset = isUnsetScore(trackRecord.displayScore);
     const currentScore = isScoreUnset ? tracker.scores[0] : trackRecord.displayScore;
@@ -304,7 +304,7 @@ export const TrackerActiveCard = ({
         () =>
             tracker.scores.map(
                 (score) =>
-                    [score, {text: isUnsetScore(score) ? '-' : score}] satisfies SelectSettingValue<
+                    [score, { text: isUnsetScore(score) ? '-' : score }] satisfies SelectSettingValue<
                         TTrackerBind['scores'][number]
                     >,
             ),
@@ -319,11 +319,11 @@ export const TrackerActiveCard = ({
 
     return (
         <Card sx={CARD_STYLING}>
-            <CardContent sx={{padding: 0}}>
-                <TrackerActiveHeader trackRecord={trackRecord} tracker={tracker} openSearch={onClick}/>
-                <Card sx={{backgroundColor: 'background.default'}}>
-                    <CardContent sx={{padding: '0'}}>
-                        <Box sx={{padding: 1}}>
+            <CardContent sx={{ padding: 0 }}>
+                <TrackerActiveHeader trackRecord={trackRecord} tracker={tracker} openSearch={onClick} />
+                <Card sx={{ backgroundColor: 'background.default' }}>
+                    <CardContent sx={{ padding: '0' }}>
+                        <Box sx={{ padding: 1 }}>
                             <TrackerActiveCardInfoRow>
                                 <ListPreference
                                     ListPreferenceTitle={t`Status`}
@@ -333,10 +333,10 @@ export const TrackerActiveCard = ({
                                     entryValues={tracker.statuses.map((status) => `${status.value}`)}
                                     ListPreferenceCurrentValue={`${trackRecord.status}`}
                                     ListPreferenceDefault={null}
-                                    updateValue={(_, status) => updateTrackerBind({status: Number(status)})}
+                                    updateValue={(_, status) => updateTrackerBind({ status: Number(status) })}
                                     summary="%s"
                                 />
-                                <Divider orientation="vertical" flexItem/>
+                                <Divider orientation="vertical" flexItem />
                                 <NumberSetting
                                     settingTitle={t`Chapter`}
                                     dialogTitle={t`Chapter`}
@@ -345,33 +345,33 @@ export const TrackerActiveCard = ({
                                     minValue={0}
                                     maxValue={Number.MAX_SAFE_INTEGER}
                                     valueUnit=""
-                                    handleUpdate={(lastChapterRead) => updateTrackerBind({lastChapterRead})}
+                                    handleUpdate={(lastChapterRead) => updateTrackerBind({ lastChapterRead })}
                                 />
-                                <Divider orientation="vertical" flexItem/>
+                                <Divider orientation="vertical" flexItem />
                                 <SelectSetting<string>
                                     settingName={t`Score`}
                                     value={currentScore}
                                     values={selectSettingValues}
-                                    handleChange={(score) => updateTrackerBind({scoreString: score})}
+                                    handleChange={(score) => updateTrackerBind({ scoreString: score })}
                                 />
                             </TrackerActiveCardInfoRow>
-                            <Divider/>
+                            <Divider />
                             <TrackerActiveCardInfoRow>
                                 <DateSetting
                                     settingName={t`Start date`}
                                     value={Trackers.getDateString(trackRecord.startDate)}
                                     remove
                                     handleChange={(startDate) =>
-                                        updateTrackerBind({startDate: startDate ?? UNSET_DATE})
+                                        updateTrackerBind({ startDate: startDate ?? UNSET_DATE })
                                     }
                                 />
-                                <Divider orientation="vertical" flexItem/>
+                                <Divider orientation="vertical" flexItem />
                                 <DateSetting
                                     settingName={t`Finish date`}
                                     value={Trackers.getDateString(trackRecord.finishDate)}
                                     remove
                                     handleChange={(finishDate) =>
-                                        updateTrackerBind({finishDate: finishDate ?? UNSET_DATE})
+                                        updateTrackerBind({ finishDate: finishDate ?? UNSET_DATE })
                                     }
                                 />
                             </TrackerActiveCardInfoRow>

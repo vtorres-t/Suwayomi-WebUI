@@ -7,37 +7,36 @@
  */
 
 import Typography from '@mui/material/Typography';
-import React, {useCallback, useEffect, useMemo, useState} from 'react';
-import {useLingui} from '@lingui/react/macro';
-import {requestManager} from '@/lib/requests/RequestManager.ts';
-import {LoadingPlaceholder} from '@/base/components/feedback/LoadingPlaceholder.tsx';
-import {EmptyViewAbsoluteCentered} from '@/base/components/feedback/EmptyViewAbsoluteCentered.tsx';
-import {UpdateChecker} from '@/features/updates/components/UpdateChecker.tsx';
-import {SyncButton} from '@/features/sync/components/SyncButton.tsx';
-import {StyledGroupedVirtuoso} from '@/base/components/virtuoso/StyledGroupedVirtuoso.tsx';
-import {StyledGroupHeader} from '@/base/components/virtuoso/StyledGroupHeader.tsx';
-import {StyledGroupItemWrapper} from '@/base/components/virtuoso/StyledGroupItemWrapper.tsx';
-import {dateTimeFormatter, epochToDate, getDateString} from '@/base/utils/DateHelper.ts';
-import {defaultPromiseErrorHandler} from '@/lib/DefaultPromiseErrorHandler.ts';
-import {VirtuosoUtil} from '@/lib/virtuoso/Virtuoso.util.tsx';
-import {getErrorMessage} from '@/lib/HelperFunctions.ts';
-import {ChapterUpdateCard} from '@/features/updates/components/ChapterUpdateCard.tsx';
-import {Chapters} from '@/features/chapter/services/Chapters.ts';
-import {useAppTitleAndAction} from '@/features/navigation-bar/hooks/useAppTitleAndAction.ts';
-import {GROUPED_VIRTUOSO_Z_INDEX} from '@/lib/virtuoso/Virtuoso.constants.ts';
-import {STABLE_EMPTY_ARRAY} from '@/base/Base.constants.ts';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { useLingui } from '@lingui/react/macro';
+import { requestManager } from '@/lib/requests/RequestManager.ts';
+import { LoadingPlaceholder } from '@/base/components/feedback/LoadingPlaceholder.tsx';
+import { EmptyViewAbsoluteCentered } from '@/base/components/feedback/EmptyViewAbsoluteCentered.tsx';
+import { UpdateChecker } from '@/features/updates/components/UpdateChecker.tsx';
+import { SyncButton } from '@/features/sync/components/SyncButton.tsx';
+import { StyledGroupedVirtuoso } from '@/base/components/virtuoso/StyledGroupedVirtuoso.tsx';
+import { StyledGroupHeader } from '@/base/components/virtuoso/StyledGroupHeader.tsx';
+import { StyledGroupItemWrapper } from '@/base/components/virtuoso/StyledGroupItemWrapper.tsx';
+import { dateTimeFormatter, epochToDate, getDateString } from '@/base/utils/DateHelper.ts';
+import { defaultPromiseErrorHandler } from '@/lib/DefaultPromiseErrorHandler.ts';
+import { VirtuosoUtil } from '@/lib/virtuoso/Virtuoso.util.tsx';
+import { getErrorMessage } from '@/lib/HelperFunctions.ts';
+import { ChapterUpdateCard } from '@/features/updates/components/ChapterUpdateCard.tsx';
+import { Chapters } from '@/features/chapter/services/Chapters.ts';
+import { useAppTitleAndAction } from '@/features/navigation-bar/hooks/useAppTitleAndAction.ts';
+import { GROUPED_VIRTUOSO_Z_INDEX } from '@/lib/virtuoso/Virtuoso.constants.ts';
+import { STABLE_EMPTY_ARRAY } from '@/base/Base.constants.ts';
 import mapValues from 'lodash/fp/mapValues';
 import difference from 'lodash/fp/difference';
 import uniqBy from 'lodash/fp/uniqBy';
-import {OffsetComponent} from '@/base/components/OffsetComponent.tsx';
-import {CustomTooltip} from '@/base/components/CustomTooltip.tsx';
+import { OffsetComponent } from '@/base/components/OffsetComponent.tsx';
+import { CustomTooltip } from '@/base/components/CustomTooltip.tsx';
 import IconButton from '@mui/material/IconButton';
 
-
 export const Updates: React.FC = () => {
-    const {t} = useLingui();
+    const { t } = useLingui();
 
-    const {data: lastUpdateTimestampData} = requestManager.useGetLastGlobalUpdateTimestamp({
+    const { data: lastUpdateTimestampData } = requestManager.useGetLastGlobalUpdateTimestamp({
         /**
          * The {@link UpdateChecker} is responsible for updating the timestamp
          */
@@ -52,8 +51,8 @@ export const Updates: React.FC = () => {
             <CustomTooltip title={t`Last update`}>
                 <IconButton color="inherit">{date}</IconButton>
             </CustomTooltip>
-            <SyncButton/>
-            <UpdateChecker/>
+            <SyncButton />
+            <UpdateChecker />
         </div>,
     );
 
@@ -111,7 +110,7 @@ export const Updates: React.FC = () => {
                             mangaEntries!,
                             firstUnreadEntryByMangaByGroup[
                                 getDateString(epochToDate(Number(mangaEntries![0].fetchedAt)))
-                                ]![mangaEntries![0].mangaId],
+                            ]![mangaEntries![0].mangaId],
                         ),
                     entriesByManga,
                 ),
@@ -141,7 +140,7 @@ export const Updates: React.FC = () => {
             return;
         }
 
-        fetchMore({variables: {offset: allUpdateEntries.length}}).then(() =>
+        fetchMore({ variables: { offset: allUpdateEntries.length } }).then(() =>
             setPrevUpdateEntriesCount(firstUnreadUpdatesEntries.length),
         );
     }, [hasNextPage, allUpdateEntries.length, firstUnreadUpdatesEntries.length]);
@@ -165,7 +164,7 @@ export const Updates: React.FC = () => {
     }
 
     if (!isLoading && firstUnreadUpdatesEntries.length === 0) {
-        return <EmptyViewAbsoluteCentered message={t`You don't have any updates yet.`}/>;
+        return <EmptyViewAbsoluteCentered message={t`You don't have any updates yet.`} />;
     }
 
     return (
@@ -177,7 +176,7 @@ export const Updates: React.FC = () => {
             <StyledGroupedVirtuoso
                 persistKey="updates"
                 components={{
-                    Footer: () => (isLoading ? <LoadingPlaceholder usePadding/> : null),
+                    Footer: () => (isLoading ? <LoadingPlaceholder usePadding /> : null),
                 }}
                 overscan={window.innerHeight * 0.5}
                 endReached={loadMore}
@@ -197,7 +196,7 @@ export const Updates: React.FC = () => {
                             otherChapters={
                                 otherUpdatesByMangaByGroup[
                                     getDateString(epochToDate(Number(firstUnreadUpdatesEntries[index].fetchedAt)))
-                                    ][firstUnreadUpdatesEntries[index].mangaId]
+                                ][firstUnreadUpdatesEntries[index].mangaId]
                             }
                         />
                     </StyledGroupItemWrapper>
