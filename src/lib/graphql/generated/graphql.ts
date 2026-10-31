@@ -3183,6 +3183,7 @@ export type ServerSettingsFragment = {
     databaseSchema: string;
     useHikariConnectionPool: boolean;
     hikariMaxPoolSize: number;
+    kcefEnabled: boolean;
     repoWebUiUrl: string;
     repoWebUiType: Types.RepoType;
     repoServerUrl: string;
@@ -3299,6 +3300,7 @@ export type ResetServerSettingsMutation = {
             databaseSchema: string;
             useHikariConnectionPool: boolean;
             hikariMaxPoolSize: number;
+            kcefEnabled: boolean;
             repoWebUiUrl: string;
             repoWebUiType: Types.RepoType;
             repoServerUrl: string;
@@ -3425,6 +3427,7 @@ export type UpdateServerSettingsMutation = {
             databaseSchema: string;
             useHikariConnectionPool: boolean;
             hikariMaxPoolSize: number;
+            kcefEnabled: boolean;
             repoWebUiUrl: string;
             repoWebUiType: Types.RepoType;
             repoServerUrl: string;
@@ -3547,6 +3550,7 @@ export type GetServerSettingsQuery = {
         databaseSchema: string;
         useHikariConnectionPool: boolean;
         hikariMaxPoolSize: number;
+        kcefEnabled: boolean;
         repoWebUiUrl: string;
         repoWebUiType: Types.RepoType;
         repoServerUrl: string;
