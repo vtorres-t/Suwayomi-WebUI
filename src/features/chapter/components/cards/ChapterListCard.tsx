@@ -9,6 +9,7 @@
 import Stack from '@mui/material/Stack';
 import type { ComponentProps } from 'react';
 import { ChapterCard } from '@/features/chapter/components/cards/ChapterCard.tsx';
+
 import { Chapters } from '@/features/chapter/services/Chapters.ts';
 import { applyStyles } from '@/base/utils/ApplyStyles.ts';
 import { MissingChaptersInfoSeparator } from '@/features/chapter/components/MissingChaptersInfoSeparator.tsx';

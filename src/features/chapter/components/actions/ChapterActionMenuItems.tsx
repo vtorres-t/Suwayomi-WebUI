@@ -42,6 +42,7 @@ import type {
     ChapterReadInfo,
     ChapterRealUrlInfo,
 } from '@/features/chapter/Chapter.types.ts';
+import { IconWebView } from '@/assets/icons/IconWebView.tsx';
 import { IconBrowser } from '@/assets/icons/IconBrowser.tsx';
 import CancelIcon from '@mui/icons-material/Cancel';
 
@@ -180,15 +181,30 @@ export const ChapterActionMenuItems = ({
                 <MenuItem onClick={handleSelect} Icon={CheckBoxOutlineBlank} title={t`Select`} />
             )}
             {isSingleMode && (
-                <MenuItem
-                    Icon={IconBrowser}
-                    disabled={!chapter!.realUrl}
-                    onClick={() => {
-                        window.open(chapter!.realUrl!, '_blank', 'noopener,noreferrer');
-                        onClose();
-                    }}
-                    title={t`Open in browser`}
-                />
+                <>
+                    <MenuItem
+                        Icon={IconBrowser}
+                        disabled={!chapter!.realUrl}
+                        onClick={() => {
+                            window.open(chapter!.realUrl!, '_blank', 'noopener,noreferrer');
+                            onClose();
+                        }}
+                        title={t`Open in browser`}
+                    />
+                    <MenuItem
+                        Icon={IconWebView}
+                        disabled={!chapter!.realUrl}
+                        onClick={() => {
+                            window.open(
+                                requestManager.getWebviewUrl(chapter!.realUrl!),
+                                '_blank',
+                                'noopener,noreferrer',
+                            );
+                            onClose();
+                        }}
+                        title={t`Open in WebView`}
+                    />
+                </>
             )}
             {shouldShowMenuItem(canBeDownloaded) && (
                 <MenuItem
