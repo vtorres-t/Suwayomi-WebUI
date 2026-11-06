@@ -226,7 +226,7 @@ export const TrackerSearch = ({
                 dividers
                 sx={{
                     padding: DIALOG_PADDING,
-                    height: '100vh',
+                    height: '100dvh',
                     ...applyStyles(hasNoResults || hasError, { position: 'relative' }),
                 }}
             >
