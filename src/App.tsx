@@ -8,7 +8,7 @@
 
 import CssBaseline from '@mui/material/CssBaseline';
 import type { PropsWithChildren, ReactNode } from 'react';
-import React, { useEffect, useLayoutEffect } from 'react';
+import React, { useEffect, useLayoutEffect, useState } from 'react';
 import { Navigate, Outlet, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import { loadDevMessages, loadErrorMessages } from '@apollo/client/dev';
 import { loadable } from 'react-lazily/loadable';
@@ -34,10 +34,6 @@ import { MigrationFABIndicator } from '@/features/migration/components/Migration
 import { SplashScreen } from '@/features/authentication/components/SplashScreen.tsx';
 import { OffsetContainer } from '@/base/components/OffsetComponent.tsx';
 import { AppInitializer } from '@/base/AppInitializer.ts';
-import { useLingui } from '@lingui/react/macro';
-import { TypographyMaxLines } from '@/base/components/texts/TypographyMaxLines.tsx';
-import Stack from '@mui/material/Stack';
-import { getErrorMessage } from '@/lib/HelperFunctions.ts';
 
 const { Browse } = loadable(() => import('@/features/browse/screens/Browse.tsx'), lazyLoadFallback);
 const { DownloadQueue } = loadable(() => import('@/features/downloads/screens/DownloadQueue.tsx'), lazyLoadFallback);
@@ -126,16 +122,18 @@ const ScrollToTop = () => {
 };
 
 const InitializeGuard = ({ children }: PropsWithChildren) => {
-    const { t } = useLingui();
     const { accessToken, refreshToken, isAuthRequired } = AuthManager.useSession();
 
-    const { initialized, actions } = AppInitializer.useStatus();
+    const [isInitialized, setIsInitialized] = useState(false);
 
     useEffect(() => {
-        void AppInitializer.start();
+        AppInitializer.start().then(() => {
+            setIsInitialized(true);
+        });
 
         return () => {
             AppInitializer.stop();
+            setIsInitialized(false);
         };
     }, []);
 
@@ -143,27 +141,8 @@ const InitializeGuard = ({ children }: PropsWithChildren) => {
         return <LoginPage redirect={false} />;
     }
 
-    if (!initialized) {
-        const activeAction = actions.find((action) => action.required && action.active);
-        const message = activeAction?.message;
-        const errorMessage = activeAction?.errorMessage;
-        const error = activeAction?.error;
-
-        return (
-            <SplashScreen
-                message={
-                    <Stack sx={{ pt: 4, alignItems: 'center' }}>
-                        <TypographyMaxLines>{!!message && t(message)}</TypographyMaxLines>
-                        <TypographyMaxLines color="textSecondary" variant="body2">
-                            {!!error && !!errorMessage && t(errorMessage)}
-                        </TypographyMaxLines>
-                        <TypographyMaxLines color="textSecondary" variant="body2">
-                            {getErrorMessage(error)}
-                        </TypographyMaxLines>
-                    </Stack>
-                }
-            />
-        );
+    if (!isInitialized) {
+        return <SplashScreen />;
     }
 
     return children;
