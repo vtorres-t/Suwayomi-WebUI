@@ -2464,6 +2464,14 @@ msgstr "Links"
 msgid "List"
 msgstr "List"
 
+#: src/base/AppInitializer.ts
+msgid "Loading client settings…"
+msgstr "Loading client settings…"
+
+#: src/base/AppInitializer.ts
+msgid "Loading server settings…"
+msgstr "Loading server settings…"
+
 #: src/features/theme/components/ThemePreview.tsx
 msgid "Loading theme fonts…"
 msgstr "Loading theme fonts…"
@@ -4153,6 +4161,14 @@ msgstr "Type"
 msgid "UI Login"
 msgstr "UI Login"
 
+#: src/base/AppInitializer.ts
+msgid "Unable to determine authentication"
+msgstr "Unable to determine authentication"
+
+#: src/base/AppInitializer.ts
+msgid "Unable to load client settings"
+msgstr "Unable to load client settings"
+
 #: src/features/backup/screens/Backup.tsx
 #: src/features/browse/extensions/Extensions.tsx
 #: src/features/browse/screens/BrowseSettings.tsx
@@ -4194,6 +4210,10 @@ msgstr "Unable to load data"
 #: src/features/extension/store/screens/ExtensionStores.tsx
 msgid "Unable to load extension stores"
 msgstr "Unable to load extension stores"
+
+#: src/base/AppInitializer.ts
+msgid "Unable to load server settings"
+msgstr "Unable to load server settings"
 
 #: src/features/migration/screens/MigrationSelectDestinationSources.tsx
 msgid "Unable to load sources"

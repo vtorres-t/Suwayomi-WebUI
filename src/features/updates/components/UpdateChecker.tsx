@@ -22,6 +22,7 @@ import { defaultPromiseErrorHandler } from '@/lib/DefaultPromiseErrorHandler.ts'
 import { dateTimeFormatter } from '@/base/utils/DateHelper.ts';
 import { MediaQuery } from '@/base/utils/MediaQuery.tsx';
 import type { CategoryIdInfo } from '@/features/category/Category.types.ts';
+
 import { getErrorMessage } from '@/lib/HelperFunctions.ts';
 import { Notifications } from '@/base/notification/Notifications.ts';
 

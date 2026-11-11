@@ -20,13 +20,9 @@ export enum HttpMethod {
 
 export interface IRestClient {
     get(url: string): Promise<Response>;
-
     delete(url: string): Promise<Response>;
-
     post(url: string, data?: any): Promise<Response>;
-
     put(url: string, data?: any): Promise<Response>;
-
     patch(url: string, data?: any): Promise<Response>;
 }
 
