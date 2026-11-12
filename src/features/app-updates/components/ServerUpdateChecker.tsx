@@ -58,7 +58,7 @@ export const ServerUpdateChecker = () => {
         selectedServerInfo?.tag,
     );
 
-    const changelogUrl = `https://github.com/vtorres-t/Suwayomi-Server/releases/tag/${aboutServer.version}`;
+    const changelogUrl = `https://github.com/vtorres-t/Suwayomi-Server/releases/tag/${version}`;
 
     const isSameAsCurrent = !version || !serverVersion || serverVersion === version;
 
