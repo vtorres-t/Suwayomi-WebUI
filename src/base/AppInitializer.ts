@@ -182,14 +182,14 @@ export class AppInitializer {
         AppInitializer.subscribers.forEach((callback) => callback());
     }
 
-    public static useStatus(): Status {
-        useSyncExternalStore(AppInitializer.subscribe.bind(AppInitializer), () => AppInitializer.notifierValue);
-
+    static getStatus(): Status {
         return {
-            initialized: AppInitializer.actions
-                .values()
-                .filter((action) => action.required)
-                .every((action) => !action.active),
+            initialized:
+                !!AppInitializer.actions.size &&
+                AppInitializer.actions
+                    .values()
+                    .filter((action) => action.required)
+                    .every((action) => !action.active),
             actions: [...AppInitializer.actions.values()].map(
                 ({ key, message, errorMessage, error, required, active }) => ({
                     key,
@@ -201,6 +201,12 @@ export class AppInitializer {
                 }),
             ),
         };
+    }
+
+    public static useStatus(): Status {
+        useSyncExternalStore(AppInitializer.subscribe.bind(AppInitializer), () => AppInitializer.notifierValue);
+
+        return AppInitializer.getStatus();
     }
 
     private static async startActions(actions: Action | Action[]): Promise<void[]> {
@@ -265,7 +271,7 @@ export class AppInitializer {
 
             finalController.resolve();
         } catch (e) {
-            AppInitializer.actions.set(action.key, { ...action, controller: finalController, error: e });
+            AppInitializer.actions.set(action.key, { ...action, controller: finalController, error: e, active: true });
             AppInitializer.notify();
 
             await new Promise((resolve) => {
