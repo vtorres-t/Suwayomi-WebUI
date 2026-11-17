@@ -1044,7 +1044,7 @@ export class RequestManager {
 
                 img.onload = async () => {
                     try {
-                        await this.optionallyDecodeImage(url, shouldDecode);
+                        await this.optionallyDecodeImage(url, shouldDecode, disableCors);
                         imgRequest.resolve(url);
                     } catch (error) {
                         imgRequest.reject(error);
