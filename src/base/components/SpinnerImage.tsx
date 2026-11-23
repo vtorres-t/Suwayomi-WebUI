@@ -6,8 +6,8 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-import type { Ref } from 'react';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import type { CSSProperties, Ref } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { STABLE_EMPTY_OBJECT } from '@/base/Base.constants.ts';
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
@@ -33,9 +33,12 @@ export interface SpinnerImageProps {
     src: string;
     alt: string;
 
-    spinnerStyle?: SxProps<Theme> & { small?: boolean };
-    imgStyle?: SxProps<Theme>;
-    hideImgStyle?: Omit<SxProps<Theme>, 'accentColor'>;
+    spinnerSx?: SxProps<Theme> & { small?: boolean };
+    spinnerStyle?: CSSProperties;
+    imgSx?: SxProps<Theme>;
+    imgStyle?: CSSProperties;
+    hideImgSx?: Omit<SxProps<Theme>, 'accentColor'>;
+    hideImgStyle?: CSSProperties;
 
     onLoad?: () => void;
     onError?: () => void;
@@ -63,8 +66,11 @@ export const SpinnerImage = ({ ref, ...props }: SpinnerImageProps) => {
         alt,
         onLoad,
         onError,
-        spinnerStyle: { small, ...spinnerStyle } = STABLE_EMPTY_OBJECT,
+        spinnerSx: { small, ...spinnerSx } = STABLE_EMPTY_OBJECT,
+        spinnerStyle,
+        imgSx,
         imgStyle,
+        hideImgSx,
         hideImgStyle,
         priority,
         retryKeyPrefix,
@@ -180,10 +186,11 @@ export const SpinnerImage = ({ ref, ...props }: SpinnerImageProps) => {
                             height: '100%',
                             alignItems: 'center',
                             justifyContent: 'center',
-                            background: (theme) => theme.palette.background.default,
+                            background: (theme) => theme.vars.palette.background.default,
                         },
-                        spinnerStyle,
+                        spinnerSx,
                     )}
+                    style={spinnerStyle}
                 >
                     <ImageIcon fontSize="large" />
                 </Stack>
@@ -192,14 +199,18 @@ export const SpinnerImage = ({ ref, ...props }: SpinnerImageProps) => {
                     component="img"
                     key={`${src}_${imgLoadRetryKey}_${retryKeyPrefix}`}
                     sx={[
-                        ...(Array.isArray(imgStyle) ? (imgStyle ?? []) : [imgStyle]),
+                        ...(Array.isArray(imgSx) ? (imgSx ?? []) : [imgSx]),
                         applyStyles(!imageSourceUrl || isLoading || hasError, {
-                            ...hideImgStyle,
-                            ...applyStyles(!hideImgStyle, {
+                            ...hideImgSx,
+                            ...applyStyles(!hideImgSx, {
                                 display: 'none',
                             }),
                         }),
                     ]}
+                    style={{
+                        ...imgStyle,
+                        ...hideImgStyle,
+                    }}
                     ref={ref}
                     crossOrigin={disableCors ? undefined : 'anonymous'}
                     src={imageSourceUrl}
@@ -216,8 +227,9 @@ export const SpinnerImage = ({ ref, ...props }: SpinnerImageProps) => {
                             justifyContent: 'center',
                             alignItems: 'center',
                         },
-                        spinnerStyle,
+                        spinnerSx,
                     )}
+                    style={spinnerStyle}
                 >
                     <Stack
                         sx={{
