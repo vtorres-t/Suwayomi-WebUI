@@ -56,9 +56,11 @@ const BaseReaderBottomBarMobile = ({
             <Stack
                 sx={{
                     position: 'fixed',
-                    right: `${scrollbar.ySize}px`,
                     bottom: 0,
                     left: 0,
+                }}
+                style={{
+                    insetInlineEnd: `${scrollbar.ySize}px`,
                     height: `calc(100% - ${topOffset}px)`,
                 }}
             >
@@ -68,10 +70,12 @@ const BaseReaderBottomBarMobile = ({
                         ref={bottomBarRef}
                         sx={{
                             alignItems: 'center',
-                            backgroundColor: (theme) => theme.alpha(theme.palette.background.paper, 0.95),
-                            pb: `max(${scrollbar.xSize}px, env(safe-area-inset-bottom))`,
+                            backgroundColor: (theme) => `rgba(${theme.palette.background.paperChannel} / 0.95)`,
                             boxShadow: 2,
                             pointerEvents: 'all',
+                        }}
+                        style={{
+                            paddingBottom: `max(${scrollbar.xSize}px, env(safe-area-inset-bottom))`,
                         }}
                     >
                         <Stack

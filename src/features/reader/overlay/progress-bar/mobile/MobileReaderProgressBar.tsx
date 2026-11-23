@@ -26,7 +26,7 @@ import { ProgressBarPosition, ReaderResumeMode } from '@/features/reader/Reader.
 import { ReaderProgressBarDirectionWrapper } from '@/features/reader/overlay/progress-bar/components/ReaderProgressBarDirectionWrapper.tsx';
 import { withPropsFrom } from '@/base/hoc/withPropsFrom.tsx';
 import { ReaderProgressBarSlotMobile } from '@/features/reader/overlay/progress-bar/mobile/components/ReaderProgressBarSlotMobile.tsx';
-import { applyStyles } from '@/base/utils/ApplyStyles.ts';
+import { applyCSS, applyStyles } from '@/base/utils/ApplyStyles.ts';
 import { useResizeObserver } from '@/base/hooks/useResizeObserver.tsx';
 import { getProgressBarPosition } from '@/features/reader/settings/ReaderSettings.utils.tsx';
 import {
@@ -94,7 +94,7 @@ const BaseMobileReaderProgressBar = ({
                     display: 'flex',
                     justifyItems: 'center',
                     alignItems: 'stretch',
-                    backgroundColor: (theme) => theme.alpha(theme.palette.background.paper, 0.85),
+                    backgroundColor: (theme) => `rgba(${theme.palette.background.paperChannel} / 0.85)`,
                     borderRadius: 100,
                     boxShadow: 2,
                 },
@@ -257,13 +257,13 @@ const BaseMobileReaderProgressBar = ({
                         }
                         disabled={!previousChapter}
                         sx={{
-                            backgroundColor: (theme) => theme.alpha(theme.palette.background.paper, 0.85),
+                            backgroundColor: (theme) => `rgba(${theme.palette.background.paperChannel} / 0.85)`,
                             boxShadow: 2,
                             '&:hover': {
                                 backgroundColor: 'background.paper',
                             },
                             '&:disabled': {
-                                backgroundColor: (theme) => theme.alpha(theme.palette.background.paper, 0.85),
+                                backgroundColor: (theme) => `rgba(${theme.palette.background.paperChannel} / 0.85)`,
                             },
                         }}
                     >
@@ -315,13 +315,19 @@ const BaseMobileReaderProgressBar = ({
                                     backgroundColor: 'primary.main',
                                     ...applyStyles(isVertical, {
                                         width: '20px',
-                                        height: `${(Math.max(0, getPage(currentPageIndex, pages).pagesIndex) / (pages.length - 1)) * 100}%`,
                                         borderRadius: '400px 400px 0 0',
                                     }),
                                     ...applyStyles(isHorizontal, {
-                                        width: `${(Math.max(0, getPage(currentPageIndex, pages).pagesIndex) / (pages.length - 1)) * 100}%`,
                                         height: '20px',
                                         borderRadius: '400px 0 0 400px',
+                                    }),
+                                },
+                                style: {
+                                    ...applyCSS(isVertical, {
+                                        height: `${(Math.max(0, getPage(currentPageIndex, pages).pagesIndex) / (pages.length - 1)) * 100}%`,
+                                    }),
+                                    ...applyCSS(isHorizontal, {
+                                        width: `${(Math.max(0, getPage(currentPageIndex, pages).pagesIndex) / (pages.length - 1)) * 100}%`,
                                     }),
                                 },
                             },
@@ -336,13 +342,13 @@ const BaseMobileReaderProgressBar = ({
                         }
                         disabled={!nextChapter}
                         sx={{
-                            backgroundColor: (theme) => theme.alpha(theme.palette.background.paper, 0.85),
+                            backgroundColor: (theme) => `rgba(${theme.palette.background.paperChannel} / 0.85)`,
                             boxShadow: 2,
                             '&:hover': {
                                 backgroundColor: 'background.paper',
                             },
                             '&:disabled': {
-                                backgroundColor: (theme) => theme.alpha(theme.palette.background.paper, 0.85),
+                                backgroundColor: (theme) => `rgba(${theme.palette.background.paperChannel} / 0.85)`,
                             },
                         }}
                     >

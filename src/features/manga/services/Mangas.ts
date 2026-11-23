@@ -23,7 +23,10 @@ import { getMetadataServerSettings } from '@/features/settings/services/ServerSe
 import { GET_MANGA_META, GET_MANGAS_BASE } from '@/lib/graphql/manga/MangaQuery.ts';
 import { MANGA_BASE_FIELDS, MANGA_MIGRATION_FIELDS } from '@/lib/graphql/manga/MangaFragments.ts';
 import type {
+    ChangeCategoriesOptions,
+    DownloadChaptersOptions,
     MangaAction,
+    MangaActionOption,
     MangaArtistInfo,
     MangaAuthorInfo,
     MangaCardMode,
@@ -35,10 +38,14 @@ import type {
     MangaThumbnailInfo,
     MangaTitleInfo,
     MangaUnreadInfo,
+    MarkAsReadOptions,
+    PerformActionOptions,
     MangaUnreadInfoAndDownloadInfo,
 } from '@/features/manga/Manga.types.ts';
 import { MangaType } from '@/features/manga/Manga.types.ts';
 import {
+    ARTIST_AUTHOR_SEPARATOR_REGEX,
+    I18N_PLURAL,
     MANGA_ACTION_TO_CONFIRMATION_REQUIRED,
     MANGA_ACTION_TO_TRANSLATION,
     MANGA_TAGS_BY_MANGA_TYPE,
@@ -52,55 +59,13 @@ import { MigrationManager } from '@/features/migration/MigrationManager.ts';
 import uniq from 'lodash/fp/uniq';
 import { ReactRouter } from '@/lib/react-router/ReactRouter.ts';
 import { AppRoutes } from '@/base/AppRoute.constants.ts';
-import {
-    type ChapterConditionInput,
-    ChapterOrderBy,
-    type UpdateMangaCategoriesPatchInput,
-} from '@/lib/graphql/generated/graphql-base.types.ts';
+import { type ChapterConditionInput, ChapterOrderBy } from '@/lib/graphql/generated/graphql-base.types.ts';
 import { GET_MANGAS_CHAPTER_IDS_WITH_STATE } from '@/lib/graphql/chapter/ChapterQuery.ts';
 import { filterChapters } from '@/features/chapter/utils/ChapterList.util.tsx';
 import mapValues from 'lodash/fp/mapValues';
 import { getMangaMetadata } from '@/features/manga/services/MangaMetadata.ts';
 import { SubpathUtil } from '@/lib/utils/SubpathUtil.ts';
 import { Notifications } from '@/base/notification/Notifications.ts';
-
-const I18N_PLURAL = 9999;
-
-type DownloadChaptersOptions = {
-    size?: number;
-    onlyUnread?: boolean;
-    downloadAhead?: boolean;
-};
-type MarkAsReadOptions = { wasManuallyMarkedAsRead: boolean };
-type ChangeCategoriesOptions = { changeCategoriesPatch: UpdateMangaCategoriesPatchInput };
-
-type MarkAsReadActionOption = MarkAsReadOptions &
-    PropertiesNever<ChangeCategoriesOptions> &
-    PropertiesNever<DownloadChaptersOptions>;
-type ChangeCategoriesActionOption = PropertiesNever<MarkAsReadOptions> &
-    ChangeCategoriesOptions &
-    PropertiesNever<DownloadChaptersOptions>;
-type MigrateActionOption = PropertiesNever<MarkAsReadOptions> &
-    PropertiesNever<ChangeCategoriesOptions> &
-    PropertiesNever<DownloadChaptersOptions>;
-type DownloadActionOption = PropertiesNever<MarkAsReadOptions> &
-    PropertiesNever<ChangeCategoriesOptions> &
-    DownloadChaptersOptions;
-type DefaultActionOption = Partial<MarkAsReadOptions> &
-    Partial<ChangeCategoriesOptions> &
-    Partial<DownloadChaptersOptions>;
-
-type PerformActionOptions<Action extends MangaAction> = Action extends 'mark_as_read'
-    ? MarkAsReadActionOption
-    : Action extends 'change_categories'
-      ? ChangeCategoriesActionOption
-      : Action extends 'migrate'
-        ? MigrateActionOption
-        : Action extends 'download'
-          ? DownloadActionOption
-          : DefaultActionOption;
-
-const ARTIST_AUTHOR_SEPARATOR_REGEX = /\s*[,|、]\s*/;
 
 export class Mangas {
     static getIds(mangas: MangaIdInfo[]): number[] {
@@ -225,8 +190,7 @@ export class Mangas {
 
     static async downloadChapters(
         mangaIds: number[],
-        { size, onlyUnread, downloadAhead = false }: DownloadChaptersOptions = {},
-        disableConfirmation?: boolean,
+        { size, onlyUnread, downloadAhead = false, disableConfirmation }: DownloadChaptersOptions = {},
     ): Promise<void> {
         return Mangas.executeAction(
             'download',
@@ -321,7 +285,7 @@ export class Mangas {
                 }
 
                 try {
-                    await Chapters.download(Chapters.getIds(chaptersToDownload), disableConfirmation);
+                    await Chapters.download(Chapters.getIds(chaptersToDownload), { disableConfirmation });
                 } catch (e) {
                     // Ignore - Error gets handled in Chapters
                 }
@@ -331,7 +295,7 @@ export class Mangas {
         );
     }
 
-    static async deleteChapters(mangaIds: number[], disableConfirmation?: boolean): Promise<void> {
+    static async deleteChapters(mangaIds: number[], { disableConfirmation }: MangaActionOption): Promise<void> {
         return Mangas.executeAction(
             'delete',
             I18N_PLURAL,
@@ -339,7 +303,7 @@ export class Mangas {
                 const chapters = await Mangas.getChapterIdsWithState(mangaIds, { isDownloaded: true });
 
                 try {
-                    await Chapters.delete(Chapters.getIds(chapters), disableConfirmation);
+                    await Chapters.delete(Chapters.getIds(chapters), { disableConfirmation });
                 } catch (e) {
                     // Ignore - Error gets handled in Chapters
                 }
@@ -349,11 +313,7 @@ export class Mangas {
         );
     }
 
-    static async markAsRead(
-        mangaIds: number[],
-        wasManuallyMarkedAsRead: boolean = false,
-        disableConfirmation?: boolean,
-    ): Promise<void> {
+    static async markAsRead(mangaIds: number[], options: MarkAsReadOptions): Promise<void> {
         return Mangas.executeAction(
             'mark_as_read',
             I18N_PLURAL,
@@ -361,12 +321,10 @@ export class Mangas {
                 const chapters = await Mangas.getChapterIdsWithState(mangaIds, { isRead: false });
 
                 try {
-                    await Chapters.markAsRead(
-                        chapters,
-                        wasManuallyMarkedAsRead,
-                        mangaIds.length === 1 ? mangaIds[0] : undefined,
-                        disableConfirmation,
-                    );
+                    await Chapters.markAsRead(chapters, {
+                        ...options,
+                        trackProgressMangaId: mangaIds.length === 1 ? mangaIds[0] : undefined,
+                    });
                 } catch (e) {
                     // Ignore - Error gets handled in Chapters
                 }
@@ -376,7 +334,7 @@ export class Mangas {
         );
     }
 
-    static async markAsUnread(mangaIds: number[], disableConfirmation?: boolean): Promise<void> {
+    static async markAsUnread(mangaIds: number[], { disableConfirmation }: MangaActionOption = {}): Promise<void> {
         return Mangas.executeAction(
             'mark_as_unread',
             I18N_PLURAL,
@@ -384,7 +342,7 @@ export class Mangas {
                 const chapters = await Mangas.getChapterIdsWithState(mangaIds, { isRead: true });
 
                 try {
-                    await Chapters.markAsUnread(Chapters.getIds(chapters), disableConfirmation);
+                    await Chapters.markAsUnread(Chapters.getIds(chapters), { disableConfirmation });
                 } catch (e) {
                     // Ignore - Error gets handled in Chapters
                 }
@@ -394,7 +352,7 @@ export class Mangas {
         );
     }
 
-    static async removeFromLibrary(mangaIds: number[], disableConfirmation?: boolean): Promise<void> {
+    static async removeFromLibrary(mangaIds: number[], { disableConfirmation }: MangaActionOption = {}): Promise<void> {
         const { removeMangaFromCategories } = await getMetadataServerSettings();
         return Mangas.executeAction(
             'remove_from_library',
@@ -410,19 +368,18 @@ export class Mangas {
 
     static async changeCategories(
         mangaIds: number[],
-        patch: UpdateMangaCategoriesPatchInput,
-        disableConfirmation?: boolean,
+        { changeCategoriesPatch, disableConfirmation }: ChangeCategoriesOptions,
     ): Promise<void> {
         return Mangas.executeAction(
             'change_categories',
             mangaIds.length,
-            () => requestManager.updateMangasCategories(mangaIds, patch).response,
+            () => requestManager.updateMangasCategories(mangaIds, changeCategoriesPatch).response,
             disableConfirmation,
         );
     }
 
     static async migrate(mangaIds: MangaIdInfo['id'][]): Promise<void> {
-        if (MigrationManager.isActive()) {
+        if (!MigrationManager.isFinished() && MigrationManager.isActive()) {
             Notifications.error(t`A migration is already in progress`);
             return;
         }
@@ -509,22 +466,28 @@ export class Mangas {
             downloadAhead,
             onlyUnread,
             size,
+            disableConfirmation,
         }: PerformActionOptions<Action>,
-        disableConfirmation?: boolean,
     ): Promise<void> {
         switch (action) {
             case 'download':
-                return Mangas.downloadChapters(mangaIds, { downloadAhead, onlyUnread, size }, disableConfirmation);
+                return Mangas.downloadChapters(mangaIds, { downloadAhead, onlyUnread, size, disableConfirmation });
             case 'delete':
-                return Mangas.deleteChapters(mangaIds, disableConfirmation);
+                return Mangas.deleteChapters(mangaIds, { disableConfirmation });
             case 'mark_as_read':
-                return Mangas.markAsRead(mangaIds, wasManuallyMarkedAsRead!, disableConfirmation);
+                return Mangas.markAsRead(mangaIds, {
+                    wasManuallyMarkedAsRead,
+                    disableConfirmation,
+                });
             case 'mark_as_unread':
-                return Mangas.markAsUnread(mangaIds, disableConfirmation);
+                return Mangas.markAsUnread(mangaIds, { disableConfirmation });
             case 'remove_from_library':
-                return Mangas.removeFromLibrary(mangaIds, disableConfirmation);
+                return Mangas.removeFromLibrary(mangaIds, { disableConfirmation });
             case 'change_categories':
-                return Mangas.changeCategories(mangaIds, changeCategoriesPatch!, disableConfirmation);
+                return Mangas.changeCategories(mangaIds, {
+                    changeCategoriesPatch: changeCategoriesPatch!,
+                    disableConfirmation,
+                });
             case 'migrate': {
                 return Mangas.migrate(mangaIds);
             }

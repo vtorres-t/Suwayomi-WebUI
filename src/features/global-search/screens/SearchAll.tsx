@@ -386,7 +386,7 @@ export const SearchAll = ({
                     gap: 2,
                     pt: 1,
                     pb: 2,
-                    background: (theme) => theme.palette.background.default,
+                    background: (theme) => theme.vars.palette.background.default,
                 }}
             >
                 {hasPinnedSources && (
@@ -449,7 +449,7 @@ export const SearchAll = ({
                     {t`Has results`}
                 </Button>
             </Stack>
-            <Box sx={{ pt: `${filterHeaderHeight}px` }}>
+            <Box style={{ paddingTop: `${filterHeaderHeight}px` }}>
                 {sourcesSortedByResult.map((source) => (
                     <SourceSearchPreview
                         key={source.id}
