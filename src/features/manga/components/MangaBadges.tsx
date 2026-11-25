@@ -32,6 +32,7 @@ export const MangaBadges = ({
     inLibraryIndicator,
     updateLibraryState,
     isInLibrary,
+    categories,
     readChaptersCount,
     downloadChaptersCount,
     totalChaptersCount,
@@ -40,6 +41,7 @@ export const MangaBadges = ({
     inLibraryIndicator?: boolean;
     updateLibraryState: () => void;
     isInLibrary: boolean;
+    categories?: { id: number; name: string }[];
     readChaptersCount?: number;
     downloadChaptersCount?: number;
     totalChaptersCount?: number;
@@ -76,12 +78,28 @@ export const MangaBadges = ({
                 </Button>
             )}
             {inLibraryIndicator && isInLibrary && (
-                <Typography
-                    className="source-manga-library-state-indicator"
-                    sx={{ backgroundColor: 'primary.dark', color: 'primary.contrastText', p: 0.3 }}
-                >
-                    {t`In Library`}
-                </Typography>
+                <>
+                    <Typography
+                        className="source-manga-library-state-indicator"
+                        sx={{ backgroundColor: 'primary.dark', color: 'primary.contrastText', p: 0.3 }}
+                    >
+                        {t`In Library`}
+                    </Typography>
+                    {mode === 'source' &&
+                        categories?.map((category) => (
+                            <Typography
+                                key={category.id}
+                                className="source-manga-library-state-indicator"
+                                sx={{
+                                    backgroundColor: 'secondary.dark',
+                                    color: 'secondary.contrastText',
+                                    p: 0.3,
+                                }}
+                            >
+                                {category.name}
+                            </Typography>
+                        ))}
+                </>
             )}
             {((showReadChaptersBadge && mode === 'default') || mode === 'duplicate') &&
                 (readChaptersCount ?? 0) > 0 && (

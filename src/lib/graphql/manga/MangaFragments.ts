@@ -25,6 +25,12 @@ export const MANGA_BASE_FIELDS = gql`
         thumbnailUrl
         thumbnailUrlLastFetched
         inLibrary
+        categories {
+            nodes {
+                id
+                name
+            }
+        }
         initialized
         sourceId
     }

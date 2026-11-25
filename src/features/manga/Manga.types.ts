@@ -38,6 +38,12 @@ export type MangaCardMode = 'default' | 'source' | 'migrate.select.bulk' | 'migr
 type MangaCardBaseProps = Pick<MangaTypeGql, 'id' | 'title' | 'sourceId' | 'inLibrary'> &
     Omit<SingleModeProps['manga'], 'downloadCount' | 'unreadCount' | 'chapters'> &
     Partial<Pick<MangaTypeGql, 'downloadCount' | 'unreadCount'>> & {
+        categories?: {
+            nodes: {
+                id: number;
+                name: string;
+            }[];
+        };
         firstUnreadChapter?:
             | (ChapterIdInfo &
                   ChapterSourceOrderInfo &

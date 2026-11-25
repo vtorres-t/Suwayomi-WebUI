@@ -371,6 +371,10 @@ export type GetCategoryMangasQuery = {
                     totalCount: number;
                     nodes: Array<{ __typename: 'TrackRecordType'; id: number; trackerId: number }>;
                 };
+                categories: {
+                    __typename: 'CategoryNodeList';
+                    nodes: Array<{ __typename: 'CategoryType'; id: number; name: string }>;
+                };
                 chapters: { __typename: 'ChapterNodeList'; totalCount: number };
                 firstUnreadChapter: {
                     __typename: 'ChapterType';
@@ -501,6 +505,10 @@ export type ChapterUpdateListFieldsFragment = {
         downloadCount: number;
         bookmarkCount: number;
         hasDuplicateChapters: boolean;
+        categories: {
+            __typename: 'CategoryNodeList';
+            nodes: Array<{ __typename: 'CategoryType'; id: number; name: string }>;
+        };
         chapters: { __typename: 'ChapterNodeList'; totalCount: number };
     };
 };
@@ -535,6 +543,10 @@ export type ChapterHistoryListFieldsFragment = {
         downloadCount: number;
         bookmarkCount: number;
         hasDuplicateChapters: boolean;
+        categories: {
+            __typename: 'CategoryNodeList';
+            nodes: Array<{ __typename: 'CategoryType'; id: number; name: string }>;
+        };
         chapters: { __typename: 'ChapterNodeList'; totalCount: number };
     };
 };
@@ -848,6 +860,10 @@ export type GetChaptersUpdatesQuery = {
                 downloadCount: number;
                 bookmarkCount: number;
                 hasDuplicateChapters: boolean;
+                categories: {
+                    __typename: 'CategoryNodeList';
+                    nodes: Array<{ __typename: 'CategoryType'; id: number; name: string }>;
+                };
                 chapters: { __typename: 'ChapterNodeList'; totalCount: number };
             };
         }>;
@@ -907,6 +923,10 @@ export type GetChaptersHistoryQuery = {
                 downloadCount: number;
                 bookmarkCount: number;
                 hasDuplicateChapters: boolean;
+                categories: {
+                    __typename: 'CategoryNodeList';
+                    nodes: Array<{ __typename: 'CategoryType'; id: number; name: string }>;
+                };
                 chapters: { __typename: 'ChapterNodeList'; totalCount: number };
             };
         }>;
@@ -1002,6 +1022,10 @@ export type DownloadTypeFieldsFragment = {
             lang: string;
             iconUrl: string;
         } | null;
+        categories: {
+            __typename: 'CategoryNodeList';
+            nodes: Array<{ __typename: 'CategoryType'; id: number; name: string }>;
+        };
     };
 };
 
@@ -1044,6 +1068,10 @@ export type DownloadStatusFieldsFragment = {
                 lang: string;
                 iconUrl: string;
             } | null;
+            categories: {
+                __typename: 'CategoryNodeList';
+                nodes: Array<{ __typename: 'CategoryType'; id: number; name: string }>;
+            };
         };
     }>;
     directoryStats: { __typename: 'DirectoryStats'; availableSpacePretty: string; folderSizePretty: string };
@@ -1092,6 +1120,10 @@ export type DownloadUpdatesFieldsFragment = {
                     lang: string;
                     iconUrl: string;
                 } | null;
+                categories: {
+                    __typename: 'CategoryNodeList';
+                    nodes: Array<{ __typename: 'CategoryType'; id: number; name: string }>;
+                };
             };
         };
     }>;
@@ -1144,6 +1176,10 @@ export type ClearDownloaderMutation = {
                         lang: string;
                         iconUrl: string;
                     } | null;
+                    categories: {
+                        __typename: 'CategoryNodeList';
+                        nodes: Array<{ __typename: 'CategoryType'; id: number; name: string }>;
+                    };
                 };
             }>;
             directoryStats: { __typename: 'DirectoryStats'; availableSpacePretty: string; folderSizePretty: string };
@@ -1232,6 +1268,10 @@ export type DequeueChapterDownloadMutation = {
                         lang: string;
                         iconUrl: string;
                     } | null;
+                    categories: {
+                        __typename: 'CategoryNodeList';
+                        nodes: Array<{ __typename: 'CategoryType'; id: number; name: string }>;
+                    };
                 };
             }>;
             directoryStats: { __typename: 'DirectoryStats'; availableSpacePretty: string; folderSizePretty: string };
@@ -1286,6 +1326,10 @@ export type DequeueChapterDownloadsMutation = {
                         lang: string;
                         iconUrl: string;
                     } | null;
+                    categories: {
+                        __typename: 'CategoryNodeList';
+                        nodes: Array<{ __typename: 'CategoryType'; id: number; name: string }>;
+                    };
                 };
             }>;
             directoryStats: { __typename: 'DirectoryStats'; availableSpacePretty: string; folderSizePretty: string };
@@ -1340,6 +1384,10 @@ export type EnqueueChapterDownloadMutation = {
                         lang: string;
                         iconUrl: string;
                     } | null;
+                    categories: {
+                        __typename: 'CategoryNodeList';
+                        nodes: Array<{ __typename: 'CategoryType'; id: number; name: string }>;
+                    };
                 };
             }>;
             directoryStats: { __typename: 'DirectoryStats'; availableSpacePretty: string; folderSizePretty: string };
@@ -1394,6 +1442,10 @@ export type EnqueueChapterDownloadsMutation = {
                         lang: string;
                         iconUrl: string;
                     } | null;
+                    categories: {
+                        __typename: 'CategoryNodeList';
+                        nodes: Array<{ __typename: 'CategoryType'; id: number; name: string }>;
+                    };
                 };
             }>;
             directoryStats: { __typename: 'DirectoryStats'; availableSpacePretty: string; folderSizePretty: string };
@@ -1448,6 +1500,10 @@ export type ReorderChapterDownloadMutation = {
                         lang: string;
                         iconUrl: string;
                     } | null;
+                    categories: {
+                        __typename: 'CategoryNodeList';
+                        nodes: Array<{ __typename: 'CategoryType'; id: number; name: string }>;
+                    };
                 };
             }>;
             directoryStats: { __typename: 'DirectoryStats'; availableSpacePretty: string; folderSizePretty: string };
@@ -1502,6 +1558,10 @@ export type ReorderChapterDownloadsMutation = {
                         lang: string;
                         iconUrl: string;
                     } | null;
+                    categories: {
+                        __typename: 'CategoryNodeList';
+                        nodes: Array<{ __typename: 'CategoryType'; id: number; name: string }>;
+                    };
                 };
             }>;
             directoryStats: { __typename: 'DirectoryStats'; availableSpacePretty: string; folderSizePretty: string };
@@ -1576,6 +1636,10 @@ export type GetDownloadStatusQuery = {
                     lang: string;
                     iconUrl: string;
                 } | null;
+                categories: {
+                    __typename: 'CategoryNodeList';
+                    nodes: Array<{ __typename: 'CategoryType'; id: number; name: string }>;
+                };
             };
         }>;
         directoryStats: { __typename: 'DirectoryStats'; availableSpacePretty: string; folderSizePretty: string };
@@ -1631,6 +1695,10 @@ export type DownloadStatusSubscription = {
                         lang: string;
                         iconUrl: string;
                     } | null;
+                    categories: {
+                        __typename: 'CategoryNodeList';
+                        nodes: Array<{ __typename: 'CategoryType'; id: number; name: string }>;
+                    };
                 };
             };
         }>;
@@ -2027,6 +2095,10 @@ export type MangaBaseFieldsFragment = {
     inLibrary: boolean;
     initialized: boolean;
     sourceId: string;
+    categories: {
+        __typename: 'CategoryNodeList';
+        nodes: Array<{ __typename: 'CategoryType'; id: number; name: string }>;
+    };
 };
 
 export type MangaChapterStatFieldsFragment = {
@@ -2079,6 +2151,10 @@ export type MangaReaderFieldsFragment = {
     meta: Array<{ __typename: 'MangaMetaType'; mangaId: number; key: string; value: string }>;
     chapters: { __typename: 'ChapterNodeList'; totalCount: number };
     trackRecords: { __typename: 'TrackRecordNodeList'; totalCount: number };
+    categories: {
+        __typename: 'CategoryNodeList';
+        nodes: Array<{ __typename: 'CategoryType'; id: number; name: string }>;
+    };
 };
 
 export type MangaLibraryFieldsFragment = {
@@ -2115,6 +2191,10 @@ export type MangaLibraryFieldsFragment = {
         totalCount: number;
         nodes: Array<{ __typename: 'TrackRecordType'; id: number; trackerId: number }>;
     };
+    categories: {
+        __typename: 'CategoryNodeList';
+        nodes: Array<{ __typename: 'CategoryType'; id: number; name: string }>;
+    };
     chapters: { __typename: 'ChapterNodeList'; totalCount: number };
     firstUnreadChapter: {
         __typename: 'ChapterType';
@@ -2145,6 +2225,10 @@ export type MangaMigrationFieldsFragment = {
     initialized: boolean;
     sourceId: string;
     source: { __typename: 'SourceType'; id: string; name: string; displayName: string } | null;
+    categories: {
+        __typename: 'CategoryNodeList';
+        nodes: Array<{ __typename: 'CategoryType'; id: number; name: string }>;
+    };
     firstUnreadChapter: {
         __typename: 'ChapterType';
         id: number;
@@ -2212,6 +2296,10 @@ export type MangaScreenFieldsFragment = {
     latestFetchedChapter: { __typename: 'ChapterType'; id: number; fetchedAt: string } | null;
     latestUploadedChapter: { __typename: 'ChapterType'; id: number; uploadDate: string } | null;
     highestNumberedChapter: { __typename: 'ChapterType'; id: number; chapterNumber: number } | null;
+    categories: {
+        __typename: 'CategoryNodeList';
+        nodes: Array<{ __typename: 'CategoryType'; id: number; name: string }>;
+    };
     chapters: { __typename: 'ChapterNodeList'; totalCount: number };
 };
 
@@ -2229,6 +2317,10 @@ export type MangaLibraryDuplicateScreenFieldsFragment = {
     downloadCount: number;
     bookmarkCount: number;
     hasDuplicateChapters: boolean;
+    categories: {
+        __typename: 'CategoryNodeList';
+        nodes: Array<{ __typename: 'CategoryType'; id: number; name: string }>;
+    };
     chapters: { __typename: 'ChapterNodeList'; totalCount: number };
 };
 
@@ -2297,6 +2389,10 @@ export type RefreshMangaMutation = {
             latestFetchedChapter: { __typename: 'ChapterType'; id: number; fetchedAt: string } | null;
             latestUploadedChapter: { __typename: 'ChapterType'; id: number; uploadDate: string } | null;
             highestNumberedChapter: { __typename: 'ChapterType'; id: number; chapterNumber: number } | null;
+            categories: {
+                __typename: 'CategoryNodeList';
+                nodes: Array<{ __typename: 'CategoryType'; id: number; name: string }>;
+            };
             chapters: { __typename: 'ChapterNodeList'; totalCount: number };
         };
         chapters?: Array<{
@@ -2577,6 +2673,10 @@ export type GetMangaScreenQuery = {
         latestFetchedChapter: { __typename: 'ChapterType'; id: number; fetchedAt: string } | null;
         latestUploadedChapter: { __typename: 'ChapterType'; id: number; uploadDate: string } | null;
         highestNumberedChapter: { __typename: 'ChapterType'; id: number; chapterNumber: number } | null;
+        categories: {
+            __typename: 'CategoryNodeList';
+            nodes: Array<{ __typename: 'CategoryType'; id: number; name: string }>;
+        };
         chapters: { __typename: 'ChapterNodeList'; totalCount: number };
     };
 };
@@ -2608,6 +2708,10 @@ export type GetMangaReaderQuery = {
         meta: Array<{ __typename: 'MangaMetaType'; mangaId: number; key: string; value: string }>;
         chapters: { __typename: 'ChapterNodeList'; totalCount: number };
         trackRecords: { __typename: 'TrackRecordNodeList'; totalCount: number };
+        categories: {
+            __typename: 'CategoryNodeList';
+            nodes: Array<{ __typename: 'CategoryType'; id: number; name: string }>;
+        };
     };
 };
 
@@ -2729,6 +2833,10 @@ export type GetMangasBaseQuery = {
             inLibrary: boolean;
             initialized: boolean;
             sourceId: string;
+            categories: {
+                __typename: 'CategoryNodeList';
+                nodes: Array<{ __typename: 'CategoryType'; id: number; name: string }>;
+            };
         }>;
         pageInfo: {
             __typename: 'PageInfo';
@@ -2789,6 +2897,10 @@ export type GetMangasLibraryQuery = {
                 __typename: 'TrackRecordNodeList';
                 totalCount: number;
                 nodes: Array<{ __typename: 'TrackRecordType'; id: number; trackerId: number }>;
+            };
+            categories: {
+                __typename: 'CategoryNodeList';
+                nodes: Array<{ __typename: 'CategoryType'; id: number; name: string }>;
             };
             chapters: { __typename: 'ChapterNodeList'; totalCount: number };
             firstUnreadChapter: {
@@ -2852,6 +2964,10 @@ export type GetMangasDuplicatesQuery = {
             downloadCount: number;
             bookmarkCount: number;
             hasDuplicateChapters: boolean;
+            categories: {
+                __typename: 'CategoryNodeList';
+                nodes: Array<{ __typename: 'CategoryType'; id: number; name: string }>;
+            };
             chapters: { __typename: 'ChapterNodeList'; totalCount: number };
         }>;
         pageInfo: {
@@ -2891,6 +3007,10 @@ export type GetMigratableSourceMangasQuery = {
             initialized: boolean;
             sourceId: string;
             source: { __typename: 'SourceType'; id: string; name: string; displayName: string } | null;
+            categories: {
+                __typename: 'CategoryNodeList';
+                nodes: Array<{ __typename: 'CategoryType'; id: number; name: string }>;
+            };
             firstUnreadChapter: {
                 __typename: 'ChapterType';
                 id: number;
@@ -3895,6 +4015,10 @@ export type GetSourceMangasFetchMutation = {
             inLibrary: boolean;
             initialized: boolean;
             sourceId: string;
+            categories: {
+                __typename: 'CategoryNodeList';
+                nodes: Array<{ __typename: 'CategoryType'; id: number; name: string }>;
+            };
         }>;
     } | null;
 };
@@ -3920,6 +4044,10 @@ export type GetMigrationSourceMangasFetchMutation = {
             initialized: boolean;
             sourceId: string;
             source: { __typename: 'SourceType'; id: string; name: string; displayName: string } | null;
+            categories: {
+                __typename: 'CategoryNodeList';
+                nodes: Array<{ __typename: 'CategoryType'; id: number; name: string }>;
+            };
             firstUnreadChapter: {
                 __typename: 'ChapterType';
                 id: number;
